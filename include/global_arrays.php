@@ -970,6 +970,7 @@ $user_auth_realms = array(
 	25   => __('Realtime Graphs'),
 	20   => __('Update Profile'),
 	24   => __('External Links'),
+	100  => __('testbed IMS'),
 
 	1    => __('User Management'),
 	15   => __('Settings and Utilities'),
@@ -1004,11 +1005,15 @@ $user_auth_roles = array(
 	'Normal User'            => array(7, 19, 20, 22, 24, 25),
 	'Template Editor'        => array(8, 2, 9, 10, 11, 12, 13, 14, 16, 17),
 	'General Administration' => array(8, 3, 4, 5, 23, 1043),
-	'System Administration'  => array(8, 15, 1, 18, 21, 101)
+	'System Administration'  => array(8, 15, 1, 18, 21, 101),
+	'Testbeds'  			 => array(100)
 );
 
 $user_auth_realm_filenames = array(
 	'about.php' => 8,
+	'arquitectura.php' => 100,
+	'info.php' => 100,
+	'pruebas.php' => 100,
 	'cdef.php' => 14,
 	'clog.php' => 18,
 	'clog_user.php' => 19,
