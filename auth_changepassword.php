@@ -259,7 +259,7 @@ print "\t<meta name='apple-mobile-web-app-capable' content='yes'>\n";
 print "\t<meta name='mobile-web-app-capable' content='yes'>\n";
 print "\t<meta http-equiv='X-UA-Compatible' content='IE=Edge,chrome=1'>\n";
 print "\t<link href='" . $config['url_path'] . "include/themes/" . $selectedTheme . "/images/favicon.ico' rel='shortcut icon'>";
-print "\t<link href='" . $config['url_path'] . "include/themes/" . $selectedTheme . "/images/cacti_logo.gif' rel='icon' sizes='96x96'>";
+print "\t<link href='" . $config['url_path'] . "include/themes/" . $selectedTheme . "/images/telco_logo.gif' rel='icon' sizes='96x96'>";
 print get_md5_include_css('include/themes/' . $selectedTheme .'/jquery.zoom.css');
 print get_md5_include_css('include/themes/' . $selectedTheme .'/jquery-ui.css');
 print get_md5_include_css('include/themes/' . $selectedTheme .'/default/style.css');

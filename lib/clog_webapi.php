@@ -57,7 +57,7 @@ function clog_purge_logfile() {
 	$logfile = read_config_option('path_cactilog');
 	$logbase = basename($logfile);
 	if ($logfile == '') {
-		$logfile = $config['base_path'] . '/log/cacti.log';
+		$logfile = $config['base_path'] . '/log/telco.log';
 	}
 
 	if (get_nfilter_request_var('filename') != '') {
@@ -116,7 +116,7 @@ function clog_view_logfile() {
 			$logfile = $requestedFile;
 		}
 	} elseif ($logfile == '') {
-		$logfile = $config['base_path'] . '/log/cacti.log';
+		$logfile = $config['base_path'] . '/log/telco.log';
 	}
 
 	if (get_nfilter_request_var('filename') != '') {

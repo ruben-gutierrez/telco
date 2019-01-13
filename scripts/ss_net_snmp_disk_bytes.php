@@ -36,10 +36,10 @@ function ss_net_snmp_disk_bytes($host_id_or_hostname) {
 	}
 
 	if ($environ != 'realtime') {
-		$tmpdir = $tmpdir . '/cacti/net-snmp-devio';
+		$tmpdir = $tmpdir . '/telco/net-snmp-devio';
 		$tmpfile = $host_id . '_bytes';
 	} else {
-		$tmpdir = $tmpdir . '/cacti/net-snmp-devio';
+		$tmpdir = $tmpdir . '/telco/net-snmp-devio';
 		$tmpfile = $host_id . '_' . $poller_id . '_bytes_rt';
 	}
 

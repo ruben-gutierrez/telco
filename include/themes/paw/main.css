@@ -685,7 +685,7 @@ label {
 }
 
 .cactiLogo {
-	background: #efefef url('./images/cacti_logo.svg') no-repeat 30px;
+	background: #efefef url('./images/telco_logo.svg') no-repeat 30px;
 	display:block;
 	cursor:pointer;
 	padding-bottom:140px;

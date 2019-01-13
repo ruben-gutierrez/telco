@@ -904,7 +904,7 @@ function cacti_snmp_options_sanitize($version, $community, &$port, &$timeout, &$
 		$port = '161';
 	}
 
-	//cacti_log('Version:' . $version . ', Port:' . $port . ', MaxOIDS:' . $max_oids . ', Retries:' . $retries . ', Timeout:' . $timeout);
+	//telco_log('Version:' . $version . ', Port:' . $port . ', MaxOIDS:' . $max_oids . ', Retries:' . $retries . ', Timeout:' . $timeout);
 
 	/* do not attempt to poll invalid combinations */
 	if (($version == 0) || (!is_numeric($version)) ||

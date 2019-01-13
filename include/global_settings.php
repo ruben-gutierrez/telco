@@ -143,9 +143,9 @@ $settings = array(
 			),
 		'path_cactilog' => array(
 			'friendly_name' => __('Cacti Log Path'),
-			'description' => __('The path to your Cacti log file (if blank, defaults to &lt;path_cacti&gt;/log/cacti.log)'),
+			'description' => __('The path to your Cacti log file (if blank, defaults to &lt;path_cacti&gt;/log/telco.log)'),
 			'method' => 'filepath',
-			'default' => $config['base_path'] . '/log/cacti.log',
+			'default' => $config['base_path'] . '/log/telco.log',
 			'max_length' => '255'
 			),
 		'logrotate_enabled' => array(

@@ -895,7 +895,7 @@ function utilities_view_logfile() {
 	}
 
 	if ($logfile == '') {
-		$logfile = $config['base_path'] . '/log/cacti.log';
+		$logfile = $config['base_path'] . '/log/telco.log';
 	}
 
 	if (get_nfilter_request_var('filename') != '') {
@@ -1238,7 +1238,7 @@ function utilities_clear_logfile() {
 	$logfile = read_config_option('path_cactilog');
 
 	if ($logfile == '') {
-		$logfile = './log/cacti.log';
+		$logfile = './log/telco.log';
 	}
 
 	html_start_box(__('Clear Cacti Log'), '100%', '', '3', 'center', '');

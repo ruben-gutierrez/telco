@@ -340,14 +340,14 @@ shell> chown -R cactiuser rra/ log/
        (Enter a valid username for cactiuser, this user will also
        be used in the next step for data gathering.)
     7. Add a line to your /etc/crontab file similar to:
-*/5 * * * * cactiuser php /var/www/html/cacti/poller.php > /dev/null 2>&
+*/5 * * * * cactiuser php /var/www/html/telco/poller.php > /dev/null 2>&
 1
        Replace cactiuser with the valid user specified in the
        previous step.
-       Replace /var/www/html/cacti/ with your full Cacti path.
+       Replace /var/www/html/telco/ with your full Cacti path.
     8. Point your web browser to:
 
-     http://your-server/cacti/
+     http://your-server/telco/
        Log in the with a username/password of admin. You will be
        required to change this password immediately. Make sure to
        fill in all of the path variables carefully and correctly
@@ -469,11 +469,11 @@ DirectoryIndex index.html index.htm index.php
        enable Set Extension status to Enable, and click OK.
     6. Give the IUSR_XXXX and IIS_WPG users read & execute
        permissions to the file %windir%\system32\cmd.exe. They
-       will also need read permissions on cacti_web_root/cacti and
+       will also need read permissions on cacti_web_root/telco and
        it's subfolders.
     7. If using IIS6, give the IIS_WPG user modify permissions to
-       the folders cacti_web_root/cacti/log and
-       cacti_web_root/cacti/rrd.
+       the folders cacti_web_root/telco/log and
+       cacti_web_root/telco/rrd.
     8. Completely stop and start the IIS service using the
        following commands:
 net stop iisadmin
@@ -565,7 +565,7 @@ DB_Port         3306
        all the DLL files and sh.exe from the c:\cacti directory.
 
    Configure Cacti
-    1. Edit cacti_web_root/cacti/include/config.php and specify
+    1. Edit cacti_web_root/telco/include/config.php and specify
        the MySQL user, password, database, and database port for
        your Cacti configuration.
 $database_default = "cacti";
@@ -574,7 +574,7 @@ $database_username = "cactiuser";
 $database_password = "cacti";
 $database_port = "3306";
     2. Point your web browser to:
-http://your-server/cacti/
+http://your-server/telco/
        Log in using the username and password of admin/admin. You
        will be required to change this password immediately.
     3. From Cacti, go to Settings->Paths and verify/udate your
@@ -585,16 +585,16 @@ http://your-server/cacti/
        PHP Binary Path:
 c:/php/php.exe
        RRDtool Binary Path:
-c:/cacti/rrdtool.exe
+c:/telco/rrdtool.exe
        SNMPGET, SNMPWALK, SNMPBULKWALK, SNMPGETNEXT Paths:
 c:/progra~1/net-snmp/bin/snmpget.exe
 c:/progra~1/net-snmp/bin/snmpwalk.exe
 c:/progra~1/net-snmp/bin/snmpbulkwalk.exe
 c:/progra~1/net-snmp/bin/snmpgetnext.exe
        Cacti Logfile Path:
-c:/mycacti/website/cacti/log/cacti.log
+c:/mycacti/website/telco/log/telco.log
        Spine Path:
-c:/cacti/Spine.exe
+c:/telco/Spine.exe
     4. Click on Devices. Delete the Localhost devices as it
        intended for Linux environments In the upper right corner,
        click Add. Fill in the following information and then click
@@ -612,7 +612,7 @@ Host Template: Windows 2000/XP
     6. Log into the user account you'll be using for the scheduled
        task and verify starting a Cacti polling cycle works. Do
        this by running the following from the command prompt:
-php c:/cacti_web_root/cacti/poller.php
+php c:/telco_web_root/telco/poller.php
        The output should look something like the following:
 C:\>php c:\inetpub\wwwroot\cacti\poller.php
 OK u:0.00 s:0.06 r:1.32
@@ -623,7 +623,7 @@ OK u:0.00 s:0.17 r:2.62
 ses:1 Threads:N/A Hosts:1 HostsPerProcess:2 DataSources:4 RRDsProcessed:
 2
        After this has ran once, you should have cacti.log in
-       /cacti/log/ and rrd files in /cacti/rra/.
+       /telco/log/ and rrd files in /telco/rra/.
     7. You are going to need to schedule a task while logged on as
        an Administrator. This task is required to you can run
        poller.php every 5 minutes. Make sure the Task Scheduler
@@ -642,7 +642,7 @@ ses:1 Threads:N/A Hosts:1 HostsPerProcess:2 DataSources:4 RRDsProcessed:
          e. When entering a username and password make sure the
             user has read and write access to the following
             directories:
-cacti_web_root/cacti/rra
+cacti_web_root/telco/rra
 cacti_web_root/log
             Make sure the user has read, write, and execute access
             to the following directories:
@@ -716,7 +716,7 @@ shell> chown -R cactiuser rra/ log/
        be used in the next step for data gathering.)
    10. Point your web browser to:
 
-     http://your-server/cacti/
+     http://your-server/telco/
        Follow the on-screen instructions so your database can be
        updated to the new version.
      __________________________________________________________
@@ -2976,7 +2976,7 @@ Simplest Method of Going from Script to Graph (Walkthrough)
    the Cacti manual for more details.
 
    Have a tested script ready to go. I used the following script
-   located in /home/cactiuser/bin called random2.pl:
+   located in /home/telcouser/bin called random2.pl:
 #!/usr/bin/perl -w
 
 print int(rand(10));
@@ -3001,7 +3001,7 @@ print int(rand(10));
           + Click Add
           + Name: Random 2 Input
           + Input Type: Script/Command
-          + Input String: /home/cactiuser/bin/random2.pl
+          + Input String: /home/telcouser/bin/random2.pl
           + Click Create
           + Should see "Save Successful." at the top of the page.
           + Click Add by Output Fields (there are no input fields
@@ -3358,7 +3358,7 @@ shell> ls -al rra/
    Contrary to previous versions of Cacti, you must not put Cacti
    in your PHP include path. Check your php.ini file to make sure
    there is not something like include_path =
-   C:/Apache2/htdocs/cacti.
+   C:/Apache2/htdocs/telco.
      __________________________________________________________
 
 Chapter 18. Variables
@@ -3823,21 +3823,21 @@ Item # 24   (No Task): Maximum:[HR]                      GPRINT      MAX
 --font AXIS:8: \
 --font LEGEND:8: \
 --font UNIT:8: \
-DEF:a="/var/www/html/cacti/rra/target1_traffic_in_235.rrd":traffic_in:AV
+DEF:a="/var/www/html/telco/rra/target1_traffic_in_235.rrd":traffic_in:AV
 ERAGE \
-DEF:b="/var/www/html/cacti/rra/target1_traffic_in_235.rrd":traffic_in:MA
+DEF:b="/var/www/html/telco/rra/target1_traffic_in_235.rrd":traffic_in:MA
 X \
-DEF:c="/var/www/html/cacti/rra/target2_traffic_in_8.rrd":traffic_in:AVER
+DEF:c="/var/www/html/telco/rra/target2_traffic_in_8.rrd":traffic_in:AVER
 AGE \
-DEF:d="/var/www/html/cacti/rra/target2_traffic_in_8.rrd":traffic_in:MAX
+DEF:d="/var/www/html/telco/rra/target2_traffic_in_8.rrd":traffic_in:MAX
 \
-DEF:e="/var/www/html/cacti/rra/target1_traffic_in_235.rrd":traffic_out:A
+DEF:e="/var/www/html/telco/rra/target1_traffic_in_235.rrd":traffic_out:A
 VERAGE \
-DEF:f="/var/www/html/cacti/rra/target1_traffic_in_235.rrd":traffic_out:M
+DEF:f="/var/www/html/telco/rra/target1_traffic_in_235.rrd":traffic_out:M
 AX \
-DEF:g="/var/www/html/cacti/rra/target2_traffic_in_8.rrd":traffic_out:AVE
+DEF:g="/var/www/html/telco/rra/target2_traffic_in_8.rrd":traffic_out:AVE
 RAGE \
-DEF:h="/var/www/html/cacti/rra/target2_traffic_in_8.rrd":traffic_out:MAX
+DEF:h="/var/www/html/telco/rra/target2_traffic_in_8.rrd":traffic_out:MAX
  \
 CDEF:cdefca=TIME,1202925514,GT,a,a,UN,0,a,IF,IF,TIME,1202925514,GT,c,c,U
 N,0,c,IF,IF,TIME,1202925514,GT,e,e,UN,0,e,IF,IF,TIME,1202925514,GT,g,g,U
@@ -3924,21 +3924,21 @@ Item # 24   (No Task): Maximum:[HR]                      GPRINT      MAX
 --font AXIS:8: \
 --font LEGEND:8: \
 --font UNIT:8: \
-DEF:a="/var/www/html/cacti/rra/target1_traffic_in_235.rrd":traffic_in:AV
+DEF:a="/var/www/html/telco/rra/target1_traffic_in_235.rrd":traffic_in:AV
 ERAGE \
-DEF:b="/var/www/html/cacti/rra/target1_traffic_in_235.rrd":traffic_in:MA
+DEF:b="/var/www/html/telco/rra/target1_traffic_in_235.rrd":traffic_in:MA
 X \
-DEF:c="/var/www/html/cacti/rra/target2_traffic_in_8.rrd":traffic_in:AVER
+DEF:c="/var/www/html/telco/rra/target2_traffic_in_8.rrd":traffic_in:AVER
 AGE \
-DEF:d="/var/www/html/cacti/rra/target2_traffic_in_8.rrd":traffic_in:MAX
+DEF:d="/var/www/html/telco/rra/target2_traffic_in_8.rrd":traffic_in:MAX
 \
-DEF:e="/var/www/html/cacti/rra/target1_traffic_in_235.rrd":traffic_out:A
+DEF:e="/var/www/html/telco/rra/target1_traffic_in_235.rrd":traffic_out:A
 VERAGE \
-DEF:f="/var/www/html/cacti/rra/target1_traffic_in_235.rrd":traffic_out:M
+DEF:f="/var/www/html/telco/rra/target1_traffic_in_235.rrd":traffic_out:M
 AX \
-DEF:g="/var/www/html/cacti/rra/target2_traffic_in_8.rrd":traffic_out:AVE
+DEF:g="/var/www/html/telco/rra/target2_traffic_in_8.rrd":traffic_out:AVE
 RAGE \
-DEF:h="/var/www/html/cacti/rra/target2_traffic_in_8.rrd":traffic_out:MAX
+DEF:h="/var/www/html/telco/rra/target2_traffic_in_8.rrd":traffic_out:MAX
  \
 CDEF:cdefca=TIME,1202925583,GT,a,a,UN,0,a,IF,IF,TIME,1202925583,GT,c,c,U
 N,0,c,IF,IF,TIME,1202925583,GT,e,e,UN,0,e,IF,IF,TIME,1202925583,GT,g,g,U
@@ -4025,21 +4025,21 @@ Item # 24   (traffic_in): Maximum:[HR]                   GPRINT      MAX
 --font AXIS:8: \
 --font LEGEND:8: \
 --font UNIT:8: \
-DEF:a="/var/www/html/cacti/rra/target1_traffic_in_235.rrd":traffic_in:AV
+DEF:a="/var/www/html/telco/rra/target1_traffic_in_235.rrd":traffic_in:AV
 ERAGE \
-DEF:b="/var/www/html/cacti/rra/target1_traffic_in_235.rrd":traffic_in:MA
+DEF:b="/var/www/html/telco/rra/target1_traffic_in_235.rrd":traffic_in:MA
 X \
-DEF:c="/var/www/html/cacti/rra/target2_traffic_in_8.rrd":traffic_in:AVER
+DEF:c="/var/www/html/telco/rra/target2_traffic_in_8.rrd":traffic_in:AVER
 AGE \
-DEF:d="/var/www/html/cacti/rra/target2_traffic_in_8.rrd":traffic_in:MAX
+DEF:d="/var/www/html/telco/rra/target2_traffic_in_8.rrd":traffic_in:MAX
 \
-DEF:e="/var/www/html/cacti/rra/target1_traffic_in_235.rrd":traffic_out:A
+DEF:e="/var/www/html/telco/rra/target1_traffic_in_235.rrd":traffic_out:A
 VERAGE \
-DEF:f="/var/www/html/cacti/rra/target1_traffic_in_235.rrd":traffic_out:M
+DEF:f="/var/www/html/telco/rra/target1_traffic_in_235.rrd":traffic_out:M
 AX \
-DEF:g="/var/www/html/cacti/rra/target2_traffic_in_8.rrd":traffic_out:AVE
+DEF:g="/var/www/html/telco/rra/target2_traffic_in_8.rrd":traffic_out:AVE
 RAGE \
-DEF:h="/var/www/html/cacti/rra/target2_traffic_in_8.rrd":traffic_out:MAX
+DEF:h="/var/www/html/telco/rra/target2_traffic_in_8.rrd":traffic_out:MAX
  \
 CDEF:cdefca=TIME,1202924474,GT,a,a,UN,0,a,IF,IF,TIME,1202924474,GT,c,c,U
 N,0,c,IF,IF,+ \
@@ -4137,21 +4137,21 @@ Item # 24   (traffic_in): Maximum:[HR]                   GPRINT      MAX
 --font AXIS:8: \
 --font LEGEND:8: \
 --font UNIT:8: \
-DEF:a="/var/www/html/cacti/rra/target1_traffic_in_235.rrd":traffic_in:AV
+DEF:a="/var/www/html/telco/rra/target1_traffic_in_235.rrd":traffic_in:AV
 ERAGE \
-DEF:b="/var/www/html/cacti/rra/target1_traffic_in_235.rrd":traffic_in:MA
+DEF:b="/var/www/html/telco/rra/target1_traffic_in_235.rrd":traffic_in:MA
 X \
-DEF:c="/var/www/html/cacti/rra/target2_traffic_in_8.rrd":traffic_in:AVER
+DEF:c="/var/www/html/telco/rra/target2_traffic_in_8.rrd":traffic_in:AVER
 AGE \
-DEF:d="/var/www/html/cacti/rra/target2_traffic_in_8.rrd":traffic_in:MAX
+DEF:d="/var/www/html/telco/rra/target2_traffic_in_8.rrd":traffic_in:MAX
 \
-DEF:e="/var/www/html/cacti/rra/target1_traffic_in_235.rrd":traffic_out:A
+DEF:e="/var/www/html/telco/rra/target1_traffic_in_235.rrd":traffic_out:A
 VERAGE \
-DEF:f="/var/www/html/cacti/rra/target1_traffic_in_235.rrd":traffic_out:M
+DEF:f="/var/www/html/telco/rra/target1_traffic_in_235.rrd":traffic_out:M
 AX \
-DEF:g="/var/www/html/cacti/rra/target2_traffic_in_8.rrd":traffic_out:AVE
+DEF:g="/var/www/html/telco/rra/target2_traffic_in_8.rrd":traffic_out:AVE
 RAGE \
-DEF:h="/var/www/html/cacti/rra/target2_traffic_in_8.rrd":traffic_out:MAX
+DEF:h="/var/www/html/telco/rra/target2_traffic_in_8.rrd":traffic_out:MAX
  \
 CDEF:cdefca=TIME,1202925634,GT,a,a,UN,0,a,IF,IF,TIME,1202925634,GT,c,c,U
 N,0,c,IF,IF,TIME,1202925634,GT,a,a,UN,0,a,IF,IF,+,+ \
@@ -4254,9 +4254,9 @@ Graph Item   Data Source         Graph Item Type  CF Type  Item Color
 --font AXIS:8: \
 --font LEGEND:8: \
 --font UNIT:8: \
-DEF:a="/var/www/html/cacti/rra/target1_hdd_free_236.rrd":hdd_used:AVERAG
+DEF:a="/var/www/html/telco/rra/target1_hdd_free_236.rrd":hdd_used:AVERAG
 E \
-DEF:b="/var/www/html/cacti/rra/target1_hdd_free_236.rrd":hdd_free:AVERAG
+DEF:b="/var/www/html/telco/rra/target1_hdd_free_236.rrd":hdd_free:AVERAG
 E \
 CDEF:cdefa=a,0,* \
 CDEF:cdefb=b,0,* \
@@ -4350,34 +4350,34 @@ Rebuild Poller Cache
    possible, to review the currenty contents of the poller cache
    by visiting System Utilities, View Poller Cache. It is possible
    to apply filters to this view; it will show up like
-Localhost - Hard Drive Space    Script Server: /var/www/html/cacti/scrip
+Localhost - Hard Drive Space    Script Server: /var/www/html/telco/scrip
 ts/ss_host_disk.php ss_host_disk 127.0.0.1 1 1:161:500:somesecret::::::
 get total 6
-                                RRD: /var/www/html/cacti/rra/localhost_h
+                                RRD: /var/www/html/telco/rra/localhost_h
 dd_total_61.rrd
 Localhost - Load Average        Script: /usr/bin/perl /var/www/html/cact
 i/scripts/loadavg_multi.pl
-                                RRD: /var/www/html/cacti/rra/localhost_l
+                                RRD: /var/www/html/telco/rra/localhost_l
 oad_1min_5.rrd
 Localhost - Logged in Users     Script: /usr/bin/perl /var/www/html/cact
 i/scripts/unix_users.pl
-                                RRD: /var/www/html/cacti/rra/localhost_u
+                                RRD: /var/www/html/telco/rra/localhost_u
 sers_6.rrd
 Localhost - Memory - Free       Script: /usr/bin/perl /var/www/html/cact
 i/scripts/linux_memory.pl MemFree:
-                                RRD: /var/www/html/cacti/rra/localhost_m
+                                RRD: /var/www/html/telco/rra/localhost_m
 em_buffers_3.rrd
 Localhost - Memory - Free Swap  Script: /usr/bin/perl /var/www/html/cact
 i/scripts/linux_memory.pl SwapFree:
-                                RRD: /var/www/html/cacti/rra/localhost_m
+                                RRD: /var/www/html/telco/rra/localhost_m
 em_swap_4.rrd
 Localhost - mtaReceivedMessages SNMP Version: 1, Community: somesecret,
 OID: .1.3.6.1.2.1.28.1.1.1.1
-                                RRD: /var/www/html/cacti/rra/localhost_m
+                                RRD: /var/www/html/telco/rra/localhost_m
 tareceivedmessages_47.rrd
 Localhost - mtaReceivedVolume   SNMP Version: 1, Community: somesecret,
 OID: .1.3.6.1.2.1.28.1.1.4.1
-                                RRD: /var/www/html/cacti/rra/localhost_m
+                                RRD: /var/www/html/telco/rra/localhost_m
 tareceivedvolume_49.rrd
 
    There are several circumstances, that may result in the poller
@@ -5557,7 +5557,7 @@ Chapter 21. Debugging
 Check Cacti Log File
 
    Please have a look at your cacti log file. Usually, you'll find
-   it at <path_cacti>/log/cacti.log. Else see Settings, Paths.
+   it at <path_cacti>/log/telco.log. Else see Settings, Paths.
    Check for this kind of error:
 CACTID: Host[...] DS[....] WARNING: SNMP timeout detected [500 ms], igno
 ring host '........'
@@ -5597,7 +5597,7 @@ Check cacti's poller
    you're using at Settings, Poller. Cactid has to be implemented
    seperately, it does not come with cacti by default.
 
-   Now, clear ./log/cacti.log (or rename it to get a fresh start)
+   Now, clear ./log/telco.log (or rename it to get a fresh start)
 
    Then, change Settings, Poller Logging Level to DEBUG for _one_
    polling cycle. You may rename this log as well to avoid more
@@ -5620,7 +5620,7 @@ php -q cmd.php <id> <id>
 
    If you're using cactid, you may override logging level when
    calling the poller:
-./cactid --verbosity=5 <id> <id>
+./telcod --verbosity=5 <id> <id>
 
    All output is printed to STDOUT in both cases. This procdure
    allows for repeated tests without waiting for the next polling
@@ -5658,7 +5658,7 @@ Check rrd file ownership
 
    If rrd files were created e.g. with root ownership, a poller
    running as cactiuser will not be able to update those files
-cd /var/www/html/cacti/rra
+cd /var/www/html/telco/rra
 ls -l localhost*
 -rw-r--r--  1 root      root      463824 May 31 12:40 localhost_load_1mi
 n_5.rrd
@@ -5752,17 +5752,17 @@ RPM Installation?
    you've followed the installation instructions to the letter
    (which you should always do ;-) ), you may now have two poller
    running. That's not a good thing, though. Most rpm
-   installations will setup cron in /etc/cron.d/cacti
+   installations will setup cron in /etc/cron.d/telco
 
    Now, please check all your crontabs, especially /etc/crontab
    and crontabs of users root and cactiuser. Leave only one poller
    entry for all of them. Personally, I've chosen
-   /etc/cron.d/cacti to avoid problems when updating rpm's. Mosten
+   /etc/cron.d/telco to avoid problems when updating rpm's. Mosten
    often, you won't remember this item when updating lots of
    rpm's, so I felt more secure to put it here. And I've made some
    slight modifications, see
-shell> vi /etc/cron.d/cacti
-*/5 * * * *     cactiuser       /usr/bin/php -q /var/www/html/cacti/poll
+shell> vi /etc/cron.d/telco
+*/5 * * * *     cactiuser       /usr/bin/php -q /var/www/html/telco/poll
 er.php > /var/local/log/poller.log 2>&1
 
    This will produce a file /var/local/log/poller.log, which
@@ -5773,7 +5773,7 @@ er.php > /var/local/log/poller.log 2>&1
    If you're using the crontab of user "cactiuser" instead, this
    will look like
 shell> crontab -e -u cactiuser
-*/5 * * * *     /usr/bin/php -q /var/www/html/cacti/poller.php > /var/lo
+*/5 * * * *     /usr/bin/php -q /var/www/html/telco/poller.php > /var/lo
 cal/log/poller.log 2>&1
      __________________________________________________________
 

@@ -55,10 +55,10 @@ $poller_id = 1;
 
 /* set the $url_path to point to the default URL of your cacti 
  * install ex: if your cacti install as at 
- * http://serverip/cacti/ this would be set to /cacti/.
+ * http://serverip/telco/ this would be set to /telco/.
 */
 
-$url_path = '/cacti/';
+$url_path = '/telco/';
 
 /* default session name - session name must contain alpha characters */
 
@@ -73,5 +73,5 @@ $cacti_db_session = false;
  * when the scripts and resource files are not in the main cacti
  * web server path. */
 
-//$scripts_path = '/var/www/html/cacti/scripts';
-//$resource_path = '/var/www/html/cacti/resource/';
+//$scripts_path = '/var/www/html/telco/scripts';
+//$resource_path = '/var/www/html/telco/resource/';

@@ -625,7 +625,7 @@ function cacti_log($string, $output = false, $environ = 'CMDPHP', $level = '') {
 	/* Log to Logfile */
 	if (($logdestination == 1 || $logdestination == 2) && read_config_option('log_verbosity') != POLLER_VERBOSITY_NONE) {
 		if ($logfile == '') {
-			$logfile = $config['base_path'] . '/log/cacti.log';
+			$logfile = $config['base_path'] . '/log/telco.log';
 		}
 
 		/* echo the data to the log (append) */

@@ -103,7 +103,7 @@ function upgrade_to_0_8_6() {
 					</hash_0700035be8fa85472d89c621790b43510b5043>
 				</fields>
 			</hash_030003332111d8b54ac8ce939af87a7eac0c06>
-		</cacti>";
+		</telco>";
 
 	import_xml_data($xml_data);
 

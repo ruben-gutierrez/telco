@@ -252,7 +252,7 @@ if ($output !== false && $output != '') {
 	if ($image !== false) {
 		$oarray['image'] = base64_encode($image);
 	} else {
-		$oarray['image'] = base64_encode(file_get_contents(__DIR__ . '/images/cacti_error_image.png'));
+		$oarray['image'] = base64_encode(file_get_contents(__DIR__ . '/images/telco_error_image.png'));
 	}
 }
 

@@ -166,7 +166,7 @@ function find_best_path($binary_name) {
 	if ($config['cacti_server_os'] == 'win32') {
 		$search_paths = array(
 			'c:/usr/bin',
-			'c:/cacti',
+			'c:/telco',
 			'c:/rrdtool',
 			'c:/spine',
 			'c:/php',
@@ -176,7 +176,7 @@ function find_best_path($binary_name) {
 			'c:/progra~1/spine',
 			'c:/progra~1/spine/bin',
 			'd:/usr/bin',
-			'd:/cacti',
+			'd:/telco',
 			'd:/rrdtool',
 			'd:/spine',
 			'd:/php',
@@ -461,7 +461,7 @@ function install_file_paths () {
 	if (config_value_exists('path_cactilog')) {
 		$input['path_cactilog']['default'] = read_config_option('path_cactilog');
 	} else {
-		$input['path_cactilog']['default'] = $config['base_path'] . '/log/cacti.log';
+		$input['path_cactilog']['default'] = $config['base_path'] . '/log/telco.log';
 	}
 
 	/* Theme */

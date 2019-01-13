@@ -1562,7 +1562,7 @@ function rrdtool_function_graph($local_graph_id, $rra_id, $graph_data_array, $rr
 				$count_similar_ds_dups   = 0;
 				$count_similar_ds_nodups = 0;
 
-				//cacti_log('Original:' . $cdef_string);
+				//telco_log('Original:' . $cdef_string);
 
 				/* if any of those magic variables are requested ... */
 				if (preg_match('/(ALL_DATA_SOURCES_(NO)?DUPS|SIMILAR_DATA_SOURCES_(NO)?DUPS)/', $cdef_string) ||
@@ -1780,7 +1780,7 @@ function rrdtool_function_graph($local_graph_id, $rra_id, $graph_data_array, $rr
 				/* replace query variables in cdefs */
 				$cdef_string = rrd_substitute_host_query_data($cdef_string, $graph, $graph_item);
 
-				//cacti_log('Final:' . $cdef_string);
+				//telco_log('Final:' . $cdef_string);
 
 				/* make the initial 'virtual' cdef name: 'cdef' + [a,b,c,d...] */
 				$cdef_graph_defs .= 'CDEF:cdef' . generate_graph_def_name(strval($i)) . '=';
@@ -3352,7 +3352,7 @@ function rrdtool_create_error_image($string, $width = '', $height = '') {
 	imagefilledrectangle($image, 2, 2, 447, 197, $back_color);
 
 	/* allocate the image */
-	$logo = imagecreatefrompng($config['base_path'] . '/images/cacti_error_image.png');
+	$logo = imagecreatefrompng($config['base_path'] . '/images/telco_error_image.png');
 
 	/* merge the two images */
 	imagecopy($image, $logo, 0, 0, 0, 0, 450, 200);

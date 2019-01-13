@@ -398,7 +398,7 @@ CLASS="FILENAME"
 >.
 					They will also need read permissions on <TT
 CLASS="FILENAME"
->cacti_web_root/cacti</TT
+>cacti_web_root/telco</TT
 > and it's subfolders.
 				</P
 ></LI
@@ -406,11 +406,11 @@ CLASS="FILENAME"
 ><P
 >					If using IIS6, give the IIS_WPG user modify permissions to the folders <TT
 CLASS="FILENAME"
->cacti_web_root/cacti/log</TT
+>cacti_web_root/telco/log</TT
 >
 					and <TT
 CLASS="FILENAME"
->cacti_web_root/cacti/rrd</TT
+>cacti_web_root/telco/rrd</TT
 >.
 				</P
 ></LI
@@ -757,7 +757,7 @@ TYPE="1"
 ><P
 >					Edit <TT
 CLASS="FILENAME"
->cacti_web_root/cacti/include/config.php</TT
+>cacti_web_root/telco/include/config.php</TT
 > and specify the MySQL user,
 					password, database, and database port for your Cacti configuration.
 				</P
@@ -778,7 +778,7 @@ $database_port = "3306";</KBD
 				</P
 ><PRE
 CLASS="SCREEN"
->http://your-server/cacti/</PRE
+>http://your-server/telco/</PRE
 ><P
 >					Log in using the username and password of admin/admin.  You will be required to change this
 					password immediately.
@@ -817,7 +817,7 @@ CLASS="EMPHASIS"
 				</P
 ><PRE
 CLASS="SCREEN"
->c:/cacti/rrdtool.exe</PRE
+>c:/telco/rrdtool.exe</PRE
 ><P
 >					<B
 CLASS="EMPHASIS"
@@ -844,7 +844,7 @@ CLASS="EMPHASIS"
 				</P
 ><PRE
 CLASS="SCREEN"
->c:/mycacti/website/cacti/log/cacti.log</PRE
+>c:/mycacti/website/telco/log/telco.log</PRE
 ><P
 >					<B
 CLASS="EMPHASIS"
@@ -856,7 +856,7 @@ CLASS="APPLICATION"
 				</P
 ><PRE
 CLASS="SCREEN"
->c:/cacti/<SPAN
+>c:/telco/<SPAN
 CLASS="APPLICATION"
 >Spine</SPAN
 >.exe</PRE
@@ -893,7 +893,7 @@ Host Template: Windows 2000/XP</KBD
 CLASS="SCREEN"
 ><KBD
 CLASS="USERINPUT"
->php c:/cacti_web_root/cacti/poller.php</KBD
+>php c:/telco_web_root/telco/poller.php</KBD
 ></PRE
 ><P
 >					The output should look something like the following:
@@ -915,9 +915,9 @@ CLASS="FILENAME"
 >cacti.log</TT
 > in <TT
 CLASS="FILENAME"
->/cacti/log/</TT
+>/telco/log/</TT
 >
-					and rrd files in /cacti/rra/.
+					and rrd files in /telco/rra/.
 				</P
 ></LI
 ><LI
@@ -1006,7 +1006,7 @@ CLASS="GUILABEL"
 CLASS="SCREEN"
 ><KBD
 CLASS="USERINPUT"
->cacti_web_root/cacti/rra
+>cacti_web_root/telco/rra
 cacti_web_root/log</KBD
 ></PRE
 ><P

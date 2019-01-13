@@ -31,7 +31,7 @@
 */
 
 /* load cacti version from file */
-$cacti_version_file = dirname(__FILE__) . '/cacti_version';
+$cacti_version_file = dirname(__FILE__) . '/telco_version';
 
 if (! file_exists($cacti_version_file)) {
 	die ('ERROR: failed to find cacti version file');
@@ -59,7 +59,7 @@ $database_ssl = false;
 $cacti_session_name = 'Cacti';
 
 /* define default url path */
-$url_path = '/cacti/';
+$url_path = '/telco/';
 
 /* allow upto 5000 items to be selected */
 ini_set('max_input_vars', '5000');

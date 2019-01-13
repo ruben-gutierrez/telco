@@ -223,7 +223,7 @@ function logrotate_rotatenow () {
 
 	$log = read_config_option('path_cactilog');
 	if ($log == '') {
-		$log = $config['base_path'] . '/log/cacti.log';
+		$log = $config['base_path'] . '/log/telco.log';
 	}
 
 	$run_time = time();
@@ -282,7 +282,7 @@ function logrotate_cleanold () {
 
 	$logfile = read_config_option('path_cactilog');
 	if ($logfile == '') {
-		$logfile = $config['base_path'] . '/log/cacti.log';
+		$logfile = $config['base_path'] . '/log/telco.log';
 	}
 
 	$baselogfile = basename($logfile) . '-';

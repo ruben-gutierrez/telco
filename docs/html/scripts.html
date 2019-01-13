@@ -210,20 +210,20 @@ CLASS="USERINPUT"
 			to this view; it will show up like</P
 ><PRE
 CLASS="SCREEN"
->Localhost - Hard Drive Space   	Script Server: /var/www/html/cacti/scripts/ss_host_disk.php ss_host_disk 127.0.0.1 1 1:161:500:somesecret:::::: get total 6
-	                        RRD: /var/www/html/cacti/rra/localhost_hdd_total_61.rrd
-Localhost - Load Average 	Script: /usr/bin/perl /var/www/html/cacti/scripts/loadavg_multi.pl
-	                        RRD: /var/www/html/cacti/rra/localhost_load_1min_5.rrd
-Localhost - Logged in Users 	Script: /usr/bin/perl /var/www/html/cacti/scripts/unix_users.pl
-	                        RRD: /var/www/html/cacti/rra/localhost_users_6.rrd
-Localhost - Memory - Free 	Script: /usr/bin/perl /var/www/html/cacti/scripts/linux_memory.pl MemFree:
-	                        RRD: /var/www/html/cacti/rra/localhost_mem_buffers_3.rrd
-Localhost - Memory - Free Swap 	Script: /usr/bin/perl /var/www/html/cacti/scripts/linux_memory.pl SwapFree:
-	                        RRD: /var/www/html/cacti/rra/localhost_mem_swap_4.rrd
+>Localhost - Hard Drive Space   	Script Server: /var/www/html/telco/scripts/ss_host_disk.php ss_host_disk 127.0.0.1 1 1:161:500:somesecret:::::: get total 6
+	                        RRD: /var/www/html/telco/rra/localhost_hdd_total_61.rrd
+Localhost - Load Average 	Script: /usr/bin/perl /var/www/html/telco/scripts/loadavg_multi.pl
+	                        RRD: /var/www/html/telco/rra/localhost_load_1min_5.rrd
+Localhost - Logged in Users 	Script: /usr/bin/perl /var/www/html/telco/scripts/unix_users.pl
+	                        RRD: /var/www/html/telco/rra/localhost_users_6.rrd
+Localhost - Memory - Free 	Script: /usr/bin/perl /var/www/html/telco/scripts/linux_memory.pl MemFree:
+	                        RRD: /var/www/html/telco/rra/localhost_mem_buffers_3.rrd
+Localhost - Memory - Free Swap 	Script: /usr/bin/perl /var/www/html/telco/scripts/linux_memory.pl SwapFree:
+	                        RRD: /var/www/html/telco/rra/localhost_mem_swap_4.rrd
 Localhost - mtaReceivedMessages SNMP Version: 1, Community: somesecret, OID: .1.3.6.1.2.1.28.1.1.1.1
-	                        RRD: /var/www/html/cacti/rra/localhost_mtareceivedmessages_47.rrd
+	                        RRD: /var/www/html/telco/rra/localhost_mtareceivedmessages_47.rrd
 Localhost - mtaReceivedVolume 	SNMP Version: 1, Community: somesecret, OID: .1.3.6.1.2.1.28.1.1.4.1
-	                        RRD: /var/www/html/cacti/rra/localhost_mtareceivedvolume_49.rrd</PRE
+	                        RRD: /var/www/html/telco/rra/localhost_mtareceivedvolume_49.rrd</PRE
 ><P
 >There are several circumstances, that may result in the poller cache
 			being out of sync. An example would be a change of the name of a script used in a

@@ -87,7 +87,7 @@ NAME="DEBUG-RPM-INSTALLATION"
 			though. Most rpm installations will setup cron in
 			<TT
 CLASS="FILENAME"
->/etc/cron.d/cacti</TT
+>/etc/cron.d/telco</TT
 ></P
 ><P
 >Now, please check all your crontabs, especially
@@ -99,7 +99,7 @@ CLASS="FILENAME"
 			all of them. Personally, I've chosen
 			<TT
 CLASS="FILENAME"
->/etc/cron.d/cacti</TT
+>/etc/cron.d/telco</TT
 > to avoid problems
 			when updating rpm's. Mosten often, you won't remember this
 			item when updating lots of rpm's, so I felt more secure to
@@ -109,8 +109,8 @@ CLASS="SCREEN"
 ><SAMP
 CLASS="PROMPT"
 >shell&gt;</SAMP
-> vi /etc/cron.d/cacti
-*/5 * * * *     cactiuser       /usr/bin/php -q /var/www/html/cacti/poller.php &#62; /var/local/log/poller.log 2&#62;&#38;1</PRE
+> vi /etc/cron.d/telco
+*/5 * * * *     cactiuser       /usr/bin/php -q /var/www/html/telco/poller.php &#62; /var/local/log/poller.log 2&#62;&#38;1</PRE
 ><P
 >This will produce a file
 			<TT
@@ -129,7 +129,7 @@ CLASS="SCREEN"
 CLASS="PROMPT"
 >shell&gt;</SAMP
 > crontab -e -u cactiuser
-*/5 * * * *     /usr/bin/php -q /var/www/html/cacti/poller.php &#62; /var/local/log/poller.log 2&#62;&#38;1</PRE
+*/5 * * * *     /usr/bin/php -q /var/www/html/telco/poller.php &#62; /var/local/log/poller.log 2&#62;&#38;1</PRE
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"

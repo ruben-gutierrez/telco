@@ -541,15 +541,15 @@ msgstr "显示项目详情"
 msgid "Aggregate Preview [%s]"
 msgstr "聚合预览 [%s]"
 
-#: /var/www/html/cacti/aggregate_graphs.php:657
-#: /var/www/html/cacti/graph.php:525
-#: /var/www/html/cacti/graphs.php:1438
+#: /var/www/html/telco/aggregate_graphs.php:657
+#: /var/www/html/telco/graph.php:525
+#: /var/www/html/telco/graphs.php:1438
 msgid "RRDtool Command:"
 msgstr "RRDtool命令："
 
-#: /var/www/html/cacti/aggregate_graphs.php:659
-#: /var/www/html/cacti/graph.php:528
-#: /var/www/html/cacti/graphs.php:1440
+#: /var/www/html/telco/aggregate_graphs.php:659
+#: /var/www/html/telco/graph.php:528
+#: /var/www/html/telco/graphs.php:1440
 msgid "RRDtool Says:"
 msgstr "RRDtool说："
 
@@ -1468,7 +1468,7 @@ msgstr "拒绝访问，用户帐号被禁用。"
 msgid "Access Denied, please contact you Cacti Administrator."
 msgstr "访问拒绝，请联系Cacti管理员。"
 
-#: /var/www/html/cacti/auth_login.php:404
+#: /var/www/html/telco/auth_login.php:404
 msgid "Cacti"
 msgstr "Cacti"
 
@@ -2145,17 +2145,17 @@ msgstr "立即发现"
 msgid "Cancel Discovery"
 msgstr "取消发现"
 
-#: /var/www/html/cacti/automation_networks.php:206
+#: /var/www/html/telco/automation_networks.php:206
 #, php-format
 msgid "ERROR: You must specify the day of the week.  Disabling Network %s!."
 msgstr "错误：您必须指定星期几。 禁用网络 %s!."
 
-#: /var/www/html/cacti/automation_networks.php:212
+#: /var/www/html/telco/automation_networks.php:212
 #, php-format
 msgid "ERROR: You must specify both the Months and Days of Month.  Disabling Network %s!"
 msgstr "错误：您必须同时指定月份和月份的天数。 禁用网络 %s!"
 
-#: /var/www/html/cacti/automation_networks.php:218
+#: /var/www/html/telco/automation_networks.php:218
 #, php-format
 msgid "ERROR: You must specify the Months, Weeks of Months, and Days of Week.  Disabling Network %s!"
 msgstr "错误：您必须指定月份，几个月和几周。 禁用网络 %s!"
@@ -2468,7 +2468,7 @@ msgstr "启用此网络范围已启用。"
 msgid "Enable NetBIOS"
 msgstr "启用NetBIOS"
 
-#: /var/www/html/cacti/automation_networks.php:524
+#: /var/www/html/telco/automation_networks.php:524
 msgid "Use NetBIOS to attempt to resolve the hostname of up hosts."
 msgstr "使用NetBIOS尝试解析主机的主机名。"
 
@@ -2484,7 +2484,7 @@ msgstr "对于任何可以使用SNMP访问且匹配设备规则的新发现设�
 msgid "Rerun Data Queries"
 msgstr "重新运行数据查询"
 
-#: /var/www/html/cacti/automation_networks.php:537
+#: /var/www/html/telco/automation_networks.php:537
 msgid "If a device previously added to Cacti is found, rerun its data queries."
 msgstr "如果找到先前添加到Cacti的设备，请重新运行其数据查询。"
 
@@ -2944,15 +2944,15 @@ msgstr "SNMP团体字符串"
 msgid "Fill in the SNMP read community for this device."
 msgstr "填写此设备的SNMP读取社区。"
 
-#: /var/www/html/cacti/automation_snmp.php:433
-#: /var/www/html/cacti/include/global_form.php:1068
-#: /var/www/html/cacti/include/global_form.php:1680
+#: /var/www/html/telco/automation_snmp.php:433
+#: /var/www/html/telco/include/global_form.php:1068
+#: /var/www/html/telco/include/global_form.php:1680
 msgid "SNMP Security Level"
 msgstr "SNMP安全级别"
 
-#: /var/www/html/cacti/automation_snmp.php:434
-#: /var/www/html/cacti/include/global_form.php:1069
-#: /var/www/html/cacti/include/global_form.php:1681
+#: /var/www/html/telco/automation_snmp.php:434
+#: /var/www/html/telco/include/global_form.php:1069
+#: /var/www/html/telco/include/global_form.php:1681
 msgid "SNMP v3 Security Level to user for querying the device."
 msgstr "SNMP v3安全级别供用户查询设备。"
 
@@ -3299,7 +3299,7 @@ msgstr "选择用于发现的设备的可用性方法。"
 msgid "System Description Match"
 msgstr "系统描述匹配"
 
-#: /var/www/html/cacti/automation_templates.php:288
+#: /var/www/html/telco/automation_templates.php:288
 msgid "This is a unique string that will be matched to a devices sysDescr string to pair it to this Automation Template.  Any Perl regular expression can be used in addition to any SQL Where expression."
 msgstr "这是一个唯一的字符串，它将与设备sysDescr字符串相匹配，以将其与此自动化模板配对。 除了任何SQL Where表达式之外，还可以使用任何Perl正则表达式。"
 
@@ -3325,7 +3325,7 @@ msgstr "这是一个唯一的字符串，它将被匹配到一个设备的sysOid
 msgid "Automation Templates [edit: %s]"
 msgstr "自动化模板[编辑：%s]"
 
-#: /var/www/html/cacti/automation_templates.php:329
+#: /var/www/html/telco/automation_templates.php:329
 msgid "Automation Templates for [Deleted Template]"
 msgstr "[已删除模板]的自动化模板"
 
@@ -3395,11 +3395,11 @@ msgstr "树规则选择[编辑：%s]"
 msgid "Tree Rules Selection [new]"
 msgstr "树规则选择[新建]"
 
-#: /var/www/html/cacti/automation_tree_rules.php:595
+#: /var/www/html/telco/automation_tree_rules.php:595
 msgid "Object Selection Criteria"
 msgstr "对象选择标准"
 
-#: /var/www/html/cacti/automation_tree_rules.php:601
+#: /var/www/html/telco/automation_tree_rules.php:601
 msgid "Tree Creation Criteria"
 msgstr "树创建标准"
 
@@ -4061,7 +4061,7 @@ msgstr "数据模板 - %s"
 msgid "Data Source"
 msgstr "数据源"
 
-#: /var/www/html/cacti/data_queries.php:642
+#: /var/www/html/telco/data_queries.php:642
 msgid "Suggested Values - Graphs"
 msgstr "建议值 - 图形"
 
@@ -4104,7 +4104,7 @@ msgstr "添加"
 msgid "Add Graph Title Suggested Name"
 msgstr "添加图表标题建议的名称"
 
-#: /var/www/html/cacti/data_queries.php:738
+#: /var/www/html/telco/data_queries.php:738
 msgid "Suggested Values - Data Sources"
 msgstr "建议的值 - 数据源"
 
@@ -4247,11 +4247,11 @@ msgstr "删除数据源配置文件RRA"
 msgid "Each Insert is New Row"
 msgstr "每个插入是新行"
 
-#: /var/www/html/cacti/data_source_profiles.php:441
+#: /var/www/html/telco/data_source_profiles.php:441
 msgid "(Some Elements Read Only)"
 msgstr "（某些元素只读）"
 
-#: /var/www/html/cacti/data_source_profiles.php:441
+#: /var/www/html/telco/data_source_profiles.php:441
 #, php-format
 msgid "RRA [edit: %s %s]"
 msgstr "RRA [编辑： %s %s]"
@@ -4273,8 +4273,8 @@ msgstr "数据源配置文件RRA（按保存更新timespans）"
 msgid "Data Source Profile RRAs (Read Only)"
 msgstr "数据源配置文件RRAs（只读）"
 
-#: /var/www/html/cacti/data_source_profiles.php:556
-#: /var/www/html/cacti/include/global_form.php:134
+#: /var/www/html/telco/data_source_profiles.php:556
+#: /var/www/html/telco/include/global_form.php:134
 msgid "Data Retention"
 msgstr "数据保留"
 
@@ -4307,12 +4307,12 @@ msgstr "选择合并功能"
 msgid "Delete Data Source Profile Item"
 msgstr "删除数据源配置文件项目"
 
-#: /var/www/html/cacti/data_source_profiles.php:693
+#: /var/www/html/telco/data_source_profiles.php:693
 #, php-format
 msgid "%s KBytes per Data Sources and %s Bytes for the Header"
 msgstr "每个数据源的%sKBytes和标题的%sKBytes"
 
-#: /var/www/html/cacti/data_source_profiles.php:702
+#: /var/www/html/telco/data_source_profiles.php:702
 #, php-format
 msgid "%s KBytes per Data Source"
 msgstr "每个数据源的%s KBytes"
@@ -4461,7 +4461,7 @@ msgstr "使用此配置文件的数据源的数量"
 msgid "The number of Data Templates using this Profile."
 msgstr "使用此配置文件的数据模板的数量。"
 
-#: /var/www/html/cacti/data_source_profiles.php:995
+#: /var/www/html/telco/data_source_profiles.php:995
 msgid "No Data Source Profiles Found"
 msgstr "找不到数据源配置文件"
 
@@ -4808,7 +4808,7 @@ msgstr "您必须至少选择一个数据模板。"
 msgid "Data Templates [edit: %s]"
 msgstr "数据模板[编辑：%s]"
 
-#: /var/www/html/cacti/data_templates.php:518
+#: /var/www/html/telco/data_templates.php:518
 msgid "Edit Data Input Method."
 msgstr "编辑数据输入方法。"
 
@@ -4820,9 +4820,9 @@ msgstr "数据模板[新建]"
 msgid "This field is always templated."
 msgstr "这个字段总是模板化的。"
 
-#: /var/www/html/cacti/data_templates.php:563
-#: /var/www/html/cacti/data_templates.php:634
-#: /var/www/html/cacti/data_templates.php:706
+#: /var/www/html/telco/data_templates.php:563
+#: /var/www/html/telco/data_templates.php:634
+#: /var/www/html/telco/data_templates.php:706
 msgid "Check this checkbox if you wish to allow the user to override the value on the right during Data Source creation."
 msgstr "如果您希望允许用户在创建数据源期间覆盖右侧的值，请选中此复选框。"
 
@@ -5061,7 +5061,7 @@ msgstr "图形宽度"
 msgid "Resize Selected Graph Template(s)"
 msgstr "调整所选图形模板的大小"
 
-#: /var/www/html/cacti/graph_templates.php:351
+#: /var/www/html/telco/graph_templates.php:351
 msgid "Click 'Continue' to Synchronize your Graphs with the following Graph Template(s). This function is important if you have Graphs that exist with multiple versions of a Graph Template and wish to make them all common in appearance."
 msgstr "点击“继续”以使您的图形与以下图形模板同步。 如果图形存在多个图形模板版本并希望使其在外观上都很常见，则此功能非常重要。"
 
@@ -5100,7 +5100,7 @@ msgstr "模板[新建]"
 msgid "Graph Template Options"
 msgstr "图形模板选项"
 
-#: /var/www/html/cacti/graph_templates.php:525
+#: /var/www/html/telco/graph_templates.php:525
 msgid "Check this checkbox if you wish to allow the user to override the value on the right during Graph creation."
 msgstr "如果您希望在创建图表时允许用户覆盖右侧的值，请选中此复选框。"
 
@@ -5188,7 +5188,7 @@ msgstr "最小："
 msgid "Graph Template Items [edit graph: %s]"
 msgstr "图表模板项目[编辑图：%s]"
 
-#: /var/www/html/cacti/graph_templates_items.php:466
+#: /var/www/html/telco/graph_templates_items.php:466
 msgid "Field Not Templated"
 msgstr "字段不模板化"
 
@@ -5278,13 +5278,13 @@ msgstr "选择的模板"
 msgid "Title"
 msgstr "标题"
 
-#: /var/www/html/cacti/graph_xport.php:123
-#: /var/www/html/cacti/graph_xport.php:155
+#: /var/www/html/telco/graph_xport.php:123
+#: /var/www/html/telco/graph_xport.php:155
 msgid "Start Date"
 msgstr "开始日期"
 
-#: /var/www/html/cacti/graph_xport.php:124
-#: /var/www/html/cacti/graph_xport.php:156
+#: /var/www/html/telco/graph_xport.php:124
+#: /var/www/html/telco/graph_xport.php:156
 msgid "End Date"
 msgstr "结束日期"
 
@@ -5292,8 +5292,8 @@ msgstr "结束日期"
 msgid "Step"
 msgstr "跳数"
 
-#: /var/www/html/cacti/graph_xport.php:126
-#: /var/www/html/cacti/graph_xport.php:158
+#: /var/www/html/telco/graph_xport.php:126
+#: /var/www/html/telco/graph_xport.php:158
 msgid "Total Rows"
 msgstr "总行数"
 
@@ -5301,18 +5301,18 @@ msgstr "总行数"
 msgid "Graph ID"
 msgstr "图形ID"
 
-#: /var/www/html/cacti/graph_xport.php:128
-#: /var/www/html/cacti/graph_xport.php:160
+#: /var/www/html/telco/graph_xport.php:128
+#: /var/www/html/telco/graph_xport.php:160
 msgid "Host ID"
 msgstr "主机ID"
 
-#: /var/www/html/cacti/graph_xport.php:132
-#: /var/www/html/cacti/graph_xport.php:170
+#: /var/www/html/telco/graph_xport.php:132
+#: /var/www/html/telco/graph_xport.php:170
 msgid "Nth Percentile"
 msgstr "百分之百"
 
-#: /var/www/html/cacti/graph_xport.php:138
-#: /var/www/html/cacti/graph_xport.php:180
+#: /var/www/html/telco/graph_xport.php:138
+#: /var/www/html/telco/graph_xport.php:180
 msgid "Summation"
 msgstr "合计"
 
@@ -5321,11 +5321,11 @@ msgstr "合计"
 msgid "Date"
 msgstr "日期"
 
-#: /var/www/html/cacti/graph_xport.php:152
+#: /var/www/html/telco/graph_xport.php:152
 msgid "Download"
 msgstr "下载"
 
-#: /var/www/html/cacti/graph_xport.php:152
+#: /var/www/html/telco/graph_xport.php:152
 msgid "Summary Details"
 msgstr "总结详情"
 
@@ -5427,7 +5427,7 @@ msgstr "为这些图选择一个新的设备，然后点击“继续”。"
 msgid "New Device"
 msgstr "新设备"
 
-#: /var/www/html/cacti/graphs.php:925
+#: /var/www/html/telco/graphs.php:925
 msgid "Change Graph(s) Associated Device"
 msgstr "更改关联设备图"
 
@@ -5576,7 +5576,7 @@ msgstr "数据模板"
 msgid "Graph Items [graph: %s]"
 msgstr "图形项目[图形：%s]"
 
-#: /var/www/html/cacti/graphs_items.php:440
+#: /var/www/html/telco/graphs_items.php:440
 msgid "Choose the Data Source to associate with this Graph Item."
 msgstr "选择与此图形项目关联的数据源。"
 
@@ -5632,8 +5632,8 @@ msgstr "所有设备的新图"
 msgid "New Graphs for None Host Type"
 msgstr "无主机类型的新图形"
 
-#: /var/www/html/cacti/graphs_new.php:501
-#: /var/www/html/cacti/include/global_session.php:103
+#: /var/www/html/telco/graphs_new.php:501
+#: /var/www/html/telco/include/global_session.php:103
 msgid "Filter Settings Saved"
 msgstr "过滤器设置保存"
 
@@ -5645,7 +5645,7 @@ msgstr "图表类型"
 msgid "Graph Template Based"
 msgstr "图形模板基础"
 
-#: /var/www/html/cacti/graphs_new.php:565
+#: /var/www/html/telco/graphs_new.php:565
 msgid "Save Filters"
 msgstr "保存过滤器"
 
@@ -5931,7 +5931,7 @@ msgstr "重新编制索引方法"
 msgid "Actions"
 msgstr "操作"
 
-#: /var/www/html/cacti/host.php:888
+#: /var/www/html/telco/host.php:888
 #, php-format
 msgid " [%d Items, %d Rows]"
 msgstr " [%d 个项目, %d行]"
@@ -6005,7 +6005,7 @@ msgstr "SNMP GetNext"
 msgid "Site"
 msgstr "站点"
 
-#: /var/www/html/cacti/host.php:1515
+#: /var/www/html/telco/host.php:1515
 msgid "Export Devices"
 msgstr "导出设备"
 
@@ -6238,15 +6238,15 @@ msgstr "使用此设备模板的设备数量。"
 msgid "No Device Templates Found"
 msgstr "未找到设备模板"
 
-#: /var/www/html/cacti/include/auth.php:96
+#: /var/www/html/telco/include/auth.php:96
 msgid "Not Logged In"
 msgstr "未登录"
 
-#: /var/www/html/cacti/include/auth.php:97
+#: /var/www/html/telco/include/auth.php:97
 msgid "You must be logged in to access this area of Cacti."
 msgstr "您必须先登录才能访问该区域的Cacti。"
 
-#: /var/www/html/cacti/include/auth.php:101
+#: /var/www/html/telco/include/auth.php:101
 msgid "FATAL: You must be logged in to access this area of Cacti."
 msgstr "致命错误：您必须先登录才能访问该区域的Cacti。"
 
@@ -6301,15 +6301,15 @@ msgstr "您必须已经打开用户身份验证才能使用此功能。"
 msgid "XML parse error."
 msgstr "XML 的解析错误。"
 
-#: /var/www/html/cacti/include/global_arrays.php:136
+#: /var/www/html/telco/include/global_arrays.php:136
 msgid "Form types dirpath and filepath must point to a valid diretory or file."
 msgstr "表单类型目录路径和文件路径必须指向有效的目录或文件。"
 
-#: /var/www/html/cacti/include/global_arrays.php:139
+#: /var/www/html/telco/include/global_arrays.php:139
 msgid "The Cacti log file must have the extension '.log'"
 msgstr "Cacti日志文件必须具有扩展名'.log'"
 
-#: /var/www/html/cacti/include/global_arrays.php:142
+#: /var/www/html/telco/include/global_arrays.php:142
 msgid "Data Source does not exist."
 msgstr "数据源不存在。"
 
@@ -6317,11 +6317,11 @@ msgstr "数据源不存在。"
 msgid "Username already in use."
 msgstr "用户名已被使用。"
 
-#: /var/www/html/cacti/include/global_arrays.php:148
+#: /var/www/html/telco/include/global_arrays.php:148
 msgid "The SNMP v3 Privacy Passphrases to not match"
 msgstr "SNMPv3隐私密码短语不匹配"
 
-#: /var/www/html/cacti/include/global_arrays.php:151
+#: /var/www/html/telco/include/global_arrays.php:151
 msgid "The SNMP v3 Authentication Passwords to not match"
 msgstr "SNMP v3验证密码不匹配"
 
@@ -6405,11 +6405,11 @@ msgstr "某些图表未更新。 无法为基于数据查询的图形更改设�
 msgid "Unable to Change Device for Data Query based Graphs."
 msgstr "无法为基于数据查询的图形更改设备。"
 
-#: /var/www/html/cacti/include/global_arrays.php:214
+#: /var/www/html/telco/include/global_arrays.php:214
 msgid "Log file specified is not a Cacti log or archive file."
 msgstr "指定的日志文件不是Cacti日志或归档文件。"
 
-#: /var/www/html/cacti/include/global_arrays.php:217
+#: /var/www/html/telco/include/global_arrays.php:217
 msgid "Log file specified was Cacti archive file and was removed."
 msgstr "指定的日志文件是Cacti归档文件并被删除。"
 
@@ -6437,7 +6437,7 @@ msgstr "错误：无法清除日志，没有写入权限"
 msgid "Error: Unable to clear log, file does not exist"
 msgstr "错误：无法清除日志，文件不存在"
 
-#: /var/www/html/cacti/include/global_arrays.php:238
+#: /var/www/html/telco/include/global_arrays.php:238
 msgid "CSRF Timeout, refreshing page."
 msgstr "CSRF超时，刷新页面。"
 
@@ -6477,11 +6477,11 @@ msgstr "已保存报告项目"
 msgid "Report Item Save Failed"
 msgstr "报告项目保存失败"
 
-#: /var/www/html/cacti/include/global_arrays.php:268
+#: /var/www/html/telco/include/global_arrays.php:268
 msgid "Poller Resource Cache Cleared.  Main Data Collector will rebuild at the next poller start, and Remote Data Collectors will sync afterwards."
 msgstr "轮询资源缓存已清除。 主数据收集器将在下一轮轮询开始时重建，远程数据收集器将在之后同步。"
 
-#: /var/www/html/cacti/include/global_arrays.php:271
+#: /var/www/html/telco/include/global_arrays.php:271
 msgid "Unexpected error occurred"
 msgstr "意外的错误发生"
 
@@ -6635,7 +6635,7 @@ msgstr "版本%d"
 msgid "[None]"
 msgstr "[None]"
 
-#: /var/www/html/cacti/include/global_arrays.php:501
+#: /var/www/html/telco/include/global_arrays.php:501
 msgid "MD5"
 msgstr "MD5"
 
@@ -6643,7 +6643,7 @@ msgstr "MD5"
 msgid "SHA"
 msgstr "SHA"
 
-#: /var/www/html/cacti/include/global_arrays.php:507
+#: /var/www/html/telco/include/global_arrays.php:507
 msgid "DES"
 msgstr "DES"
 
@@ -6752,7 +6752,7 @@ msgstr "每隔一小时"
 msgid "Every %d Hours"
 msgstr "每 %d小时"
 
-#: /var/www/html/cacti/include/global_arrays.php:584
+#: /var/www/html/telco/include/global_arrays.php:584
 msgid "Every %1 Day"
 msgstr "每%1天"
 
@@ -7105,7 +7105,7 @@ msgstr "从不"
 msgid "Console Access"
 msgstr "控制台访问"
 
-#: /var/www/html/cacti/include/global_arrays.php:947
+#: /var/www/html/telco/include/global_arrays.php:947
 msgid "Realtime Graphs"
 msgstr "实时图"
 
@@ -7794,7 +7794,7 @@ msgstr "轮询间隔"
 msgid "The frequency that data will be collected from the Data Source?"
 msgstr "数据将从数据源收集的频率？"
 
-#: /var/www/html/cacti/include/global_form.php:53
+#: /var/www/html/telco/include/global_form.php:53
 msgid "How long can data be missing before RRDtool records unknown data.  Increase this value if your Data Source is unstable and you wish to carry forward old data rather than show gaps in your graphs.  This value is multiplied by the X-Files Factor to determine the actual amount of time."
 msgstr "在RRDtool记录未知数据之前数据可能会丢失多久。 如果您的数据源不稳定并且您希望继承旧数据而不是显示图表中的空白，请增加此值。 该值乘以X-Files Factor以确定实际时间量。"
 
@@ -7843,11 +7843,11 @@ msgstr "在RRA规范中填充行之前所需的样本数量。 第一个RRA值�
 msgid "How many generations data is kept in the RRA."
 msgstr "RRA中保存了多少代数据。"
 
-#: /var/www/html/cacti/include/global_form.php:127
+#: /var/www/html/telco/include/global_form.php:127
 msgid "Default Timespan"
 msgstr "默认时间跨度"
 
-#: /var/www/html/cacti/include/global_form.php:128
+#: /var/www/html/telco/include/global_form.php:128
 msgid "When viewing a Graph based upon the RRA in question, the default Timespan to show for that Graph."
 msgstr "根据所讨论的RRA查看图形时，将显示该图形的默认时间跨度。"
 
@@ -7957,7 +7957,7 @@ msgstr "如果这个字段应该被主机模板专门处理，请在这里指出
 msgid "The name given to this data template."
 msgstr "数据模板的名称。"
 
-#: /var/www/html/cacti/include/global_form.php:385
+#: /var/www/html/telco/include/global_form.php:385
 msgid "Choose a name for this data source.  It can include replacement variables such as |host_description| or |query_fieldName|.  For a complete list of supported replacement tags, please see the Cacti documentation."
 msgstr "为此数据源选择一个名称。 它可以包含替换变量，如| host_description | 或| query_fieldName |。 有关支持的替换标签的完整列表，请参阅Cacti文档。"
 
@@ -8054,7 +8054,7 @@ msgstr "通用选项"
 msgid "Title (--title)"
 msgstr "标题 (--title)"
 
-#: /var/www/html/cacti/include/global_form.php:522
+#: /var/www/html/telco/include/global_form.php:522
 msgid "The name that is printed on the graph.  It can include replacement variables such as |host_description| or |query_fieldName|.  For a complete list of supported replacement tags, please see the Cacti documentation."
 msgstr "图表上打印的名称。 它可以包含替换变量，如| host_description | 或| query_fieldName |。 有关支持的替换标签的完整列表，请参阅Cacti文档。"
 
@@ -8102,7 +8102,7 @@ msgstr "内存应该设置为1024，流量测量应该设置为1000。"
 msgid "Slope Mode (--slope-mode)"
 msgstr "斜坡模式 (--slope-mode)"
 
-#: /var/www/html/cacti/include/global_form.php:568
+#: /var/www/html/telco/include/global_form.php:568
 msgid "Using Slope Mode evens out the shape of the graphs at the expense of some on screen resolution."
 msgstr "使用斜率模式以牺牲某些屏幕分辨率为代价来消除图形的形状。"
 
@@ -8114,7 +8114,7 @@ msgstr "缩放选项"
 msgid "Auto Scale"
 msgstr "自动缩放"
 
-#: /var/www/html/cacti/include/global_form.php:579
+#: /var/www/html/telco/include/global_form.php:579
 msgid "Auto scale the y-axis instead of defining an upper and lower limit. Note: if this is check both the Upper and Lower limit will be ignored."
 msgstr "自动缩放y轴而不是定义上限和下限。 注意：如果这是检查，上限和下限都将被忽略。"
 
@@ -8122,7 +8122,7 @@ msgstr "自动缩放y轴而不是定义上限和下限。 注意：如果这是�
 msgid "Auto Scale Options"
 msgstr "自动缩放选项"
 
-#: /var/www/html/cacti/include/global_form.php:586
+#: /var/www/html/telco/include/global_form.php:586
 msgid "Use <br> --alt-autoscale to scale to the absolute minimum and maximum <br> --alt-autoscale-max to scale to the maximum value, using a given lower limit <br> --alt-autoscale-min to scale to the minimum value, using a given upper limit <br> --alt-autoscale (with limits) to scale using both lower and upper limits (RRDtool default) <br>"
 msgstr "使用<br> --alt-autoscale缩放到绝对最小值和最大值<br> --alt-autoscale-max使用给定的下限值缩放到最大值<br> --alt-autoscale-min to 缩放至最小值，使用给定上限<br> <br> - 自动缩放（带有限制）使用下限和上限进行缩放（RRDtool默认值）<br>"
 
@@ -8154,7 +8154,7 @@ msgstr "使用对数y轴缩放"
 msgid "SI Units for Logarithmic Scaling (--units=si)"
 msgstr "用于对数标度的SI单位 (--units=si)"
 
-#: /var/www/html/cacti/include/global_form.php:617
+#: /var/www/html/telco/include/global_form.php:617
 msgid "Use SI Units for Logarithmic Scaling instead of using exponential notation.<br> Note: Linear graphs use SI notation by default."
 msgstr "使用SI单位进行对数比例缩放而不是使用指数符号。<br>注意：线性图形默认使用SI符号。"
 
@@ -8190,7 +8190,7 @@ msgstr "网格选项"
 msgid "Unit Grid Value (--unit/--y-grid)"
 msgstr "单位网格值(--unit/--y-grid)"
 
-#: /var/www/html/cacti/include/global_form.php:651
+#: /var/www/html/telco/include/global_form.php:651
 msgid "Sets the exponent value on the Y-axis for numbers. Note: This option is deprecated and replaced by the --y-grid option.  In this option, Y-axis grid lines appear at each grid step interval.  Labels are placed every label factor lines."
 msgstr "在Y轴上为数字设置指数值。 注意：此选项已弃用，并由--y-grid选项取代。 在此选项中，Y轴网格线出现在每个网格步骤间隔处。 标签放置在每个标签因子线上。"
 
@@ -8198,7 +8198,7 @@ msgstr "在Y轴上为数字设置指数值。 注意：此选项已弃用，并�
 msgid "Unit Exponent Value (--units-exponent)"
 msgstr "单位指数值（ - 单位指数）"
 
-#: /var/www/html/cacti/include/global_form.php:659
+#: /var/www/html/telco/include/global_form.php:659
 msgid "What unit Cacti should use on the Y-axis. Use 3 to display everything in \"k\" or -6 to display everything in \"u\" (micro)."
 msgstr "Cacti应该在Y轴上使用哪种单位。 使用3显示“k”或-6中的所有内容，以显示“u”（微）中的所有内容。"
 
@@ -8206,7 +8206,7 @@ msgstr "Cacti应该在Y轴上使用哪种单位。 使用3显示“k”或-6中�
 msgid "Unit Length (--units-length &lt;length&gt;)"
 msgstr "单位长度 (--units-length &lt;length&gt;)"
 
-#: /var/www/html/cacti/include/global_form.php:668
+#: /var/www/html/telco/include/global_form.php:668
 msgid "How many digits should RRDtool assume the y-axis labels to be? You may have to use this option to make enough space once you start fiddling with the y-axis labeling."
 msgstr "RRDtool假设y轴标签应该有多少位数？ 一旦开始摆弄y轴标签，您可能不得不使用此选项来留出足够的空间。"
 
@@ -8214,7 +8214,7 @@ msgstr "RRDtool假设y轴标签应该有多少位数？ 一旦开始摆弄y轴�
 msgid "No Gridfit (--no-gridfit)"
 msgstr "没有网格适应 (--no-gridfit)"
 
-#: /var/www/html/cacti/include/global_form.php:674
+#: /var/www/html/telco/include/global_form.php:674
 msgid "In order to avoid anti-aliasing blurring effects RRDtool snaps points to device resolution pixels, this results in a crisper appearance. If this is not to your liking, you can use this switch to turn this behavior off.<br><strong>Note: </strong>Gridfitting is turned off for PDF, EPS, SVG output by default."
 msgstr "为了避免消除锯齿模糊效果RRDtool将点指向设备分辨率像素，这会导致外观更加清晰。 如果这不符合您的要求，您可以使用此开关关闭此功能。<br> <strong>注意：</ strong>默认情况下，PDF，EPS，SVG输出关闭了Gridfitting。"
 
@@ -8222,7 +8222,7 @@ msgstr "为了避免消除锯齿模糊效果RRDtool将点指向设备分辨率�
 msgid "Alternative Y Grid (--alt-y-grid)"
 msgstr "备用Y坐标"
 
-#: /var/www/html/cacti/include/global_form.php:680
+#: /var/www/html/telco/include/global_form.php:680
 msgid "The algorithm ensures that you always have a grid, that there are enough but not too many grid lines, and that the grid is metric. This parameter will also ensure that you get enough decimals displayed even if your graph goes from 69.998 to 70.001.<br><strong>Note: </strong>This parameter may interfere with --alt-autoscale options."
 msgstr "该算法确保您始终拥有一个网格，有足够但不是太多的网格线，并且网格是度量标准。 此参数还可以确保即使图表从69.998变为70.001，也可以显示足够的小数。<br> <strong>注意：</ strong>此参数可能会影响--alt-autoscale选项。"
 
@@ -8234,7 +8234,7 @@ msgstr "轴选项"
 msgid "Right Axis (--right-axis &lt;scale:shift&gt;)"
 msgstr "右轴 (--right-axis &lt;scale:shift&gt;)"
 
-#: /var/www/html/cacti/include/global_form.php:693
+#: /var/www/html/telco/include/global_form.php:693
 msgid "A second axis will be drawn to the right of the graph. It is tied to the left axis via the scale and shift parameters."
 msgstr "第二个轴将绘制在图形的右侧。 它通过比例和移位参数绑定到左侧轴。"
 
@@ -8250,7 +8250,7 @@ msgstr "右轴标签。"
 msgid "Right Axis Format (--right-axis-format &lt;format&gt;)"
 msgstr "右轴格式 (--right-axis-format &lt;format&gt;)"
 
-#: /var/www/html/cacti/include/global_form.php:709
+#: /var/www/html/telco/include/global_form.php:709
 #, php-format
 msgid "By default, the format of the axis labels gets determined automatically.  If you want to do this yourself, use this option with the same %lf arguments you know from the PRINT and GPRINT commands."
 msgstr "默认情况下，轴标签的格式会自动确定。 如果你想自己做这个，使用这个选项和你在PRINT和GPRINT命令中知道的％lf参数相同。"
@@ -8259,7 +8259,7 @@ msgstr "默认情况下，轴标签的格式会自动确定。 如果你想自�
 msgid "Right Axis Formatter (--right-axis-formatter &lt;formatname&gt;)"
 msgstr "右轴格式器 (--right-axis-formatter &lt;formatname&gt;)"
 
-#: /var/www/html/cacti/include/global_form.php:717
+#: /var/www/html/telco/include/global_form.php:717
 msgid "When you setup the right axis labeling, apply a rule to the data format.  Supported formats include \"numeric\" where data is treated as numeric, \"timestamp\" where values are interpreted as UNIX timestamps (number of seconds since January 1970) and expressed using strftime format (default is \"%Y-%m-%d %H:%M:%S\").  See also --units-length and --right-axis-format.  Finally \"duration\" where values are interpreted as duration in milliseconds.  Formatting follows the rules of valstrfduration qualified PRINT/GPRINT."
 msgstr "当您设置正确的轴标签时，将规则应用于数据格式。 支持的格式包括将数据视为数字的“numeric”，其中值被解释为UNIX时间戳（自1970年1月以来的秒数）并使用strftime格式表示（缺省值为“％Y-％m - ％d％H：％M：％S“）。 另见--units-length和--right-axis-format。 最后的“持续时间”，其中的值被解释为以毫秒为单位的持续时间。 格式遵循valstrfduration合格的PRINT / GPRINT规则。"
 
@@ -8267,7 +8267,7 @@ msgstr "当您设置正确的轴标签时，将规则应用于数据格式。 �
 msgid "Left Axis Formatter (--left-axis-formatter &lt;formatname&gt;)"
 msgstr "左轴格式器 (--left-axis-formatter &lt;formatname&gt;)"
 
-#: /var/www/html/cacti/include/global_form.php:725
+#: /var/www/html/telco/include/global_form.php:725
 msgid "When you setup the left axis labeling, apply a rule to the data format.  Supported formats include \"numeric\" where data is treated as numeric, \"timestamp\" where values are interpreted as UNIX timestamps (number of seconds since January 1970) and expressed using strftime format (default is \"%Y-%m-%d %H:%M:%S\").  See also --units-length.  Finally \"duration\" where values are interpreted as duration in milliseconds.  Formatting follows the rules of valstrfduration qualified PRINT/GPRINT."
 msgstr "当您设置左轴标签时，将规则应用于数据格式。 支持的格式包括将数据视为数字的“numeric”，其中值被解释为UNIX时间戳（自1970年1月以来的秒数）并使用strftime格式表示（缺省值为“％Y-％m - ％d％H：％M：％S“）。 另请参阅 - 单位长度。 最后的“持续时间”，其中的值被解释为以毫秒为单位的持续时间。 格式遵循valstrfduration合格的PRINT / GPRINT规则。"
 
@@ -8279,7 +8279,7 @@ msgstr "图例选项"
 msgid "Auto Padding"
 msgstr "自动填充"
 
-#: /var/www/html/cacti/include/global_form.php:736
+#: /var/www/html/telco/include/global_form.php:736
 msgid "Pad text so that legend and graph data always line up. Note: this could cause graphs to take longer to render because of the larger overhead. Also Auto Padding may not be accurate on all types of graphs, consistent labeling usually helps."
 msgstr "填充文本，以便图例和图形数据始终排列。 注意：由于较大的开销，这可能会导致图形渲染时间较长。 在所有类型的图表上，自动填充可能不准确，一致的标签通常有帮助。"
 
@@ -8388,7 +8388,7 @@ msgstr "在时间轴（x轴）上将数据偏移“值”字段中指定的数�
 msgid "Value"
 msgstr "值"
 
-#: /var/www/html/cacti/include/global_form.php:847
+#: /var/www/html/telco/include/global_form.php:847
 msgid "[HRULE|VRULE]: The value of the graph item.<br/> [TICK]: The fraction for the tick line.<br/> [SHIFT]: The time offset in seconds."
 msgstr "[HRULE | VRULE]：图形项目的值。<br/> [TICK]：刻度线的分数。[SHIFT]：以秒为单位的时间偏移量。"
 
@@ -8396,7 +8396,7 @@ msgstr "[HRULE | VRULE]：图形项目的值。<br/> [TICK]：刻度线的分数
 msgid "GPRINT Type"
 msgstr "GPRINT 类型"
 
-#: /var/www/html/cacti/include/global_form.php:854
+#: /var/www/html/telco/include/global_form.php:854
 msgid "If this graph item is a GPRINT, you can optionally choose another format here. You can define additional types under \"GPRINT Presets\"."
 msgstr "如果此图项是GPRINT，则可以在此选择另一种格式。 您可以在“GPRINT预设”下定义其他类型。"
 
@@ -8404,7 +8404,7 @@ msgstr "如果此图项是GPRINT，则可以在此选择另一种格式。 您�
 msgid "Text Alignment (TEXTALIGN)"
 msgstr "文本对齐（TEXTALIGN）"
 
-#: /var/www/html/cacti/include/global_form.php:862
+#: /var/www/html/telco/include/global_form.php:862
 msgid "All subsequent legend line(s) will be aligned as given here.  You may use this command multiple times in a single graph.  This command does not produce tabular layout.<br/><strong>Note: </strong>You may want to insert a &lt;HR&gt; on the preceding graph item.<br/> <strong>Note: </strong>A &lt;HR&gt; on this legend line will obsolete this setting!"
 msgstr "所有后续的图例行将按照此处给出的方式对齐。 您可以在单个图表中多次使用此命令。 此命令不会生成表格式布局。<strong>注意：</ strong>您可能需要插入＆lt; HR＆gt; 在前面的图形项目中。<br/> <strong>注意：</ strong> A＆lt; HR＆gt; 在这个传奇线上会过时这个设置！"
 
@@ -9114,7 +9114,7 @@ msgstr "输入一个搜索词"
 msgid "Enter a regular expression"
 msgstr "输入正则表达式"
 
-#: /var/www/html/cacti/include/global_session.php:101
+#: /var/www/html/telco/include/global_session.php:101
 msgid "No file selected"
 msgstr "没有选择文件"
 
@@ -9122,32 +9122,32 @@ msgstr "没有选择文件"
 msgid "Time Graph View"
 msgstr "时间图表视图"
 
-#: /var/www/html/cacti/include/global_session.php:104
-#: /var/www/html/cacti/include/global_session.php:116
+#: /var/www/html/telco/include/global_session.php:104
+#: /var/www/html/telco/include/global_session.php:116
 msgid "SpikeKill Results"
 msgstr "SpikeKill结果"
 
-#: /var/www/html/cacti/include/global_session.php:106
+#: /var/www/html/telco/include/global_session.php:106
 msgid "Click to view just this Graph in Realtime"
 msgstr "点击即可实时查看此图表"
 
-#: /var/www/html/cacti/include/global_session.php:107
+#: /var/www/html/telco/include/global_session.php:107
 msgid "Click again to take this Graph out of Realtime"
 msgstr "再次点击可将此图表从Realtime中删除"
 
-#: /var/www/html/cacti/include/global_session.php:111
+#: /var/www/html/telco/include/global_session.php:111
 msgid "Cacti Home"
 msgstr "Cacti之家"
 
-#: /var/www/html/cacti/include/global_session.php:112
+#: /var/www/html/telco/include/global_session.php:112
 msgid "Cacti Project Page"
 msgstr "Cacti项目页面"
 
-#: /var/www/html/cacti/include/global_session.php:113
+#: /var/www/html/telco/include/global_session.php:113
 msgid "Cacti Community Forum"
 msgstr "Cacti 社区论坛"
 
-#: /var/www/html/cacti/include/global_session.php:114
+#: /var/www/html/telco/include/global_session.php:114
 msgid "Report a bug"
 msgstr "报告错误"
 
@@ -9157,71 +9157,71 @@ msgstr "点击以显示/隐藏过滤器"
 msgid "Clear Current Filter"
 msgstr "清除当前过滤器"
 
-#: /var/www/html/cacti/include/global_session.php:119
+#: /var/www/html/telco/include/global_session.php:119
 msgid "Clipboard"
 msgstr "剪贴板"
 
-#: /var/www/html/cacti/include/global_session.php:120
+#: /var/www/html/telco/include/global_session.php:120
 msgid "Clipboard ID"
 msgstr "剪贴板ID"
 
-#: /var/www/html/cacti/include/global_session.php:121
+#: /var/www/html/telco/include/global_session.php:121
 msgid "Copy operation is unavailable at this time"
 msgstr "复制操作目前不可用"
 
-#: /var/www/html/cacti/include/global_session.php:122
+#: /var/www/html/telco/include/global_session.php:122
 msgid "Failed to find data to copy!"
 msgstr "无法找到要复制的数据！"
 
-#: /var/www/html/cacti/include/global_session.php:123
+#: /var/www/html/telco/include/global_session.php:123
 msgid "Clipboard has been updated"
 msgstr "剪贴板已更新"
 
-#: /var/www/html/cacti/include/global_session.php:124
+#: /var/www/html/telco/include/global_session.php:124
 msgid "Sorry, your clipboard could not be updated at this time"
 msgstr "对不起，您的剪贴板目前无法更新"
 
-#: /var/www/html/cacti/include/global_session.php:128
+#: /var/www/html/telco/include/global_session.php:128
 msgid "Passphrase length meets 8 character minimum"
 msgstr "密码长度至少满足8个字符"
 
-#: /var/www/html/cacti/include/global_session.php:129
+#: /var/www/html/telco/include/global_session.php:129
 msgid "Passphrase too short"
 msgstr "密码太短"
 
-#: /var/www/html/cacti/include/global_session.php:130
+#: /var/www/html/telco/include/global_session.php:130
 msgid "Passphrase matches but too short"
 msgstr "密码短语匹配，但太短"
 
-#: /var/www/html/cacti/include/global_session.php:131
+#: /var/www/html/telco/include/global_session.php:131
 msgid "Passphrase too short and not matching"
 msgstr "密码太短而不匹配"
 
-#: /var/www/html/cacti/include/global_session.php:132
+#: /var/www/html/telco/include/global_session.php:132
 msgid "Passphrases match"
 msgstr "口令匹配"
 
-#: /var/www/html/cacti/include/global_session.php:133
+#: /var/www/html/telco/include/global_session.php:133
 msgid "Passphrases do not match"
 msgstr "密码不匹配"
 
-#: /var/www/html/cacti/include/global_session.php:134
+#: /var/www/html/telco/include/global_session.php:134
 msgid "Sorry, we could not process your last action"
 msgstr "对不起，我们无法处理您最后的操作"
 
-#: /var/www/html/cacti/include/global_session.php:135
+#: /var/www/html/telco/include/global_session.php:135
 msgid "Error:"
 msgstr "错误："
 
-#: /var/www/html/cacti/include/global_session.php:136
+#: /var/www/html/telco/include/global_session.php:136
 msgid "Reason:"
 msgstr "原因："
 
-#: /var/www/html/cacti/include/global_session.php:137
+#: /var/www/html/telco/include/global_session.php:137
 msgid "Action failed"
 msgstr "操作失败"
 
-#: /var/www/html/cacti/include/global_session.php:138
+#: /var/www/html/telco/include/global_session.php:138
 msgid "The response to the last action was unexpected"
 msgstr "对最后一次行动的回应是意外的"
 
@@ -9363,22 +9363,22 @@ msgid "Cacti Log Path"
 msgstr "Cacti 日志文件路径"
 
 #: ../include/global_settings.php:138
-msgid "The path to your Cacti log file (if blank, defaults to <path_cacti>/log/cacti.log)"
-msgstr "Cacti日志文件的路径（如果为空，则默认为<path_cacti> /log/cacti.log）"
+msgid "The path to your Cacti log file (if blank, defaults to <path_cacti>/log/telco.log)"
+msgstr "Cacti日志文件的路径（如果为空，则默认为<path_cacti> /log/telco.log）"
 
-#: /var/www/html/cacti/include/global_settings.php:153
+#: /var/www/html/telco/include/global_settings.php:153
 msgid "Rotate the Cacti Log"
 msgstr "分割Cacti日志"
 
-#: /var/www/html/cacti/include/global_settings.php:154
+#: /var/www/html/telco/include/global_settings.php:154
 msgid "This option will rotate the Cacti Log periodically."
 msgstr "此选项将定期轮换Cacti日志。"
 
-#: /var/www/html/cacti/include/global_settings.php:159
+#: /var/www/html/telco/include/global_settings.php:159
 msgid "Rotation Frequency"
 msgstr "分割频率"
 
-#: /var/www/html/cacti/include/global_settings.php:160
+#: /var/www/html/telco/include/global_settings.php:160
 msgid "At what frequency would you like to rotate your logs?"
 msgstr "您想以什么频率旋转日志？"
 
@@ -9386,7 +9386,7 @@ msgstr "您想以什么频率旋转日志？"
 msgid "Log Retention"
 msgstr "日志保留"
 
-#: /var/www/html/cacti/include/global_settings.php:167
+#: /var/www/html/telco/include/global_settings.php:167
 msgid "How many log files do you wish to retain?  Use 0 to never remove any logs. (0-365)"
 msgstr "您希望保留多少个日志文件？ 使用0永不删除任何日志。（0-365）"
 
@@ -9628,11 +9628,11 @@ msgstr "图表权限方法"
 msgid "There are two methods for determining a User's Graph Permissions.  The first is 'Permissive'.  Under the 'Permissive' setting, a User only needs access to either the Graph, Device or Graph Template to gain access to the Graphs that apply to them.  Under 'Restrictive', the User must have access to the Graph, the Device, and the Graph Template to gain access to the Graph."
 msgstr "有两种方法可以确定用户的图形权限。 首先是“宽容”。 在“允许”设置下，用户只需要访问“图形”，“设备”或“图形模板”即可访问适用于其的图形。 在“限制”下，用户必须有权访问图表，设备和图表模板才能访问图表。"
 
-#: /var/www/html/cacti/include/global_settings.php:389
+#: /var/www/html/telco/include/global_settings.php:389
 msgid "Permissive"
 msgstr "宽容"
 
-#: /var/www/html/cacti/include/global_settings.php:389
+#: /var/www/html/telco/include/global_settings.php:389
 msgid "Restrictive"
 msgstr "限制性"
 
@@ -9644,11 +9644,11 @@ msgstr "图/数据源创建方法"
 msgid "If set to Simple, Graphs and Data Sources can only be created from New Graphs.  If Advanced, legacy Graph and Data Source creation is supported."
 msgstr "如果设置为“简单”，则只能从新图形创建图形和数据源。 如果是高级，则支持旧版图形和数据源创建。"
 
-#: /var/www/html/cacti/include/global_settings.php:396
+#: /var/www/html/telco/include/global_settings.php:396
 msgid "Advanced"
 msgstr "高级"
 
-#: /var/www/html/cacti/include/global_settings.php:396
+#: /var/www/html/telco/include/global_settings.php:396
 msgid "Simple"
 msgstr "简单"
 
@@ -9688,7 +9688,7 @@ msgstr "一些Cacti的接口支持Drag-N-Drop。 如果选中此选项将被启�
 msgid "Force Connections over HTTPS"
 msgstr "通过HTTPS强制连接"
 
-#: /var/www/html/cacti/include/global_settings.php:425
+#: /var/www/html/telco/include/global_settings.php:425
 msgid "When checked, any attempts to access Cacti will be redirected to HTTPS to ensure high security."
 msgstr "选中后，任何访问Cacti的尝试都将被重定向到HTTPS以确保高安全性。"
 
@@ -9720,11 +9720,11 @@ msgstr "所有新设备的默认网站。"
 msgid "The default Poller for all new Devices."
 msgstr "所有新设备的默认轮询器。"
 
-#: /var/www/html/cacti/include/global_settings.php:474
+#: /var/www/html/telco/include/global_settings.php:474
 msgid "Device Threads"
 msgstr "设备线程"
 
-#: /var/www/html/cacti/include/global_settings.php:475
+#: /var/www/html/telco/include/global_settings.php:475
 msgid "The default number of Device Threads.  This is only applicable when using the spine Data Collector."
 msgstr "设备线程的默认数量。 这仅适用于使用脊柱数据收集器的情况。"
 
@@ -9748,11 +9748,11 @@ msgstr "所有新设备的默认SNMP版本。"
 msgid "Default SNMP read community for all new hosts."
 msgstr "所有新设备的默认SNMP团体名。"
 
-#: /var/www/html/cacti/include/global_settings.php:507
+#: /var/www/html/telco/include/global_settings.php:507
 msgid "Security Level"
 msgstr "安全级别"
 
-#: /var/www/html/cacti/include/global_settings.php:508
+#: /var/www/html/telco/include/global_settings.php:508
 msgid "The SNMP v3 Security Level."
 msgstr "SNMP v3安全级别。"
 
@@ -9867,19 +9867,19 @@ msgstr "每页行"
 msgid "The default number of rows to display on for a table."
 msgstr "要在表上显示的默认行数。"
 
-#: /var/www/html/cacti/include/global_settings.php:681
+#: /var/www/html/telco/include/global_settings.php:681
 msgid "Autocomplete Enabled"
 msgstr "自动完成已启用"
 
-#: /var/www/html/cacti/include/global_settings.php:682
+#: /var/www/html/telco/include/global_settings.php:682
 msgid "In very large systems, select lists can slow the user interface significantly.  If this option is enabled, Cacti will use autocomplete callbacks to populate the select list systematically.  Note: autocomplete is forcibly disabled on the Classic theme."
 msgstr "在非常大的系统中，选择列表会显着减慢用户界面。 如果启用此选项，Cacti将使用自动完成回调系统地填充选择列表。 注意：经典主题强制禁用自动完成功能。"
 
-#: /var/www/html/cacti/include/global_settings.php:690
+#: /var/www/html/telco/include/global_settings.php:690
 msgid "Autocomplete Rows"
 msgstr "自动完成行"
 
-#: /var/www/html/cacti/include/global_settings.php:691
+#: /var/www/html/telco/include/global_settings.php:691
 msgid "The default number of rows to return from an autocomplete based select pattern match."
 msgstr "从基于自动完成的选择模式匹配返回的默认行数。"
 
@@ -9955,7 +9955,7 @@ msgstr "RRDtool图水印"
 msgid "Watermark Text"
 msgstr "水印文本"
 
-#: /var/www/html/cacti/include/global_settings.php:763
+#: /var/www/html/telco/include/global_settings.php:763
 msgid "Text placed at the bottom center of every Graph."
 msgstr "文本放置在每个图形的底部中心。"
 
@@ -9967,7 +9967,7 @@ msgstr "日志查看器设置"
 msgid "Exclusion Regex"
 msgstr "排除正则表达式"
 
-#: /var/www/html/cacti/include/global_settings.php:776
+#: /var/www/html/telco/include/global_settings.php:776
 msgid "Any strings that match this regex will be excluded from the user display.  <strong>For example, if you want to exclude all log lines that include the words 'Admin' or 'Login' you would type '(Admin || Login)'</strong>"
 msgstr "任何匹配这个正则表达式的字符串将被排除在用户显示之外。 <strong>例如，如果您想要排除包含“管理”或“登录”字样的所有日志行，您可以键入'（Admin || Login）'</ strong>"
 
@@ -10000,7 +10000,7 @@ msgstr "这是图形更新之间的时间。"
 msgid "Cache Directory"
 msgstr "缓存目录"
 
-#: /var/www/html/cacti/include/global_settings.php:809
+#: /var/www/html/telco/include/global_settings.php:809
 msgid "This is the location, on the web server where the RRDfiles and PNG files will be cached.  This cache will be managed by the poller.  Make sure you have the correct read and write permissions on this folder"
 msgstr "这是RRD文件和PNG文件将被缓存的Web服务器上的位置。 该缓存将由轮询器管理。 确保您对此文件夹具有正确的读写权限"
 
@@ -10164,11 +10164,11 @@ msgstr "禁用增加的OID检查"
 msgid "Controls disabling check for increasing OID while walking OID tree."
 msgstr "控制在行走OID树时禁用增加OID的检查。"
 
-#: /var/www/html/cacti/include/global_settings.php:951
+#: /var/www/html/telco/include/global_settings.php:951
 msgid "SNMP Bulkwalk Fetch Size"
 msgstr "SNMP Bulkwalk抓取大小"
 
-#: /var/www/html/cacti/include/global_settings.php:952
+#: /var/www/html/telco/include/global_settings.php:952
 msgid "How many OID's should be returned per snmpbulkwalk request?  For Devices with large SNMP trees, increasing this size will increase re-index performance over a WAN."
 msgstr "每个snmpbulkwalk请求应该返回多少个OID？ 对于具有大型SNMP树的设备，增大此大小将增加WAN上的重新索引性能。"
 
@@ -10264,7 +10264,7 @@ msgstr "没有用户"
 msgid "User Template"
 msgstr "用户模板"
 
-#: /var/www/html/cacti/include/global_settings.php:1052
+#: /var/www/html/telco/include/global_settings.php:1052
 msgid "The name of the user that Cacti will use as a template for new Web Basic and LDAP users; is 'guest' by default."
 msgstr "Cacti将用作新Web Basic和LDAP用户的模板的用户名称; 默认为'guest'。"
 
@@ -10800,7 +10800,7 @@ msgstr "每日统计应该多频繁一次更新？"
 msgid "Hourly Average Window"
 msgstr "小时平均窗口"
 
-#: /var/www/html/cacti/include/global_settings.php:1496
+#: /var/www/html/telco/include/global_settings.php:1496
 msgid "The number of consecutive hours that represent the hourly average.  Keep in mind that a setting too high can result in very large memory tables"
 msgstr "代表小时平均数的连续小时数。 请记住，设置过高可能会导致非常大的内存表"
 
@@ -10828,7 +10828,7 @@ msgstr "调试"
 msgid "Enable Partial Reference Data Retrieve"
 msgstr "启用部分参考数据检索"
 
-#: /var/www/html/cacti/include/global_settings.php:1523
+#: /var/www/html/telco/include/global_settings.php:1523
 msgid "If using a large system, it may be beneficial for you to only gather data as needed during Cacti poller passes.  If you check this box, Data Source Statistics will gather data this way."
 msgstr "如果使用大型系统，在Cacti轮询过程中仅根据需要收集数据可能会有所帮助。 如果选中此框，数据源统计将以这种方式收集数据。"
 
@@ -10872,7 +10872,7 @@ msgstr "如果增强输出表超出此大小，则记录中将进行更新。"
 msgid "Maximum Data Source Items Per Pass"
 msgstr "每次通过的最大数据源项目数"
 
-#: /var/www/html/cacti/include/global_settings.php:1564
+#: /var/www/html/telco/include/global_settings.php:1564
 msgid "To optimize performance, the boost RRD updater needs to know how many Data Source Items should be retrieved in one pass.  Please be careful not to set too high as graphing performance during major updates can be compromised.  If you encounter graphing or polling slowness during updates, lower this number.  The default value is 50000."
 msgstr "为了优化性能，boost RRD更新程序需要知道应该在一次传递中检索多少个数据源项目。 请注意不要设置太高，因为在重大更新期间的图形性能可能会受到影响。 如果您在更新期间遇到图形或轮询迟缓，请降低此数字。 默认值是50000。"
 
@@ -10880,7 +10880,7 @@ msgstr "为了优化性能，boost RRD更新程序需要知道应该在一次传
 msgid "Maximum Argument Length"
 msgstr "最大参数长度"
 
-#: /var/www/html/cacti/include/global_settings.php:1571
+#: /var/www/html/telco/include/global_settings.php:1571
 msgid "When boost sends update commands to RRDtool, it must not exceed the operating systems Maximum Argument Length.  This varies by operating system and kernel level.  For example: Windows 2000 <= 2048, FreeBSD <= 65535, Linux 2.6.22-- <= 131072, Linux 2.6.23++ unlimited"
 msgstr "当boost向RRDtool发送更新命令时，它不能超过操作系统的Maximum Argument Length。 这取决于操作系统和内核级别。 例如：Windows 2000 <= 2048，FreeBSD <= 65535，Linux 2.6.22-- <= 131072，Linux 2.6.23 ++ unlimited"
 
@@ -10896,7 +10896,7 @@ msgstr "Cacti Poller和增强 Poller的最大内存量"
 msgid "Maximum RRD Update Script Run Time"
 msgstr "最大RRD更新脚本运行时间"
 
-#: /var/www/html/cacti/include/global_settings.php:1586
+#: /var/www/html/telco/include/global_settings.php:1586
 msgid "The maximum boot poller run time allowed prior to boost issuing warning messages relative to possible hardware/software issues preventing proper updates."
 msgstr "相对于可能的硬件/软件问题，提前发布警告消息之前允许的最大启动轮询器运行时间，从而防止正确更新。"
 
@@ -11018,7 +11018,7 @@ msgstr "去除波峰设置"
 msgid "Removal Method"
 msgstr "去除方法"
 
-#: /var/www/html/cacti/include/global_settings.php:1714
+#: /var/www/html/telco/include/global_settings.php:1714
 msgid "There are two removal methods.  The first, Standard Deviation, will remove any sample that is X number of standard deviations away from the average of samples.  The second method, Variance, will remove any sample that is X% more than the Variance average.  The Variance method takes into account a certain number of 'outliers'.  Those are exceptional samples, like the spike, that need to be excluded from the Variance Average calculation."
 msgstr "有两种删除方法。 第一个标准偏差将移除距离样品平均值X个标准偏差的任何样品。 第二种方法Variance将删除比方差平均值多X％的样本。 方差方法考虑了一定数量的“异常值”。 这些都是特殊样本，如峰值，需要从方差平均值计算中排除。"
 
@@ -11035,7 +11035,7 @@ msgstr "基于差异基于W /异常值删除"
 msgid "Replacement Method"
 msgstr "替换方法"
 
-#: /var/www/html/cacti/include/global_settings.php:1721
+#: /var/www/html/telco/include/global_settings.php:1721
 msgid "There are three replacement methods.  The first method replaces the spike with the the average of the data source in question.  The second method replaces the spike with a 'NaN'.  The last replaces the spike with the last known good value found."
 msgstr "有三种替换方法。 第一种方法用所讨论的数据源的平均值替换峰值。 第二种方法是用'NaN'代替尖峰。 最后用已知的最后一个已知良好值代替峰值。"
 
@@ -11057,7 +11057,7 @@ msgstr "NaN's"
 msgid "Number of Standard Deviations"
 msgstr "标准差的数量"
 
-#: /var/www/html/cacti/include/global_settings.php:1728
+#: /var/www/html/telco/include/global_settings.php:1728
 msgid "Any value that is this many standard deviations above the average will be excluded.  A good number will be dependent on the type of data to be operated on.  We recommend a number no lower than 5 Standard Deviations."
 msgstr "任何高于平均值的标准差都会被排除。 一个好的数字将取决于要操作的数据类型。 我们推荐一个不低于5个标准偏差的数字。"
 
@@ -11080,7 +11080,7 @@ msgstr "%d 标准偏差"
 msgid "Variance Percentage"
 msgstr "差异百分比"
 
-#: /var/www/html/cacti/include/global_settings.php:1746
+#: /var/www/html/telco/include/global_settings.php:1746
 #, php-format
 msgid "This value represents the percentage above the adjusted sample average once outliers have been removed from the sample.  For example, a Variance Percentage of 100% on an adjusted average of 50 would remove any sample above the quantity of 100 from the graph."
 msgstr "该值表示一旦从样本中去除异常值后，高于调整样本平均值的百分比。 例如，调整后平均值为50的方差百分比为100％将从图表中移除数量超过100的样本。"
@@ -11089,7 +11089,7 @@ msgstr "该值表示一旦从样本中去除异常值后，高于调整样本平
 msgid "Variance Number of Outliers"
 msgstr "差异离群数量"
 
-#: /var/www/html/cacti/include/global_settings.php:1766
+#: /var/www/html/telco/include/global_settings.php:1766
 msgid "This value represents the number of high and low average samples will be removed from the sample set prior to calculating the Variance Average.  If you choose an outlier value of 5, then both the top and bottom 5 averages are removed."
 msgstr "该值表示在计算方差平均值之前将从样本集中移除的高平均样本和低平均样本的数量。 如果选择5的离群值，那么顶部和底部的5均值都将被移除。"
 
@@ -11165,7 +11165,7 @@ msgstr "每个另一天"
 msgid "Base Time"
 msgstr "基准时间"
 
-#: /var/www/html/cacti/include/global_settings.php:1826
+#: /var/www/html/telco/include/global_settings.php:1826
 msgid "The Base Time for Spike removal to occur.  For example, if you use '12:00am' and you choose once per day, the batch removal would begin at approximately midnight every day."
 msgstr "Spike删除的基准时间发生。 例如，如果您使用'12：00am'并且每天选择一次，则批量移除将在每天大约午夜开始。"
 
@@ -11201,11 +11201,11 @@ msgstr "显示图形标题"
 msgid "Display the graph title on the page so that it may be searched using the browser."
 msgstr "在页面上显示图标，以便使用浏览器进行搜索。"
 
-#: /var/www/html/cacti/include/global_settings.php:1871
+#: /var/www/html/telco/include/global_settings.php:1871
 msgid "Hide Disabled"
 msgstr "隐藏已禁用"
 
-#: /var/www/html/cacti/include/global_settings.php:1872
+#: /var/www/html/telco/include/global_settings.php:1872
 msgid "Hide Disabled Devices and Graphs from Disabled Devices."
 msgstr "从禁用的设备中隐藏禁用的设备和图形。"
 
@@ -11451,7 +11451,7 @@ msgstr "远程数据收集器状态："
 msgid "Number of Offline Records:"
 msgstr "离线记录数量："
 
-#: /var/www/html/cacti/index.php:85
+#: /var/www/html/telco/index.php:85
 msgid "<strong>NOTE:</strong> You are logged into a Remote Data Collector.  When <b>'online'</b>, you will be able to view and control much of the Main Cacti Web Site just as if you were logged into it.  Also, it's important to note that Remote Data Collectors are required to use the Cacti's Performance Boosting Services <b>'On Demand Updating'</b> feature, and we always recommend using Spine.  When the Remote Data Collector is <b>'offline'</b>, the Remote Data Collectors Web Site will contain much less information.  However, it will cache all updates until the Main Cacti Database and Web Server are reachable.  Then it will dump it's Boost table output back to the Main Cacti Database for updating."
 msgstr "<strong>注意：</ strong>您已登录到远程数据收集器。 当<b>'在线'</ b>时，您将能够查看和控制大部分主要的Cacti网站，就像您登录该网站一样。 此外，重要的是要注意，远程数据收集器需要使用Cacti的性能增强服务<b>'按需更新'</ b>功能，并且我们始终建议使用Spine。 当远程数据收集器<b>'离线'</ b>时，远程数据收集器网站将包含更少的信息。 但是，它将缓存所有更新，直到主Cacti数据库和Web服务器可达。 然后它会将它的转储表输出转储回主Cacti数据库进行更新。"
 
@@ -11504,7 +11504,7 @@ msgstr "在Windows上，您必须按照 <a target='_blank' href='https://dev.mys
 msgid "GRANT SELECT ON mysql.time_zone_name to '%s'@'localhost' IDENTIFIED BY '%s'"
 msgstr "GRANT SELECT ON mysql.time_zone_name to '%s'@'localhost' IDENTIFIED BY '%s'"
 
-#: /var/www/html/cacti/install/index.php:87
+#: /var/www/html/telco/install/index.php:87
 msgid "Begin"
 msgstr "开始"
 
@@ -11518,8 +11518,8 @@ msgstr "下一步"
 msgid "Upgrade"
 msgstr "升级"
 
-#: /var/www/html/cacti/install/index.php:116
-#: /var/www/html/cacti/install/index.php:133
+#: /var/www/html/telco/install/index.php:116
+#: /var/www/html/telco/install/index.php:133
 msgid "Downgrade"
 msgstr "下坡"
 
@@ -11528,7 +11528,7 @@ msgstr "下坡"
 msgid "Invalid Cacti version <strong>%1$s</strong>, cannot upgrade to <strong>%2$s</strong>"
 msgstr "无效的Cacti版本 <strong>%1$s</strong>, 无法升级到 <strong>%2$s</strong>"
 
-#: /var/www/html/cacti/install/index.php:382
+#: /var/www/html/telco/install/index.php:382
 msgid "Cacti Server Installation/Upgrade"
 msgstr "Cacti服务器安装/升级"
 
@@ -11553,7 +11553,7 @@ msgstr "感谢您抽出时间下载并安装Cacti，这是您网络的完整制�
 msgid "Make sure you have read and followed the required steps needed to install Cacti before continuing. Install information can be found for <a href=\"%1$s\">Unix</a> and <a href=\"%2$s\">Win32</a>-based operating systems."
 msgstr "确保您已阅读并遵循安装Cacti所需的步骤，然后再继续。 可以在<a href=\"%1$s\"> Unix </a>和基于<a href=\"%2$s\"> Win32 </a>的操作系统上找到安装信息。"
 
-#: /var/www/html/cacti/install/index.php:414
+#: /var/www/html/telco/install/index.php:414
 #, php-format
 msgid "Note: This process will guide you through the steps for upgrading from version '%s'. "
 msgstr "注意：此过程将指导您完成从版本  '%s' 升级的步骤。"
@@ -11567,11 +11567,11 @@ msgstr "另外，如果这是升级，请务必阅读<a href=\"%s\">升级</a>�
 msgid "Cacti is licensed under the GNU General Public License, you must agree to its provisions before continuing:"
 msgstr "Cacti根据GNU通用公共许可证进行许可，您必须同意其规定，然后再继续："
 
-#: /var/www/html/cacti/install/index.php:422
+#: /var/www/html/telco/install/index.php:422
 msgid "This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details."
 msgstr "这个程序的发布希望它会有用，但没有任何担保; 甚至没有适销性或针对特定用途的适用性的暗示保证。 有关更多详细信息，请参阅GNU通用公共许可证。"
 
-#: /var/www/html/cacti/install/index.php:424
+#: /var/www/html/telco/install/index.php:424
 msgid "Accept GPL License Agreement"
 msgstr "接受GPL许可协议"
 
@@ -11579,7 +11579,7 @@ msgstr "接受GPL许可协议"
 msgid "Pre-installation Checks"
 msgstr "预安装检查"
 
-#: /var/www/html/cacti/install/index.php:431
+#: /var/www/html/telco/install/index.php:431
 msgid "Location checks"
 msgstr "位置检查"
 
@@ -11590,11 +11590,11 @@ msgstr "位置检查"
 msgid "ERROR:"
 msgstr "错误："
 
-#: /var/www/html/cacti/install/index.php:479
+#: /var/www/html/telco/install/index.php:479
 msgid "Please update config.php with the correct relative URI location of Cacti (url_path)."
 msgstr "请使用正确的Cacti相对URI位置（url_path）更新config.php。"
 
-#: /var/www/html/cacti/install/index.php:481
+#: /var/www/html/telco/install/index.php:481
 msgid "Your Cacti configuration has the relative correct path (url_path) in config.php."
 msgstr "您的Cacti配置在config.php中具有相对正确的路径（url_path）。"
 
@@ -11614,15 +11614,15 @@ msgstr "您的Cacti数据库登录帐户无权访问MySQL TimeZone数据库。 �
 msgid "Your Cacti database account has access to the MySQL TimeZone database and that database is populated with global TimeZone information."
 msgstr "您的Cacti数据库帐户可以访问MySQL TimeZone数据库，并且该数据库使用全球TimeZone信息填充。"
 
-#: /var/www/html/cacti/install/index.php:501
+#: /var/www/html/telco/install/index.php:501
 msgid "PHP Timezone Support"
 msgstr "PHP时区支持"
 
-#: /var/www/html/cacti/install/index.php:504
+#: /var/www/html/telco/install/index.php:504
 msgid "Your Web Servers PHP Timezone settings have not been set.  Please edit php.ini and uncomment the 'date.timezone' setting and set it to the Web Servers Timezone per the PHP installation instructions prior to installing Cacti."
 msgstr "您的Web服务器PHP时区设置尚未设置。 在安装Cacti之前，请编辑php.ini并取消注释'date.timezone'设置，并根据PHP安装说明将其设置为Web服务器时区。"
 
-#: /var/www/html/cacti/install/index.php:507
+#: /var/www/html/telco/install/index.php:507
 msgid "Your Web Servers PHP is properly setup with a Timezone."
 msgstr "您的Web服务器PHP使用时区正确设置。"
 
@@ -11692,16 +11692,16 @@ msgstr "安装类型"
 msgid "Upgrade from <strong>%s</strong> to <strong>%s</strong>"
 msgstr "从<strong>%s</strong> 到 <strong>%s</strong>升级"
 
-#: /var/www/html/cacti/install/index.php:625
+#: /var/www/html/telco/install/index.php:625
 msgid "WARNING - If you are upgrading from a previous version please close all Cacti browser sessions and clear cache before continuing.  Additionally, after this script is complete, you will also have to refresh your page to load updated JavaScript so that the Cacti pages render properly.  In Firefox and IE, you simply press F5.  In Chrome, you may have to clear your browser cache for the Cacti web site."
 msgstr "警告 - 如果您要从以前的版本升级，请关闭所有Cacti浏览器会话并清除缓存，然后再继续。 此外，在此脚本完成之后，您还必须刷新页面才能加载更新的JavaScript，以便Cacti页面正确呈现。 在Firefox和IE中，只需按F5即可。 在Chrome中，您可能必须清除Cacti网站的浏览器缓存。"
 
-#: /var/www/html/cacti/install/index.php:628
+#: /var/www/html/telco/install/index.php:628
 #, php-format
 msgid "Downgrade from <strong>%s</strong> to <strong>%s</strong>"
 msgstr "从<strong>%s</strong>降级为<strong>%s</strong>"
 
-#: /var/www/html/cacti/install/index.php:629
+#: /var/www/html/telco/install/index.php:629
 msgid "WARNING - Appears you are downgrading to a previous version.  Database changes made for the newer version will not be reversed and <i>could</i> cause issues."
 msgstr "警告 - 显示您正在降级到以前的版本。 对较新版本所做的数据库更改不会被逆转，并且可能会导致问题。"
 
@@ -11774,11 +11774,11 @@ msgstr "服务器操作系统类型：<b>%s</b>"
 msgid "Remote Poller Cacti database connection information"
 msgstr "远程轮询Cacti数据库连接信息"
 
-#: /var/www/html/cacti/install/index.php:679
+#: /var/www/html/telco/install/index.php:679
 msgid "Your config.php file must be writable by the web server during install in order to configure the Remote poller.  Once installation is complete, you must set this file to Read Only to prevent possible security issues."
 msgstr "安装期间，您的config.php文件必须可由Web服务器写入，以配置远程轮询器。 安装完成后，您必须将此文件设置为只读以防止可能的安全问题。"
 
-#: /var/www/html/cacti/install/index.php:684
+#: /var/www/html/telco/install/index.php:684
 msgid "Your Remote Cacti Poller information has not been included in your config.php file.  Please review the config.php.dist, and set the variables: <i>$rdatabase_default, $rdatabase_username</i>, etc.  These variables must be set and point back to your Primary Cacti database server.  Correct this and try again."
 msgstr "您的远程Cacti轮询信息尚未包含在您的config.php文件中。 请查看config.php.dist，并设置变量：<i> $ rdatabase_default，$ rdatabase_username </ i>等。必须设置这些变量并指向您的主Cacti数据库服务器。 纠正这一点，然后再试一次。"
 
@@ -11790,7 +11790,7 @@ msgstr "必须设置的变量包括以下内容："
 msgid "You must also set the $poller_id variable in the config.php."
 msgstr "您还必须在config.php中设置$poller_id变量。"
 
-#: /var/www/html/cacti/install/index.php:699
+#: /var/www/html/telco/install/index.php:699
 msgid "Once you have the variables set in the config.php file, you must also grant the $rdatabase_username access to the Cacti database.  Follow the same procedure you would with any other Cacti install.  You may then press the 'Test Connection' button.  If the test is successful you will be able to proceed and complete the install."
 msgstr "一旦在config.php文件中设置了变量，您还必须将$ rdatabase_username访问权限授予Cacti数据库。 遵循与其他任何Cacti安装相同的步骤。 然后您可以按下'测试连接'按钮。 如果测试成功，您将能够继续并完成安装。"
 
@@ -11826,16 +11826,16 @@ msgstr "在安装后，这些目录将被要求保持可读写状态，以便Cac
 msgid "Required Writable at Install Time Only"
 msgstr "仅在安装时需要可写"
 
-#: /var/www/html/cacti/install/index.php:871
-#: /var/www/html/cacti/install/index.php:881
-#: /var/www/html/cacti/install/index.php:891
+#: /var/www/html/telco/install/index.php:871
+#: /var/www/html/telco/install/index.php:881
+#: /var/www/html/telco/install/index.php:891
 #, php-format
 msgid "<p>%s is <font color=\"#008000\">Writable</font></p>"
 msgstr "<p>%s 是 <font color=\"#008000\">可写入</font></p>"
 
-#: /var/www/html/cacti/install/index.php:873
-#: /var/www/html/cacti/install/index.php:883
-#: /var/www/html/cacti/install/index.php:893
+#: /var/www/html/telco/install/index.php:873
+#: /var/www/html/telco/install/index.php:883
+#: /var/www/html/telco/install/index.php:893
 #, php-format
 msgid "<p>%s is <font color=\"#FF0000\">Not Writable</font></p>"
 msgstr "<p>%s 是 <font color=\"#FF0000\">不可写入</font></p>"
@@ -11872,7 +11872,7 @@ msgstr "如果您正在安装软件包，一旦安装了软件包，您应该将
 msgid "NOTE:"
 msgstr "注意："
 
-#: /var/www/html/cacti/install/index.php:918
+#: /var/www/html/telco/install/index.php:918
 msgid "For remote pollers, it is critical that the paths that you will be updating frequently, including the plugins, scripts, and resources paths have read/write access as the data collector will have to update these paths from the main web server content."
 msgstr "对于远程轮询器而言，频繁更新的路径（包括插件，脚本和资源路径）具有读取/写入访问权至关重要，因为数据收集器必须从主要Web服务器内容更新这些路径。"
 
@@ -11921,7 +11921,7 @@ msgstr "[跳过]"
 msgid "Database upgrade completed!"
 msgstr "数据库升级完成！"
 
-#: /var/www/html/cacti/install/index.php:974
+#: /var/www/html/telco/install/index.php:974
 msgid "Version: "
 msgstr "版本："
 
@@ -11976,9 +11976,9 @@ msgstr "测试连接"
 msgid "Test remote database connection"
 msgstr "测试远程数据库连接"
 
-#: /var/www/html/cacti/install/index.php:1039
-#: /var/www/html/cacti/install/index.php:1041
-#: /var/www/html/cacti/install/index.php:1043
+#: /var/www/html/telco/install/index.php:1039
+#: /var/www/html/telco/install/index.php:1041
+#: /var/www/html/telco/install/index.php:1043
 msgid "Finish"
 msgstr "结束"
 
@@ -12032,11 +12032,11 @@ msgstr "颜色模板"
 msgid "Skip"
 msgstr "跳过"
 
-#: /var/www/html/cacti/lib/api_aggregate.php:1372
+#: /var/www/html/telco/lib/api_aggregate.php:1372
 msgid "Aggregate Items are not modifyable"
 msgstr "聚合项目不可修改"
 
-#: /var/www/html/cacti/lib/api_aggregate.php:1383
+#: /var/www/html/telco/lib/api_aggregate.php:1383
 msgid "Aggregate Items are not editable"
 msgstr "聚合项目不可编辑"
 
@@ -12070,7 +12070,7 @@ msgstr "匹配对象"
 msgid "Objects"
 msgstr "对象"
 
-#: /var/www/html/cacti/lib/api_automation.php:753
+#: /var/www/html/telco/lib/api_automation.php:753
 msgid "Not Found"
 msgstr "未找到"
 
@@ -12117,9 +12117,9 @@ msgstr "域"
 msgid "Pattern"
 msgstr "模式"
 
-#: /var/www/html/cacti/lib/api_automation.php:1254
-#: /var/www/html/cacti/lib/api_automation.php:1316
-#: /var/www/html/cacti/lib/api_automation.php:1380
+#: /var/www/html/telco/lib/api_automation.php:1254
+#: /var/www/html/telco/lib/api_automation.php:1316
+#: /var/www/html/telco/lib/api_automation.php:1380
 #, php-format
 msgid "Item#%d"
 msgstr "项目#%d"
@@ -12148,24 +12148,24 @@ msgstr "替换模式"
 msgid "No Tree Creation Criteria"
 msgstr "无树创建标准"
 
-#: /var/www/html/cacti/lib/api_automation.php:1872
-#: /var/www/html/cacti/lib/api_automation.php:1922
+#: /var/www/html/telco/lib/api_automation.php:1872
+#: /var/www/html/telco/lib/api_automation.php:1922
 msgid "Device Match Rule"
 msgstr "设备匹配规则"
 
-#: /var/www/html/cacti/lib/api_automation.php:1887
+#: /var/www/html/telco/lib/api_automation.php:1887
 msgid "Create Graph Rule"
 msgstr "创建图规则"
 
-#: /var/www/html/cacti/lib/api_automation.php:1926
+#: /var/www/html/telco/lib/api_automation.php:1926
 msgid "Graph Match Rule"
 msgstr "图匹配规则"
 
-#: /var/www/html/cacti/lib/api_automation.php:1951
+#: /var/www/html/telco/lib/api_automation.php:1951
 msgid "Create Tree Rule (Device)"
 msgstr "创建树规则（设备）"
 
-#: /var/www/html/cacti/lib/api_automation.php:1955
+#: /var/www/html/telco/lib/api_automation.php:1955
 msgid "Create Tree Rule (Graph)"
 msgstr "创建树规则（图）"
 
@@ -12183,7 +12183,7 @@ msgstr "规则项目[新的规则项目%s: %s]"
 msgid "Added by Cacti Automation"
 msgstr "由Cacti自动化添加"
 
-#: /var/www/html/cacti/lib/api_device.php:407
+#: /var/www/html/telco/lib/api_device.php:407
 msgid "ERROR: Failed to connect to remote collector."
 msgstr "错误：无法连接到远程收集器。"
 
@@ -12209,7 +12209,7 @@ msgstr "SNMP未被使用"
 msgid "SNMP error"
 msgstr "SNMP错误"
 
-#: /var/www/html/cacti/lib/api_device.php:435
+#: /var/www/html/telco/lib/api_device.php:435
 msgid "Session"
 msgstr "会话"
 
@@ -12269,24 +12269,24 @@ msgstr "分支："
 msgid "Device:"
 msgstr "设备："
 
-#: /var/www/html/cacti/lib/auth.php:1915
+#: /var/www/html/telco/lib/auth.php:1915
 #, php-format
 msgid "Password must be at least %d characters!"
 msgstr "密码必须至少包含 %d 个字符！"
 
-#: /var/www/html/cacti/lib/auth.php:1921
+#: /var/www/html/telco/lib/auth.php:1921
 msgid "Your password must contain at least 1 numerical character!"
 msgstr "您的密码必须至少包含1个数字字符！"
 
-#: /var/www/html/cacti/lib/auth.php:1925
+#: /var/www/html/telco/lib/auth.php:1925
 msgid "Your password must contain a mix of lower case and upper case characters!"
 msgstr "您的密码必须包含小写字母和大写字母的混合形式！"
 
-#: /var/www/html/cacti/lib/auth.php:1931
+#: /var/www/html/telco/lib/auth.php:1931
 msgid "Your password must contain at least 1 special character!"
 msgstr "您的密码必须至少包含1个特殊字符！"
 
-#: /var/www/html/cacti/lib/clog_webapi.php:193
+#: /var/www/html/telco/lib/clog_webapi.php:193
 msgid "Click 'Continue' to purge the Log File.<br><br><br>Note: If logging is set to both Cacti and Syslog, the log information will remain in Syslog."
 msgstr "单击“继续”以清除日志文件。<br> <br> <br>注意：如果将日志记录设置为Cacti和Syslog，则日志信息将保留在Syslog中。"
 
@@ -12299,15 +12299,15 @@ msgstr "清除日志"
 msgid "Log Filters"
 msgstr "日志过滤器"
 
-#: /var/www/html/cacti/lib/clog_webapi.php:240
+#: /var/www/html/telco/lib/clog_webapi.php:240
 msgid " - Admin Filter in Affect"
 msgstr "- 管理过滤器的影响"
 
-#: /var/www/html/cacti/lib/clog_webapi.php:242
+#: /var/www/html/telco/lib/clog_webapi.php:242
 msgid " - No Admin Filter in Affect"
 msgstr "- 没有管理过滤器的影响"
 
-#: /var/www/html/cacti/lib/clog_webapi.php:245
+#: /var/www/html/telco/lib/clog_webapi.php:245
 msgid " - Admin View"
 msgstr "- 管理员视图"
 
@@ -12331,8 +12331,8 @@ msgstr "日志[总行数：%d %s - 没有其他筛选器的影响]"
 msgid "Entries"
 msgstr "项"
 
-#: /var/www/html/cacti/lib/clog_webapi.php:341
-#: /var/www/html/cacti/utilities.php:1013
+#: /var/www/html/telco/lib/clog_webapi.php:341
+#: /var/www/html/telco/utilities.php:1013
 msgid "File"
 msgstr "文件"
 
@@ -12371,174 +12371,174 @@ msgstr "最新的优先"
 msgid "Oldest First"
 msgstr "最早的优先"
 
-#: /var/www/html/cacti/lib/data_query.php:225
-#: /var/www/html/cacti/lib/data_query.php:375
+#: /var/www/html/telco/lib/data_query.php:225
+#: /var/www/html/telco/lib/data_query.php:375
 msgid "Error parsing XML file into an array."
 msgstr "将XML文件解析为数组时出错。"
 
-#: /var/www/html/cacti/lib/data_query.php:237
-#: /var/www/html/cacti/lib/data_query.php:382
+#: /var/www/html/telco/lib/data_query.php:237
+#: /var/www/html/telco/lib/data_query.php:382
 #, php-format
 msgid "Invalid field &lt;index_order&gt;%s&lt;/index_order&gt;"
 msgstr "无效字段 &lt;index_order&gt;%s&lt;/index_order&gt;"
 
-#: /var/www/html/cacti/lib/data_query.php:238
-#: /var/www/html/cacti/lib/data_query.php:383
+#: /var/www/html/telco/lib/data_query.php:238
+#: /var/www/html/telco/lib/data_query.php:383
 msgid "Must contain &lt;direction&gt;input&lt;/direction&gt; or &lt;direction&gt;input-output&lt;/direction&gt; fields only"
 msgstr "必须包含 &lt;direction&gt;input&lt;/direction&gt; or &lt;direction&gt;input-output&lt;/direction&gt;字段"
 
-#: /var/www/html/cacti/lib/data_query.php:249
+#: /var/www/html/telco/lib/data_query.php:249
 #, php-format
 msgid "Executing script for num of indexes '%s'"
 msgstr "为索引 '%s' 执行脚本"
 
-#: /var/www/html/cacti/lib/data_query.php:251
+#: /var/www/html/telco/lib/data_query.php:251
 #, php-format
 msgid "Found number of indexes: %s"
 msgstr "发现索引数量： %s"
 
-#: /var/www/html/cacti/lib/data_query.php:267
+#: /var/www/html/telco/lib/data_query.php:267
 #, php-format
 msgid "Executing script for list of indexes '%s', Index Count: %s"
 msgstr "为索引 '%s'列表执行脚本，索引计数： %s"
 
-#: /var/www/html/cacti/lib/data_query.php:269
+#: /var/www/html/telco/lib/data_query.php:269
 msgid "Click to show Data Query output for 'index'"
 msgstr "点击以显示'索引'的数据查询输出"
 
-#: /var/www/html/cacti/lib/data_query.php:272
+#: /var/www/html/telco/lib/data_query.php:272
 #, php-format
 msgid "Found index: %s"
 msgstr "找到索引: %s"
 
-#: /var/www/html/cacti/lib/data_query.php:285
+#: /var/www/html/telco/lib/data_query.php:285
 #, php-format
 msgid "Click to show Data Query output for sfield '%s'"
 msgstr "点击显示数据查询输出的字段 '%s'"
 
-#: /var/www/html/cacti/lib/data_query.php:289
+#: /var/www/html/telco/lib/data_query.php:289
 #, php-format
 msgid "Executing script query '%s'"
 msgstr "执行脚本查询 '%s'"
 
-#: /var/www/html/cacti/lib/data_query.php:298
+#: /var/www/html/telco/lib/data_query.php:298
 #, php-format
 msgid "Found item [%s='%s'] index: %s"
 msgstr "找到项目 [%s='%s']索引: %s"
 
-#: /var/www/html/cacti/lib/data_query.php:369
+#: /var/www/html/telco/lib/data_query.php:369
 #, php-format
 msgid "Invalid host_id: %s"
 msgstr "无效的 host_id: %s"
 
-#: /var/www/html/cacti/lib/data_query.php:394
+#: /var/www/html/telco/lib/data_query.php:394
 msgid "Failed to load SNMP session."
 msgstr "无法加载SNMP会话。"
 
-#: /var/www/html/cacti/lib/data_query.php:403
+#: /var/www/html/telco/lib/data_query.php:403
 #, php-format
 msgid "Executing SNMP get for num of indexes @ '%s' Index Count: %s"
 msgstr "执行SNMP获取索引数量 @ '%s' 索引计数: %s"
 
-#: /var/www/html/cacti/lib/data_query.php:405
+#: /var/www/html/telco/lib/data_query.php:405
 msgid "&lt;oid_num_indexes&gt; missing in XML file, 'Index Count Changed' emulated by counting oid_index entries"
 msgstr "&lt;oid_num_indexes&gt; 在XML文件中缺少'通过计数oid_index条目来模拟'索引计数已更改'"
 
-#: /var/www/html/cacti/lib/data_query.php:411
+#: /var/www/html/telco/lib/data_query.php:411
 #, php-format
 msgid "Executing SNMP walk for list of indexes @ '%s' Index Count: %s"
 msgstr "对索引列表执行SNMP遍历 @ '%s' 索引计数: %s"
 
-#: /var/www/html/cacti/lib/data_query.php:415
+#: /var/www/html/telco/lib/data_query.php:415
 msgid "No SNMP data returned"
 msgstr "没有返回SNMP数据"
 
-#: /var/www/html/cacti/lib/data_query.php:420
+#: /var/www/html/telco/lib/data_query.php:420
 #, php-format
 msgid "Index found at OID: '%s' value: '%s'"
 msgstr "在OID处找到的索引： '%s' 值: '%s'"
 
-#: /var/www/html/cacti/lib/data_query.php:433
+#: /var/www/html/telco/lib/data_query.php:433
 #, php-format
 msgid "index_parse at OID: '%s' results: '%s'"
 msgstr "OID处的index_parse: '%s' 结果: '%s'"
 
-#: /var/www/html/cacti/lib/data_query.php:451
+#: /var/www/html/telco/lib/data_query.php:451
 #, php-format
 msgid "Fixing wrong 'method' field for '%s' since 'rewrite_index' or 'oid_suffix' is defined"
 msgstr "修复 '%s' 错误的'方法'字段，因为定义了'rewrite_index'或'oid_suffix'"
 
-#: /var/www/html/cacti/lib/data_query.php:458
+#: /var/www/html/telco/lib/data_query.php:458
 #, php-format
 msgid "Inserting index data for field '%s' [value='%s']"
 msgstr "插入字段 '%s'的索引数据 [value='%s']"
 
-#: /var/www/html/cacti/lib/data_query.php:463
+#: /var/www/html/telco/lib/data_query.php:463
 #, php-format
 msgid "Located input field '%s' [get]"
 msgstr "位于输入栏'%s' [get]"
 
-#: /var/www/html/cacti/lib/data_query.php:472
+#: /var/www/html/telco/lib/data_query.php:472
 #, php-format
 msgid "Found OID rewrite rule: 's/%s/%s/'"
 msgstr "找到OID重写规则： 's/%s/%s/'"
 
-#: /var/www/html/cacti/lib/data_query.php:483
+#: /var/www/html/telco/lib/data_query.php:483
 #, php-format
 msgid "oid_rewrite at OID: '%s' new OI: '%s'"
 msgstr "OID处的oid_rewrite: '%s' 新的OI: '%s'"
 
-#: /var/www/html/cacti/lib/data_query.php:504
+#: /var/www/html/telco/lib/data_query.php:504
 #, php-format
 msgid "Executing SNMP get for data @ '%s' [value='%s']"
 msgstr "为数据@ '%s' [value='%s']执行SNMP抓取"
 
-#: /var/www/html/cacti/lib/data_query.php:514
+#: /var/www/html/telco/lib/data_query.php:514
 #, php-format
 msgid "Field '%s' %s"
 msgstr "字段 '%s' %s"
 
-#: /var/www/html/cacti/lib/data_query.php:549
+#: /var/www/html/telco/lib/data_query.php:549
 #, php-format
 msgid "Executing SNMP get for %s oids"
 msgstr "为%s  oids执行SNMP获取"
 
-#: /var/www/html/cacti/lib/data_query.php:585
+#: /var/www/html/telco/lib/data_query.php:585
 #, php-format
 msgid "Got SNMP get result for data @ '%s' [value='%s'] (index: %s)"
 msgstr "获得数据 @'%s'的SNMP获取结果  [value='%s'] (index: %s)"
 
-#: /var/www/html/cacti/lib/data_query.php:614
+#: /var/www/html/telco/lib/data_query.php:614
 #, php-format
 msgid "Executing SNMP get for data @ '%s' [value='$value']"
 msgstr "为数据@ '%s' [value='$value'] 执行SNMP抓取"
 
-#: /var/www/html/cacti/lib/data_query.php:620
+#: /var/www/html/telco/lib/data_query.php:620
 #, php-format
 msgid "Click to show Data Query output for field '%s'"
 msgstr "点击以显示字段'%s'的数据查询输出"
 
-#: /var/www/html/cacti/lib/data_query.php:622
+#: /var/www/html/telco/lib/data_query.php:622
 #, php-format
 msgid "Located input field '%s' [walk]"
 msgstr "位于输入栏'%s' [walk]"
 
-#: /var/www/html/cacti/lib/data_query.php:642
+#: /var/www/html/telco/lib/data_query.php:642
 #, php-format
 msgid "Executing SNMP walk for data @ '%s'"
 msgstr "为数据@'%s'执行SNMP walk"
 
-#: /var/www/html/cacti/lib/data_query.php:691
+#: /var/www/html/telco/lib/data_query.php:691
 #, php-format
 msgid "Found item [%s='%s'] index: %s [from %s]"
 msgstr "找到的项目 [%s='%s'] 索引: %s [来自 %s]"
 
-#: /var/www/html/cacti/lib/data_query.php:729
+#: /var/www/html/telco/lib/data_query.php:729
 #, php-format
 msgid "Found OCTET STRING '%s' decoded value: '%s'"
 msgstr "找到 OCTET STRING '%s' 解码值: '%s'"
 
-#: /var/www/html/cacti/lib/data_query.php:735
+#: /var/www/html/telco/lib/data_query.php:735
 #, php-format
 msgid "Found item [%s='%s'] index: %s [from regexp oid parse]"
 msgstr "找到项目 [%s='%s'] 索引: %s [来自 regexp oid parse]"
@@ -12722,7 +12722,7 @@ msgstr "查看SNMP通知接收器"
 msgid "Cacti Settings"
 msgstr "Cacti 设置"
 
-#: /var/www/html/cacti/lib/functions.php:2525
+#: /var/www/html/telco/lib/functions.php:2525
 msgid "External Link"
 msgstr "外部链接"
 
@@ -13029,7 +13029,7 @@ msgstr "目录未找到"
 msgid "Enter a valid directory path"
 msgstr "输入一个有效的目录路径"
 
-#: /var/www/html/cacti/lib/html_form.php:1040
+#: /var/www/html/telco/lib/html_form.php:1040
 #, php-format
 msgid "Cacti Color (%s)"
 msgstr "Cacti 颜色 (%s)"
@@ -13129,11 +13129,11 @@ msgstr "间隔"
 msgid "Stop"
 msgstr "停止"
 
-#: /var/www/html/cacti/lib/html_graph.php:423
-#: /var/www/html/cacti/lib/html_tree.php:881
-#: /var/www/html/cacti/settings.php:284
-#: /var/www/html/cacti/settings.php:303
-#: /var/www/html/cacti/settings.php:352
+#: /var/www/html/telco/lib/html_graph.php:423
+#: /var/www/html/telco/lib/html_tree.php:881
+#: /var/www/html/telco/settings.php:284
+#: /var/www/html/telco/settings.php:303
+#: /var/www/html/telco/settings.php:352
 msgid "Enter keyword"
 msgstr "输入关键字"
 
@@ -13563,7 +13563,7 @@ msgstr "报告标题"
 msgid "Report Disabled - No Owner"
 msgstr "报告已禁用 - 没有所有者"
 
-#: /var/www/html/cacti/lib/html_reports.php:1564
+#: /var/www/html/telco/lib/html_reports.php:1564
 msgid "Every"
 msgstr "每"
 
@@ -13611,7 +13611,7 @@ msgstr "图表过滤器"
 msgid "Set/Refresh Filter"
 msgstr "设置/刷新过滤器"
 
-#: /var/www/html/cacti/lib/html_utility.php:229
+#: /var/www/html/telco/lib/html_utility.php:229
 msgid "Selected"
 msgstr "选"
 
@@ -13641,12 +13641,12 @@ msgstr "UTF-8错误！"
 msgid "Bad UTF-8 offset error!"
 msgstr "UTF-8偏移错误！"
 
-#: /var/www/html/cacti/lib/html_validate.php:50
+#: /var/www/html/telco/lib/html_validate.php:50
 #, php-format
 msgid "Validation error for variable %s with a value of %s.  See backtrace below for more details."
 msgstr "变量 %s 的验证错误值为 %s. 有关更多详细信息，请参阅下面的回溯。"
 
-#: /var/www/html/cacti/lib/html_validate.php:57
+#: /var/www/html/telco/lib/html_validate.php:57
 msgid "Validation Error"
 msgstr "验证错误"
 
@@ -13671,7 +13671,7 @@ msgstr "不可写"
 msgid "writable"
 msgstr "可写"
 
-#: /var/www/html/cacti/lib/import.php:1637
+#: /var/www/html/telco/lib/import.php:1637
 msgid "Unknown Field"
 msgstr "未知字段"
 
@@ -13822,7 +13822,7 @@ msgstr "协议错误，无法设置版本"
 msgid "More than one matching user found"
 msgstr "找到多个匹配用户"
 
-#: /var/www/html/cacti/lib/ldap.php:508
+#: /var/www/html/telco/lib/ldap.php:508
 msgid "Unable to find user from DN"
 msgstr "无法从DN中找到用户"
 
@@ -13865,10 +13865,10 @@ msgstr "目的地地址未指定"
 msgid "default"
 msgstr "默认"
 
-#: /var/www/html/cacti/lib/ping.php:357
-#: /var/www/html/cacti/lib/ping.php:366
-#: /var/www/html/cacti/lib/ping.php:494
-#: /var/www/html/cacti/lib/ping.php:503
+#: /var/www/html/telco/lib/ping.php:357
+#: /var/www/html/telco/lib/ping.php:366
+#: /var/www/html/telco/lib/ping.php:494
+#: /var/www/html/telco/lib/ping.php:503
 msgid "Please upgrade to PHP 5.5.4+ for IPv6 support!"
 msgstr "请升级到PHP 5.5.4+以支持IPv6！"
 
@@ -13882,7 +13882,7 @@ msgstr "UDP ping错误：%s"
 msgid "UDP Ping Success (%s ms)"
 msgstr "UDP Ping成功 (%s ms)"
 
-#: /var/www/html/cacti/lib/ping.php:526
+#: /var/www/html/telco/lib/ping.php:526
 #, php-format
 msgid "TCP ping: socket_connect(), reason: %s"
 msgstr "TCP ping：socket_connect（），原因： %s"
@@ -13920,13 +13920,13 @@ msgstr "插件无法安装。"
 msgid "Plugin Management"
 msgstr "插件管理"
 
-#: /var/www/html/cacti/lib/plugins.php:790
-#: /var/www/html/cacti/lib/plugins.php:796
+#: /var/www/html/telco/lib/plugins.php:790
+#: /var/www/html/telco/lib/plugins.php:796
 #, php-format
 msgid "Requires: Cacti >= %s"
 msgstr "需要：Cacti >= %s"
 
-#: /var/www/html/cacti/lib/plugins.php:793
+#: /var/www/html/telco/lib/plugins.php:793
 msgid "Legacy Plugin"
 msgstr "旧版插件"
 
@@ -14133,11 +14133,11 @@ msgstr "RRA (CF=%s, ROWS=%d, PDP_PER_ROW=%d, XFF=%1.2f) 从RRD文件中删除\n"
 msgid "RRA (CF=%s, ROWS=%d, PDP_PER_ROW=%d, XFF=%1.2f) adding to RRD file\n"
 msgstr "RRA (CF=%s, ROWS=%d, PDP_PER_ROW=%d, XFF=%1.2f)添加到RRD文件\n"
 
-#: /var/www/html/cacti/lib/rrd.php:3376
+#: /var/www/html/telco/lib/rrd.php:3376
 msgid "Unknown RRDtool Error"
 msgstr "未知的RRDtool错误"
 
-#: /var/www/html/cacti/lib/utility.php:686
+#: /var/www/html/telco/lib/utility.php:686
 msgid "MySQL 5.6+ and MariaDB 10.0+ are great releases, and are very good versions to choose. Make sure you run the very latest release though which fixes a long standing low level networking issue that was causing spine many issues with reliability."
 msgstr "MySQL 5.6+和MariaDB 10.0+都是很棒的版本，并且是非常好的版本可供选择。 确保你运行的是最新的版本，虽然它修复了一个长期存在的低层网络问题，导致许多可靠性问题。"
 
@@ -14147,59 +14147,59 @@ msgstr "MySQL 5.6+和MariaDB 10.0+都是很棒的版本，并且是非常好的�
 msgid "It is recommended that you enable InnoDB in any %s version greater than 5.1."
 msgstr "建议您在任何版本大于5.1的%s版本中启用InnoDB。"
 
-#: /var/www/html/cacti/lib/utility.php:711
+#: /var/www/html/telco/lib/utility.php:711
 msgid "When using Cacti with languages other than English, it is important to use the utf8_general_ci collation type as some characters take more than a single byte.  If you are first just now installing Cacti, stop, make the changes and start over again.  If your Cacti has been running and is in production, see the internet for instructions on converting your databases and tables if you plan on supporting other languages."
 msgstr "当将Cacti与英语以外的其他语言一起使用时，使用utf8_general_ci排序规则类型非常重要，因为某些字符的取值不止一个字节。 如果你是第一个刚刚安装Cacti的人，请停止，进行更改并重新开始。 如果您的Cacti已经运行并且正在投入生产，请参阅互联网了解如果您计划支持其他语言，请转换数据库和表格。"
 
-#: /var/www/html/cacti/lib/utility.php:717
+#: /var/www/html/telco/lib/utility.php:717
 msgid "When using Cacti with languages other than English, it is important to use the utf8 character set as some characters take more than a single byte. If you are first just now installing Cacti, stop, make the changes and start over again. If your Cacti has been running and is in production, see the internet for instructions on converting your databases and tables if you plan on supporting other languages."
 msgstr "当使用除英语以外的语言的Cacti时，使用utf8字符集非常重要，因为某些字符需要多个字节。 如果你是第一个刚刚安装Cacti的人，请停止，进行更改并重新开始。 如果您的Cacti已经运行并且正在投入生产，请参阅互联网了解如果您计划支持其他语言，请转换数据库和表格。"
 
-#: /var/www/html/cacti/lib/utility.php:741
+#: /var/www/html/telco/lib/utility.php:741
 msgid "When using Cacti with languages other than English, it is important to use the utf8mb4_unicode_ci collation type as some characters take more than a single byte."
 msgstr "当将Cacti与英语以外的其他语言一起使用时，使用utf8mb4_unicode_ci排序规则类型非常重要，因为某些字符的取值不止一个字节。"
 
-#: /var/www/html/cacti/lib/utility.php:747
+#: /var/www/html/telco/lib/utility.php:747
 msgid "When using Cacti with languages other than English, it is important ot use the utf8mb4 character set as some characters take more than a single byte."
 msgstr "将Cacti与英语以外的语言一起使用时，使用utf8mb4字符集非常重要，因为某些字符需要多个字节。"
 
-#: /var/www/html/cacti/lib/utility.php:756
+#: /var/www/html/telco/lib/utility.php:756
 #, php-format
 msgid "Depending on the number of logins and use of spine data collector, %s will need many connections.  The calculation for spine is: total_connections = total_processes * (total_threads + script_servers + 1), then you must leave headroom for user connections, which will change depending on the number of concurrent login accounts."
 msgstr "根据登录次数和使用脊柱数据收集器，％s将需要许多连接。 spine的计算是：total_connections = total_processes *（total_threads + script_servers + 1），那么您必须留下用于用户连接的空间，这将根据并发登录帐户的数量而改变。"
 
-#: /var/www/html/cacti/lib/utility.php:761
+#: /var/www/html/telco/lib/utility.php:761
 #, php-format
 msgid "If using the Cacti Performance Booster and choosing a memory storage engine, you have to be careful to flush your Performance Booster buffer before the system runs out of memory table space.  This is done two ways, first reducing the size of your output column to just the right size.  This column is in the tables poller_output, and poller_output_boost.  The second thing you can do is allocate more memory to memory tables.  We have arbitrarily chosen a recommended value of 10% of system memory, but if you are using SSD disk drives, or have a smaller system, you may ignore this recommendation or choose a different storage engine.  You may see the expected consumption of the Performance Booster tables under Console -> System Utilities -> View Boost Status."
 msgstr "如果使用Cacti Performance Booster并选择内存存储引擎，则在系统内存表空间用完之前，必须小心刷新Performance Booster缓冲区。 这通过两种方式完成，首先将输出列的大小减小到合适的大小。 此列位于表poller_output和poller_output_boost中。 你可以做的第二件事是分配更多的内存到内存表中。 我们已经任意选择了系统内存10％的建议值，但是如果您使用的是SSD磁盘驱动器，或者系统较小，则可以忽略此建议或选择其他存储引擎。 您可以在Console - > System Utilities - > View Boost Status下看到Performance Booster表的预期消耗量。"
 
-#: /var/www/html/cacti/lib/utility.php:766
+#: /var/www/html/telco/lib/utility.php:766
 msgid "Keeping the table cache larger means less file open/close operations when using innodb_file_per_table."
 msgstr "使用innodb_file_per_table时，保持表缓存的大小意味着更少的文件打开/关闭操作。"
 
-#: /var/www/html/cacti/lib/utility.php:771
+#: /var/www/html/telco/lib/utility.php:771
 msgid "With Remote polling capabilities, large amounts of data will be synced from the main server to the remote pollers.  Therefore, keep this value at or above 16M."
 msgstr "通过远程轮询功能，大量数据将从主服务器同步到远程轮询器。 因此，请将此值保持在16M或以上。"
 
-#: /var/www/html/cacti/lib/utility.php:776
+#: /var/www/html/telco/lib/utility.php:776
 msgid "When executing subqueries, having a larger temporary table size, keep those temporary tables in memory."
 msgstr "执行具有较大临时表大小的子查询时，请将这些临时表保存在内存中。"
 
-#: /var/www/html/cacti/lib/utility.php:781
+#: /var/www/html/telco/lib/utility.php:781
 msgid "When performing joins, if they are below this size, they will be kept in memory and never written to a temporary file."
 msgstr "在执行连接时，如果它们低于此大小，它们将被保存在内存中，并且不会写入临时文件。"
 
-#: /var/www/html/cacti/lib/utility.php:786
+#: /var/www/html/telco/lib/utility.php:786
 #, php-format
 msgid "When using InnoDB storage it is important to keep your table spaces separate.  This makes managing the tables simpler for long time users of %s.  If you are running with this currently off, you can migrate to the per file storage by enabling the feature, and then running an alter statement on all InnoDB tables."
 msgstr "使用InnoDB存储时，保持表空间是分开的。 这使得对％s的长时间用户管理表格变得更简单。 如果您正在使用此功能运行，则可以启用该功能，然后在所有InnoDB表上运行alter语句，从而迁移到每个文件存储。"
 
-#: /var/www/html/cacti/lib/utility.php:791
+#: /var/www/html/telco/lib/utility.php:791
 #, php-format
-msgid "InnoDB will hold as much tables and indexes in system memory as is possible.  Therefore, you should make the innodb_buffer_pool large enough to hold as much of the tables and index in memory.  Checking the size of the /var/lib/mysql/cacti directory will help in determining this value.  We are recommending 25% of your systems total memory, but your requirements will vary depending on your systems size."
+msgid "InnoDB will hold as much tables and indexes in system memory as is possible.  Therefore, you should make the innodb_buffer_pool large enough to hold as much of the tables and index in memory.  Checking the size of the /var/lib/mysql/telco directory will help in determining this value.  We are recommending 25% of your systems total memory, but your requirements will vary depending on your systems size."
 msgstr "InnoDB将在系统内存中保存尽可能多的表和索引。 因此，你应该让innodb_buffer_pool大到足以容纳内存中的表和索引。 检查/ var / lib / mysql / cacti目录的大小将有助于确定此值。 我们建议您的系统总内存的25％，但是您的要求会因系统大小而异。"
 
-#: /var/www/html/cacti/lib/utility.php:796
+#: /var/www/html/telco/lib/utility.php:796
 #, php-format
 msgid "With modern SSD type storage, this operation actually degrades the disk more rapidly and adds a 50% overhead on all write operations."
 msgstr "使用现代SSD类型的存储器，此操作实际上会更快速地降低磁盘，并在所有写入操作中增加50％的开销。"
@@ -14208,16 +14208,16 @@ msgstr "使用现代SSD类型的存储器，此操作实际上会更快速地降
 msgid "This is where metadata is stored. If you had a lot of tables, it would be useful to increase this."
 msgstr "这是元数据存储的地方。 如果你有很多表格，那么增加这个值会很有用。"
 
-#: /var/www/html/cacti/lib/utility.php:806
+#: /var/www/html/telco/lib/utility.php:806
 msgid "Rogue queries should not for the database to go offline to others.  Kill these queries before they kill your system."
 msgstr "恶意查询不应该让数据库脱机给其他人。 在杀死你的系统之前杀死这些查询。"
 
-#: /var/www/html/cacti/lib/utility.php:815
+#: /var/www/html/telco/lib/utility.php:815
 #, php-format
 msgid "Setting this value to 2 means that you will flush all transactions every second rather than at commit.  This allows %s to perform writing less often."
 msgstr "将此值设置为2意味着您将每秒刷新所有事务，而不是在提交时刷新。 这使得％s可以减少写入次数。"
 
-#: /var/www/html/cacti/lib/utility.php:820
+#: /var/www/html/telco/lib/utility.php:820
 msgid "With modern SSD type storage, having multiple io threads is advantageous for applications with high io characteristics."
 msgstr "采用现代SSD类型的存储器，具有多个IO线程对于具有高IO特性的应用是有利的。"
 
@@ -14226,15 +14226,15 @@ msgstr "采用现代SSD类型的存储器，具有多个IO线程对于具有高I
 msgid "As of %s %s, the you can control how often %s flushes transactions to disk.  The default is 1 second, but in high I/O systems setting to a value greater than 1 can allow disk I/O to be more sequential"
 msgstr "从 %s %s开始，您可以控制 %s将交易刷新到磁盘的频率。 默认值是1秒，但是在高I/O系统中设置为大于1的值可以允许磁盘I/O更有序"
 
-#: /var/www/html/cacti/lib/utility.php:833
+#: /var/www/html/telco/lib/utility.php:833
 msgid "With modern SSD type storage, having multiple read io threads is advantageous for applications with high io characteristics."
 msgstr "采用现代SSD类型的存储器，具有多个读取IO线程对于具有高IO特性的应用是有利的。"
 
-#: /var/www/html/cacti/lib/utility.php:838
+#: /var/www/html/telco/lib/utility.php:838
 msgid "With modern SSD type storage, having multiple write io threads is advantageous for applications with high io characteristics."
 msgstr "采用现代SSD类型的存储器，具有多个写入IO线程对于具有高IO特性的应用是有利的。"
 
-#: /var/www/html/cacti/lib/utility.php:843
+#: /var/www/html/telco/lib/utility.php:843
 #, php-format
 msgid "%s will divide the innodb_buffer_pool into memory regions to improve performance.  The max value is 64.  When your innodb_buffer_pool is less than 1GB, you should use the pool size divided by 128MB.  Continue to use this equation upto the max of 64."
 msgstr "%s会将innodb_buffer_pool分成内存区域以提高性能。 最大值是64.当你的innodb_buffer_pool小于1GB时，你应该使用池大小除以128MB。 继续使用这个等式，最大值为64。"
@@ -14252,19 +14252,19 @@ msgstr "文档"
 msgid "Note: Many changes below require a database restart"
 msgstr "注意：下面的许多更改需要重新启动数据库"
 
-#: /var/www/html/cacti/lib/utility.php:855
+#: /var/www/html/telco/lib/utility.php:855
 msgid "Variable"
 msgstr "变量"
 
-#: /var/www/html/cacti/lib/utility.php:856
+#: /var/www/html/telco/lib/utility.php:856
 msgid "Current Value"
 msgstr "当前值"
 
-#: /var/www/html/cacti/lib/utility.php:857
+#: /var/www/html/telco/lib/utility.php:857
 msgid "Recommended Value"
 msgstr "推荐值"
 
-#: /var/www/html/cacti/lib/utility.php:858
+#: /var/www/html/telco/lib/utility.php:858
 msgid "Comments"
 msgstr "注释"
 
@@ -14426,8 +14426,8 @@ msgstr "外部链接[编辑： %s]"
 msgid "External Links [new]"
 msgstr "外部链接[新建]"
 
-#: /var/www/html/cacti/logout.php:46
-#: /var/www/html/cacti/logout.php:82
+#: /var/www/html/telco/logout.php:46
+#: /var/www/html/telco/logout.php:82
 msgid "Logout of Cacti"
 msgstr "注销Cacti"
 
@@ -14560,12 +14560,12 @@ msgid "Click 'Continue' to disable the following Notification Receiver"
 msgid_plural "Click 'Continue' to disable following Notification Receiver"
 msgstr[0] "点击“继续”以禁用以下通知接收器"
 
-#: /var/www/html/cacti/managers.php:1005
+#: /var/www/html/telco/managers.php:1005
 #, php-format
 msgid "%s Notification Receivers"
 msgstr "%s通知接者"
 
-#: /var/www/html/cacti/managers.php:1007
+#: /var/www/html/telco/managers.php:1007
 msgid "You must select at least one Notification Receiver."
 msgstr "您必须至少选择一个通知接收方。"
 
@@ -14676,7 +14676,7 @@ msgstr "没有找到插件"
 msgid "ERROR: Directory Missing"
 msgstr "错误：目录缺失"
 
-#: /var/www/html/cacti/plugins.php:443
+#: /var/www/html/telco/plugins.php:443
 #, php-format
 msgid "Not Compatible, %s"
 msgstr "不兼容, %s"
@@ -14859,7 +14859,7 @@ msgstr "测试连接"
 msgid "Test Database Connection"
 msgstr "测试数据库连接"
 
-#: /var/www/html/cacti/pollers.php:523
+#: /var/www/html/telco/pollers.php:523
 msgid "Collectors"
 msgstr "收集器"
 
@@ -14950,7 +14950,7 @@ msgctxt "dropdown action"
 msgid "Archive"
 msgstr "归档顺序"
 
-#: /var/www/html/cacti/rrdcleaner.php:338
+#: /var/www/html/telco/rrdcleaner.php:338
 msgid "RRD Files"
 msgstr "RRD文件"
 
@@ -15284,15 +15284,15 @@ msgstr "警告：遇到导出错误。 刷新浏览器窗口查看细节！"
 msgid "What would you like to export?"
 msgstr "What would you like to export?"
 
-#: /var/www/html/cacti/templates_export.php:110
+#: /var/www/html/telco/templates_export.php:110
 msgid "Select the Template type that you wish to export from Cacti."
 msgstr "选择您希望从Cacti导出的模板类型。"
 
-#: /var/www/html/cacti/templates_export.php:120
+#: /var/www/html/telco/templates_export.php:120
 msgid "Device Template to Export"
 msgstr "要导出的设备模板"
 
-#: /var/www/html/cacti/templates_export.php:121
+#: /var/www/html/telco/templates_export.php:121
 msgid "Choose the Template to export to XML."
 msgstr "选择模板导出为XML。"
 
@@ -15330,7 +15330,7 @@ msgstr "局部保存文件"
 msgid "Available Templates [%s]"
 msgstr "可用模板[%s]"
 
-#: /var/www/html/cacti/templates_import.php:115
+#: /var/www/html/telco/templates_import.php:115
 msgid "Import Template"
 msgstr "导入模板"
 
@@ -15449,8 +15449,8 @@ msgstr "可用设备"
 msgid "Available Graphs"
 msgstr "可用的图形"
 
-#: /var/www/html/cacti/tree.php:846
-#: /var/www/html/cacti/tree.php:1059
+#: /var/www/html/telco/tree.php:846
+#: /var/www/html/telco/tree.php:1059
 msgid "New Node"
 msgstr "新节点"
 
@@ -15484,7 +15484,7 @@ msgstr "剪切"
 msgid "Paste"
 msgstr "粘贴"
 
-#: /var/www/html/cacti/tree.php:1653
+#: /var/www/html/telco/tree.php:1653
 msgid "Add Tree"
 msgstr "添加树"
 
@@ -16682,15 +16682,15 @@ msgstr "数据查询缓存存储从数据查询输入类型收集的信息。 �
 msgid "Rebuild Poller Cache"
 msgstr "重建轮询缓存"
 
-#: /tmp/cacti_package.12750/cacti-1.1.34/utilities.php:1863
+#: /tmp/telco_package.12750/telco-1.1.34/utilities.php:1863
 msgid "The Poller Cache will be re-generated if you select this option. Use this option only in the event of a database crash if you are experiencing issues after the crash and have already run the database repair tools.  Alternatively, if you are having problems with a specific Device, simply re-save that Device to rebuild its Poller Cache.  There is also a command line interface equivalent to this command that is recommended for large systems.  <i class=\"deviceDown\">NOTE: On large systems, this command may take several minutes to hours to complete and therefore should not be run from the Cacti UI.  You can simply run 'php -q cli/rebuild_poller_cache.php --help' at the command line for more information.</i>"
 msgstr "如果您选择此选项，则将重新生成轮询缓存。如果在崩溃后遇到问题并且已经运行数据库修复工具，则只有在发生数据库崩溃的情况下才使用此选项;或者，如果您遇到问题 使用特定的设备，只需重新保存该设备以重建其轮询缓存即可。还有一个与此命令等效的命令行界面，建议用于大型系统。<i class = “deviceDown ”>注意：在大型系统 ，这个命令可能需要几分钟到几个小时才能完成，因此不应该从Cacti UI运行。您可以在命令行运行'php -q cli / rebuild_poller_cache.php --help'以获取更多信息。</ i>"
 
-#: /tmp/cacti_package.12750/cacti-1.1.34/utilities.php:1865
+#: /tmp/telco_package.12750/telco-1.1.34/utilities.php:1865
 msgid "Rebuild Resource Cache"
 msgstr "重建资源缓存"
 
-#: /tmp/cacti_package.12750/cacti-1.1.34/utilities.php:1867
+#: /tmp/telco_package.12750/telco-1.1.34/utilities.php:1867
 msgid "When operating multiple Data Collectors in Cacti, Cacti will attempt to maintain state for key files on all Data Collectors.  This includes all core, non-install related website and plugin files.  When you force a Resource Cache rebild, Cacti will clear the local Resource Cache, and then rebuild it at the next scheduled poller start.  This will trigger all Remote Data Collectors to recheck their website and plugin files for consistency."
 msgstr "当在Cacti中运行多个数据收集器时，Cacti将尝试维护所有数据收集器上的密钥文件的状态，包括所有核心的非安装相关网站和插件文件当您强制重置资源缓存时，Cacti将清除本地 资源缓存，然后在下一个计划的轮询器启动时重建它，这将触发所有远程数据收集器重新检查其网站和插件文件的一致性。"
 
@@ -17770,13 +17770,13 @@ msgstr ""
 msgid ""
 "InnoDB will hold as much tables and indexes in system memory as is possible.\n"
 "\t\t\t\tTherefore, you should make the innodb_buffer_pool large enough to hold as much\n"
-"\t\t\t\tof the tables and index in memory.  Checking the size of the /var/lib/mysql/cacti\n"
+"\t\t\t\tof the tables and index in memory.  Checking the size of the /var/lib/mysql/telco\n"
 "\t\t\t\tdirectory will help in determining this value.  We are recommending 25% of your systems\n"
 "\t\t\t\ttotal memory, but your requirements will vary depending on your systems size."
 msgstr ""
 "InnoDB将在系统内存中保存尽可能多的表和索引。\n"
 "\t\t\t\t因此，您应该使innodb_buffer_pool足够大以容纳\n"
-"\t\t\t\t内存中的表和索引。 检查 /var/lib/mysql/cacti的大小\n"
+"\t\t\t\t内存中的表和索引。 检查 /var/lib/mysql/telco的大小\n"
 "\t\t\t\t目录将有助于确定此值。 我们推荐您的系统的25% \n"
 "\t\t\t\t总内存，但是您的要求会因您的系统大小而有所不同。"
 

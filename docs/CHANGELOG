@@ -1034,7 +1034,7 @@ Cacti CHANGELOG
 -bug#0002213: CLI upgrade script is missing 0.8.7i as a target
 -bug#0002214: SQL error during non-PIA upgrade to 088 when giving a default for a text field in plugin_realms
 -bug#0002216: use of define_syslog_variables() gone in PHP 5.4
--bug#0002217: url_path should default to /cacti/
+-bug#0002217: url_path should default to /telco/
 -bug#0002221: Missing plugin directory causes endless loop in plugins.php
 -bug#0002222: tail_logfile hangs when cacti.log not readable, filling apache log with fgets warnings
 
@@ -1885,7 +1885,7 @@ Cacti CHANGELOG
 -bug: Problem saving a templated graph or data source that contained a checkbox field that had a value different from the default.
 -bug: Typo in graphs.php when placing graph(s) on a tree.
 -bug: Make sure that there is a user logged in before trying to read a per-user graph configuration value.
--bug: Fix support for multiple cmd.php/cactid polling sessions in a single poller.php session.
+-bug: Fix support for multiple cmd.php/telcod polling sessions in a single poller.php session.
 -bug: Revert back to older RRDtool update method as to correct several poller related issues with 0.8.6.
 -bug: Fix PHP-SNMP support in cmd.php.
 -bug: Fix multiple graph/data template corruption issues when converting from graphs or data sources.
@@ -1947,7 +1947,7 @@ Cacti CHANGELOG
 -feature: UDP/ICMP/SNMP ping support used to determine a host's availability status.
 -feature: A PHP script server which enables PHP script to be interpreted by the poller without spawning a separate PHP process for each item. See the manual for more details.
 -feature: Ability to choose the type of poller (cmd.php, cactid) and number of threads (cactid only) from the UI.
--feature: Ability to spawn multiple simultaneous cmd.php/cactid processes to speed up the polling process.
+-feature: Ability to spawn multiple simultaneous cmd.php/telcod processes to speed up the polling process.
 -feature: Allow data templates and data sources that use SNMP to override host fields (hostname, snmp port, etc) in the poller cache.
 -feature: Added Eric Steffen's Bonsai patch which enables users to zoom a graph by dragging a box around the area of interest.
 -feature: Added branix's graph export enhancements patch which adds many more graph export configuration options including remote FTP support.

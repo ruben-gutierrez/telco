@@ -1,8 +1,8 @@
 # Cacti <sup>TM</sup>
-[![Build Status - Develop](https://travis-ci.org/Cacti/cacti.svg?branch=develop)](https://travis-ci.org/Cacti/cacti)
+[![Build Status - Develop](https://travis-ci.org/Cacti/telco.svg?branch=develop)](https://travis-ci.org/Cacti/telco)
 [![Project Status](http://opensource.box.com/badges/active.svg)](http://opensource.box.com/badges)
-[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/cacti/cacti.svg)](http://isitmaintained.com/project/cacti/cacti "Average time to resolve an issue")
-[![Percentage of open issues](http://isitmaintained.com/badge/open/cacti/cacti.svg)](http://isitmaintained.com/project/cacti/cacti "Percentage of issues still open")
+[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/telco/telco.svg)](http://isitmaintained.com/project/telco/telco "Average time to resolve an issue")
+[![Percentage of open issues](http://isitmaintained.com/badge/open/telco/telco.svg)](http://isitmaintained.com/project/telco/telco "Percentage of issues still open")
 -----------------------------------------------------------------------------
 
 Cacti is a complete network graphing solution designed to harness the power of RRDtool's data storage and graphing functionality. Cacti provides following features:
@@ -48,7 +48,7 @@ Given the large scope of Cacti, the forums tend to generate a respectable amount
 
 ### Development
 
-Get involved in development of Cacti! Join the developers and community on [GitHub](https://github.com/cacti)!
+Get involved in development of Cacti! Join the developers and community on [GitHub](https://github.com/telco)!
 
 -----------------------------------------------------------------------------
 
@@ -167,7 +167,7 @@ The following plugins have been merged into the core Cacti code as of version 1.
 
 ## Legacy Plugins Notice
 
-Plugins written for Cacti 0.8.8 and before will require modifications in order to be compatible with Cacti 1.0.0.  There have been several changes that all plugin developers need to be aware of.  Please see the [Cacti Wiki](https://github.com/Cacti/cacti/wiki/PluginMigration) for information on migrating your own custom developed plugins to the Cacti 1.0.0 framework.  Any of the Cacti Group maintained plugin can be used as reference plugins for driving your plugin migration to the 1.0.0 framework and are available on [Github](https://github.com/Cacti/). 
+Plugins written for Cacti 0.8.8 and before will require modifications in order to be compatible with Cacti 1.0.0.  There have been several changes that all plugin developers need to be aware of.  Please see the [Cacti Wiki](https://github.com/Cacti/telco/wiki/PluginMigration) for information on migrating your own custom developed plugins to the Cacti 1.0.0 framework.  Any of the Cacti Group maintained plugin can be used as reference plugins for driving your plugin migration to the 1.0.0 framework and are available on [Github](https://github.com/Cacti/). 
 
 ## Charting Functionality
 

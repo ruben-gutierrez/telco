@@ -316,7 +316,7 @@ function display_help() {
 }
 
 function get_cacti_version() {
-	$cacti_version_file = dirname(__FILE__) . '/../include/cacti_version';
+	$cacti_version_file = dirname(__FILE__) . '/../include/telco_version';
 
 	if (! file_exists($cacti_version_file)) {
 	        die ("ERROR: failed to find cacti version file\n");

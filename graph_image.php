@@ -159,7 +159,7 @@ if ($output !== false && $output != '') {
 	if ($image !== false) {
 		print $image;
 	} else {
-		print file_get_contents(__DIR__ . '/images/cacti_error_image.png');
+		print file_get_contents(__DIR__ . '/images/telco_error_image.png');
 	}
 }
 

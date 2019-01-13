@@ -788,7 +788,7 @@ function utilities_get_mysql_recommendations() {
 		'innodb_buffer_pool_size' => array(
 			'value'   => '25',
 			'measure' => 'pmem',
-			'comment' => __('InnoDB will hold as much tables and indexes in system memory as is possible.  Therefore, you should make the innodb_buffer_pool large enough to hold as much of the tables and index in memory.  Checking the size of the /var/lib/mysql/cacti directory will help in determining this value.  We are recommending 25% of your systems total memory, but your requirements will vary depending on your systems size.')
+			'comment' => __('InnoDB will hold as much tables and indexes in system memory as is possible.  Therefore, you should make the innodb_buffer_pool large enough to hold as much of the tables and index in memory.  Checking the size of the /var/lib/mysql/telco directory will help in determining this value.  We are recommending 25% of your systems total memory, but your requirements will vary depending on your systems size.')
 			),
 		'innodb_doublewrite' => array(
 			'value'   => 'OFF',
