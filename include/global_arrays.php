@@ -1661,3 +1661,119 @@ $phperrors = array (
 
 api_plugin_hook('config_arrays');
 
+// Contenido testbed ims
+
+$menu_vertical_info = array (
+	"Arquitectura" => array ("fa fa-sitemap fa-fw",
+		"Arquitctura distribuida",
+		"Arquitectura Todo en Uno",
+		"Pruebas",
+		"Graficas"
+	),
+	"Pruebas" => array (
+		"fa fa-wrench fa-fw",
+		"Prueba de Proxy",
+		"Prueba de CSCF",
+		"Prueba de conjunto",
+		"Crear pruebas personalizadas"
+	),
+	"Gráficas" => array (
+		"fa fa-bar-chart-o fa-fw",
+		"Gráficas de rendimiento",
+		"Gráficas de Calidad"
+	)
+
+);
+$menu_vertical_arquitectura = array (
+	"Arquitectura distribuida",
+	"Arquitectura Todo en Uno",
+	"Distribuida + PSTN"
+
+);
+$menu_vertical_pruebas = array (
+	"Prueba de Proxy",
+	"Prueba de CSCF",
+	"Prueba de conjunto",
+	"Crear pruebas personalizadas"
+);
+
+$paginas_testbed = array (
+	"info.php",
+	"arquitectura.php",
+	"pruebas.php"
+);
+
+$contenido_info = array(
+		__('ngn') => array( "Descripción" ),
+		__('IMS') => array( "Maquina virtual con nodos bono, sprout, homestead, homer y ellis. Con el mas bajo rendimineto, carencia de escalabilidad y sin tolerancia a fallos de un despliegue Clearwater" ),
+		__('TESTBED') => array( "Todos los componentes son escalables horizontalmente, minimiza el impacto por perdida de nodos mediante los estados de corta y larga vida almacenados en los nodos respectivos." ),
+		__('TESTBED IMS') => array( "Compuesta por un desplegue clearwater distribuido con un nodo IBCF para interconectarse con la PSTN")
+	);
+
+$contenido_arquitectura = array(
+		__('Arquitectura') => array( "Descripción", "Imgen" ),
+		__('Todo en Uno') => array( "Maquina virtual con nodos bono, sprout, homestead, homer y ellis. Con el mas bajo rendimineto, carencia de escalabilidad y sin tolerancia a fallos de un despliegue Clearwater", "img/todoenuno.png" ),
+		__('Distribuida') => array( "Todos los componentes son escalables horizontalmente, minimiza el impacto por perdida de nodos mediante los estados de corta y larga vida almacenados en los nodos respectivos.", "img/distribuida.png"),
+		__('Distribuida + PSTN') => array( "Compuesta por un desplegue clearwater distribuido con un nodo IBCF para interconectarse con la PSTN", "img/dist+pstn.png")
+	);
+
+$contenido_pruebas = array(
+	"Prueba" => array(
+		// "comando" => "Comando",
+		"caracteristicas" => "Caracteristicas",
+		"opciones" => "Opciones"
+	),
+	"Proxy(Bono)" => array(
+		// "comando" => "sudo service clearwater-sip-stress restart",
+		"caracteristicas" => "Emula un P-CSCF para enviar tráfico al nucleo IMS y verificar su rendimiento directamente, dependiendo de los recursos se podran emular los nodos Bono",
+		"opciones" => array("Objetivo de prueba",
+							"Servidores Bono en este despliegue",
+							"Extensiones inicial a usar",
+							"Número de extensiones a usar",
+							"Dominio")
+	),
+	"Core IMS (Sprout)" => array(
+		// "comando" => "/usr/share/clearwater/bin/run_stress <home_domain> <number of subscribers> <duration in minutes>",
+		"caracteristicas" => "Emula usuarios en el sistema para enviar tráfico al nodo Bono y probar el rendimento de los nodos bono y sprout simultaneamente. La prueba realizara el siguiente procedimiento:
+		- Envia un registro inicial para todos los Usuarios.
+		- Notifica que el registro inicial es exitoso.
+		- Envia tráfico hacia el nodo Sprout de cada llamada.
+		- Guarda informe del resultado.",
+		"opciones" => array("Dominio", 
+							"Número de suscriptores",
+							"Duración en minutos de la llamada",
+							"Registros por segundo",
+							"Mostrar pruebas en pantalla",
+							"Cambiar I-CSCF",
+							"Cambiar S-CSCF" )
+	),
+	"Prueba en Vivo" => array(
+		// "comando" => "rake test[<domain>] SIGNUP_CODE=<code>",
+		"caracteristicas" => "Se realizar una prueba en vivo para verificar el correcto funcionamiento del nucleo IMS y validar una nueva funcionalidad. ",
+		"opciones" => array(
+			"ELLIS_API_KEY=<key>" => "Evitar asignar URI al azar",
+			"TESTS=<glob>" => "Ejecutar las pruebas llamadas",
+			"PSTN=true" => "Habilitar PSTN",
+			"LIVENUMBER=<number>" => "Usar dispositivos reales",
+			"REPEAT=<number>" => "Repetir pruebas",
+			"TRANSPORT=<transports>" => "Usar TCP y/o UDP",
+			"PROXY=<host>" => "Proxy",
+			"ELLIS=<host>" => "Sobre escribir la ruta de Ellis",
+			"HOST_NAME=<host>" => "Nombre de la maquina que ejecuta las pruebas",
+			// "EXPIRES=<number>" => "",
+			"GEMINI=<host>" => "Nombre host del Cluster Gemini",
+			"MEMENTO_SIP=<host>" => "Nombre de host de Memento HTTP ",
+			"PROVISIONAL_RESPONSES_IGNORED=TRUE" => "Permitir flujos alternos en las secuencias de mensajes",
+			"EXCLUDE_TESTS=test1 (TCP),test2 (UDP)" => "Lista de prefijos de opciones de prueba a ignorar",
+			"ELLIS_USER=<email>" => "Sobreescribir la direccion de correo usada por Ellis, para permitir diferentes pruebas simultaneas",
+			"BONO_SNMP=Y" => "Verifica la consistencia de los mensajes SNMP del nodo Bono",
+			"OFF_NET_TEL=<number>" => "lista de numero que seran enrutados al nodo BGCF",
+			// "NONCE_COUNT=Y" => " to enable nonce-count tests - only possible if nonce_count_supported=Y is set on the Clearwater deployment under test.",
+			"IBCF=<hostname>" => "Direccion del nodo BGCF",
+			"ICSCF_HOSTNAME=<hostname>" => "Nombre de ICSCF",
+			"EMERGENCY_REG=Y" => "Incluye pruebas con registración de emergencia",
+			"SHORT_REG=Y" => "Incluir pruebas que usen regisstracion corta",
+			"PCSCF=<PROXY or B2BUA>" => "Nombre del PCSCF")		
+	)	
+);
+
