@@ -1406,6 +1406,7 @@ function html_show_tabs_left() {
 	$realm_allowed[19] = is_realm_allowed(19);
 	$realm_allowed[21] = is_realm_allowed(21);
 	$realm_allowed[22] = is_realm_allowed(22);
+	$realm_allowed[100] = is_realm_allowed(100);
 
 	if ($realm_allowed[8]) {
 		$show_console_tab = true;
@@ -1417,17 +1418,43 @@ function html_show_tabs_left() {
 		if ($show_console_tab == true) {
 			?><a <?php print (is_console_page(get_current_page()) ? " id='maintab-anchor" . rand() . "' class='selected'":"");?> href="<?php echo $config['url_path']; ?>index.php"><img src="<?php echo $config['url_path']; ?>images/tab_console<?php print (is_console_page(get_current_page()) ? '_down':'');?>.gif" alt="<?php print __('Console');?>"></a><?php
 		}
+		// contenido testbed ims 
+		// info
+		if ($realm_allowed[100]) {
+			if ($config['poller_id'] > 1 && $config['connection'] != 'online') {
+				// Don't show graphs tab when offline
+			} else {
+				
+					print "<a id='maintab-anchor" . rand() . "' class='selected' href='" . html_escape($config['url_path'] . 'info.php') . "'>Información</a>";
+				
+			}
+		}
+		// arquitectura
+		if ($realm_allowed[100]) {
+			if ($config['poller_id'] > 1 && $config['connection'] != 'online') {
+				// Don't show graphs tab when offline
+			} else {
+				
+					print "<a id='maintab-anchor" . rand() . "' class='selected' href='" . html_escape($config['url_path'] . 'graph_view.php') . "'>Arquitectura</a>";
 
+			}
+		}
+		
+		// pruebas
+		if ($realm_allowed[100]) {
+			if ($config['poller_id'] > 1 && $config['connection'] != 'online') {
+				// Don't show graphs tab when offline
+			} else {
+					print "<a id='maintab-anchor" . rand() . "' class='selected' href='" . html_escape($config['url_path'] . 'pruebas.php') . "'>Pruebas</a>";
+			}
+		}
 		if ($realm_allowed[7]) {
 			if ($config['poller_id'] > 1 && $config['connection'] != 'online') {
 				// Don't show graphs tab when offline
 			} else {
-				$file = get_current_page();
-				if ($file == "graph_view.php" || $file == "graph.php") {
-					print "<a id='maintab-anchor" . rand() . "' class='selected' href='" . html_escape($config['url_path'] . 'graph_view.php') . "'><img src='" . $config['url_path'] . "images/tab_graphs_down.gif' alt='" . __('Graphs') . "'></a>";
-				} else {
-					print "<a href='" . html_escape($config['url_path'] . 'graph_view.php') . "'><img src='" . $config['url_path'] . "images/tab_graphs.gif' alt='" . __('Graphs') . "'></a>";
-				}
+				
+					print "<a id='maintab-anchor" . rand() . "' class='selected' href='" . html_escape($config['url_path'] . 'graph_view.php') . "'>Gráficas</a>";
+				
 			}
 		}
 
