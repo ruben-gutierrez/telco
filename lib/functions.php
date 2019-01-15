@@ -21,7 +21,7 @@
  | http://www.cacti.net/                                                   |
  +-------------------------------------------------------------------------+
 */
-
+global $paginas_testbed;
 /* title_trim - takes a string of text, truncates it to $max_length and appends
      three periods onto the end
    @arg $text - the string to evaluate
@@ -1956,16 +1956,18 @@ function draw_login_status($using_guest_account = false) {
 
 	if (isset($_SESSION['sess_user_id']) && $_SESSION['sess_user_id'] == $guest_account) {
 		api_plugin_hook('nav_login_before');
-		print __('Logged in as') . " <span id='user' class='user usermenuup'>". __('guest') . "</span></div><div><ul class='menuoptions' style='display:none;'><li><a href='" . $config['url_path'] . "index.php'>" . __('Login as Regular User') . "</a></li></ul>\n";
+		print " <span id='user' class='user usermenuup'>"."<i class='fa fa-user fa-3x'></i>" .  "</span></div><div><ul class='menuoptions' style='display:none;'><li><a href='" . $config['url_path'] . "index.php'>" . __('Login as Regular User') . "</a></li></ul>\n";
 		api_plugin_hook('nav_login_after');
 	} elseif (isset($_SESSION['sess_user_id']) && $using_guest_account == false) {
 		$user = db_fetch_row_prepared('SELECT username, password_change, realm FROM user_auth WHERE id = ?', array($_SESSION['sess_user_id']));
 		api_plugin_hook('nav_login_before');
-		print __('Logged in as') . " <span id='user' class='user usermenuup'>" . html_escape($user['username']) .
+		print " <span id='user' class='user usermenuup'>" ."<i class='fa fa-user fa-3x'></i>" . 
 			"</span></div><div><ul class='menuoptions' style='display:none;'>" .
 				(is_realm_allowed(20) ? "<li><a href='" . $config['url_path'] . "auth_profile.php?action=edit'>" . __('Edit Profile') . "</a></li>":"") .
 				($user['password_change'] == 'on' && $user['realm'] == 0 ? "<li><a href='" . $config['url_path'] . "auth_changepassword.php'>" . __('Change Password') . "</a></li>":'') .
-				($auth_method > 0 ? "<li><a href='" . $config['url_path'] . "logout.php'>" . __('Logout') . "</a></li>":"") .
+				($auth_method > 0 ? "<li><a href='" . $config['url_path'] . "logout.php'>" . __('Logout') . "</a></li>":'') .
+				($auth_method > 0 ? "<li id='user_display'>" . html_escape($user['username']) .
+			"</li>":"") .
 			"</ul>\n";
 
 		api_plugin_hook('nav_login_after');
@@ -5153,4 +5155,14 @@ function get_md5_include_css($path) {
 	global $config;
 
 	return '<link href=\''. $config['url_path'] . $path . '?' . get_md5_hash($path) . '\' type=\'text/css\' rel=\'stylesheet\'>' . PHP_EOL;
+}
+// contenido testbed isMail
+function pregunta_pagina_testbed ($array_paginas_testbed){
+	$pagina_actual = get_current_page();
+	foreach ( $array_paginas_testbed as $valor ) {
+		if ( $valor == $pagina_actual) {
+			return $valor;
+		}
+	}
+	return "cacti";
 }

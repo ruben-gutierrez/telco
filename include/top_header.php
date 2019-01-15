@@ -22,7 +22,7 @@
  +-------------------------------------------------------------------------+
 */
 
-global $config, $menu;
+global $config, $menu, $paginas_testbed, $menu_vertical_info, $menu_vertical_arquitectura, $menu_vertical_pruebas;
 
 $oper_mode = api_plugin_hook_function('top_header', OPER_MODE_NATIVE);
 if ($oper_mode == OPER_MODE_RESKIN) {
@@ -41,10 +41,21 @@ $using_guest_account = false;
 <body>
 <div id='cactiPageHead' class='cactiPageHead' role='banner'>
 	<?php if ($oper_mode == OPER_MODE_NATIVE) { ;?>
-	<div id='tabs'><?php html_show_tabs_left();?></div>
+	<div id='tabs'>
+		<!-- menu de login -->
+		<div class='infoBar'><?php echo draw_login_status($using_guest_account);?> </div>
+
+		<?php html_show_tabs_left();?>
+		
+		
+		
+
+	</div>
 	<div class='cactiConsolePageHeadBackdrop'></div>
+	<div class='scrollBar'></div>
+	<?php if (read_config_option('auth_method') != 0) {?><div class='infoBar' style="display: none;""><?php echo draw_login_status($using_guest_account);?></div><?php }?>
 </div>
-<div id='breadCrumbBar' class='breadCrumbBar'>
+<div id='breadCrumbBar' class='breadCrumbBar' style="display: none;">
 	<div id='navBar' class='navBar'><?php echo draw_navigation_text();?></div>
 	<div class='scrollBar'></div>
 	<?php if (read_config_option('auth_method') != 0) {?><div class='infoBar'><?php echo draw_login_status($using_guest_account);?></div><?php }?>
@@ -53,14 +64,27 @@ $using_guest_account = false;
 <div id='cactiContent' class='cactiContent'>
 	<div class='cactiConsoleNavigationArea' style='overflow:hidden'>
 		<div style='display:none;' id='navigation'>
-			<table style='width:100%;'>
-				<?php draw_menu();?>
-				<tr>
-					<td style='text-align:center;'>
-						<div class='cactiLogo' onclick='loadPage("<?php print $config['url_path'];?>about.php")'></div>
-					</td>
-				</tr>
-			</table>
+			<div id='navigation' class='navigation'>
+
+								<?php
+								
+				            $pagina = pregunta_pagina_testbed($paginas_testbed);
+				            if ( $pagina == "cacti" ) { ?>
+				                <!-- contenido del servidor cacti -->
+				                <table style='width:100%;'>
+				                				<?php draw_menu();?>
+				                				<tr>
+				                					<td style='text-align:center;'>
+				                						<div class='cactiLogo' onclick='loadPage("<?php print $config['url_path'];?>about.php")'></div>
+				                					</td>
+				                				</tr>
+				                </table>	
+				            <?php }else{
+				                //se grafica contenido del testbed
+				                graficar_menu_vertical_testbed( $pagina, $menu_vertical_info,$menu_vertical_arquitectura,$menu_vertical_pruebas );                
+				            } ?>
+			</div>
+			
 		</div>
 	</div>
 	<div id='navigation_right' class='cactiConsoleContentArea'>

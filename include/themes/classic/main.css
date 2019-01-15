@@ -474,11 +474,12 @@ label {
 	float: right;
 	position: absolute;
 	right: 12px;
-	top: 58px;
+	top: 80px;
   	list-style: none;
 	text-align: right;
 	margin: 0px;
-	padding: 0px;
+	padding: 10px;
+	font-size: 15px;
 }
 
 .menuoptions li a {
@@ -486,6 +487,12 @@ label {
 	display: block;
 	height: 14px;
 	padding: 4px;
+}
+
+li#user_display {
+	border-top: 1px solid #CCC;
+	padding: 0px 10%;
+	font-size: 40px;
 }
 
 .menuoptions li a:hover {
@@ -640,9 +647,9 @@ label {
 }
 
 .cactiPageHead {
-	background: #A9A9A9 url("./images/telco_logo.svg") no-repeat scroll right 40% / 400px auto;
+	background: #1c3589;
 	border-bottom: 1px solid #00438C;
-	height: 36px;
+	height: 80px;
 	width: 100%;
 }
 
@@ -662,9 +669,6 @@ label {
 	width: 0px;
 	height: 36px;
 	z-index: -1;
-}
-
-.navigation {
 }
 
 .debug td {
@@ -687,13 +691,18 @@ ul#breadcrumbs {
 
 .infoBar {
 	vertical-align: middle;
-	display: block;
-	min-width: 15%;
-	max-width: 40%;
+	display: inline-block;
+	/*min-width: 4%;*/
+	/*max-width: 40%;*/
 	margin-right: 10px;
 	float: right;
-	text-align: right;
+	/*text-align: right;*/
+	padding: 10px;
+	/*background: white;*/
+	font-size: 18px;
+	margin-top: 5px;
 }
+
 
 #breadcrumbs li {
 	float: left;
@@ -748,14 +757,14 @@ ul#breadcrumbs {
 	padding-top: 5px;
 	vertical-align: top;
 	float: left;
-	width: 162px;
+	width: 230px;
 	height: 100%;
 //	overflow-y:auto !important;
 //	overflow-x:auto;
 }
 
 .cactiConsoleNavigationArea table {
-	width: 160px;
+	width: 100%;
 }
 
 .treeTable {
@@ -927,6 +936,7 @@ legend {
 	display: table-cell;
 	overflow-y: auto !important;
 	overflow-x: hidden !important;
+	border-left: 1px solid black;
 }
 
 .hyperLink, .hyperLink:hover, .hyperLink:visited {
@@ -1612,11 +1622,22 @@ legend {
 
 div#tabs {
 	padding-bottom: 0px;
-	float: left;
+	/*float: right;*/
 	vertical-align: bottom;
-	height: 36px;
+	height: 100%;
 	overflow: hidden;
-	width: 70%;
+	width: 100%;
+}
+
+div#tabs a:hover {
+	text-decoration: none;
+	background-color: #C43838;
+	color: white;
+}
+div#tabs a:active {
+	text-decoration: none;
+	background-color: #C43838;
+	color: white;
 }
 
 td#tabs {
@@ -1912,4 +1933,129 @@ tr#realtime td:first-child {
 
 .graphWrapper {
 	position: relative;
+}
+/*elementos testbed ims*/
+
+.logo_principal {
+	height: 83px;
+}
+
+
+
+.menu_principal{
+	color: #000000;
+	font-size: 18px;
+	background-color: #FFFFFF;
+	padding: 11px 12px;
+	margin: 0px 5px;
+	float: right;
+	margin: 21px 10px 0px 5px;
+}
+.menu_principal_selected {
+	color: white !important;
+	font-size: 18px;
+	background-color: #C43838;
+	padding: 11px 12px;
+	margin: 0px 5px;
+	float: right;
+	margin: 21px 10px 0px 5px;
+}
+
+
+/*menu vertical*/
+
+.nav {
+	padding-left: 0px;
+	list-style: none;
+	font-size: 15px;
+}
+
+.nav li {
+	display: block;
+}
+
+.nav li a {
+	padding: 10px 10px;
+	display: block;
+	border-bottom: 1px solid #e7e7e7;
+}
+.nav li a:hover {
+	background-color: #C43838;
+	color: white;
+}
+
+ul.nav_sub{
+	display: none;
+	/*background-color: blue;*/
+}
+
+.sidebar-search{
+	padding: 5px 0px;
+}
+
+.inner-addon {
+	padding: 10px;
+  position: relative;
+}
+.inner-addon .fa {
+  position: absolute;
+  padding: 10px;
+  /*pointer-events: none;*/
+}
+
+.left-addon .fa {
+  left: 10px;
+}
+.left-addon input {
+  padding-left: 30px;
+  max-width: 160px;
+}
+.fa fa-search{
+	border: 0px solid black;
+}
+
+
+.description_page_testbed{
+	margin: 40px 0px;
+}
+
+
+.fa-user{
+	color: #fff;
+}
+
+.fa-user:hover{
+	color: #C43838;
+}
+/*contenido page testbed*/
+.margin_page{
+	font-size: 15px;
+}
+.content_testbed_info tr:nth-child(odd) td{
+	font-size: 35px;
+	padding: 5px;
+
+}
+.content_testbed_info tr:nth-child(even) td{
+	font-size: 20px;
+	padding: 5px 10px 45px 5px;
+
+}
+
+.content_testbed tr:nth-child(odd) td{
+	font-size: 20px;
+	padding: 5px 10px 45px 5px;
+
+}
+.content_testbed tr:nth-child(even) td{
+	font-size: 20px;
+	padding: 5px 10px 45px 5px;
+
+}
+
+.content_testbed tr:nth-child(1) td{
+	font-size: 30px;
+	background-color: #B4A9A9;
+	border-collapse: collapse;
+	
 }

@@ -1672,8 +1672,7 @@ $menu_vertical_info = array (
 	"Arquitectura" => array ("fa fa-sitemap fa-fw",
 		"Arquitctura distribuida",
 		"Arquitectura Todo en Uno",
-		"Pruebas",
-		"Graficas"
+		"Distribuida + PSTN"
 	),
 	"Pruebas" => array (
 		"fa fa-wrench fa-fw",
@@ -1709,10 +1708,27 @@ $paginas_testbed = array (
 );
 
 $contenido_info = array(
-		__('ngn') => array( "Descripción" ),
-		__('IMS') => array( "Maquina virtual con nodos bono, sprout, homestead, homer y ellis. Con el mas bajo rendimineto, carencia de escalabilidad y sin tolerancia a fallos de un despliegue Clearwater" ),
-		__('TESTBED') => array( "Todos los componentes son escalables horizontalmente, minimiza el impacto por perdida de nodos mediante los estados de corta y larga vida almacenados en los nodos respectivos." ),
-		__('TESTBED IMS') => array( "Compuesta por un desplegue clearwater distribuido con un nodo IBCF para interconectarse con la PSTN")
+		__('Introducción') => "En el mundo las telecomunicaciones han tenido un avance exponencial en desde la decada de los 60's pasando por el telegrafo, telefono, radio, televisión y el internet. Este ultimo permitio crear un sistema de comunicación basado en tecnología IP y posteriormente el despliegue de IMS posibilitando asi la integración de los anteriores servicios soportados en el protocolo IP bajo una misma arquitectura. </br>
+			La nesecidad de integrar los servicios multimedia en una misma arquitectura se identifico cuando las empresas de telecomunicaciones ofrecieron diferentes servicios a un usuario y la necesidad de desplegar una arquitectura por servicios fue ineficiente y costoso. </br>" ,
+		__('NGN') => "Las NGN (Next Generation Networks o Redes de Siguiente Generación) son infraestructuras que permiten la confluencia de los nuevos servicios multimedia integrados (voz, datos, vídeo…) y su transmisión por Internet en forma de paquetes de datos. Están construidas en base al protocolo IP y facilitan el desarrollo de una amplia oferta de servicios de telecomunicaciones sobre múltiples anchos de banda y con calidad de servicio (QoS), ya que el transporte es independiente de la infraestructura de red utilizada.
+			ref:https://www.interoute.es/blog/ngn-%C2%BFuna-ventaja-competitiva/" ,
+		__('IMS') =>  "IMS (IP Multimedia Subsystem) una arquitectura de referencia genérica para ofrecer servicios multimedia sobre infraestructura IP. Se trata de un estándar internacional aún en evolución, especificado originariamente en la Release 5 y 6 del 3GGP (Third Generation Partnership Project), en estrecha colaboración con el IETF (Internet Engineering Task Force), y que ha sido adoptado también por otros organismos de estandarización como 3GPP2 y ETSI.
+			El estándar soporta múltiples tipos de tecnologías de acceso, incluyendo: GSM, GPRS, UMTS, HSDPA, DSL, HFC, Wi-Fi, Wi-Max, Bluetooth, etc. Es decir, el concepto actual de las comunicaciones telefónicas y por Internet dará un giro radical a medio plazo, gracias a esta nueva tecnología que permitirá pasar de un sistema a otro sin interrumpir la conexión, utilizar varios medios a la vez o compartirlos e intercambiarlos con varios usuarios. Ref:https://www.ramonmillan.com/tutoriales/ims.php" ,
+		__('TESTBED') => "Plataforma equipada con instrumentos, dispositivos, etc., utilizados para probar teorias, dispositivos, elementos computacioonales y tecnologias en desarrollo." ,
+		__('TESTBED IMS') => "Plataforma que ofrece ingeniería, pruebas de conformidad, medición, y herramientas administrativas para probar servicios ims o elementos de arquitectura IMS."
+	);
+$contenido_info2 = array(
+		__('Arquitectura') => "Clearwater fue diseñado desde cero para ser optimizado para la implementación en entornos virtualizados y en la nube. Se apoya en gran medida en los patrones de diseño establecidos para crear y desplegar aplicaciones web masivamente escalables, adaptando estos patrones de diseño para adaptarse a las restricciones de SIP e IMS. Por lo tanto, la arquitectura de Clearwater tiene algunas similitudes con la arquitectura tradicional de IMS, pero no es idéntica. </br>" ,
+		__('Arquitectura Distribuida') => "Todos los componentes son escalables horizontalmente con un equilibrio de carga simple y sin estado.
+     		Todo el estado de larga duración se almacena en nodos dedicados Vellum que hacen uso de tecnologías de almacenamiento optimizadas en la nube como Cassandra. Ningún estado de larga vida se almacena en otros nodos de producción, lo que hace que sea rápido y fácil escalar dinámicamente los grupos y minimizar el impacto si se pierde un nodo.
+     		Las interfaces entre los componentes SIP de front-end y los servicios de back-end utilizan interfaces de servicios web RESTful.
+     		Las interfaces entre los diversos componentes utilizan la agrupación de conexiones con el reciclaje estadístico de las conexiones para garantizar que la carga se distribuya de manera uniforme a medida que los nodos se agregan y eliminan de cada capa." ,
+		__('Arquitectura todo en uno') => "Si bien Clearwater está diseñado para ser escalable horizontalmente de forma masiva, también es posible instalar todos los componentes de Clearwater en un solo nodo. Esto hace que la instalación sea mucho más sencilla y es útil para familiarizarse con Clearwater antes de pasar a una implementación a mayor escala utilizando uno de los otros métodos de instalación." ,
+		__('Distribuida + PSTN') => "arquitectura clearwater interconectada con la pstn" 
+	);
+
+$contenido_info3 = array(
+		__('Pruebas') => "El testbed telco ims ofrece la posibilidad de probar diferectes caracteristicas de la arquitectura ims. </br>" 
 	);
 
 $contenido_arquitectura = array(

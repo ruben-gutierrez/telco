@@ -1414,19 +1414,47 @@ function html_show_tabs_left() {
 		$show_console_tab = false;
 	}
 
+		?>
+
+	<a href="#">
+		<img  class='logo_principal' src='images/escudo_unicauca2.jpg'>
+		</a>
+		<div  class="nombre_principal" style="display: inline-block; color: #FFFFFF;"><h1>Ambiente de prueba Telco2</h1></div>
+		<?php
+
 	if (get_selected_theme() == 'classic') {
 		if ($show_console_tab == true) {
 			?><a <?php print (is_console_page(get_current_page()) ? " id='maintab-anchor" . rand() . "' class='selected'":"");?> href="<?php echo $config['url_path']; ?>index.php"><img src="<?php echo $config['url_path']; ?>images/tab_console<?php print (is_console_page(get_current_page()) ? '_down':'');?>.gif" alt="<?php print __('Console');?>"></a><?php
 		}
 		// contenido testbed ims 
-		// info
+		// // graficas
+
+		if ($realm_allowed[7]) {
+			if ($config['poller_id'] > 1 && $config['connection'] != 'online') {
+				// Don't show graphs tab when offline
+			} else {
+				$file = get_current_page();
+				if ($file == "graph_view.php") {
+				
+					print "<a id='maintab-anchor" . rand() . "' class='menu_principal_selected' href='" . html_escape($config['url_path'] . 'graph_view.php') . "'>Gráficas</a>";
+				} else {
+					print "<a id='maintab-anchor" . rand() . "' class='menu_principal' href='" . html_escape($config['url_path'] . 'graph_view.php') . "'>Gráficas</a>";
+				}
+				
+			}
+		}
+		// pruebas
 		if ($realm_allowed[100]) {
 			if ($config['poller_id'] > 1 && $config['connection'] != 'online') {
 				// Don't show graphs tab when offline
 			} else {
+				$file = get_current_page();
+				if ($file == "pruebas.php") {
 				
-					print "<a id='maintab-anchor" . rand() . "' class='selected' href='" . html_escape($config['url_path'] . 'info.php') . "'>Información</a>";
-				
+					print "<a id='maintab-anchor" . rand() . "' class='menu_principal_selected' href='" . html_escape($config['url_path'] . 'pruebas.php') . "'>Pruebas</a>";
+				} else {
+					print "<a id='maintab-anchor" . rand() . "' class='menu_principal' href='" . html_escape($config['url_path'] . 'pruebas.php') . "'>Pruebas</a>";
+				}
 			}
 		}
 		// arquitectura
@@ -1434,29 +1462,33 @@ function html_show_tabs_left() {
 			if ($config['poller_id'] > 1 && $config['connection'] != 'online') {
 				// Don't show graphs tab when offline
 			} else {
+				$file = get_current_page();
+				if ($file == "arquitectura.php") {
 				
-					print "<a id='maintab-anchor" . rand() . "' class='selected' href='" . html_escape($config['url_path'] . 'graph_view.php') . "'>Arquitectura</a>";
-
+					print "<a id='maintab-anchor" . rand() . "' class='menu_principal_selected' href='" . html_escape($config['url_path'] . 'arquitectura.php') . "'>Arquitectura</a>";
+				} else {
+					print "<a id='maintab-anchor" . rand() . "' class='menu_principal' href='" . html_escape($config['url_path'] . 'arquitectura.php') . "'>Arquitectura</a>";
+				}
 			}
 		}
 		
-		// pruebas
+		
+		// info
 		if ($realm_allowed[100]) {
 			if ($config['poller_id'] > 1 && $config['connection'] != 'online') {
 				// Don't show graphs tab when offline
 			} else {
-					print "<a id='maintab-anchor" . rand() . "' class='selected' href='" . html_escape($config['url_path'] . 'pruebas.php') . "'>Pruebas</a>";
+				$file = get_current_page();
+				if ($file == "info.php") {
+				
+					print "<a id='maintab-anchor" . rand() . "' class='menu_principal_selected' href='" . html_escape($config['url_path'] . 'info.php') . "'>Información</a>";
+				} else {
+					print "<a id='maintab-anchor" . rand() . "' class='menu_principal' href='" . html_escape($config['url_path'] . 'info.php') . "'>Información</a>";
+				}				
 			}
 		}
-		if ($realm_allowed[7]) {
-			if ($config['poller_id'] > 1 && $config['connection'] != 'online') {
-				// Don't show graphs tab when offline
-			} else {
-				
-					print "<a id='maintab-anchor" . rand() . "' class='selected' href='" . html_escape($config['url_path'] . 'graph_view.php') . "'>Gráficas</a>";
-				
-			}
-		}
+		
+
 
 		if ($realm_allowed[21] || $realm_allowed[22]) {
 			if ($config['poller_id'] > 1) {
@@ -2142,3 +2174,97 @@ function html_common_header($title, $selectedTheme = '') {
 	api_plugin_hook('page_head');
 }
 
+// contenido testbed ims
+// 
+function graficar_menu_vertical_testbed($pagina, $array_info, $array_arquitectura, $array_pruebas){
+	
+	switch ($pagina) {
+    case "info.php":
+        $array_graficar = $array_info;
+        break;
+    case "arquitectura.php":
+        $array_graficar = $array_arquitectura;
+        break;
+    case "pruebas.php":
+        $array_graficar = $array_pruebas;
+        break;
+	}
+
+	?>
+	<ul class="nav" id="side-menu">
+		<li class="sidebar-search">
+			<div class="flexsearch">
+					
+			</div>
+            <div class="inner-addon left-addon">
+        	  <i class="fa fa-search"></i>
+        	  <input type="text" class="form-control" placeholder="Buscar..." />
+        	</div>
+        </li>
+
+	<?php
+	foreach ($array_graficar as $key => $value) {
+		if ( !is_array($value)) {
+			for ($n = 1; $n <= sizeof($value); $n++) {
+               ?>        <li>
+                            <a href=<?php $value.php;?>><?php echo $value; ?></a>
+                        </li>
+				<?php }
+		}else{
+		?>
+			<li>
+
+			<a href=''><i class='<?php echo $value[0] ?>'></i><?php echo $key; ?><span class='fa arrow'></span></a>
+				<?php for ($i = 1; $i < sizeof($value); $i++) {?>
+					<ul class="nav_sub">
+                        <li>
+                            <a href="panels-wells.html"><?php echo $value[$i] ?></a>
+                        </li>
+					</ul>
+				<?php }
+				?>
+			</li>			
+		<?php  		
+		}
+	}
+	?>
+    </ul>
+    <?php 
+}
+
+function draw_table_testbed($array_content){
+	$menu_options = $array_content;	
+	foreach ($menu_options as $item => $elements) {
+		print "<tr>";		
+		if (is_array($elements)) {
+			print "<td id='subtitle'>".$item."</td>";
+			foreach ($elements as $sub_items => $values) {
+			if ( is_array($values) ) {
+				print "<td><ul>";
+				foreach ($values as $sub2_item => $options) {
+					print "<li>".$options."</li>";
+				}
+				print "</ul></td>";
+			}else{
+				print "<td>".$values."</td>";
+			}
+			
+		}
+		}else{
+			print "<td>".$elements."</td>";
+		}
+		
+		print "</tr>"; 
+	}
+	
+}
+
+function draw_table_testbed2($array_content){
+	$menu_options = $array_content;	
+	foreach ($menu_options as $item => $element) {
+			print "<tr><td>".$item."</td></tr>";
+			print "<tr><td>".$element."</td></tr>";
+
+	}
+	
+}

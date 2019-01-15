@@ -22,4 +22,8 @@ global $contenido_arquitectura;
 		<img src="href.img">
 		
 	</div>
+
+	
+
+	
 </div>
