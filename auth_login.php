@@ -592,7 +592,7 @@ $selectedTheme = get_selected_theme();
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<?php html_common_header(api_plugin_hook_function('login_title', __('Login to Cacti')));?>
+	<?php html_common_header(api_plugin_hook_function('login_title', __('Login to Telco')));?>
 	<script type='text/javascript'>
 	$(function() {
 			$('#login_username').focus();
@@ -604,7 +604,8 @@ $selectedTheme = get_selected_theme();
 	<div class='loginCenter'>
 	<div class='loginArea'>
 		<div class='cactiLoginLogo'></div>
-			<legend><?php print __('User Login');?></legend>
+			<!-- <legend><?php 
+			// print __('User Login');?></legend> -->
 			<form name='login' method='post' action='<?php print get_current_page();?>'>
 				<input type='hidden' name='action' value='login'>
 				<?php api_plugin_hook_function('login_before',
@@ -616,7 +617,8 @@ $selectedTheme = get_selected_theme();
 						'action' => get_nfilter_request_var('action')));
 				?>
 				<div class='loginTitle'>
-					<p><?php print __('Enter your Username and Password below');?></p>
+					<!-- <p><?php 
+					// print __('Enter your Username and Password below');?></p> -->
 				</div>
 				<div class='cactiLogin'>
 					<table class='cactiLoginTable'>

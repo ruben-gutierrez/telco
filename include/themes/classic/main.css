@@ -806,7 +806,7 @@ ul#breadcrumbs {
 	position: relative;
 	float: right;
 	top: 15%;
-	background: transparent url('./../../../images/auth_background.gif') no-repeat center;
+	background: transparent url('./../../../images/logo_telco.gif') no-repeat center;
 	width: 350px;
 	height: 128px;
 	z-index: 2;
