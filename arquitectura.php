@@ -1,9 +1,9 @@
 <?php
-
 global $contenido_arquitectura;
 
 //autentica la pagina en la cual esta
  include('./include/auth.php');
+
 //agregar header y la barra lateral de navegación
  top_header();
 ?>
@@ -22,8 +22,23 @@ global $contenido_arquitectura;
 		<img src="href.img">
 		
 	</div>
+	<!-- send_mail($to, $from, $subject, $body, $attachments = '', $headers = '', $html = false) -->
+	<form>
+		<input type="button" name="solicitar" value="Solicitar arquitectura" onclick="enviarCorreojs()">
+	</form>
+	<script type="text/javascript">
+		function enviarCorreojs(){
+			var result="<?php send_mail("rubengutierrez@unicauca.edu.co", "rubengutierrez2991@gmail.com", "ruben4", "prueba correo3");?>"
+		}
+	</script>
+	<?php 
 
-	
 
+	// email_test();
+	// send_mail("rubengutierrez@unicauca.edu.co", "rubengutierrez2991@gmail.com", "ruben 3", "prueba correo3");
 	
+	?>
+
+
+
 </div>
