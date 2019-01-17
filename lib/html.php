@@ -2143,6 +2143,9 @@ function html_common_header($title, $selectedTheme = '') {
 	print get_md5_include_css('include/themes/' . $selectedTheme .'/pace.css');
 	print get_md5_include_css('include/fa/css/font-awesome.css');
 	print get_md5_include_css('include/themes/' . $selectedTheme .'/main.css');
+	print get_md5_include_css('include/themes/' . $selectedTheme .'/bootstrap.css');
+	print get_md5_include_js('include/themes/' . $selectedTheme . '/bootstrap.js');
+	print get_md5_include_js('include/themes/' . $selectedTheme . '/jquery-2.1.1.min.js');
 	print get_md5_include_js('include/js/screenfull.js');
 	print get_md5_include_js('include/js/jquery.js');
 	print get_md5_include_js('include/js/jquery-migrate.js');
@@ -2233,9 +2236,11 @@ function graficar_menu_vertical_testbed($pagina, $array_info, $array_arquitectur
 }
 
 function draw_table_testbed($array_content){
-	$menu_options = $array_content;	
+	$menu_options = $array_content;
+	$cont =0;
 	foreach ($menu_options as $item => $elements) {
-		print "<tr>";		
+		$cont = $cont +1;
+		print "<tr class='display' id='fila".$cont."' onclick='seleccionar(this.id);'>";		
 		if (is_array($elements)) {
 			print "<td id='subtitle'>".$item."</td>";
 			foreach ($elements as $sub_items => $values) {

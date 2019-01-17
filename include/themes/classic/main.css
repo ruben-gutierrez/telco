@@ -99,7 +99,7 @@ select {
 }
 
 tr.selected {
-	background-color: khaki;
+	/*background-color: khaki;*/
 }
 
 label {
@@ -2058,4 +2058,20 @@ ul.nav_sub{
 	background-color: #B4A9A9;
 	border-collapse: collapse;
 	
+}
+
+
+/*majeno de tabla*/
+
+.selected{
+	cursor: pointer;
+}
+
+.selected:hover{
+	background-color: #00DDFF;
+}
+
+.seleccionada{
+	background-color: red;
+	color: white;
 }

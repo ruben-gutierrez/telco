@@ -21,6 +21,7 @@
  | http://www.cacti.net/                                                   |
  +-------------------------------------------------------------------------+
 */
+
 global $paginas_testbed;
 /* title_trim - takes a string of text, truncates it to $max_length and appends
      three periods onto the end

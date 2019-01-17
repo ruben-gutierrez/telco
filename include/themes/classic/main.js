@@ -32,3 +32,7 @@ function get_height() {
 	wht  = $(window).height();
 	return Math.max(nsh, nrsh, nh, nrh, wht);
 }
+
+
+// testbed ims
+
