@@ -16,15 +16,8 @@
 		<!-- <table class="content_testbed"> -->
 		<table id="tabla" class="tabla_contenido">
 			<?php 
-			draw_table_testbed($contenido_pruebas);
+			draw_table_testbed_pruebas($contenido_pruebas);
 			?>
 		</table>
-	</div>
-	<div class="config_test_execute">
-		<h1 class="titulo_arquitectura">Pruebas configuradas</h1>
-		<table>
-			<tr></tr>
-		</table>
-		
 	</div>
 </div>

@@ -1733,9 +1733,9 @@ $contenido_info3 = array(
 
 $contenido_arquitectura = array(
 		__('Arquitectura') => array( "Descripción", "Imgen" ),
-		__('Todo en Uno') => array( "Maquina virtual con nodos bono, sprout, homestead, homer y ellis. Con el mas bajo rendimineto, carencia de escalabilidad y sin tolerancia a fallos de un despliegue Clearwater", "img/todoenuno.png" ),
-		__('Distribuida') => array( "Todos los componentes son escalables horizontalmente, minimiza el impacto por perdida de nodos mediante los estados de corta y larga vida almacenados en los nodos respectivos.", "img/distribuida.png"),
-		__('Distribuida + PSTN') => array( "Compuesta por un desplegue clearwater distribuido con un nodo IBCF para interconectarse con la PSTN", "img/dist+pstn.png")
+		__('Todo en Uno') => array( "Maquina virtual con nodos bono, sprout, homestead, homer y ellis. Con el mas bajo rendimineto, carencia de escalabilidad y sin tolerancia a fallos de un despliegue Clearwater", "clearwater_distribuida.png" ),
+		__('Distribuida') => array( "Todos los componentes son escalables horizontalmente, minimiza el impacto por perdida de nodos mediante los estados de corta y larga vida almacenados en los nodos respectivos.", "clearwater_aio.png"),
+		__('Distribuida + PSTN') => array( "Compuesta por un desplegue clearwater distribuido con un nodo IBCF para interconectarse con la PSTN", "IMS_PSTN.png")
 	);
 
 $contenido_pruebas = array(

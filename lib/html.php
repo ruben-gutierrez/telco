@@ -2143,7 +2143,7 @@ function html_common_header($title, $selectedTheme = '') {
 	print get_md5_include_css('include/themes/' . $selectedTheme .'/pace.css');
 	print get_md5_include_css('include/fa/css/font-awesome.css');
 	print get_md5_include_css('include/themes/' . $selectedTheme .'/main.css');
-	print get_md5_include_css('include/themes/' . $selectedTheme .'/bootstrap.css');
+	// print get_md5_include_css('include/themes/' . $selectedTheme .'/bootstrap.css');
 	print get_md5_include_js('include/themes/' . $selectedTheme . '/bootstrap.js');
 	print get_md5_include_js('include/themes/' . $selectedTheme . '/jquery-2.1.1.min.js');
 	print get_md5_include_js('include/js/screenfull.js');
@@ -2235,7 +2235,25 @@ function graficar_menu_vertical_testbed($pagina, $array_info, $array_arquitectur
     <?php 
 }
 
-function draw_table_testbed($array_content){
+function draw_table_testbed_arquitectura($array_content){
+	$menu_options = $array_content;
+	$cont =0;
+	foreach ($menu_options as $item => $elements) {
+		$cont = $cont +1;
+		print "<tr class='display' id='fila".$cont."' onclick='seleccionar(this.id);'>";		
+		if (is_array($elements)) {
+			print "<td id='subtitle'>".$item."</td>";
+			print "<td>".$elements[0]."</td>";	
+			print "<td><img src='images/". $elements[1]."'</td>";	
+		}else{
+			print "<td>".$elements."</td>";
+		}
+		
+		print "</tr>"; 
+	}
+	
+}
+function draw_table_testbed_pruebas($array_content){
 	$menu_options = $array_content;
 	$cont =0;
 	foreach ($menu_options as $item => $elements) {
@@ -2263,7 +2281,6 @@ function draw_table_testbed($array_content){
 	}
 	
 }
-
 function draw_table_testbed2($array_content){
 	$menu_options = $array_content;	
 	foreach ($menu_options as $item => $element) {

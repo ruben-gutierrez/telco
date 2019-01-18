@@ -2323,32 +2323,13 @@ if (typeof jQuery === 'undefined') {
 // tablas testbed ims
 // 
 
-    $(document).ready(function(){
-      $('#bt_add').click(function(){
-        agregar();
-      });
-      $('#bt_del').click(function(){
-        eliminar(id_fila_selected);
-      });
-      $('#bt_delall').click(function(){
-        eliminarTodasFilas();
-      });
-      
-
-    });
-    var cont=0;
-    var id_fila_selected=[];
-    function agregar(){
-      cont++;
-      var fila='<tr class="selected" id="fila'+cont+'" onclick="seleccionar(this.id);"><td>'+cont+'</td><td>texto x defecto</td><td>0.00</td></tr>';
-      $('#tabla').append(fila);
-      reordenar();
-    }
-
+    
     function seleccionar(id_fila){
       var id_fila_siguiente = "fila" + (parseInt(id_fila.substr(-1,1)) + 1);
       var id_fila_anterior = "fila" + (parseInt(id_fila.substr(-1,1)) - 1);
       var id_ultima_fila="fila"+document.getElementById("tabla").rows.length;
+      $(".tabla_contenido td:nth-child(3)").toggle();
+      $(".tabla_contenido td:nth-child(2)").toggle();
       if (id_ultima_fila == id_fila) {
         if($('#'+id_fila_anterior).hasClass('display') && $('#'+id_fila).hasClass('display')){
           ocultar_otras(id_fila);
@@ -2381,34 +2362,4 @@ if (typeof jQuery === 'undefined') {
           $(this).removeClass('edisplay');
           $(this).addClass('display');
         });
-    }
-
-    function eliminar(id_fila){
-      /*$('#'+id_fila).remove();
-      reordenar();*/
-      for(var i=0; i<id_fila.length; i++){
-        $('#'+id_fila[i]).remove();
-      }
-      reordenar();
-    }
-
-    function reordenar(){
-      var num=1;
-      $('#tabla tbody tr').each(function(){
-        $(this).find('td').eq(0).text(num);
-        num++;
-      });
-    }
-    function eliminarTodasFilas(){
-      $('#tabla tbody tr').each(function(){
-        $(this).remove();
-      });
-
-
-    }
-    function ocultar_filas(){
-      for(var i=0; i<id_fila.length; i++){
-        $('#'+id_fila).removeClass('display');
-        $('#'+id_fila).addClass('edisplay');
-      }
     }

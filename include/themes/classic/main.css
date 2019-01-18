@@ -2042,36 +2042,62 @@ ul.nav_sub{
 
 }
 
-.content_testbed tr:nth-child(odd) td{
+.tabla_contenido tr:nth-child(odd) td{
 	font-size: 20px;
 	padding: 5px 10px 45px 5px;
 
 }
-.content_testbed tr:nth-child(even) td{
+.tabla_contenido tr:nth-child(even) td{
 	font-size: 20px;
 	padding: 5px 10px 45px 5px;
 
 }
 
-.content_testbed tr:nth-child(1) td{
+.tabla_contenido tr:nth-child(1) td{
 	font-size: 30px;
-	background-color: #B4A9A9;
+	background-color: #D6D6D6;
 	border-collapse: collapse;
 	
 }
 
+.tabla_contenido td:nth-child(3){
+	display: none;
+	width: 70%;
+}
+.tabla_contenido td:nth-child(2){
+	/*display: none;*/
+	width: 70%;
+}
+.tabla_contenido td:nth-child(1){
+	/*display: none;*/
+	width: 30%;
+}
+
 
 /*majeno de tabla*/
+.display{
+  background-color: white;
+  cursor: pointer;
+  color: black;
+  display: inherit;
+  -webkit-transition: display 2s;
+  transition: display 2s;
 
-.selected{
-	cursor: pointer;
 }
 
-.selected:hover{
-	background-color: #00DDFF;
+.display:hover{
+  background-color: #96D4F1;
+  cursor: pointer;
+  
+  /*color: white;*/
+}
+.edisplay{
+  display: none;
 }
 
-.seleccionada{
-	background-color: red;
-	color: white;
+
+
+.tabla_contenido{
+  background-color: white;
+  width: 100%;
 }
