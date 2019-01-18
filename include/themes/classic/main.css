@@ -2032,29 +2032,29 @@ ul.nav_sub{
 	font-size: 15px;
 }
 .content_testbed_info tr:nth-child(odd) td{
-	font-size: 35px;
+	font-size: 20px;
 	padding: 5px;
 
 }
 .content_testbed_info tr:nth-child(even) td{
-	font-size: 20px;
+	font-size: 15px;
 	padding: 5px 10px 45px 5px;
 
 }
 
 .tabla_contenido tr:nth-child(odd) td{
-	font-size: 20px;
+	font-size: 15px;
 	padding: 5px 10px 45px 5px;
 
 }
 .tabla_contenido tr:nth-child(even) td{
-	font-size: 20px;
+	font-size: 15px;
 	padding: 5px 10px 45px 5px;
 
 }
 
 .tabla_contenido tr:nth-child(1) td{
-	font-size: 30px;
+	font-size: 20px;
 	background-color: #D6D6D6;
 	border-collapse: collapse;
 	

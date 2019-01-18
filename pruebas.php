@@ -1,12 +1,15 @@
-<?php
+<?php 
 
- global $contenido_pruebas;
-
+ global $contenido_pruebas, $email_array;
  include('./include/auth.php');
  top_header();
-
+if (isset($_GET['arq'])) {
+	$from_email = db_fetch_cell_prepared('SELECT email_address FROM user_auth WHERE id =  ?', array($_SESSION['sess_user_id']));
+	send_mail("rubengutierrez@unicauca.edu.co", "rubengutierrez@unicauca.edu.co" , "Solicitud arquitectura IMS" , "Se realiza la solicitud para la asignacion de la arquitectura ". $_GET['arq']. " para realizar, ya que tengo en conocimiento el reglamento ...., Solicitante ".$from_email);
+		header("location:pruebas.php");
+	
+}
 ?>
-
 
 <div class="margin_page">
 	<h1 class="titulo_arquitectura">Servicios Ambiente de Prueba IMS</h1>
