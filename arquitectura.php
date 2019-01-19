@@ -40,17 +40,17 @@ global $contenido_arquitectura, $config;
 			{
 
 				
-
+				// confirm("aceptar");
 				// Esta es la variable que vamos a pasar
 
 				// var to_email=$("#to_email").val();
 				// var from_email=$("#from_email").val();
 				// var cuerpo=$("#cuerpo").val();
-
-				var consulta1 = confirm("A seleccionado arquitectura "+arquitectura+" para realizar la solicitud de recursos,\n marque aceptar");
+				
+				var consulta1 = confirm("A seleccionado arquitectura " + arquitectura + " para realizar la solicitud de recursos,\n marque aceptar");
 				if (consulta1) {
-					var consulta2 = confirm("acepta los terminos y condiciones .... "+arquitectura);
-					if (consulta1) {
+					var consulta2 = confirm("acepta los terminos y condiciones .... " +arquitectura);
+					if (consulta2) {
 						window.location = "pruebas.php?arq="+arquitectura;
 					}
 				}
@@ -63,9 +63,9 @@ global $contenido_arquitectura, $config;
 
 				// 	});
 					
-				// }
+				}
 				
-			}
+			
 	</script>
 	<?php 
 

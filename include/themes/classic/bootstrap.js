@@ -2323,11 +2323,21 @@ if (typeof jQuery === 'undefined') {
 // tablas testbed ims
 // 
 
-    
+    var arquitectura ="";
     function seleccionar(id_fila){
       var id_fila_siguiente = "fila" + (parseInt(id_fila.substr(-1,1)) + 1);
       var id_fila_anterior = "fila" + (parseInt(id_fila.substr(-1,1)) - 1);
       var id_ultima_fila="fila"+document.getElementById("tabla").rows.length;
+      if (id_fila=="fila2") {
+          arquitectura = "aio";
+      }else{
+        if (id_fila=="fila3") {
+          arquitectura = "Distribuida";
+        }else{
+          arquitectura = "IMS + PSTN";
+        }
+      }
+      
       $(".tabla_contenido td:nth-child(3)").toggle();
       $(".tabla_contenido td:nth-child(2)").toggle();
       if (id_ultima_fila == id_fila) {
