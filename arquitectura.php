@@ -8,6 +8,7 @@ global $contenido_arquitectura, $config;
  top_header();
 
 
+
 ?>
 
 <div class="margin_page">
@@ -37,7 +38,9 @@ global $contenido_arquitectura, $config;
 	<script type="text/javascript">
 		function enviar()
 
-			{
+			{	
+
+
 
 				
 				// confirm("aceptar");
