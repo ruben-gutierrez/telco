@@ -2057,20 +2057,19 @@ ul.nav_sub{
 	font-size: 20px;
 	background-color: #D6D6D6;
 	border-collapse: collapse;
-	
 }
 
-.tabla_contenido td:nth-child(3){
+.tabla_contenido td:nth-child(3) {
 	display: none;
-	width: 70%;
+	width: 25%;
 }
 .tabla_contenido td:nth-child(2){
 	/*display: none;*/
-	width: 70%;
+	width: 40%;
 }
 .tabla_contenido td:nth-child(1){
 	/*display: none;*/
-	width: 30%;
+	width: 20%;
 }
 
 
@@ -2084,9 +2083,27 @@ ul.nav_sub{
   transition: display 2s;
 
 }
+.elementos_options{
+	width: 100%;
+	height: 20px;
+}
+
+.list_options{
+	width: 80%;
+}
+.options{
+	width: 100%;
+	display: block;
+	padding: 10px 0px;
+	float: left;
+}
+.options_test{
+	display: block;
+	float: right;
+}
 
 .display:hover{
-  background-color: #96D4F1;
+  background-color: #E9F4FA;
   cursor: pointer;
   
   /*color: white;*/

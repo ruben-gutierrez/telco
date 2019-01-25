@@ -2319,15 +2319,17 @@ if (typeof jQuery === 'undefined') {
 
 }(jQuery);
 
-
 // tablas testbed ims
-// 
 
+  //maneja lo que muestra y lo que se muestra y oculta en las tablas por medio del click
     var arquitectura ="";
-    function seleccionar(id_fila){
+
+    function seleccionar(elemento){
+      var id_fila =elemento.id;      
       var id_fila_siguiente = "fila" + (parseInt(id_fila.substr(-1,1)) + 1);
       var id_fila_anterior = "fila" + (parseInt(id_fila.substr(-1,1)) - 1);
       var id_ultima_fila="fila"+document.getElementById("tabla").rows.length;
+      
       if (id_fila=="fila2") {
           arquitectura = "aio";
       }else{
@@ -2337,6 +2339,7 @@ if (typeof jQuery === 'undefined') {
           arquitectura = "IMS + PSTN";
         }
       }
+      $('#'+id_fila).children().off();
       
       $(".tabla_contenido td:nth-child(3)").toggle();
       $(".tabla_contenido td:nth-child(2)").toggle();
@@ -2364,7 +2367,7 @@ if (typeof jQuery === 'undefined') {
           $('#'+id_fila).addClass('display');
           $('#fila1').removeClass('edisplay');
           $('#fila1').addClass('display');
-        
+         $('.options_test').off();        
     }
 
     function mostrat_todo(){
@@ -2373,3 +2376,21 @@ if (typeof jQuery === 'undefined') {
           $(this).addClass('display');
         });
     }
+    //evita que al dar click en input de las tablas se oculte la columna
+      function input_tabla(event){
+      event.stopPropagation();
+      
+    }
+//enviar las pruebas seleccionada a ejecucion
+function ejecutar_prueba(){
+  //obtener variables
+  //crear contenido del archivo 
+  //verificar o crear carpeta de usuario
+  //enviar el archivo con nombre del usuario, fecha, hora
+  //ejecutar el archivo remotamente
+  var elementos_enviar = document.getElementsByClassName("options_test");
+  $.post('execute_test.php',{elementos_enviar.forEach(datos())},function(respuesta){
+    alert(respuesta);
+
+  }); 
+}

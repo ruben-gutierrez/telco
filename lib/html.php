@@ -2240,7 +2240,7 @@ function draw_table_testbed_arquitectura($array_content){
 	$cont =0;
 	foreach ($menu_options as $item => $elements) {
 		$cont = $cont +1;
-		print "<tr class='display' id='fila".$cont."' onclick='seleccionar(this.id);'>";		
+		print "<tr class='display' id='fila".$cont."' onclick='seleccionar(this);'>";		
 		if (is_array($elements)) {
 			print "<td id='subtitle'>".$item."</td>";
 			print "<td>".$elements[0]."</td>";	
@@ -2258,16 +2258,19 @@ function draw_table_testbed_pruebas($array_content){
 	$cont =0;
 	foreach ($menu_options as $item => $elements) {
 		$cont = $cont +1;
-		print "<tr class='display' id='fila".$cont."' onclick='seleccionar(this.id);'>";		
+		print "<tr class='display' id='fila".$cont."' onclick='seleccionar(this);'>";		
+
 		if (is_array($elements)) {
 			print "<td id='subtitle'>".$item."</td>";
 			foreach ($elements as $sub_items => $values) {
 			if ( is_array($values) ) {
-				print "<td><ul>";
+				print "<td><table class='list_options'>";
 				foreach ($values as $sub2_item => $options) {
-					print "<li>".$options."</li>";
+					print "<tr><div class='options'>".$options." <input type='text' name='".$sub2_item."' placeholder='' class='options_test' id='".$sub2_item.";' onclick='input_tabla(event);'></div></tr>";
+					
 				}
-				print "</ul></td>";
+				print "</table></td>";
+
 			}else{
 				print "<td>".$values."</td>";
 			}
@@ -2279,6 +2282,8 @@ function draw_table_testbed_pruebas($array_content){
 		
 		print "</tr>"; 
 	}
+	print("<input type='submit' id='btn_pruebas' value='Realizar prueba' onClick='ejecutar_prueba()'>");
+
 	
 }
 function draw_table_testbed2($array_content){
