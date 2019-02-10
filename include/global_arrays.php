@@ -1012,6 +1012,7 @@ $user_auth_roles = array(
 $user_auth_realm_filenames = array(
 	'about.php' => 8,
 	'arquitectura.php' => 100,
+	'solicitud_asignacion.php' => 100,
 	'info.php' => 100,
 	'pruebas.php' => 100,
 	'cdef.php' => 14,

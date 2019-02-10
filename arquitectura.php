@@ -1,5 +1,5 @@
 <?php
-global $contenido_arquitectura, $config;
+global $contenido_arquitectura, $config, $current_user;
 
 //autentica la pagina en la cual esta
  include('./include/auth.php');
@@ -7,8 +7,8 @@ global $contenido_arquitectura, $config;
 //agregar header y la barra lateral de navegación
  top_header();
 
-
-
+$username=$current_user['username'];
+$from_email=$current_user['email_address'];
 ?>
 
 <div class="margin_page">
@@ -24,59 +24,41 @@ global $contenido_arquitectura, $config;
 			<?php draw_table_testbed_arquitectura($contenido_arquitectura); ?>
 		</table>
 	</div>
-	
-	    
+	<form action="" class="formulario_solicitud">
+		<input type="hidden" id="to_email" value="rubengutierrez@unicauca.edu.co">
+		<input type="hidden" id="username" value="<?php echo($username);?>">
+		<input type="hidden" id="from_email" value="<?php echo($from_email);?>">
+		<input type="hidden" id="cuerpo" value="Se realiza la solicitud de habilitar la arquitectura">
+		<input type="button" value="Solicitar arquitectura" onclick="solicituar_arquitectura()">
+	</form>
 
-	
-		<form>
-			<input type="hidden" id="to_email" value="rubengutierrez@unicauca.edu.co">
-			<input type="hidden" id="from_email" value="<?php echo"$from_email";?>">
-			<input type="hidden" id="cuerpo" value="Se realiza la solicitud de habilitar la arquitectura">
-			<input type="button" value="Solicitar arquitectura" onclick="enviar()">
 
-		</form>
+
 	<script type="text/javascript">
-		function enviar()
-
+		function solicituar_arquitectura()
 			{	
-
-
-
+				// Estas son variables a pasar por post
 				
-				// confirm("aceptar");
-				// Esta es la variable que vamos a pasar
+				var to_email=$("#to_email").val();
+				var from_email=$("#from_email").val();
+				var cuerpo=$("#cuerpo").val();
+				var username=$("#username").val();
+				var arquitectura_selec=arquitectura;
+				var accion=1;
+				// confirmar solicitud de arquitectura
+				var consulta1 = confirm("A seleccionado arquitectura " + arquitectura_selec + " para realizar la solicitud de recursos,\n marque aceptar");
+				// Eventos testbed, agregar notificacion, evento solicitud de arquitectura---------------------------------
 
-				// var to_email=$("#to_email").val();
-				// var from_email=$("#from_email").val();
-				// var cuerpo=$("#cuerpo").val();
-				
-				var consulta1 = confirm("A seleccionado arquitectura " + arquitectura + " para realizar la solicitud de recursos,\n marque aceptar");
-				if (consulta1) {
-					var consulta2 = confirm("acepta los terminos y condiciones .... " +arquitectura);
-					if (consulta2) {
-						window.location = "pruebas.php?arq="+arquitectura;
-					}
-				}
-				// 	$.post('enviar_mail.php',{post_to_email:to_email,post_from_email:from_email,post_sujeto:arquitectura},function(respuesta){
-				// 			// alert(respuesta);
-				// 			document.write(respuesta);
-
-				// 			<?php
-				// 			// send_mail($from_email, "rubengutierrez@unicauca.edu.co",, "prueba correo3");?>
-
-				// 	});
-					
+				// agregar solicitud de arquitectura a sql
+					$.post('solicitud_asignacion.php',{post_to_email:to_email,post_from_email:from_email,post_arquitectura:arquitectura_selec,post_username:username,post_accion:accion},function(respuesta){
+							alert(respuesta);
+							<?php
+							// send_mail($from_email, "rubengutierrez@unicauca.edu.co",, "prueba correo3");?>
+					});
+				// 		window.location = "pruebas.php?arq="+arquitectura;
 				}
 				
 			
 	</script>
-	<?php 
-
-	
-	?>
-
-
-
-
 
 </div>

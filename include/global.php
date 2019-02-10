@@ -77,9 +77,11 @@ if (isset($config['cacti_version'])) {
 /* set the local for international users */
 setlocale(LC_CTYPE, 'en_US.UTF-8');
 
+// archivos que no nesecitan cabeseras html, permiso ajax
 /* Files that do not need http header information - Command line scripts */
 $no_http_header_files = array(
 	'cmd.php',
+	'solicitud_asignacion.php',
 	'poller.php',
 	'poller_commands.php',
 	'script_server.php',

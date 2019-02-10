@@ -2130,6 +2130,7 @@ function html_common_header($title, $selectedTheme = '') {
 	<title><?php echo $title; ?></title>
 	<meta http-equiv='Content-Type' content='text/html;charset=utf-8'>
 	<script type='text/javascript'>var theme='<?php print $selectedTheme;?>';</script>
+	<script   src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<link href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/images/telco_icon.ico' rel='shortcut icon'>
 	<link href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/images/telco_logo.gif' rel='icon' sizes='96x96'>
 	<?php
@@ -2270,11 +2271,9 @@ function draw_table_testbed_pruebas($array_content){
 					
 				}
 				print "</table></td>";
-
 			}else{
 				print "<td>".$values."</td>";
 			}
-			
 		}
 		}else{
 			print "<td>".$elements."</td>";
@@ -2282,10 +2281,10 @@ function draw_table_testbed_pruebas($array_content){
 		
 		print "</tr>"; 
 	}
-	print("<input type='submit' id='btn_pruebas' value='Realizar prueba' onClick='ejecutar_prueba()'>");
-
-	
+	print("<input type='button' id='btn_pruebas' value='Realizar prueba' onClick='ejecutar_prueba()'>");
 }
+
+
 function draw_table_testbed2($array_content){
 	$menu_options = $array_content;	
 	foreach ($menu_options as $item => $element) {

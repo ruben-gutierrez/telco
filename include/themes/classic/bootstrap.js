@@ -2321,11 +2321,12 @@ if (typeof jQuery === 'undefined') {
 
 // tablas testbed ims
 
+
   //maneja lo que muestra y lo que se muestra y oculta en las tablas por medio del click
     var arquitectura ="";
 
     function seleccionar(elemento){
-      var id_fila =elemento.id;      
+      var id_fila = elemento.id;      
       var id_fila_siguiente = "fila" + (parseInt(id_fila.substr(-1,1)) + 1);
       var id_fila_anterior = "fila" + (parseInt(id_fila.substr(-1,1)) - 1);
       var id_ultima_fila="fila"+document.getElementById("tabla").rows.length;
@@ -2334,9 +2335,9 @@ if (typeof jQuery === 'undefined') {
           arquitectura = "aio";
       }else{
         if (id_fila=="fila3") {
-          arquitectura = "Distribuida";
+          arquitectura = "distribuida";
         }else{
-          arquitectura = "IMS + PSTN";
+          arquitectura = "ims_pstn";
         }
       }
       $('#'+id_fila).children().off();
@@ -2358,6 +2359,7 @@ if (typeof jQuery === 'undefined') {
         ocultar_otras(id_fila);
       }
     }
+    
     function ocultar_otras(id_fila){
       $('#tabla tbody tr').each(function(){
             $(this).removeClass('display');
@@ -2381,16 +2383,6 @@ if (typeof jQuery === 'undefined') {
       event.stopPropagation();
       
     }
-//enviar las pruebas seleccionada a ejecucion
-function ejecutar_prueba(){
-  //obtener variables
-  //crear contenido del archivo 
-  //verificar o crear carpeta de usuario
-  //enviar el archivo con nombre del usuario, fecha, hora
-  //ejecutar el archivo remotamente
-  var elementos_enviar = document.getElementsByClassName("options_test");
-  $.post('execute_test.php',{elementos_enviar.forEach(datos())},function(respuesta){
-    alert(respuesta);
+    
 
-  }); 
-}
+    

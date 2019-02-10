@@ -53,7 +53,7 @@ $using_guest_account = false;
 	</div>
 	<div class='cactiConsolePageHeadBackdrop'></div>
 	<div class='scrollBar'></div>
-	<?php if (read_config_option('auth_method') != 0) {?><div class='infoBar' style="display: none;""><?php echo draw_login_status($using_guest_account);?></div><?php }?>
+	<?php if (read_config_option('auth_method') != 0) {?><div class='infoBar' style="display: none;"> <?php echo draw_login_status($using_guest_account);?></div><?php }?>
 </div>
 <div id='breadCrumbBar' class='breadCrumbBar' style="display: none;">
 	<div id='navBar' class='navBar'><?php echo draw_navigation_text();?></div>
