@@ -17,36 +17,28 @@ $now = date_create()->format('Y-m-d H:i:s');
 switch ($accion) {
 
 	case '1':
-		//agregar_solicitud($to_email,$from_email,$arquitectura,$username,$now);
+		agregar_solicitud($to_email,$from_email,$arquitectura,$username,$now);
 		
 		// dominio de arquitectura disponible
 		//consulta si hay arquitecturas disponibles
 		$dominio_libre=arq_disponible($arquitectura);
-		if ($dominio_libre=='') {
-			echo "no hay arquitecturas disponibles";
-		}
 
-		else{
-			echo "hay arquitecturas libres";
-			// // consulta si hay solicitud pendiente
-			echo $arquitectura;
+		if ($dominio_libre['id']=='') {
+			echo "Lo sentimos, en este momento no hay arquitecturas disponibles. Se ha almacenado su solicitud pronto nos contataremos via e-mail.\n Gracias";
+		}else{
+			// Consulta si hay solicitud pendiente
 			$id_solicitud_pendiente = solicitud_pendiente($arquitectura);
-			echo $id_solicitud_libre;
-			// if ($id_solicitud_pendiente='') {
-			// 	echo "no hay solicitudes pendientes para esta arquitectura";
-			// }else{
-			// 	echo "hay solicitudes pendientes";
-			// 	asignar_arquitectura($id_solicitud_pendiente, $dominio_libre)
-			// }					
+			if ($id_solicitud_pendiente == '') {
+				echo "no hay solicitudes pendientes para la arquitectura " . $arquitectura;
+			}else{
+				asignar_arquitectura($id_solicitud_pendiente, $dominio_libre['dominio'], $dominio_libre['id']);
+				echo "Se ha asignado la arquitectura ". $arquitectura. "durante 7 dias.";
+			}
 		}
-		
-		// solicitud_pendiente();
-		//si hay pendiente llama asignar_arquitectura()
-		
 		break;
 	case '2':
 	// asignar arquitectura
-		asignar_arquitectura($id_solicitud_libre, $arquitectura);
+		// asignar_arquitectura($id_solicitud_libre, $arquitectura);
 		break;
 	case '3':
 	//busca un registro donde el tiempo de asignacion se ha terminado, luego desahibilita o reasigna la arquitectura.
@@ -64,8 +56,8 @@ switch ($accion) {
 //parametro: $arq-> nombre de la arquitectura a consultar
 //RETURN-> dominio
 function arq_disponible($arq){
-	$dominio_libre = db_fetch_cell_prepared("SELECT dominio from arqs_testbedims WHERE activo = 'F' AND arquitectura = '" . $arq . "' limit 1");
-	return $dominio_libre;
+	$dominio_id = db_fetch_row_prepared("SELECT id, dominio from arqs_testbedims WHERE activo = 'F' AND arquitectura = '" . $arq . "' limit 1");
+	return $dominio_id;
 }
 // agregar solicitud a la tabla solicitud_arq
 function agregar_solicitud($to_email,$from_email,$arquitectura,$username,$now){
@@ -81,20 +73,22 @@ function fin_asignacion(){
 }
 
 //asigna la arquitectura 
-function asignar_arquitectura($id, $dominio){	
+function asignar_arquitectura($id_solicitud, $dominio_arq, $id_arq){	
 	$actual_datetime=date_create()->format('Y-m-d H:i:s');
 	$final_datetime=date('Y-m-d H:i:s',strtotime($actual_datetime."+ 7 days")); 
-	$sql2 = "UPDATE solicitud_arq SET fecha_asignacion='" . $actual_datetime . "', dominio='" .$dominio . "', fecha_fin_asignacion='" . $final_datetime . "' WHERE id='" . $id . "'";
+	$sql2 = "UPDATE solicitud_arq SET fecha_asignacion='" . $actual_datetime . "', dominio='" .$dominio_arq . "', fecha_fin_asignacion='" . $final_datetime . "' WHERE id='" . $id_solicitud . "'";
 	$asignar_arq=db_execute($sql2);
+	// marcar la arqutiectura como inactiva
+	echo $id;
+	$sql3 = "UPDATE arqs_testbedims SET activo='V' WHERE id='" . $id_arq . "'";
+	$update_arqs=db_execute($sql3);
+	echo $update_arqs;
 	// return $asignar_arq;
-
 }
 
 function solicitud_pendiente($arq){
 	$id_solicitud_libre = db_fetch_cell_prepared("SELECT id from solicitud_arq WHERE fecha_asignacion IS NULL AND arquitectura = '" . $arq . "' limit 1");
 	return $id_solicitud_libre;
-	
-
 }
 
 // 
