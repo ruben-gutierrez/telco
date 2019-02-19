@@ -1957,12 +1957,12 @@ function draw_login_status($using_guest_account = false) {
 
 	if (isset($_SESSION['sess_user_id']) && $_SESSION['sess_user_id'] == $guest_account) {
 		api_plugin_hook('nav_login_before');
-		print " <span id='user' class='user usermenuup'>"."<i class='fa fa-user fa-3x'></i>" .  "</span></div><div><ul class='menuoptions' style='display:none;'><li><a href='" . $config['url_path'] . "index.php'>" . __('Login as Regular User') . "</a></li></ul>\n";
+		print " <span id='user' class='user usermenuup'>"."<i class='fa fa-user fa-2x'></i>" .  "</span></div><div><ul class='menuoptions' style='display:none;'><li><a href='" . $config['url_path'] . "index.php'>" . __('Login as Regular User') . "</a></li></ul>\n";
 		api_plugin_hook('nav_login_after');
 	} elseif (isset($_SESSION['sess_user_id']) && $using_guest_account == false) {
 		$user = db_fetch_row_prepared('SELECT username, password_change, realm FROM user_auth WHERE id = ?', array($_SESSION['sess_user_id']));
 		api_plugin_hook('nav_login_before');
-		print " <span id='user' class='user usermenuup'>" ."<i class='fa fa-user fa-3x'></i>" . 
+		print " <span id='user' class='user usermenuup'>" ."<i class='fa fa-user fa-2x'></i>" . 
 			"</span></div><div><ul class='menuoptions' style='display:none;'>" .
 				(is_realm_allowed(20) ? "<li><a href='" . $config['url_path'] . "auth_profile.php?action=edit'>" . __('Edit Profile') . "</a></li>":"") .
 				($user['password_change'] == 'on' && $user['realm'] == 0 ? "<li><a href='" . $config['url_path'] . "auth_changepassword.php'>" . __('Change Password') . "</a></li>":'') .
@@ -5166,4 +5166,133 @@ function pregunta_pagina_testbed ($array_paginas_testbed){
 		}
 	}
 	return "cacti";
+}
+
+
+
+//contenido solicitud_asignacion.php
+
+
+//consultar si hay arquitectura disponible
+//parametro: $arq-> nombre de la arquitectura a consultar
+//RETURN-> dominio
+
+
+function arq_disponible($arq){
+	$dominio_id = db_fetch_row_prepared("SELECT id, dominio from arqs_testbedims WHERE activo = 'F' AND arquitectura = '" . $arq . "' limit 1");
+	return $dominio_id;
+}
+// agregar solicitud a la tabla solicitud_arq
+function agregar_solicitud($to_email,$from_email,$arquitectura,$username,$now){
+		$sql = "INSERT INTO solicitud_arq (fecha_solicitud, usuario, email, arquitectura) VALUES ('".$now."','".$username."','".$from_email."','".$arquitectura."')";
+		$agregar=db_execute($sql);
+		//db_execute retorna 1 si es exitosa la peticion y cero si falla
+}
+
+
+//asigna la arquitectura 
+function asignar_arquitectura($id_solicitud, $dominio_arq, $user){	
+	$actual_datetime=date_create()->format('Y-m-d H:i:s');
+	$final_datetime=date('Y-m-d H:i:s',strtotime($actual_datetime."+ 7 days")); 
+	$sql2 = "UPDATE solicitud_arq SET fecha_asignacion='" . $actual_datetime . "', dominio='" .$dominio_arq . "', fecha_fin_asignacion='" . $final_datetime . "' WHERE id='" . $id_solicitud . "'";
+	$asignar_arq=db_execute($sql2);
+	// marcar la arqutiectura como inactiva
+	// echo $id;
+	$sql3 = "UPDATE arqs_testbedims SET activo='V', usuario ='".$user."' WHERE dominio='" . $dominio_arq . "'";
+	$update_arqs=db_execute($sql3);
+	// echo $update_arqs;
+	// return $asignar_arq;
+}
+
+function solicitud_pendiente($arq){
+	$id_solicitud_libre = db_fetch_cell_prepared("SELECT id from solicitud_arq WHERE fecha_asignacion IS NULL AND arquitectura = '" . $arq . "' limit 1");
+	return $id_solicitud_libre;
+}
+
+function validar_asignacion($dom,$user){
+	$id = db_fetch_cell_prepared("SELECT id from solicitud_arq WHERE dominio = '" . $dom . "' ORDER BY fecha_asignacion DESC limit 1");
+	$asignacion_expiro = db_fetch_cell_prepared("SELECT arquitectura from solicitud_arq WHERE fecha_fin_asignacion <=NOW() AND id = '" . $id . "' ORDER BY fecha_asignacion DESC limit 1");
+	
+	// $asignacion_expiro = db_fetch_cell_prepared("SELECT arquitectura from solicitud_arq WHERE fecha_fin_asignacion <= STR_TO_DATE('" . $now . "', '%Y-%m-%d %H:%i:%s') AND dominio = '" . $dom . "' ORDER BY fecha_asignacion DESC limit 1");
+	echo "resultado consulta000".$asignacion_expiro."11";
+	if ($asignacion_expiro != ''){
+		echo "ha expirado la arquitectura ".$asignacion_expiro ."con dominio ".$dom."\n";
+		$id=solicitud_pendiente($asignacion_expiro);
+		if (!empty($id)) {
+			echo " la solicitud " .$id." se encuentra esperando para asignacion\n";
+			asignar_arquitectura($id, $dom, $user);
+			echo "se asigno la arquitectura";
+		}else{
+			echo "\n no hay solicitudes pendientes para".$asignacion_expiro;
+			liberar_arq($dom);
+		}
+		
+	}else{
+		echo "El dominio aun sigue activo\n";
+	}
+}
+
+
+function liberar_arq($dominio){
+		$arq_libre=db_execute("UPDATE arqs_testbedims SET activo='F', usuario='libre' WHERE dominio='" . $dominio . "'");
+}
+
+function liberar_arquitecturas($ids){
+	foreach ($ids as $value) {
+		$arq_libre=db_execute("UPDATE arqs_testbedims SET activo='F', usuario='libre' WHERE id = '".$value."'");
+		if ($arq_libre == '1') {
+			echo $value.",";
+		}
+	}	
+	
+}
+
+
+function agregar_arquitectura($nom, $dom){
+	$sql = "INSERT INTO arqs_testbedims (arquitectura, dominio, activo, usuario) VALUES ('".$nom."','".$dom."','F','libre')";
+	$agregar=db_execute($sql);
+	if ($agregar == '1') {
+		$ultima_arq=db_fetch_row_prepared("SELECT * from arqs_testbedims order by id desc limit 1");
+		echo("<tr><td><input type='checkbox' id='".$ultima_arq['id']."'></td><td>".$ultima_arq['arquitectura']."</td><td>".$ultima_arq['dominio']."</td><td>".$ultima_arq['usuario']."</td></tr>");
+	
+	}
+}
+
+function eliminar_arquitecturas($ids){
+	foreach ($ids as $value) {
+		$sql = "DELETE FROM arqs_testbedims WHERE id='".$value."'";	
+		$eliminar=db_execute($sql);
+		if ($eliminar == '1' ) {
+			echo $value.","	;
+		}
+	}
+	
+
+}
+
+function dominios_asignados(){
+	//verificar si se termino el tiempo de las asignaciones
+	$doms=db_fetch_assoc("SELECT dominio from arqs_testbedims WHERE activo='V'");
+	$dominios=array();
+	foreach ($doms as $key => $value) {
+		$dominios[] = $value['dominio'];
+	}
+	return $dominios;
+}
+
+function info_arquitecturas(){
+	$tabla=db_fetch_assoc("SELECT * from arqs_testbedims");
+	return $tabla;
+}
+
+function db_arq_testbed(){
+	$arqs=db_fetch_assoc("select distinct arquitectura, Max(dominio), Max(descripcion), Max(imagen) from arqs_testbedims group by arquitectura");
+	
+	return $arqs;
+
+}
+
+//editar arquitectura
+function editar_arquitectura(){
+	
 }

@@ -1038,3 +1038,6 @@ function db_qstr($s, $db_conn = false) {
 function db_strip_control_chars($sql) {
 	return trim(str_replace(array("\t", "\r", "\n"), array(' ', '', ''), $sql), ';');
 }
+
+
+

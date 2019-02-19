@@ -700,7 +700,7 @@ ul#breadcrumbs {
 	padding: 10px;
 	/*background: white;*/
 	font-size: 18px;
-	margin-top: 5px;
+	margin-top: 19px;
 }
 
 
@@ -754,7 +754,7 @@ ul#breadcrumbs {
 	border-right: #AAAAAA 1px solid;
 	padding-left: 0px;
 	padding-right: 0px;
-	padding-top: 5px;
+	/*padding-top: 5px;*/
 	vertical-align: top;
 	float: left;
 	width: 230px;
@@ -762,9 +762,13 @@ ul#breadcrumbs {
 //	overflow-y:auto !important;
 //	overflow-x:auto;
 }
+.cactiConsoleNavigationArea :hover{
+	background-color: #B0BCCF;
+}
 
 .cactiConsoleNavigationArea table {
 	width: 100%;
+	height: 100%;
 }
 
 .treeTable {
@@ -806,7 +810,9 @@ ul#breadcrumbs {
 	position: relative;
 	float: right;
 	top: 15%;
-	background: transparent url('./../../../images/logo_telco.gif') no-repeat center;
+	/*background: transparent url('./../../../images/logo_telco.gif') no-repeat center;*/
+	/*logo login*/
+	background: transparent url('./../../../images/logo_telco2.png') no-repeat center;
 	width: 350px;
 	height: 128px;
 	z-index: 2;
@@ -925,7 +931,7 @@ legend {
 }
 
 .cactiConsoleContentArea {
-	background: #FFFFFF url('./../../../images/shadow.gif') repeat-x center top;
+	background: #fff;
 	padding-top: 10px;
 	padding-right: 5px;
 	padding-left: 5px;
@@ -1950,6 +1956,7 @@ tr#realtime td:first-child {
 	margin: 0px 5px;
 	float: right;
 	margin: 21px 10px 0px 5px;
+	border-radius: 10px;
 }
 .menu_principal_selected {
 	color: white !important;
@@ -1959,6 +1966,7 @@ tr#realtime td:first-child {
 	margin: 0px 5px;
 	float: right;
 	margin: 21px 10px 0px 5px;
+	border-radius: 10px;
 }
 
 
@@ -2036,27 +2044,39 @@ ul.nav_sub{
 	padding: 5px;
 
 }
+
 .content_testbed_info tr:nth-child(even) td{
 	font-size: 15px;
 	padding: 5px 10px 45px 5px;
 
 }
 
+.tabla_contenido{
+  background-color: white;
+  width: 90%;
+  margin-left: 5%;
+  border: solid 0.5px;
+}
+
+
 .tabla_contenido tr:nth-child(odd) td{
 	font-size: 15px;
 	padding: 5px 10px 45px 5px;
+	border: solid 0.5px;
 
 }
 .tabla_contenido tr:nth-child(even) td{
 	font-size: 15px;
 	padding: 5px 10px 45px 5px;
-
+	border: solid 0.5px;
+	
 }
 
 .tabla_contenido tr:nth-child(1) td{
 	font-size: 20px;
-	background-color: #D6D6D6;
+	background-color: #00438C;
 	border-collapse: collapse;
+	border: solid 0.5px;
 }
 
 .tabla_contenido td:nth-child(3) {
@@ -2066,10 +2086,12 @@ ul.nav_sub{
 .tabla_contenido td:nth-child(2){
 	/*display: none;*/
 	width: 40%;
+
 }
 .tabla_contenido td:nth-child(1){
 	/*display: none;*/
 	width: 20%;
+	padding-left: 5%;
 }
 
 
@@ -2103,7 +2125,7 @@ ul.nav_sub{
 }
 
 .display:hover{
-  background-color: #E9F4FA;
+  background-color: #C43838;
   cursor: pointer;
   
   /*color: white;*/
@@ -2114,7 +2136,24 @@ ul.nav_sub{
 
 
 
-.tabla_contenido{
-  background-color: white;
-  width: 100%;
+
+
+.estado_arq{
+	width: 80%;
+}
+.estado_arq tr:nth-child(odd) td{
+	font-size: 15px;
+	padding: 5px 10px 45px 5px;
+
+}
+.estado_arq tr:nth-child(even) td{
+	font-size: 15px;
+	padding: 5px 10px 45px 5px;
+
+}
+
+.estado_arq tr:nth-child(1) td{
+	font-size: 20px;
+	background-color: #D6D6D6;
+	border-collapse: collapse;
 }

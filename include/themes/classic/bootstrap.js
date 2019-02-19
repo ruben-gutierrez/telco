@@ -2326,25 +2326,33 @@ if (typeof jQuery === 'undefined') {
     var arquitectura ="";
 
     function seleccionar(elemento){
-      var id_fila = elemento.id;      
+      var id_fila = elemento.id;
       var id_fila_siguiente = "fila" + (parseInt(id_fila.substr(-1,1)) + 1);
       var id_fila_anterior = "fila" + (parseInt(id_fila.substr(-1,1)) - 1);
-      var id_ultima_fila="fila"+document.getElementById("tabla").rows.length;
-      
-      if (id_fila=="fila2") {
-          arquitectura = "aio";
+      var n_filas=document.getElementById("tabla").rows.length;
+      var n_ids=n_filas - 1;
+      var id_ultima_fila="fila"+n_ids;
+      if ( document.getElementsByClassName("display").length != 2) {
+        arquitectura = elemento.getAttribute('name');
       }else{
-        if (id_fila=="fila3") {
-          arquitectura = "distribuida";
-        }else{
-          arquitectura = "ims_pstn";
-        }
+        arquitectura = '';
       }
+
+      // if (id_fila=="fila2") {
+      //     arquitectura = "aio";
+      // }else{
+      //   if (id_fila=="fila3") {
+      //     arquitectura = "distribuida";
+      //   }else{
+      //     arquitectura = "ims_pstn";
+      //   }
+      // }
       $('#'+id_fila).children().off();
       
       $(".tabla_contenido td:nth-child(3)").toggle();
       $(".tabla_contenido td:nth-child(2)").toggle();
       if (id_ultima_fila == id_fila) {
+
         if($('#'+id_fila_anterior).hasClass('display') && $('#'+id_fila).hasClass('display')){
           ocultar_otras(id_fila);
           return;
@@ -2367,8 +2375,8 @@ if (typeof jQuery === 'undefined') {
           });
           $('#'+id_fila).removeClass('edisplay');
           $('#'+id_fila).addClass('display');
-          $('#fila1').removeClass('edisplay');
-          $('#fila1').addClass('display');
+          $('#fila0').removeClass('edisplay');
+          $('#fila0').addClass('display');
          $('.options_test').off();        
     }
 
@@ -2385,4 +2393,94 @@ if (typeof jQuery === 'undefined') {
     }
     
 
+    function selec_all_arq(){
+      divCont = document.getElementById('tabla_estado_arq'); 
+      checks  = divCont.getElementsByTagName('input');
+      if(checks[1].checked == true){
+            for(i=0;i<checks.length; i++){
+              checks[i].checked = false;;
+        }
+        }else{
+          for(i=0;i<checks.length; i++){
+                  checks[i].checked =true;;
+          }
+        }
+      
+      
+    }
+
+    function liberar_arquitectura(){
+      var ids=arqtestbed_ids_selected();
+
+      if (ids.length > 0) {
+        var accion='2';
+        $.post('solicitud_asignacion.php',{post_accion:accion,post_ids:ids},function(respuestas){
+                // alert(respuestas);
+                var respuesta = respuestas.split(",");
+                for (i=0;i<respuesta.length - 1; i++) {
+                  if (respuesta[i]=='0') {
+                    document.getElementById("ch"+respuesta[i]).checked = false;
+                  }else{
+                    document.getElementById(respuesta[i]).innerHTML = "libre";
+                    document.getElementById("ch"+respuesta[i]).checked = false;
+                  }
+                }          
+        });
+        
+      }else{
+        alert("Seleccione arquitecturas a liberar");
+      }
+      
+    }
+
+    function eliminar_arquitectura(){
+      var ids=arqtestbed_ids_selected();
+
+      if (ids.length > 0) {
+        var accion='4';
+        $.post('solicitud_asignacion.php',{post_accion:accion,post_ids:ids},function(respuesta){
+                var vector_respuesta = respuesta.split(",");
+                for (i=0;i<vector_respuesta.length - 1; i++) {
+                  $("#line" + vector_respuesta[i]).remove();
+                }          
+        });
+        
+      }else{
+        alert("Seleccione arquitecturas a eliminar");
+      }
+      // document.getElementById("tableid")
+    }
+
+    function agregar_arq(){
+
+      var accion ='3';
+      var new_nom = $('#add_nom_arq').val();
+      var new_dom = $('#add_dom_arq').val();
+      document.getElementById("add_nom_arq").value = '';
+      document.getElementById("add_dom_arq").value = '';
+      if (new_nom =='' || new_dom =='') {
+        alert("Los campos son obligatorios");
+      }else{
+        $.post('solicitud_asignacion.php',{post_accion:accion,post_new_dom:new_dom,post_new_nom:new_nom},function(respuesta){
+            // document.getElementById("tabla_estado_arq").innerHTML = respuesta;
+            document.getElementById("tabla_estado_arq").insertRow(-1).innerHTML = respuesta;
+          });
+      }
+    }
+
+    
+
+    function arqtestbed_ids_selected(){
+      var ids=[];
+      divCont = document.getElementById('tabla_estado_arq'); 
+      checks  = divCont.getElementsByTagName('input');
+      for(i=0;i<checks.length; i++){
+          if(checks[i].checked == true){
+              ids.push(checks[i].name);
+          }
+      }
+      return ids;
+    }
+
+    
     

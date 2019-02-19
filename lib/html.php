@@ -1417,7 +1417,9 @@ function html_show_tabs_left() {
 		?>
 
 	<a href="#">
-		<img  class='logo_principal' src='images/logo_telco_blanco.gif'>
+		<!-- logo principal -->
+		<!-- <img  class='logo_principal' src='images/logo_telco_blanco.gif'> -->
+		<img  class='logo_principal' src='images/logo_telco2.gif'>
 		</a>
 		<div  class="nombre_principal" style="display: inline-block; color: #FFFFFF;"></div>
 		<?php
@@ -2132,7 +2134,8 @@ function html_common_header($title, $selectedTheme = '') {
 	<script type='text/javascript'>var theme='<?php print $selectedTheme;?>';</script>
 	<script   src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<link href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/images/telco_icon.ico' rel='shortcut icon'>
-	<link href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/images/telco_logo.gif' rel='icon' sizes='96x96'>
+	<link href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/images/telco_logo2.png' rel='icon' sizes='96x96'>
+	<!-- <link href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/images/telco_logo.gif' rel='icon' sizes='96x96'> -->
 	<?php
 	print get_md5_include_css('include/themes/' . $selectedTheme .'/jquery.zoom.css');
 	print get_md5_include_css('include/themes/' . $selectedTheme .'/jquery-ui.css');
@@ -2239,21 +2242,28 @@ function graficar_menu_vertical_testbed($pagina, $array_info, $array_arquitectur
 function draw_table_testbed_arquitectura($array_content){
 	$menu_options = $array_content;
 	$cont =0;
-	foreach ($menu_options as $item => $elements) {
+	$arq_testbed=db_arq_testbed();
+	foreach ($arq_testbed as $item => $elements) {
 		$cont = $cont +1;
-		print "<tr class='display' id='fila".$cont."' onclick='seleccionar(this);'>";		
-		if (is_array($elements)) {
-			print "<td id='subtitle'>".$item."</td>";
-			print "<td>".$elements[0]."</td>";	
-			print "<td><img src='images/". $elements[1]."'</td>";	
-		}else{
-			print "<td>".$elements."</td>";
-		}
-		
+		print "<tr class='display' name='".$elements['arquitectura']."' id='fila".$cont."' onclick='seleccionar(this);'>";		
+			print "<td id='subtitle'>".$elements['arquitectura']."</td>";
+			print "<td>".$elements['Max(descripcion)']."</td>";
+			print "<td><img style='width: 500px; height: 300px;' src='images/". $elements['Max(imagen)']."'</td>";
+					
 		print "</tr>"; 
-	}
+	}	
 	
 }
+function draw_table_estate_arq(){
+	$inf_arq=info_arquitecturas();
+	// print_r($inf_arq);
+	print"<tr><td><input type='checkbox' name='0' id='ch0' onClick='selec_all_arq()'></td><td>Arquitectura</td><td>Dominio</td><td>Usuario</td></tr>";
+	foreach ($inf_arq as $key => $line) {
+		print"<tr id='line".$line['id']."'><td><input type='checkbox' name='".$line['id']."'  id='ch".$line['id']."'></td><td>".$line['arquitectura']."</td><td>".$line['dominio']."</td><td id='".$line['id']."'>".$line['usuario']."</td></tr>";
+	}
+}
+
+
 function draw_table_testbed_pruebas($array_content){
 	$menu_options = $array_content;
 	$cont =0;
