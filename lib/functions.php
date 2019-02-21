@@ -5248,8 +5248,8 @@ function liberar_arquitecturas($ids){
 }
 
 
-function agregar_arquitectura($nom, $dom){
-	$sql = "INSERT INTO arqs_testbedims (arquitectura, dominio, activo, usuario) VALUES ('".$nom."','".$dom."','F','libre')";
+function agregar_arquitectura($nom, $dom, $desc, $img){
+	$sql = "INSERT INTO arqs_testbedims (arquitectura, dominio, activo, usuario, descripcion, imagen) VALUES ('".$nom."','".$dom."','F','libre', '".$desc."','".$img."')";
 	$agregar=db_execute($sql);
 	if ($agregar == '1') {
 		$ultima_arq=db_fetch_row_prepared("SELECT * from arqs_testbedims order by id desc limit 1");
@@ -5293,6 +5293,8 @@ function db_arq_testbed(){
 }
 
 //editar arquitectura
-function editar_arquitectura(){
-	
+function edit_arq($new_nom, $ids, $new_dom, $new_desc, $new_img){
+	// echo($new_nom. $ids.$new_dom. $new_desc. $new_img);
+	$up=db_execute("UPDATE arqs_testbedims SET arquitectura = '" . $new_nom . "', dominio='" . $new_dom . "', activo='F', usuario ='libre', descripcion='" . $new_desc . "' WHERE id='" . $ids . "'");
+	echo $up;
 }

@@ -15,6 +15,8 @@ if (!empty($_POST))
 	$ids= $_POST['post_ids'];
 	$new_nom=$_POST['post_new_nom'];
 	$new_dom=$_POST['post_new_dom'];
+	$new_desc=$_POST['post_new_desc'];
+	$new_img=$_POST['post_new_img'];
 
 	$now = date_create()->format('Y-m-d H:i:s');
 
@@ -44,16 +46,22 @@ if (!empty($_POST))
 			liberar_arquitecturas($ids);
 			break;
 		case '3':
-			agregar_arquitectura($new_nom, $new_dom);
+			agregar_arquitectura($new_nom, $new_dom, $new_desc, $new_img);
 			break;
 		case '4':
 			eliminar_arquitecturas($ids);
+			break;
+		case '5':
+			edit_arq($new_nom, $ids, $new_dom, $new_desc, $new_img);
 			break;
 		
 		default:
 			# code...
 			break;
 	}
+
+   
+   
     
 }else{
 	$dominios_asignados= dominios_asignados();

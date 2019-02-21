@@ -2456,19 +2456,20 @@ if (typeof jQuery === 'undefined') {
       var accion ='3';
       var new_nom = $('#add_nom_arq').val();
       var new_dom = $('#add_dom_arq').val();
-      document.getElementById("add_nom_arq").value = '';
-      document.getElementById("add_dom_arq").value = '';
-      if (new_nom =='' || new_dom =='') {
-        alert("Los campos son obligatorios");
-      }else{
-        $.post('solicitud_asignacion.php',{post_accion:accion,post_new_dom:new_dom,post_new_nom:new_nom},function(respuesta){
+      var new_desc = $('#add_desc_arq').val();
+      var new_img = $('#add_img_arq').val();
+
+      $(".form_agregar_arq")[0].reset();
+      if (new_nom && new_dom) {
+        $.post('solicitud_asignacion.php',{post_accion:accion,post_new_dom:new_dom,post_new_nom:new_nom,post_new_desc:new_desc,post_new_img:new_img},function(respuesta){
             // document.getElementById("tabla_estado_arq").innerHTML = respuesta;
             document.getElementById("tabla_estado_arq").insertRow(-1).innerHTML = respuesta;
           });
+      }else{
+        alert("los datos son obligatorios");
       }
+        
     }
-
-    
 
     function arqtestbed_ids_selected(){
       var ids=[];
@@ -2481,6 +2482,49 @@ if (typeof jQuery === 'undefined') {
       }
       return ids;
     }
+
+    function editar_arquitectura(){
+      var ids=arqtestbed_ids_selected();
+      if (ids.length == 1) {
+        // oculta latabla de estado y muestra el formulario 
+        document.getElementById('div_editar_arq').style.display='block';
+        document.getElementById('form_arq_state').style.display='none';
+        //se llena los campos con la informacion actual
+        document.getElementById('mod_nombre').value=$("[id~='line"+ids+"']")[0].cells[1].textContent;
+        document.getElementById('mod_dominio').value=$("[id~='line"+ids+"']")[0].cells[2].textContent;
+        //se pasa el id de la arquitectura en el name del input dominio
+        $("#mod_dominio")[0].name=ids;
+
+      }else{
+        alert("Debe elegir una arquitectura");
+      }
+    }
+
+    function guardar_editar_arquitectura(){
+      var accion ='5';
+      var new_nom = $('#mod_nombre').val();
+      var new_dom = $('#mod_dominio').val();
+      var new_desc = $('#mod_descripcion').val();
+      var new_img = $('#mod_img_arq').val();
+      var ids=$("#mod_dominio")[0].name;
+      
+      if (new_nom && new_dom) {
+        $.post('solicitud_asignacion.php',{post_accion:accion,post_ids:ids,post_new_dom:new_dom,post_new_nom:new_nom,post_new_desc:new_desc,post_new_img:new_img},function(respuesta){
+          if (respuesta=='1') {
+            document.getElementById('div_editar_arq').style.display='none';
+            document.getElementById('form_arq_state').style.display='block';
+          }
+          });
+      }else{
+        alert("los datos son obligatorios");
+      }
+      $(".form_editar_arq")[0].reset();
+    }
+
+
+
+
+
 
     
     

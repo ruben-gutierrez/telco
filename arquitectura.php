@@ -13,8 +13,6 @@ $from_email=$current_user['email_address'];
 
 <div class="margin_page">
 
-	    
-
 	<h1 class="titulo_arquitectura">Lista de Arquitecturas</h1>
 	<div class="description_page_testbed">El ambiente de prueba Telco2.0 IMS permite a los usuarios evaluar el rendiemiento del nucleo IMS clearwater con dos tipos de pruebas Una de ellas consiste en emular el nodo Bono (Proxy) para enviar peticiones y solicitudes al nodo Sprout (Nucleo IMS) para verificar el rendieminto de este. Otra de las pruebas consiste en emular los usuarios que se registran para utilizar algun servicio IMS.</div>
 	<!-- //tabla y boton de solicitud  -->
@@ -41,7 +39,7 @@ $from_email=$current_user['email_address'];
 	
 	<!-- estado arquitecturas y boton de agrega, eliminar y editar arquitectura -->
 	<div>
-		<form>
+		<form id="form_arq_state">
 			<table id="tabla_estado_arq" class="estado_arq">
 				<?php draw_table_estate_arq(); ?>
 			</table>
@@ -50,15 +48,28 @@ $from_email=$current_user['email_address'];
 			<input type="button" name="" id	value="Editar arquitectura" onclick="editar_arquitectura()">
 		</form>
 		<form class="form_agregar_arq">
-			<input type="text" name="" id="add_nom_arq" placeholder='Nombre' onclick="">
-			<input type="text" name="" id="add_dom_arq" placeholder='Dominio'>
-			<input type="button" name="" value="Agregar arquitectura" onclick="agregar_arq()">	
+			<input type="text"  id="add_nom_arq" placeholder='Nombre' required>
+			<input type="text" id="add_dom_arq" placeholder='Dominio' required>
+			<textarea id="add_desc_arq" placeholder='Descripcion' required></textarea>
+			Imagen de arquitectura: <input type="file" name="" id="add_img_arq" accept=".jpg, .jpeg, .png">
+			<input type="button" name="" value="Agregar arquitectura" onclick="agregar_arq()">
 		</form>
+
+		<div id="div_editar_arq" style="display: none;">
+			<form enctype="multipart/form-data" class="form_editar_arq" style="display: inline-grid;">
+				
+				<input type="text" id="mod_nombre"  placeholder='Nombre' onclick="">
+				<input type="text" id="mod_dominio" name=""  placeholder='Dominio'>
+				<!--<input type="text" id="mod_descripcion"  placeholder="Descripcion" required>-->
+				<textarea id="mod_descripcion"  placeholder="Descripcion" required></textarea>
+				Imagen de arquitectura: <input id="mod_img_arq" type="file"   accept=".jpg, .jpeg, .png">
+				<input type="button" value="Guardar" onclick="guardar_editar_arquitectura()" >
+				<input type="button" name="" value="cancelar" onclick="document.getElementById('div_editar_arq').style.display='none';
+	        document.getElementById('form_arq_state').style.display='block';">
+			</form>
+		</div>
 	</div>
-
 	<script type="text/javascript">
-		
-
     function solicituar_arquitectura(){ 
         // Estas son variables a pasar por post
        
