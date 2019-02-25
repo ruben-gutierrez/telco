@@ -66,23 +66,24 @@ $using_guest_account = false;
 		<div style='display:none;' id='navigation'>
 			<div id='navigation' class='navigation'>
 
-								<?php
+				<?php
 								
-				            $pagina = pregunta_pagina_testbed($paginas_testbed);
-				            if ( $pagina == "cacti" ) { ?>
-				                <!-- contenido del servidor cacti -->
-				                <table style='width:100%;'>
-				                				<?php draw_menu();?>
-				                				<tr>
-				                					<td style='text-align:center;'>
-				                						<div class='cactiLogo' onclick='loadPage("<?php print $config['url_path'];?>about.php")'></div>
-				                					</td>
-				                				</tr>
-				                </table>	
-				            <?php }else{
-				                //se grafica contenido del testbed
-				                graficar_menu_vertical_testbed( $pagina, $menu_vertical_info,$menu_vertical_arquitectura,$menu_vertical_pruebas );                
-				            } ?>
+	            $pagina = pregunta_pagina_testbed($paginas_testbed);
+	            if ( $pagina == "cacti" ) { ?>
+	                <!-- contenido del servidor cacti -->
+	                <table style='width:100%;'>
+        				<?php draw_menu();?>
+        				<tr>
+    						<td style='text-align:center;'>
+							<div class='cactiLogo' onclick='loadPage("<?php print $config['url_path'];?>about.php")'></div>
+        					</td>
+        				</tr>
+	                </table>	
+				            <?php 
+		        }else{
+                	//se grafica contenido del testbed
+	                graficar_menu_vertical_testbed( $pagina, $menu_vertical_info,$menu_vertical_arquitectura,$menu_vertical_pruebas);                
+	            } ?>
 			</div>
 			
 		</div>

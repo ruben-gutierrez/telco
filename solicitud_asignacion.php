@@ -7,19 +7,12 @@ include('./include/global.php');
 if (!empty($_POST))
 {
 	// obtener vablabes a usar
-	$accion= $_POST['post_accion'];	
-	$to_email= $_POST['post_to_email'];
-	$from_email= $_POST['post_from_email'];
-	$arquitectura= $_POST['post_arquitectura'];
-	$username= $_POST['post_username'];
-	$ids= $_POST['post_ids'];
-	$new_nom=$_POST['post_new_nom'];
-	$new_dom=$_POST['post_new_dom'];
-	$new_desc=$_POST['post_new_desc'];
-	$new_img=$_POST['post_new_img'];
+	$accion= $_POST['action'];	
+	$id= $_POST['id'];
+
 
 	$now = date_create()->format('Y-m-d H:i:s');
-
+	
 	switch ($accion) {
 		case '1':
 			agregar_solicitud($to_email,$from_email,$arquitectura,$username,$now);
@@ -43,18 +36,62 @@ if (!empty($_POST))
 			break;
 
 		case '2':
-			liberar_arquitecturas($ids);
+			$arq_libre=db_execute("UPDATE arqs_testbedims SET activo='F', usuario='libre' WHERE id='" . $id . "'");
+			echo($arq_libre);
 			break;
 		case '3':
-			agregar_arquitectura($new_nom, $new_dom, $new_desc, $new_img);
-			break;
+			$sql = "INSERT INTO arqs_testbedims (arquitectura, dominio, activo, usuario, descripcion, imagen) VALUES ('".$_POST['name_arq']."','".$_POST['dominio_arq']."','F','libre', '".$_POST['desc_arq']."','".$_FILES['image']['name']."')";
+			$agregar=db_execute($sql);
+			if ( $agregar == '1') {
+				$id_arq=db_fetch_cell_prepared("SELECT id from arqs_testbedims order by id desc limit 1");
+				echo(return_file_arq($id_arq, $_POST['name_arq'], $_POST['dominio_arq'], $_POST['desc_arq'], $_FILES['image']['name']));
+				//verificar si la arquitectura esta en funcionamiento
+			}
+
+			if (move_uploaded_file($_FILES['image']['tmp_name'], 'images/images_testbed/images_ims/'.$_FILES['image']['name'])) {
+					$up2=db_execute("UPDATE arqs_testbedims SET imagen='".$_FILES['image']['name']."' WHERE id='" . $id_arq . "'");
+				}else{
+					echo('upload fallo');
+				}
+			break;//agregar arquitectura
 		case '4':
-			eliminar_arquitecturas($ids);
-			break;
-		case '5':
-			edit_arq($new_nom, $ids, $new_dom, $new_desc, $new_img);
+			$file_name=db_fetch_cell_prepared("select imagen from arqs_testbedims where id='".$id."'");
+			$eliminar=db_execute("DELETE FROM arqs_testbedims WHERE id='".$id."'");
+			if ( $eliminar == '1') {				
+				unlink('images/images_testbed/images_ims/'.$file_name);
+			}
+			echo($eliminar);
 			break;
 		
+		case '5': //modificar arqutiectura
+			$error=0;
+			$up=db_execute("UPDATE arqs_testbedims SET arquitectura = '" . $_POST['name_arq'] . "', dominio ='" . $_POST['dominio_arq'] . "', activo='F', usuario ='libre', descripcion='".$_POST['desc_arq']."', imagen='".$_FILES['image']['name']."' WHERE id='" . $id . "'");	
+			if ( $up == '1') {
+
+				echo("<tr id='line".$id."'>
+			 		<td>".$_POST['name_arq']."</td>
+			 		<td>".$_POST['dominio_arq']."</td>
+			 		<td class='edisplay'>".$_POST['desc_arq']."</td>
+			 		<td class='edisplay'>".$_FILES['image']['name']."</td>
+			 		<td>libre</td>
+			 		<td><button class='btn_arq_action' id='btn_liberar".$id."' name='liberar' style='background:green;'> <i class='fa fa-unlock fa-lg'></i></button><button class='btn_arq_action' id='btn_editar".$id."'name='editar' style='background:blue;'> <i class='fa fa-edit fa-lg'></i></button><button class='btn_arq_action' id='btn_eliminar".$id."' name='eliminar' style='background:red;'> <i class='fa fa-trash fa-lg'></i></button></td></tr>");
+				// subir la imagen
+				if (move_uploaded_file($_FILES['image']['tmp_name'], 'images/images_testbed/images_ims/'.$_FILES['image']['name'])) {
+						$up2=db_execute("UPDATE arqs_testbedims SET imagen='".$_FILES['image']['name']."' WHERE id='" . $id . "'");
+					}else{
+						echo($error++);
+					}
+
+			}else{
+				echo($error++);
+			}
+			
+		
+			break;
+		case '6':
+
+
+			break;
 		default:
 			# code...
 			break;
@@ -72,7 +109,15 @@ if (!empty($_POST))
 	}
 }
 
-
+function return_file_arq($id,$nombre,$dominio,$descipcion, $imagen){
+	$line="<tr id='line".$id."'><td>".$nombre."</td>
+				<td>".$dominio."</td>
+				<td class='edisplay'>".$descipcion."</td>
+				<td class='edisplay'>".$imagen."</td>
+				<td>libre</td>
+				<td><button class='btn_arq_action' id='btn_liberar".$id."' name='liberar' style='background:green;'> <i class='fa fa-unlock fa-lg'></i></button><button class='btn_arq_action' id='btn_editar".$id."'name='editar' style='background:blue;'> <i class='fa fa-edit fa-lg'></i></button><button class='btn_arq_action' id='btn_eliminar".$id."' name='eliminar' style='background:red;'> <i class='fa fa-trash fa-lg'></i></button></td></tr>";
+	return $line;
+}
 
 
 

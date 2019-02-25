@@ -5233,9 +5233,7 @@ function validar_asignacion($dom,$user){
 }
 
 
-function liberar_arq($dominio){
-		$arq_libre=db_execute("UPDATE arqs_testbedims SET activo='F', usuario='libre' WHERE dominio='" . $dominio . "'");
-}
+
 
 function liberar_arquitecturas($ids){
 	foreach ($ids as $value) {
@@ -5253,22 +5251,12 @@ function agregar_arquitectura($nom, $dom, $desc, $img){
 	$agregar=db_execute($sql);
 	if ($agregar == '1') {
 		$ultima_arq=db_fetch_row_prepared("SELECT * from arqs_testbedims order by id desc limit 1");
-		echo("<tr><td><input type='checkbox' id='".$ultima_arq['id']."'></td><td>".$ultima_arq['arquitectura']."</td><td>".$ultima_arq['dominio']."</td><td>".$ultima_arq['usuario']."</td></tr>");
+		print("<tr id='line".$ultima_arq['id']."'> <td><input type='checkbox' id='ch".$ultima_arq['id']."' name='".$ultima_arq['id']."'></td><td>".$ultima_arq['arquitectura']."</td><td>".$ultima_arq['dominio']."</td><td>".$ultima_arq['usuario']."</td></tr>");
+		//verificar si la arquitectura esta en funcionamiento
 	
 	}
 }
 
-function eliminar_arquitecturas($ids){
-	foreach ($ids as $value) {
-		$sql = "DELETE FROM arqs_testbedims WHERE id='".$value."'";	
-		$eliminar=db_execute($sql);
-		if ($eliminar == '1' ) {
-			echo $value.","	;
-		}
-	}
-	
-
-}
 
 function dominios_asignados(){
 	//verificar si se termino el tiempo de las asignaciones
@@ -5292,9 +5280,3 @@ function db_arq_testbed(){
 
 }
 
-//editar arquitectura
-function edit_arq($new_nom, $ids, $new_dom, $new_desc, $new_img){
-	// echo($new_nom. $ids.$new_dom. $new_desc. $new_img);
-	$up=db_execute("UPDATE arqs_testbedims SET arquitectura = '" . $new_nom . "', dominio='" . $new_dom . "', activo='F', usuario ='libre', descripcion='" . $new_desc . "' WHERE id='" . $ids . "'");
-	echo $up;
-}

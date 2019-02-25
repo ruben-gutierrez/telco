@@ -970,7 +970,8 @@ $user_auth_realms = array(
 	25   => __('Realtime Graphs'),
 	20   => __('Update Profile'),
 	24   => __('External Links'),
-	100  => __('testbed IMS'),
+	100  => __('Testbed IMS'),
+	200  => __('Administrar testbed IMS'),
 
 	1    => __('User Management'),
 	15   => __('Settings and Utilities'),
@@ -1006,6 +1007,7 @@ $user_auth_roles = array(
 	'Template Editor'        => array(8, 2, 9, 10, 11, 12, 13, 14, 16, 17),
 	'General Administration' => array(8, 3, 4, 5, 23, 1043),
 	'System Administration'  => array(8, 15, 1, 18, 21, 101),
+	'Administrar Testbed'  	 => array(200),
 	'Testbeds'  			 => array(100)
 );
 
@@ -1013,6 +1015,7 @@ $user_auth_realm_filenames = array(
 	'about.php' => 8,
 	'arquitectura.php' => 100,
 	'solicitud_asignacion.php' => 100,
+	'admin_testbedims.php' => 200,
 	'info.php' => 100,
 	'pruebas.php' => 100,
 	'cdef.php' => 14,
@@ -1705,7 +1708,8 @@ $menu_vertical_pruebas = array (
 $paginas_testbed = array (
 	"info.php",
 	"arquitectura.php",
-	"pruebas.php"
+	"pruebas.php",
+	"admin_testbedims.php"
 );
 
 $contenido_info = array(

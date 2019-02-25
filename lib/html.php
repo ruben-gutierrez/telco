@@ -1407,6 +1407,7 @@ function html_show_tabs_left() {
 	$realm_allowed[21] = is_realm_allowed(21);
 	$realm_allowed[22] = is_realm_allowed(22);
 	$realm_allowed[100] = is_realm_allowed(100);
+	$realm_allowed[200] = is_realm_allowed(200);
 
 	if ($realm_allowed[8]) {
 		$show_console_tab = true;
@@ -1489,6 +1490,21 @@ function html_show_tabs_left() {
 				}				
 			}
 		}
+
+		// admin_testbedims
+		if ($realm_allowed[200]) {
+			if ($config['poller_id'] > 1 && $config['connection'] != 'online') {
+				// Don't show graphs tab when offline
+			} else {
+				$file = get_current_page();
+				if ($file == "admin_testbedims.php") {
+				
+					print "<a id='maintab-anchor" . rand() . "' class='menu_principal_selected' href='" . html_escape($config['url_path'] . 'admin_testbedims.php') . "'>Administrar</a>";
+				} else {
+					print "<a id='maintab-anchor" . rand() . "' class='menu_principal' href='" . html_escape($config['url_path'] . 'admin_testbedims.php') . "'>Administrar</a>";
+				}				
+			}
+		}
 		
 
 
@@ -1549,7 +1565,7 @@ function html_show_tabs_left() {
 				}
 			}
 		}
-	} else {
+	}else{
 		if ($show_console_tab) {
 			$tabs_left[] =
 			array(
@@ -2132,10 +2148,10 @@ function html_common_header($title, $selectedTheme = '') {
 	<title><?php echo $title; ?></title>
 	<meta http-equiv='Content-Type' content='text/html;charset=utf-8'>
 	<script type='text/javascript'>var theme='<?php print $selectedTheme;?>';</script>
-	<script   src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<link href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/images/telco_icon.ico' rel='shortcut icon'>
 	<link href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/images/telco_logo2.png' rel='icon' sizes='96x96'>
-	<!-- <link href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/images/telco_logo.gif' rel='icon' sizes='96x96'> -->
+
 	<?php
 	print get_md5_include_css('include/themes/' . $selectedTheme .'/jquery.zoom.css');
 	print get_md5_include_css('include/themes/' . $selectedTheme .'/jquery-ui.css');
@@ -2149,7 +2165,7 @@ function html_common_header($title, $selectedTheme = '') {
 	print get_md5_include_css('include/themes/' . $selectedTheme .'/main.css');
 	// print get_md5_include_css('include/themes/' . $selectedTheme .'/bootstrap.css');
 	print get_md5_include_js('include/themes/' . $selectedTheme . '/bootstrap.js');
-	print get_md5_include_js('include/themes/' . $selectedTheme . '/jquery-2.1.1.min.js');
+	// print get_md5_include_js('include/themes/' . $selectedTheme . '/jquery-2.1.1.min.js');
 	print get_md5_include_js('include/js/screenfull.js');
 	print get_md5_include_js('include/js/jquery.js');
 	print get_md5_include_js('include/js/jquery-migrate.js');
@@ -2195,6 +2211,9 @@ function graficar_menu_vertical_testbed($pagina, $array_info, $array_arquitectur
     case "pruebas.php":
         $array_graficar = $array_pruebas;
         break;
+    case 'admin_testbedims.php':
+    	$array_graficar = array("Contenido",);
+    	break;
 	}
 
 	?>
@@ -2248,7 +2267,7 @@ function draw_table_testbed_arquitectura($array_content){
 		print "<tr class='display' name='".$elements['arquitectura']."' id='fila".$cont."' onclick='seleccionar(this);'>";		
 			print "<td id='subtitle'>".$elements['arquitectura']."</td>";
 			print "<td>".$elements['Max(descripcion)']."</td>";
-			print "<td><img style='width: 500px; height: 300px;' src='images/". $elements['Max(imagen)']."'</td>";
+			print "<td><img style='width: 500px; height: 300px;' src='images/images_testbed/images_ims/". $elements['Max(imagen)']."'</td>";
 					
 		print "</tr>"; 
 	}	
@@ -2257,9 +2276,14 @@ function draw_table_testbed_arquitectura($array_content){
 function draw_table_estate_arq(){
 	$inf_arq=info_arquitecturas();
 	// print_r($inf_arq);
-	print"<tr><td><input type='checkbox' name='0' id='ch0' onClick='selec_all_arq()'></td><td>Arquitectura</td><td>Dominio</td><td>Usuario</td></tr>";
 	foreach ($inf_arq as $key => $line) {
-		print"<tr id='line".$line['id']."'><td><input type='checkbox' name='".$line['id']."'  id='ch".$line['id']."'></td><td>".$line['arquitectura']."</td><td>".$line['dominio']."</td><td id='".$line['id']."'>".$line['usuario']."</td></tr>";
+		print"<tr id='line".$line['id']."'>
+		<td>".$line['arquitectura']."</td>
+		<td>".$line['dominio']."</td>
+		<td class='edisplay'>".$line['descripcion']."</td>
+		<td class='edisplay'>".$line['imagen']."</td>
+		<td>".$line['usuario']."</td>
+		<td><button class='btn_arq_action' id='btn_liberar".$line['id']."' name='liberar' style='background:green;'> <i class='fa fa-unlock fa-lg'></i></button><button class='btn_arq_action' id='btn_editar".$line['id']."'name='editar' style='background:blue;'> <i class='fa fa-edit fa-lg'></i></button><button class='btn_arq_action' id='btn_eliminar".$line['id']."' name='eliminar' style='background:red;'> <i class='fa fa-trash fa-lg'></i></button></td></tr>";
 	}
 }
 

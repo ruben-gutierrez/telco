@@ -24,6 +24,7 @@ $from_email=$current_user['email_address'];
 				<td>Descripcion</td> 
 				<td>Imagen</td>
 			</tr>
+
 			<?php draw_table_testbed_arquitectura($contenido_arquitectura); ?>
 		</table>
 	
@@ -39,22 +40,6 @@ $from_email=$current_user['email_address'];
 	
 	<!-- estado arquitecturas y boton de agrega, eliminar y editar arquitectura -->
 	<div>
-		<form id="form_arq_state">
-			<table id="tabla_estado_arq" class="estado_arq">
-				<?php draw_table_estate_arq(); ?>
-			</table>
-			<input type="button" value="Liberar arquitectura" onclick="liberar_arquitectura()"> 
-			<input type="button" name="" id	value="Eliminar arquitectura" onclick="eliminar_arquitectura()">
-			<input type="button" name="" id	value="Editar arquitectura" onclick="editar_arquitectura()">
-		</form>
-		<form class="form_agregar_arq">
-			<input type="text"  id="add_nom_arq" placeholder='Nombre' required>
-			<input type="text" id="add_dom_arq" placeholder='Dominio' required>
-			<textarea id="add_desc_arq" placeholder='Descripcion' required></textarea>
-			Imagen de arquitectura: <input type="file" name="" id="add_img_arq" accept=".jpg, .jpeg, .png">
-			<input type="button" name="" value="Agregar arquitectura" onclick="agregar_arq()">
-		</form>
-
 		<div id="div_editar_arq" style="display: none;">
 			<form enctype="multipart/form-data" class="form_editar_arq" style="display: inline-grid;">
 				

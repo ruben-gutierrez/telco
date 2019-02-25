@@ -2435,7 +2435,6 @@ if (typeof jQuery === 'undefined') {
 
     function eliminar_arquitectura(){
       var ids=arqtestbed_ids_selected();
-
       if (ids.length > 0) {
         var accion='4';
         $.post('solicitud_asignacion.php',{post_accion:accion,post_ids:ids},function(respuesta){
@@ -2448,7 +2447,7 @@ if (typeof jQuery === 'undefined') {
       }else{
         alert("Seleccione arquitecturas a eliminar");
       }
-      // document.getElementById("tableid")
+      document.getElementById("tableid")
     }
 
     function agregar_arq(){
@@ -2480,9 +2479,10 @@ if (typeof jQuery === 'undefined') {
               ids.push(checks[i].name);
           }
       }
+
       return ids;
     }
-
+    
     function editar_arquitectura(){
       var ids=arqtestbed_ids_selected();
       if (ids.length == 1) {
@@ -2507,24 +2507,38 @@ if (typeof jQuery === 'undefined') {
       var new_desc = $('#mod_descripcion').val();
       var new_img = $('#mod_img_arq').val();
       var ids=$("#mod_dominio")[0].name;
-      
+
       if (new_nom && new_dom) {
         $.post('solicitud_asignacion.php',{post_accion:accion,post_ids:ids,post_new_dom:new_dom,post_new_nom:new_nom,post_new_desc:new_desc,post_new_img:new_img},function(respuesta){
+          // alert(respuesta);
           if (respuesta=='1') {
             document.getElementById('div_editar_arq').style.display='none';
             document.getElementById('form_arq_state').style.display='block';
+            $(".form_editar_arq")[0].reset();
+          }else{
+            alert(respuesta);
           }
           });
       }else{
         alert("los datos son obligatorios");
       }
-      $(".form_editar_arq")[0].reset();
+      
     }
 
 
+// admin_testbedims
 
+// function guardar_arq(){
+//   // validacion
+  
+//   //extraemos los datos a enviar
+//   var enviar=$("#form_data").serialize();
+//   enviar+="&file_name="+$('#uploadImage')[0].files[0].name;
+//   enviar+="&file_path="+$('#uploadImage')[0].value;
+//   //post para enviar la informacion
+//   $.post("solicitud_asignacion.php",enviar,function(res){
+//       var respuesta = JSON.parse(res);
+//       alert(respuesta);
+//   }),"json";
+// }
 
-
-
-    
-    

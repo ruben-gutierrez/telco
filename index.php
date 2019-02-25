@@ -22,7 +22,7 @@
  +-------------------------------------------------------------------------+
 */
 
-<!--  -->inclu<!--  -->de('./include/auth.php');
+include('./include/auth.php');
 top_header();
 
 api_plugin_hook('console_before');

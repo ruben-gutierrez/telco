@@ -750,7 +750,7 @@ ul#breadcrumbs {
 
 .cactiConsoleNavigationArea {
 	display: table-cell;
-	background: snow url('./../../../images/shadow_gray.gif') repeat-x center top;
+	background: #dedede66;
 	border-right: #AAAAAA 1px solid;
 	padding-left: 0px;
 	padding-right: 0px;
@@ -761,9 +761,6 @@ ul#breadcrumbs {
 	height: 100%;
 //	overflow-y:auto !important;
 //	overflow-x:auto;
-}
-.cactiConsoleNavigationArea :hover{
-	background-color: #B0BCCF;
 }
 
 .cactiConsoleNavigationArea table {
@@ -2134,22 +2131,88 @@ ul.nav_sub{
   display: none;
 }
 
-.estado_arq{
-	width: 80%;
+.table_estado_arq{
+	width: 100%;
 }
-.estado_arq tr:nth-child(odd) td{
+.table_estado_arq tr:nth-child(odd) td{
 	font-size: 15px;
-	padding: 5px 10px 45px 5px;
+	padding: 5px 10px 5px 5px;
+	border-bottom: ridge;
 
 }
-.estado_arq tr:nth-child(even) td{
+.table_estado_arq tr:nth-child(even) td{
 	font-size: 15px;
-	padding: 5px 10px 45px 5px;
+	padding: 5px 10px 5px 5px;
+	border-bottom: ridge;
 
 }
 
-.estado_arq tr:nth-child(1) td{
-	font-size: 20px;
+.table_estado_arq tr:nth-child(1) th{
+	font-size: 16px;
 	background-color: #D6D6D6;
 	border-collapse: collapse;
+	
+}
+
+/*------------------------------------------------------------*/
+/*admin_testbednims*/
+.admin_ims{
+	position: absolute;
+	width: 100%;
+}
+.section_admin_arquitectura{
+	width: 95%;
+	margin: 0 2.5%;
+	position: relative;
+	border-bottom: solid 1px;
+	border-top: : solid 1px;
+	margin-bottom: 40px;
+	padding-top: 10px;
+	background: #fff;
+}
+.content_section{
+	width: 95%;
+	margin: 10px 2.5%;
+}
+
+.name_section{
+	padding: 10px 20px;
+	background: #1c3589;	
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	font-size: 16px;
+	color: #fff;
+}
+
+.btn_arq_action{
+	height: 40px;
+	width: 40px;
+	border-radius: 50%;
+	margin-left: 10px;
+}
+
+.fa-lg{
+	color: white;
+}
+
+.table_estado_arq thead{
+	background: #1c3589;
+	height: 40px;
+}
+
+.form_arq{
+	display: grid;
+	justify-content: center;
+}
+
+.form_arq > input, textarea {
+	margin-bottom: 15px;
+
+}
+
+.btn_form{	
+	cursor: pointer;
+	width: 120px;
+	margin-left: 35px;
+	display: inline-block;
 }
