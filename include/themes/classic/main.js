@@ -215,6 +215,7 @@ function edit_arq(){
 					$('#table_estado_arq').append(data);
 					$('#mod_arq').hide(300);
 					$('#table_arquitectura').show(500);
+					$('#form_edit_arq')[0].reset();
 					alert("se agrego la arquitectura satisfactoriamente");
 					// log-reporting
   				}
@@ -244,7 +245,6 @@ function add_arquitec(){
 			$('#form_new_arq')[0].reset();
 			alert("Se agrego la arquitectura correctamente");
 			// log-reporting se agrego una nueva arquitectura
-
 		}
 	
 	});
