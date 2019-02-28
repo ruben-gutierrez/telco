@@ -2526,19 +2526,3 @@ if (typeof jQuery === 'undefined') {
     }
 
 
-// admin_testbedims
-
-// function guardar_arq(){
-//   // validacion
-  
-//   //extraemos los datos a enviar
-//   var enviar=$("#form_data").serialize();
-//   enviar+="&file_name="+$('#uploadImage')[0].files[0].name;
-//   enviar+="&file_path="+$('#uploadImage')[0].value;
-//   //post para enviar la informacion
-//   $.post("solicitud_asignacion.php",enviar,function(res){
-//       var respuesta = JSON.parse(res);
-//       alert(respuesta);
-//   }),"json";
-// }
-

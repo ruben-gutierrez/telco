@@ -2216,3 +2216,11 @@ ul.nav_sub{
 	margin-left: 35px;
 	display: inline-block;
 }
+
+.dips{
+	float: right;
+}
+
+.dips :hover{
+	background: #C43838;
+}

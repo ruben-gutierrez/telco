@@ -5179,7 +5179,7 @@ function pregunta_pagina_testbed ($array_paginas_testbed){
 
 
 function arq_disponible($arq){
-	$dominio_id = db_fetch_row_prepared("SELECT id, dominio from arqs_testbedims WHERE activo = 'F' AND arquitectura = '" . $arq . "' limit 1");
+	$dominio_id = db_fetch_row_prepared("SELECT id, dominio from arqs_testbedims WHERE activo = 'V' AND usuario='libre' AND arquitectura = '" . $arq . "'  limit 1" );
 	return $dominio_id;
 }
 // agregar solicitud a la tabla solicitud_arq
@@ -5191,58 +5191,68 @@ function agregar_solicitud($to_email,$from_email,$arquitectura,$username,$now){
 
 
 //asigna la arquitectura 
-function asignar_arquitectura($id_solicitud, $dominio_arq, $user){	
+function asignar_arquitectura($id_solicitud, $dominio_arq, $user){
+	$days=db_fetch_cell_prepared("select value_info from data_testbedims where id_data='2'");
 	$actual_datetime=date_create()->format('Y-m-d H:i:s');
-	$final_datetime=date('Y-m-d H:i:s',strtotime($actual_datetime."+ 7 days")); 
-	$sql2 = "UPDATE solicitud_arq SET fecha_asignacion='" . $actual_datetime . "', dominio='" .$dominio_arq . "', fecha_fin_asignacion='" . $final_datetime . "' WHERE id='" . $id_solicitud . "'";
-	$asignar_arq=db_execute($sql2);
+	$final_datetime=date('Y-m-d H:i:s',strtotime($actual_datetime."+ ".$days." days")); 
+	
+	$asignar_arq=db_execute("UPDATE solicitud_arq SET fecha_asignacion='" . $actual_datetime . "', dominio='" .$dominio_arq . "', fecha_fin_asignacion='" . $final_datetime . "' WHERE id='" . $id_solicitud . "'");
 	// marcar la arqutiectura como inactiva
-	// echo $id;
-	$sql3 = "UPDATE arqs_testbedims SET activo='V', usuario ='".$user."' WHERE dominio='" . $dominio_arq . "'";
+	$sql3 = "UPDATE arqs_testbedims SET usuario ='".$user."' WHERE dominio='" . $dominio_arq . "'";
 	$update_arqs=db_execute($sql3);
 	// echo $update_arqs;
-	// return $asignar_arq;
+	return ($asignar_arq . $update_arqs);
 }
 
 function solicitud_pendiente($arq){
-	$id_solicitud_libre = db_fetch_cell_prepared("SELECT id from solicitud_arq WHERE fecha_asignacion IS NULL AND arquitectura = '" . $arq . "' limit 1");
+	$id_solicitud_libre = db_fetch_row_prepared("SELECT id, email from solicitud_arq WHERE fecha_asignacion IS NULL AND arquitectura = '" . $arq . "' limit 1");
 	return $id_solicitud_libre;
 }
 
 function validar_asignacion($dom,$user){
-	$id = db_fetch_cell_prepared("SELECT id from solicitud_arq WHERE dominio = '" . $dom . "' ORDER BY fecha_asignacion DESC limit 1");
-	$asignacion_expiro = db_fetch_cell_prepared("SELECT arquitectura from solicitud_arq WHERE fecha_fin_asignacion <=NOW() AND id = '" . $id . "' ORDER BY fecha_asignacion DESC limit 1");
 	
-	// $asignacion_expiro = db_fetch_cell_prepared("SELECT arquitectura from solicitud_arq WHERE fecha_fin_asignacion <= STR_TO_DATE('" . $now . "', '%Y-%m-%d %H:%i:%s') AND dominio = '" . $dom . "' ORDER BY fecha_asignacion DESC limit 1");
-	echo "resultado consulta000".$asignacion_expiro."11";
-	if ($asignacion_expiro != ''){
-		echo "ha expirado la arquitectura ".$asignacion_expiro ."con dominio ".$dom."\n";
-		$id=solicitud_pendiente($asignacion_expiro);
-		if (!empty($id)) {
-			echo " la solicitud " .$id." se encuentra esperando para asignacion\n";
-			asignar_arquitectura($id, $dom, $user);
-			echo "se asigno la arquitectura";
+	
+	// $asignacion_expiro = db_fetch_cell_prepared("SELECT arquitectura from solicitud_arq WHERE fecha_fin_asignacion <=NOW() WHERE dominio = '" . $dom . " AND email='".$user."' ORDER BY dominio DESC limit 1");
+	$id_asig = db_fetch_cell_prepared("SELECT id from solicitud_arq  WHERE dominio ='" . $dom . "'  ORDER BY id DESC LIMIT 1");
+	$arquitectura_libre = db_fetch_cell_prepared("SELECT arquitectura from solicitud_arq WHERE fecha_fin_asignacion <=NOW() AND id = '" . $id_asig ."'");
+	// echo $arquitectura_libre."\n";
+	
+	if ($arquitectura_libre != ''){
+		echo "la asignacion de la arquitectura ".$arquitectura_libre ." con dominio ".$dom." ha expirado\n";
+		$solicitud_pendiente=solicitud_pendiente($arquitectura_libre);
+		if (!empty($solicitud_pendiente)) {
+			echo "   la solicitud " .$solicitud_pendiente['id']."  se encuentra esperando para asignacion\n";
+			$num_arq_to_user=sizeof(arq_asignadas_to_user($solicitud_pendiente['email']));
+			$arq_permit=db_fetch_cell_prepared("select value_info from data_testbedims where id_data='1'");
+			if ($num_arq_to_user < $arq_permit) {
+				$asignar=asignar_arquitectura($solicitud_pendiente['id'], $dom, $solicitud_pendiente['email']);
+				if ($asignar == '11') {	
+					echo "   se asigno la arquitectura ".$arquitectura_libre." al usuario ".$solicitud_pendiente['email']."\n";
+				}
+			}
 		}else{
-			echo "\n no hay solicitudes pendientes para".$asignacion_expiro;
-			liberar_arq($dom);
+			$update_arqs=db_execute("UPDATE arqs_testbedims SET usuario ='libre' WHERE dominio='" . $dom . "'");
+			echo $update_arqs."    No hay solicitudes pendientes para la  arquitectura".$arquitectura_libre ."\n";
 		}
-		
 	}else{
-		echo "El dominio aun sigue activo\n";
+		echo "la asignacion de la arquitectura ".$arquitectura_libre ." con dominio ".$dom." sigue activa\n";
 	}
 }
 
-
-
-
-function liberar_arquitecturas($ids){
-	foreach ($ids as $value) {
-		$arq_libre=db_execute("UPDATE arqs_testbedims SET activo='F', usuario='libre' WHERE id = '".$value."'");
-		if ($arq_libre == '1') {
-			echo $value.",";
-		}
-	}	
-	
+function liberar_arqs($dom){
+	if (is_array($dom)) {
+		foreach ($dom as $value) {
+			$arq_libre=db_execute("UPDATE arqs_testbedims SET usuario='libre' WHERE dominio = '".$dom."'");
+			if ($arq_libre == '0') {
+				echo "Error";
+			}
+		}	
+	}else{
+		$arq_libre=db_execute("UPDATE arqs_testbedims SET usuario='libre' WHERE dominio = '".$dom."'");
+		if ($arq_libre == '0') {
+				echo "Error";
+			}
+	}
 }
 
 
@@ -5260,12 +5270,14 @@ function agregar_arquitectura($nom, $dom, $desc, $img){
 
 function dominios_asignados(){
 	//verificar si se termino el tiempo de las asignaciones
-	$doms=db_fetch_assoc("SELECT dominio from arqs_testbedims WHERE activo='V'");
+	$doms=db_fetch_assoc("SELECT dominio , usuario from arqs_testbedims WHERE usuario != 'libre'");
 	$dominios=array();
-	foreach ($doms as $key => $value) {
-		$dominios[] = $value['dominio'];
-	}
-	return $dominios;
+	// print_r($doms)
+	// foreach ($doms as $key => $value) {
+	// 	$dominios[] = $value['dominio'];
+	// }
+	// return $dominios;
+	return $doms;
 }
 
 function info_arquitecturas(){
@@ -5280,3 +5292,23 @@ function db_arq_testbed(){
 
 }
 
+// realizar ping a un host 
+// $dominio : direccion ip o URL
+// return true-> si responde al ping
+// 		  false-> si no responde al ping
+function verifi_arq_ping($dominio){
+
+	$ch = curl_init($dominio);
+	curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	$data = curl_exec($ch);
+	$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+	curl_close($ch);
+	if($httpcode>=200 && $httpcode<300){
+	  return true;
+	} else {
+	  return false;
+	}
+
+}

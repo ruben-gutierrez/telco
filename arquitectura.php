@@ -70,7 +70,7 @@ $from_email=$current_user['email_address'];
         // Eventos testbed, agregar notificacion, evento solicitud de arquitectura---------------------------------
 
         // agregar solicitud de arquitectura a sql
-          $.post('solicitud_asignacion.php',{post_to_email:to_email,post_from_email:from_email,post_arquitectura:arquitectura_selec,post_username:username,post_accion:accion},function(respuesta){
+          $.post('solicitud_asignacion.php',{post_to_email:to_email,post_from_email:from_email,post_arquitectura:arquitectura_selec,post_username:username,action:accion},function(respuesta){
               alert(respuesta);
               <?php
               // send_mail($from_email, "rubengutierrez@unicauca.edu.co",, "prueba correo3");?>

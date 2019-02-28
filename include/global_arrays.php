@@ -1736,6 +1736,7 @@ $contenido_info3 = array(
 		__('Pruebas') => "El testbed telco ims ofrece la posibilidad de probar diferectes caracteristicas de la arquitectura ims. </br>" 
 	);
 
+
 $contenido_pruebas = array(
 	"Prueba" => array(
 		// "comando" => "Comando",

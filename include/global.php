@@ -69,7 +69,8 @@ if (file_exists(dirname(__FILE__) . '/config.php')) {
 	include(dirname(__FILE__) . '/config.php');
 }
 
-if (isset($config['cacti_version'])) {
+if (isset($config['telco_version'])) {
+// if (isset($config['cacti_version'])) {
 	die('Invalid include/config.php file detected.');
 	exit;
 }

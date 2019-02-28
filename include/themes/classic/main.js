@@ -228,6 +228,17 @@ function edit_arq(){
 }
 //funcion agregar una nueva arquitectura
 function add_arquitec(){
+  //verificar si los campos estan vacio
+   
+    var l=0;
+    for (var i = 0; i < $('#form_new_arq')[0].length; i++) {
+      if ($('#form_new_arq')[0][i].value == '') {
+        l++;
+      }
+      
+    }
+    if (l == 0) {
+
 	// console.log("entro e la funcion");
 	var parametros = new FormData($('#form_new_arq')[0]);
 	$.ajax({
@@ -248,5 +259,78 @@ function add_arquitec(){
 		}
 	
 	});
+  }else{
+    alert("Los campos son obligatorios");
+  } 
 	
+}
+
+function inf_new_arq(){
+
+
+  // console.log("entro e la funcion");
+  var parametros = new FormData($('#form_info_new_arq')[0]);
+  $.ajax({
+    url: 'solicitud_asignacion.php',
+    type: 'POST',
+    contentType: false,
+    processData: false,
+    data: parametros,
+    beforesend: function(){
+
+    },
+    success: function(data){
+      // console.log(data);
+      alert(data);
+      // $('#form_info_new_arq')[0].reset();
+      // alert("Se agrego la informacion correctamente");
+      // log-reporting se agrego una nueva arquitectura
+    }
+  });
+}
+
+function change_arqs_by_user(){
+  var parametros = new FormData($('#form_arq_by_user')[0]);
+  $.ajax({
+    url: 'solicitud_asignacion.php',
+    type: 'POST',
+    contentType: false,
+    processData: false,
+    data: parametros,
+    beforesend: function(){
+
+    },
+    success: function(data){
+      if (data !='' ) {
+        $('#number_actual')[0].innerHTML=data;
+      }
+      $('#content_arqByUsuary').hide();
+      $('#btn_see_table2').show();
+      $('#btn_notsee_table2').hide();
+    }
+  });
+}
+
+
+function change_day_asig(){
+  var parametros = new FormData($('#form_day_asig')[0]);
+  $.ajax({
+    url: 'solicitud_asignacion.php',
+    type: 'POST',
+    contentType: false,
+    processData: false,
+    data: parametros,
+    beforesend: function(){
+
+    },
+    success: function(data){
+      if (data !='' ) {
+        $('#number_day_actual')[0].innerHTML=data;
+      }
+      $('#content_day_asig').hide();
+      $('#btn_see_table3').show();
+      $('#btn_notsee_table3').hide();
+    }
+  });
+
 }
