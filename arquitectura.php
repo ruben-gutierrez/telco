@@ -2,13 +2,15 @@
 global $contenido_arquitectura, $config, $current_user;
 
 //autentica la pagina en la cual esta
- include('./include/auth.php');
+// include('./include/global.php');
+include('./include/auth.php');
 
 //agregar header y la barra lateral de navegación
  top_header();
 
 $username=$current_user['username'];
 $from_email=$current_user['email_address'];
+
 ?>
 
 <div class="margin_page">

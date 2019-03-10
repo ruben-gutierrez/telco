@@ -5277,6 +5277,7 @@ function dominios_asignados(){
 	// 	$dominios[] = $value['dominio'];
 	// }
 	// return $dominios;
+
 	return $doms;
 }
 

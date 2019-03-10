@@ -3,7 +3,7 @@ global $config, $current_user;
 
 //autentica la pagina en la cual esta
  include('./include/auth.php');
-
+// include('./include/global.php');
 //agregar header y la barra lateral de navegación
  top_header();
 
@@ -79,7 +79,7 @@ global $config, $current_user;
 		 				<label><h3>Imagen de arquitectura</h3></label>
 		 				<input type="file" name="image" accept=".jpg, .jpeg, .png">
 		 				<div>
-		 					<input type="hidden" name="action" value="7">
+		 					<!-- <input type="hidden" name="action" value="7"> -->
 		 					<input id="btn_edit_arq" class="btn_form" type="button" value="Guardar" onclick="edit_arq()">
 		 					<input  id="btn_cancelar" class="btn_form" type="button" value="Cancelar" onclick="$('#table_arquitectura').show(500);$('#mod_arq').hide(600);">
 		 				</div>
@@ -94,8 +94,8 @@ global $config, $current_user;
  				<div style="display: inline-block;">
  				<h4>Arquitecturas por usuario</h4></div>
  				<div class="dips" style="display: inline-block; margin: auto;">
- 				<button id="btn_see_table2" class="btn_arq_action" onclick="$('#content_arqByUsuary').show();$('#btn_notsee_table2').show();$('#btn_see_table2').hide();"><i class="fa fa-angle-double-down fa-2x"></i></button>
- 				<button id="btn_notsee_table2" class="btn_arq_action" onclick="$('#content_arqByUsuary').hide();$('#btn_see_table2').show();$('#btn_notsee_table2').hide();" style="display: none;"><i class="fa fa-angle-double-up fa-2x"></i></button>
+ 				<button id="btn_see_table2" class="btn_see" onclick="$('#content_arqByUsuary').show();$('#btn_notsee_table2').show();$('#btn_see_table2').hide();"><i class="fa fa-angle-double-down fa-2x"></i></button>
+ 				<button id="btn_notsee_table2" class="btn_see" onclick="$('#content_arqByUsuary').hide();$('#btn_see_table2').show();$('#btn_notsee_table2').hide();" style="display: none;"><i class="fa fa-angle-double-up fa-2x"></i></button>
  				</div>
  			</div>
  			<div class="content_section">
@@ -144,20 +144,31 @@ global $config, $current_user;
  			</div>
  			<div class="content_section">
  					<label>Ingrese la información de la arquitectura</label>
-
  					<div id="content_infor_arq" style="display: none;">
 	 					<form method="post" id="form_info_new_arq" class="form_arq">
-	 						<label> Ingrese el dominio al cual se llenara la información</label>
-	 						<input type="text" name="dominio" placeholder="dominio" required>
+	 						<label> Seleccione el dominio al cual se llenara la información</label>
+	 						<input type="hidden" name="action" value='6' required>
+							
+	 						<!-- <input type="text" name="dominio" placeholder="dominio" required> -->
+	 						<select name="dominio" placeholder='dominio'>
+							<?php
+									$dominios=db_fetch_assoc("select dominio from arqs_testbedims");
+
+									foreach ($dominios as $key => $value) {
+										print("<option value='".$value['dominio']."'>".$value['dominio']."</option>");
+									}
+							?>	
+	 						</select> 
+
 	 						<select name="type" placeholder='Tipo de arquitectura'>
 	 						  <option value="aio">Todo en uno</option>
 	 						  <option value="dist">Distribuida</option>
 	 						  <option value="dist_pstn">Distribuida + PSTN</option>
 	 						</select> 
-	 						<input type="hidden" name="action" value='6' required>
 	 						
-	 						<input type="text" name="fist_number_ims" placeholder="Primer Numero de extension" required>
-	 						<input type="number" name="amount_extensions_ims" placeholder="Cantidad de extensiones" required>
+	 						
+	 						<input type="text" name="fist_number_ims" placeholder="Primer Numero de extension IMS" required>
+	 						<input type="number" name="amount_extensions_ims" placeholder="Cantidad de extensiones IMS" required>
 							
 	 						<input type="text" name="host_bono" placeholder="Host_Bono">
 	 						<input type="text" name="host_sprout" placeholder="Host_Sprout">
@@ -167,8 +178,8 @@ global $config, $current_user;
 	 						<input type="text" name="host_dime" placeholder="Host_Dime">
 	 						<input type="text" name="host_ibcf" placeholder="Host_Ibcf">
 	 						<input type="text" name="host_pstn" placeholder="Host_PSTN">
-	 						<input type="text" name="fist_number_pstn" placeholder="Primer Numero de extension">
-	 						<input type="number" name="amount_extensions_pstn" placeholder="Cantidad de extensiones">
+	 						<input type="text" name="fist_number_pstn" placeholder="Primer Numero de extension PSTN">
+	 						<input type="number" name="amount_extensions_pstn" placeholder="Cantidad de extensiones PSTN">
 	 						<div>
 	 						<input type="button" class="btn_form" id="btn_save_info" value="Guardar" onclick="inf_new_arq()">
 	 						<input type="button" class="btn_form" value="Cancelar" onclick="$('#content_infor_arq').hide();$('#btn_see_table4').show();$('#btn_notsee_table4').hide();">

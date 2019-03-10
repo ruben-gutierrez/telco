@@ -2087,7 +2087,7 @@ ul.nav_sub{
 }
 .tabla_contenido td:nth-child(1){
 	/*display: none;*/
-	width: 20%;
+	width: 12%;
 	padding-left: 5%;
 }
 
@@ -2223,4 +2223,11 @@ ul.nav_sub{
 
 .dips :hover{
 	background: #C43838;
+}
+
+.btn_see{
+	height: 40px;
+	width: 40px;
+	border-radius: 50%;
+	margin-left: 10px;
 }
