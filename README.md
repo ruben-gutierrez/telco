@@ -1,4 +1,20 @@
-# Cacti <sup>TM</sup>
+#TestbedIms <sup>Telco2.0</sup>
+
+
+se desinstala cacti sin desconfigurar la base de datos
+
+agregar las tablas a la base de datos
+crear tabla info arquitecturas
+create table info_arq_testbedims (id_info INT AUTO_INCREMENT UNIQUE, dominio varchar(50), type varchar(50), ip_bono varchar(50), ip_sprout varchar(50), ip_ellis varchar(50), ip_homer varchar(50), ip_vellum varchar(50), ip_dime varchar(50), ip_ibcf varchar(50), ip_pstn varchar(50), fist_number_pstn varchar(50), amount_extensions_pstn varchar(50), fist_number_ims varchar(50), amount_extensions_ims varchar(50));
+tabla de pruebas
+create table test_testbedims (id_test INT AUTO_INCREMENT UNIQUE, id_arq INT UNIQUE, name_test varchar(50), comand varchar(50), description_test varchar(50), restriction  varchar(50));
+create table option_test_testbedims (id_option INT AUTO_INCREMENT UNIQUE, id_tes INT UNIQUE, option varchar(50), value varchar(50), description_option varchar(150));
+create table data_testbedims (id_data INT AUTO_INCREMENT, data varchar(50), value varchar(50));
+
+tabla de solicitudes
+-->create table solicitud_arq (id INT AUTO_INCREMENT UNIQUE, fecha_solicitud DATETIME, usuario varchar(50), email varchar(50), arquitectura varchar(50), fecha_asignacion DATETIME, dominio VARCHAR(50), fecha_fin_asignacion DATETIME, terminado varchar(1));
+
+#Cacti <sup>TM</sup>
 [![Build Status - Develop](https://travis-ci.org/Cacti/telco.svg?branch=develop)](https://travis-ci.org/Cacti/telco)
 [![Project Status](http://opensource.box.com/badges/active.svg)](http://opensource.box.com/badges)
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/telco/telco.svg)](http://isitmaintained.com/project/telco/telco "Average time to resolve an issue")

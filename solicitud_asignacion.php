@@ -2,7 +2,7 @@
 global $current_user;
 
 include('./include/global.php');
-
+// include('./include/auth.php');
 
 
 // saber si post tiene valor
@@ -11,7 +11,7 @@ include('./include/global.php');
 //
 
 if (!empty($_POST)) {
-	include('./include/auth.php');
+	
 
 
 	// obtener vablabes a usar
@@ -168,6 +168,7 @@ if (!empty($_POST)) {
 
 			break;
 		case '7':
+			// echo "entro a la funcion";
 			$sql=db_execute("UPDATE data_testbedims set value_info='".$_POST['numero']."' where id_data='1'");
 			if ($sql == '1') {
 				echo ($_POST['numero']);

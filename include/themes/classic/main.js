@@ -59,6 +59,10 @@ function guardar_arq(){
   $(document).on("click" , ".btn_arq_action", function()﻿ {
   	var btn=$(this)[0].name;
   	var fila=$(this).parents('tr')[0];
+    // console.log("mensaje fila");
+    // console.log($(this));
+
+    // console.log(fila);
   	var id=$(this)[0].id.substr(-1,1);
   	var id_dec=$(this)[0].id.substr(-2,1);
   	var id_cen=$(this)[0].id.substr(-3,1);
@@ -80,7 +84,8 @@ function guardar_arq(){
   	$('#btn_edit_arq').attr('name',id);
   	var info_arq = new Array();
   	for(var i = 0; i <= 2; i++){
-  		info_arq.push(fila.cells[i].textContent);
+  		
+      info_arq.push(fila.cells[i].textContent);
   	}
   	
   	//boton editar, llena el formulario con los valores actuales
@@ -290,7 +295,9 @@ function inf_new_arq(){
 }
 
 function change_arqs_by_user(){
+  console.log("Punto de Control");
   var parametros = new FormData($('#form_arq_by_user')[0]);
+  console.log(parametros);
   $.ajax({
     url: 'solicitud_asignacion.php',
     type: 'POST',
@@ -298,10 +305,11 @@ function change_arqs_by_user(){
     processData: false,
     data: parametros,
     beforesend: function(){
-
+      console.log("antes de entrar");
     },
     success: function(data){
-      if (data !='' ) {
+      // console.log(data);
+      if ( data !='' ) {
         $('#number_actual')[0].innerHTML=data;
       }
       $('#content_arqByUsuary').hide();
