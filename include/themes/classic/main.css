@@ -2229,6 +2229,7 @@ ul.nav_sub{
 	width: 40px;
 	border-radius: 50%;
 	margin-left: 10px;
+<<<<<<< HEAD
 }
 
 
@@ -2249,4 +2250,6 @@ ul.nav_sub{
 
 .panel_btn_content{
 	float: right;
+=======
+>>>>>>> 35b75da02f97ede2f06ef47b2c72585f8fa07015
 }
