@@ -2151,7 +2151,6 @@ ul.nav_sub{
 	font-size: 16px;
 	background-color: #D6D6D6;
 	border-collapse: collapse;
-	
 }
 
 /*------------------------------------------------------------*/
@@ -2230,4 +2229,24 @@ ul.nav_sub{
 	width: 40px;
 	border-radius: 50%;
 	margin-left: 10px;
+}
+
+
+/*pagina info*/
+.title_info_page{
+	background: #8EA2EB;
+	padding-bottom: 5px;
+}
+
+.content_info_page{
+	background: #DD7575;
+	margin: 10px 5px;
+}
+
+.panel_btn_title{
+	float: right;
+}
+
+.panel_btn_content{
+	float: right;
 }

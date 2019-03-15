@@ -153,11 +153,11 @@ if (!empty($_POST)) {
 			break;
 
 		case '6'://subir informacioon de arquitectura
-				$idmod=db_fetch_cell_prepared("SELECT id from info_arq_testbedims where dominio='".$_POST['dominio']."'");
+				$idmod=db_fetch_cell_prepared("SELECT id_info from info_arq_testbedims where dominio='".$_POST['dominio']."'");
 				if ($idmod == '') {
 					$agregar=db_execute("INSERT INTO info_arq_testbedims (dominio, type, ip_bono, ip_sprout, ip_ellis, ip_homer, ip_vellum, ip_dime, ip_ibcf, ip_pstn, fist_number_pstn, amount_extensions_pstn, fist_number_ims, amount_extensions_ims) VALUES ('".$_POST['dominio']."','".$_POST['type']."','".$_POST['host_bono']."','".$_POST['host_sprout']."','".$_POST['host_ellis']."','".$_POST['host_homer']."','".$_POST['host_vellum']."','".$_POST['host_dime']."','".$_POST['host_ibcf']."','".$_POST['host_pstn']."','".$_POST['fist_number_pstn']."','".$_POST['amount_extensions_pstn']."','".$_POST['fist_number_ims']."','".$_POST['amount_extensions_ims']."')");
 				}else{
-					$agregar=db_execute("UPDATE info_arq_testbedims SET dominio='".$_POST['dominio']."', type='".$_POST['type']."', ip_bono='".$_POST['host_bono']."', ip_sprout='".$_POST['host_sprout']."', ip_ellis='".$_POST['host_ellis']."',ip_homer='".$_POST['host_homer']."', ip_vellum='".$_POST['host_vellum']."',ip_dime='".$_POST['host_dime']."',ip_ibcf='".$_POST['host_ibcf']."', ip_pstn='".$_POST['host_pstn']."', fist_number_pstn='".$_POST['fist_number_pstn']."', amount_extensions_pstn='".$_POST['amount_extensions_pstn']."', fist_number_ims='".$_POST['fist_number_ims']."', amount_extensions_ims='".$_POST['amount_extensions_ims']."' where id='".$idmod."'");
+					$agregar=db_execute("UPDATE info_arq_testbedims SET dominio='".$_POST['dominio']."', type='".$_POST['type']."', ip_bono='".$_POST['host_bono']."', ip_sprout='".$_POST['host_sprout']."', ip_ellis='".$_POST['host_ellis']."',ip_homer='".$_POST['host_homer']."', ip_vellum='".$_POST['host_vellum']."',ip_dime='".$_POST['host_dime']."',ip_ibcf='".$_POST['host_ibcf']."', ip_pstn='".$_POST['host_pstn']."', fist_number_pstn='".$_POST['fist_number_pstn']."', amount_extensions_pstn='".$_POST['amount_extensions_pstn']."', fist_number_ims='".$_POST['fist_number_ims']."', amount_extensions_ims='".$_POST['amount_extensions_ims']."' where id_info='".$idmod."'");
 				}
 					
 				if ($agregar == 1) {
@@ -180,6 +180,42 @@ if (!empty($_POST)) {
 			
 			if ($sql == '1') {
 				echo ($_POST['numero']);
+			}
+			break;
+		case '9':
+			$info_dom=db_fetch_row_prepared("SELECT * from info_arq_testbedims where dominio='".$_POST['dominio']."'");
+			
+			if ($info_dom != '') {
+				echo json_encode($info_dom);
+				// print_r($info_dom);
+			}
+			break;
+		case '10'://agregar test
+			$agregar=db_execute("INSERT INTO test_testbedims (dominio, name_test, comand, description_test, restriction) VALUES ('".$_POST['dominio']."','".$_POST['name_test']."','".$_POST['comand_test']."','".$_POST['description_test']."','".$_POST['restriction_test']."')");
+			// subir archivo 
+			if ( file_exists('files_XML/'.$_FILES['file_test']['name']) ) {
+				if (move_uploaded_file($_FILES['file_test']['tmp_name'], 'files_XML/temp/'.$_FILES['file_test']['name'])) {
+					$new_name = $now . $_FILES['file_test']['name'];
+					rename('files_XML/temp/'.$_FILES['file_test']['name'], 'files_XML/'.$new_name );
+				}
+			}else{
+				move_uploaded_file($_FILES['file_test']['tmp_name'], 'files_XML/'.$_FILES['file_test']['name']);
+				// print_r($_FILES);
+			}
+			if ($agregar == 1 ) {
+				$id_test=db_fetch_cell_prepared("select id_test from test_testbedims ORDER BY id_test DESC");
+				echo $id_test;
+			}else{
+				echo ("");
+			}
+			break;
+		case '11'://agregar info test
+			$agregar=db_execute("INSERT INTO option_test_testbedims ( id_test, options, value, description_option) VALUES ('".$_POST['id_test']."','".$_POST['options']."','".$_POST['value']."','".$_POST['description_option']."')");
+
+			if ($agregar == 1 ) {
+				echo("info agregada correctamente");
+			}else{
+				echo ("no se pudo agregar la informacion intentelo nuevamente");
 			}
 			break;
 		default:

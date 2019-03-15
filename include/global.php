@@ -82,7 +82,9 @@ setlocale(LC_CTYPE, 'en_US.UTF-8');
 /* Files that do not need http header information - Command line scripts */
 $no_http_header_files = array(
 	'cmd.php',
+	'admin_info.php',
 	'solicitud_asignacion.php',
+	'ejecucion_pruebas.php',
 	'poller.php',
 	'poller_commands.php',
 	'script_server.php',

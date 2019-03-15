@@ -18,10 +18,9 @@ global $config, $current_user;
  				<div style="display: inline-block;">
  				<h4>Administrar arquitecturas en testbed IMS</h4></div>
  				<div class="dips" style="display: inline-block; margin: auto;">
- 				<button id="btn_see_table" class="btn_arq_action" onclick="$('#table_arquitectura').show();$('#btn_notsee_table').show();$('#btn_see_table').hide();"><i class="fa fa-angle-double-down fa-2x"></i></button>
- 				<button id="btn_notsee_table" class="btn_arq_action" onclick="$('#table_arquitectura').hide();$('#btn_see_table').show();$('#btn_notsee_table').hide();" style="display: none;"><i class="fa fa-angle-double-up fa-2x"></i></button>
+ 				<button id="btn_see_table" class="btn_see" onclick="$('#table_arquitectura').show();$('#btn_notsee_table').show();$('#btn_see_table').hide();"><i class="fa fa-angle-double-down fa-2x"></i></button>
+ 				<button id="btn_notsee_table" class="btn_see" onclick="$('#table_arquitectura').hide();$('#btn_see_table').show();$('#btn_notsee_table').hide();" style="display: none;"><i class="fa fa-angle-double-up fa-2x"></i></button>
  				</div>
-
  			</div>
  			<div class="content_section"><p>En esta sección se puede agregar, modificar eliminar y ilberar las arquitecturas disponibles en el testbed</p></div> 
 	 		<section id="table_arquitectura" class="section_admin_arquitectura" style="display: none;">
@@ -115,8 +114,8 @@ global $config, $current_user;
  				<div style="display: inline-block;">
  				<h4>Dias de asignacion de arquitectura</h4></div>
  				<div class="dips" style="display: inline-block; margin: auto;">
- 				<button id="btn_see_table3" class="btn_arq_action" onclick="$('#content_day_asig').show();$('#btn_notsee_table3').show();$('#btn_see_table3').hide();"><i class="fa fa-angle-double-down fa-2x"></i></button>
- 				<button id="btn_notsee_table3" class="btn_arq_action" onclick="$('#content_day_asig').hide();$('#btn_see_table3').show();$('#btn_notsee_table3').hide();" style="display: none;"><i class="fa fa-angle-double-up fa-2x"></i></button>
+ 				<button id="btn_see_table3" class="btn_see" onclick="$('#content_day_asig').show();$('#btn_notsee_table3').show();$('#btn_see_table3').hide();"><i class="fa fa-angle-double-down fa-2x"></i></button>
+ 				<button id="btn_notsee_table3" class="btn_see" onclick="$('#content_day_asig').hide();$('#btn_see_table3').show();$('#btn_notsee_table3').hide();" style="display: none;"><i class="fa fa-angle-double-up fa-2x"></i></button>
  				</div>
  			</div>
  			<div class="content_section">
@@ -132,25 +131,24 @@ global $config, $current_user;
  			</div>
  		</section>
 
- 		<section class="section_admin_arquitecuta">
+ 		<section  id="info_arq" class="section_admin_arquitecuta">
  			<div class="name_section">
  				
  				<div style="display: inline-block;">
  				<h4>Informacion de la arquitectura</h4></div>
  				<div class="dips" style="display: inline-block; margin: auto;">
- 				<button id="btn_see_table4" class="btn_arq_action" onclick="$('#content_infor_arq').show();$('#btn_notsee_table4').show();$('#btn_see_table4').hide();"><i class="fa fa-angle-double-down fa-2x"></i></button>
- 				<button id="btn_notsee_table4" class="btn_arq_action" onclick="$('#content_infor_arq').hide();$('#btn_see_table4').show();$('#btn_notsee_table4').hide();" style="display: none;"><i class="fa fa-angle-double-up fa-2x"></i></button>
+ 				<button id="btn_see_table4" class="btn_see" onclick="$('#content_infor_arq').show();$('#btn_notsee_table4').show();$('#btn_see_table4').hide();"><i class="fa fa-angle-double-down fa-2x"></i></button>
+ 				<button id="btn_notsee_table4" class="btn_see" onclick="$('#content_infor_arq').hide();$('#btn_see_table4').show();$('#btn_notsee_table4').hide();" style="display: none;"><i class="fa fa-angle-double-up fa-2x"></i></button>
  				</div>
  			</div>
  			<div class="content_section">
  					<label>Ingrese la información de la arquitectura</label>
  					<div id="content_infor_arq" style="display: none;">
-	 					<form method="post" id="form_info_new_arq" class="form_arq">
-	 						<label> Seleccione el dominio al cual se llenara la información</label>
-	 						<input type="hidden" name="action" value='6' required>
-							
-	 						<!-- <input type="text" name="dominio" placeholder="dominio" required> -->
-	 						<select name="dominio" placeholder='dominio'>
+					 <div>
+	 					<form method="post" id="form_dom_info" class="form_arq">
+						 <input type="hidden" value="9" name="action">
+						 <select name="dominio" onchange="desplegar_info_arq(this.value)">
+						 <option value="">Seleccionar</option>
 							<?php
 									$dominios=db_fetch_assoc("select dominio from arqs_testbedims");
 
@@ -159,6 +157,15 @@ global $config, $current_user;
 									}
 							?>	
 	 						</select> 
+						 </form>
+						 </div>
+						 <form method="post" id="form_info_new_arq" class="form_arq">
+	 						<label> Seleccione el dominio al cual se llenara la información</label>
+	 						<input type="hidden" name="action" value='6' required>
+							
+	 						<!-- <input type="text" name="dominio" placeholder="dominio" required> -->
+							 <input type="hidden" name="dominio" value="" required>
+
 
 	 						<select name="type" placeholder='Tipo de arquitectura'>
 	 						  <option value="aio">Todo en uno</option>
@@ -190,4 +197,90 @@ global $config, $current_user;
 
 
  		</section>
+
+ 		<section id="test_dom" class="section_admin_arquitecuta">
+			<div class="name_section">
+				
+				<div style="display: inline-block;">
+				<h4>Agregar pruebas a dominio</h4></div>
+				<div class="dips" style="display: inline-block; margin: auto;">
+					<button id="btn_see_table5" class="btn_see" onclick="$('#content_add_test').show();$('#btn_notsee_table5').show();$('#btn_see_table5').hide();"><i class="fa fa-angle-double-down fa-2x"></i></button>
+					<button id="btn_notsee_table5" class="btn_see" onclick="$('#content_add_test').hide();$('#btn_see_table5').show();$('#btn_notsee_table5').hide();" style="display: none;"><i class="fa fa-angle-double-up fa-2x"></i></button>
+			</div>
+			</div>
+			<div class="content_section">
+					<label>Seleccione la arquitectura y agregue la información de la prueba</label>
+					<div id="content_add_test" style="display: none;">
+						<div id='form_1'>
+							<form method="post" id="form_add_test" class="form_arq" enctype="multipart/form-data">
+								<input type="hidden" name="action" value="10">
+								<select name="dominio">
+									<option value="">Seleccionar</option>
+									<?php
+										$dominios=db_fetch_assoc("select dominio from arqs_testbedims");
+
+										foreach ($dominios as $key => $value) {
+											print("<option value='".$value['dominio']."'>".$value['dominio']."</option>");
+										}
+									?>	
+				 				</select>
+
+			 						
+			 						<input type="text" name="name_test" placeholder="Nombre de prueba" required>
+			 						
+									
+			 						<input type="text" name="comand_test" placeholder="Comando de prueba">
+			 						<!-- <input type="text" name="description_test" placeholder="Descripcion"> -->
+			 						<textarea name="description_test" placeholder="Descripcion" required></textarea>
+			 						<input type="text" name="restriction_test" placeholder="Restriccciones" required>
+			 						<label><h3>Archivo XML</h3></label>
+			 						<input type="file" name="file_test" required>
+									
+			 						<div>
+			 						<input type="button" class="btn_form" id="btn_save_info" value="Siguiente" onclick="add_test()">
+			 						<input type="button" class="btn_form" value="Cancelar" onclick="$('#content_add_test').hide();$('#btn_see_table5').show();$('#btn_notsee_table5').hide();$('#form_add_test')[0].reset();">
+			 						</div>
+			 				</form>
+			 					
+						</div>
+						<div id='form_2'  style="display: none;">
+		 					<form method="post" id="form_info_test" class="form_arq">
+		 						<input type="hidden" name="action" value='11' required>
+								<input type="hidden" name="id_test" value=''>
+		 						<input type="text" name="options" placeholder="Opción de la prueba" required>
+		 						<input type="text" name="value" placeholder="Dato que se debe agregar" required>
+		 						<textarea name="description_option" placeholder="Descripcion" required></textarea>
+		 						
+		 						<div>
+		 						<input type="button" class="btn_form" id="btn_save_info" value="Guardar" onclick="add_info_test();">
+		 						<input type="button" class="btn_form" value="Cancelar" onclick="$('#btn_see_table5').show();$('#btn_notsee_table5').hide();$('#form_add_test')[0].reset();$('#form_info_test')[0].reset();$('#form_1').show();$('#form_2').hide();$('#content_add_test').hide();">
+		 						</div>
+		 					</form>
+						</div>
+				
+ 				</div>
+			</div>
+		</section>
+		 <section class="section_admin_arquitecuta">
+ 			<div class="name_section">
+ 				<div style="display: inline-block;">
+ 				<h4>Contenido pagina general</h4></div>
+ 				<div class="dips" style="display: inline-block; margin: auto;">
+ 				<button id="btn_see_table6" class="btn_see" onclick="$('#content_info_page').show();$('#btn_notsee_table6').show();$('#btn_see_table6').hide();"><i class="fa fa-angle-double-down fa-2x"></i></button>
+ 				<button id="btn_notsee_table6" class="btn_see" onclick="$('#content_info_page').hide();$('#btn_see_table6').show();$('#btn_notsee_table6').hide();" style="display: none;"><i class="fa fa-angle-double-up fa-2x"></i></button>
+ 				</div>
+ 			</div>
+ 			<div class="content_section">
+ 					<label>Cambiar informacion de la pagina principal</label>
+ 					<div id='content_info_page' style="display: none;">
+					<?php  
+						admin_info_page();
+					?>
+ 					
+	 				</div>
+ 					
+ 			</div>
+ 		</section>
  	</div>
+
+

@@ -2288,35 +2288,39 @@ function draw_table_estate_arq(){
 }
 
 
-function draw_table_testbed_pruebas($array_content){
-	$menu_options = $array_content;
-	$cont =0;
-	foreach ($menu_options as $item => $elements) {
-		$cont = $cont +1;
-		print "<tr class='display' id='fila".$cont."' onclick='seleccionar(this);'>";		
+function draw_table_testbed_pruebas($user){
+	$dom_user=db_fetch_assoc("SELECT arquitectura, dominio, descripcion  from arqs_testbedims where usuario ='".$user."'");
+	// print_r($dom_user);
+	?>
+	<table class="table_estado_arq">
+      <tr>
+        <th>Arquitectura</th>
+        <th>Prueba</th>
+        <th>Descripcion</th>
+        <th>Acción</th>
+      </tr>  
+      <?php 
+	foreach ($dom_user as $key => $value) {
+		$test_info=db_fetch_assoc("SELECT id_test, name_test, description_test, restriction from test_testbedims where dominio ='".$value['dominio']."'");
+		// print_r($test_info);
 
-		if (is_array($elements)) {
-			print "<td id='subtitle'>".$item."</td>";
-			foreach ($elements as $sub_items => $values) {
-			if ( is_array($values) ) {
-				print "<td><table class='list_options'>";
-				foreach ($values as $sub2_item => $options) {
-					print "<tr><div class='options'>".$options." <input type='text' name='".$sub2_item."' placeholder='' class='options_test' id='".$sub2_item.";' onclick='input_tabla(event);'></div></tr>";
-					
-				}
-				print "</table></td>";
-			}else{
-				print "<td>".$values."</td>";
-			}
-		}
-		}else{
-			print "<td>".$elements."</td>";
+		
+		foreach ($test_info as $key2 => $value2) {
+			print("<tr>
+			<td> Arquitectura: ".$value['arquitectura']."<br> dominio:".$value['dominio']."</td>
+			<td>".$value2['name_test']."</td>
+			<td>".$value2['description_test']."\n Restricciones;\n".$value2['restriction']."</td>
+			<td><button class='btn_test_action' id='".$value2['id_test']."' style='background:green;' onClick='display_table_test(this.id)'> <i class='fa fa-info-circle fa-lg'></i></button></td>
+			</tr>");
 		}
 		
-		print "</tr>"; 
 	}
-	print("<input type='button' id='btn_pruebas' value='Realizar prueba' onClick='ejecutar_prueba()'>");
+	?>
+	</table>
+	<?php
 }
+
+
 
 
 function draw_table_testbed2($array_content){
@@ -2327,4 +2331,84 @@ function draw_table_testbed2($array_content){
 
 	}
 	
+}
+
+function show_info_page(){
+
+	 						// $title=db_fetch_assoc("select * from title_info_page t join content_info_page c ON t.id_title=c.id_title order by t.position, c.position");
+	 						$title=db_fetch_assoc("select * from title_info_page order by position");
+	 						foreach ($title as $key => $value) {
+	 							
+			 					print"<div id='title_info_page'>";
+
+				 					print"<div class='main_title' id='".$value['id_title']."'>";
+				 					print "<h1>".$value['main_title']."</h1>";
+				 						$content=db_fetch_assoc("select * from content_info_page where id_title='".$value['id_title']."' order by position");
+				 						// print_r($content);
+				 						foreach ($content as $key2 => $value2) {
+				 							print("<div class='content' id='".$value2['id_content']."'>");
+				 							if ($value2['type'] =='img') {
+				 								print "<img src='".$value2['id_content']."'>";
+				 							}elseif ($value2['type'] =='sub1') {
+				 								print "<h3>".$value2['content']."</h3>";
+				 							}else{
+				 								print $value2['content'];
+				 							}
+				 								
+				 							print"</div>";
+				 						}
+				 			
+				 						
+				 					print"</div>";
+			 					print"</div>";
+			 				
+	 						}
+	 						
+}
+
+function admin_info_page(){
+
+	 						
+	 						$title=db_fetch_assoc("select * from title_info_page order by position");
+	 						foreach ($title as $key => $value) {
+	 							// print_r($title);
+			 					print"<div class='margin_title_info_page' >";
+
+				 					print"<div class='title_info_page' id='".$value['id_title']."' >";
+				 						print "<h1 id='".$value['id_title']."'>".$value['main_title']."</h1>";
+				 						$content=db_fetch_assoc("select * from content_info_page where id_title='".$value['id_title']."' order by position");
+				 						// print_r($content);
+				 						foreach ($content as $key2 => $value2) {
+				 							print("<div class='content_info_page' id='".$value2['id_content']."'>");
+				 							// print("<div class='content_info_page' id='".$value2['id_content']."'>");
+					 							if ($value2['type'] =='img') {
+					 								print "<img src='".$value2['id_content']."'>";
+					 							}elseif ($value2['type'] =='sub1') {
+					 								print "<h3>".$value2['content']."</h3>";
+					 							}else{
+					 								print $value2['content'];
+					 							}
+					 							print"<div class='panel_btn_content' style='display: none;' >";
+						 							print"<button class='btn_action_info' type='button' id='".$value2['id_content']."' name='add'>Agregar contenido</button>";
+						 							print"<button class='btn_action_info' type='button' id='".$value2['id_content']."' name='del'>Eliminar</button>";
+						 							print"<button class='btn_action_info' type='button' id='".$value2['id_content']."' name='edit'>Editar</button>";
+						 							print"<button class='btn_action_info' type='button' id='".$value2['id_content']."' name='up'>Subir</button>";
+						 							print"<button class='btn_action_info' type='button' id='".$value2['id_content']."' name='down'>Bajar</button>";
+						 						print"</div>";
+				 							print"</div>";
+				 							
+				 						}
+				 			
+				 						print"<div class='panel_btn_title' style='display: none;'>";
+				 						print"<button class='btn_action_info' type='button' id='".$value['id_title']."' name='add'>Agregar titulo</button>";
+				 						print"<button class='btn_action_info' type='button' id='".$value['id_title']."' name='del'>Eliminar</button>";
+				 						print"<button class='btn_action_info' type='button' id='".$value['id_title']."' name='edit'>Editar</button>";
+				 						print"</div>";
+				 					print"</div>";
+				 					
+			 					print"</div>";
+			 				
+	 						}
+	 						
+	 						
 }

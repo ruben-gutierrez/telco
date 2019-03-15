@@ -1040,4 +1040,3 @@ function db_strip_control_chars($sql) {
 }
 
 
-

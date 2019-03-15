@@ -287,8 +287,8 @@ function inf_new_arq(){
     success: function(data){
       // console.log(data);
       alert(data);
-      // $('#form_info_new_arq')[0].reset();
-      // alert("Se agrego la informacion correctamente");
+			$('#form_info_new_arq')[0].reset();
+			$('#form_dom_info')[0].reset();
       // log-reporting se agrego una nueva arquitectura
     }
   });
@@ -342,3 +342,234 @@ function change_day_asig(){
   });
 
 }
+
+function desplegar_info_arq( dato ){
+	var parametros = new FormData($('#form_dom_info')[0]);
+	$.ajax({
+    url: 'solicitud_asignacion.php',
+    type: 'POST',
+    dataType: 'json',
+    contentType: false,
+    processData: false,
+    data: parametros,
+    beforesend: function(){
+
+    },
+    success: function(data){
+      console.log(data);
+      if ($.isEmptyObject(data)) {
+        $('#form_info_new_arq')[0][2].type='text';
+      }else{
+        $('#form_info_new_arq')[0][2].value=data['dominio'];
+        $('#form_info_new_arq')[0][3].value=data['type'];
+        $('#form_info_new_arq')[0][4].value=data['fist_number_ims'];
+        $('#form_info_new_arq')[0][5].value=data['amount_extensions_ims'];
+        $('#form_info_new_arq')[0][6].value=data['ip_bono'];
+        $('#form_info_new_arq')[0][7].value=data['ip_sprout'];
+        $('#form_info_new_arq')[0][8].value=data['ip_homer'];
+        $('#form_info_new_arq')[0][9].value=data['ip_ellis'];
+        $('#form_info_new_arq')[0][10].value=data['ip_vellum'];
+        $('#form_info_new_arq')[0][11].value=data['ip_dime'];
+        $('#form_info_new_arq')[0][12].value=data['ip_ibcf'];
+        $('#form_info_new_arq')[0][13].value=data['ip_pstn'];
+        $('#form_info_new_arq')[0][14].value=data['fist_number_pstn'];
+        $('#form_info_new_arq')[0][15].value=data['amount_extensions_pstn'];
+      }
+    }
+  });
+}
+
+function add_test(){
+  console.log("funcion js");
+  var parametro = new FormData($('#form_add_test')[0]);
+  $.ajax({
+    url: 'solicitud_asignacion.php',
+    type: 'POST',
+    contentType: false,
+    processData: false,
+    data: parametro,
+    beforesend: function(){
+    },
+    success: function(date){
+      // console.log(date);
+      if (date != '') {
+        alert("se agrego la prueba correctamente, ahora ingrese las opciones de l aprueba");
+      }
+      console.log(date);
+      $('#form_info_test')[0][2].value=date;
+      $('#form_add_test')[0].reset();
+      $('#form_1').hide();
+      $('#form_2').show();
+    }
+  });
+}
+function add_info_test(){
+  var parametros = new FormData($('#form_info_test')[0]);
+  $.ajax({
+    url: 'solicitud_asignacion.php',
+    type: 'POST',
+    contentType: false,
+    processData: false,
+    data: parametros,
+    beforesend: function(){
+
+    },
+    success: function(data){
+      // console.log(data);
+      alert(data);
+    }
+  });
+}
+//ejecucion de pruebas archivo ejecucion_pruebas.php
+function display_table_test(id_test){
+  // console.log(id_test);
+  $.ajax({
+    method: "POST",
+    url: "ejecucion_pruebas.php",
+    data: { action: "1", id_test2: id_test }
+  })
+  .done(function( msg ) {
+    // console.log(msg);  
+    $('#table_options_test').empty();
+    $('#table_options_test').append(msg);
+  });
+
+}
+
+
+function exe_test(){
+  // console.log($('#form_execute_test').serialize());
+  var parametros = new FormData($('#form_execute_test')[0]);
+  $.ajax({
+    url: 'ejecucion_pruebas.php',
+    type: 'POST',
+    contentType: false,
+    processData: false,
+    data: parametros,
+    beforesend: function(){
+
+    },
+    success: function(data){
+      alert("Comando a ejecutar en servidor SIPP \n"+data);
+      console.log(data);
+    }
+  });
+}
+
+
+
+
+// Funciones de los botones para modificar el testbed
+$(document).on('click', '.btn_action_info', function (element) {
+  var btn_name=element.currentTarget.name;
+  var parent_element_btn=element.currentTarget.parentElement.className;
+
+ switch (btn_name){
+   case 'add':
+     console.log("funcion agregar");
+     if (parent_element_btn == 'panel_btn_title') {
+      console.log("titulo");
+     }else{
+       console.log("contenido");
+     }
+     break;
+   case 'del':
+     // console.log("funcion borrar");
+     if (parent_element_btn == 'panel_btn_title') {
+      del_info('title_info_page', element.currentTarget.id);
+     }else{
+       del_info('content_info_page', element.currentTarget.id);
+     }
+     break;
+   case 'edit':
+     console.log("funcion editar");
+     if (parent_element_btn == 'panel_btn_title') {
+      console.log("titulo");
+     }else{
+       console.log("contenido");
+     }
+     break;
+   case 'up':
+     console.log("funcion subir");
+     if (parent_element_btn == 'panel_btn_title') {
+      console.log("titulo");
+     }else{
+       console.log("contenido");
+     }
+     break;
+   case 'down':
+     console.log("funcion bajar");
+     if (parent_element_btn == 'panel_btn_title') {
+      console.log("titulo");
+     }else{
+       console.log("contenido");
+     }
+     break;
+ }
+    
+    // console.log(element.currentTarget.id);
+    // console.log();
+});
+
+// ocultar y mostrar los botones de accion para modificar el contenido del testbed
+$(document).ready(function() {
+  $('.title_info_page').hover(function(element) {
+    /* Stuff to do when the mouse enters the element */
+    $(element.currentTarget.lastChild).show();
+    // console.log(element.currentTarget);
+  }, function(element) {
+    /* Stuff to do when the mouse leaves the element */
+    $(element.currentTarget.lastChild).hide();
+  });
+  $('.content_info_page').hover(function(element) {
+    /* Stuff to do when the mouse enters the element */
+    $(element.currentTarget.lastChild).show();
+    // console.log(element.currentTarget);
+  }, function(element) {
+    /* Stuff to do when the mouse leaves the element */
+    $(element.currentTarget.lastChild).hide();
+  });
+
+});
+
+
+
+//evento a cada elemento que se le de click en el DOM
+// document.onclick = captura_click;
+// function captura_click(e) {
+//   // Funcion para capturar el click del raton
+//   var HaHechoClick;
+//   if (e == null) {
+//     // Si hac click un elemento, lo leemos
+//     HaHechoClick = event.srcElement;
+//   } else {
+//     // Si ha hecho click sobre un destino, lo leemos
+//     HaHechoClick = e.target;
+//   }
+
+//   // Una prueba con salida en consola
+//   console.log("Contenido sobre lo que ha hecho click: "+HaHechoClick.id);  
+// }
+// 
+// 
+// 
+function del_info(table, id){
+  $.ajax({
+    method: "POST",
+    url: "admin_info.php",
+    data: { action: "1", table: table, id:id }
+  })
+  .done(function( msg ) {
+    // console.log(msg);
+    if (msg==1) {
+      if (table=='title_info_page') {
+         $('#'+id+'.title_info_page').empty();
+      }else{
+        $('#'+id+'.content_info_page').empty()
+      }
+    }else{
+      alert("Error al borrar contenido, intentelo mas tarde");
+    }
+  });
+}
+

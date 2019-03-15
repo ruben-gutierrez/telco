@@ -5313,3 +5313,4 @@ function verifi_arq_ping($dominio){
 	}
 
 }
+
