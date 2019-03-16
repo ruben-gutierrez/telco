@@ -500,10 +500,10 @@ $(document).on('click', '.btn_action_info', function (element) {
      // console.log(btn_name);
      if (parent_element_btn == 'panel_btn_title') {
       // console.log("titulo");
-      
       move_title(element_current, btn_name);
      }else{
-       console.log("contenido");
+       // console.log("contenido");
+       move_content(title_of_element, element_current, btn_name);
      }
      break;
 
@@ -638,6 +638,20 @@ function move_title(id_title, direc){
     method: "POST",
     url: "admin_info.php",
     data: { action: "6", id_title: id_title, direc:direc }
+  })
+  .done(function( data ) {
+    // console.log(data);  
+    if (data!='') {
+      $('#content_info_page').html(data);
+    }
+  });
+}
+
+function move_content(id_title, id_content, direc){
+  $.ajax({
+    method: "POST",
+    url: "admin_info.php",
+    data: { action: "7", id_title: id_title, direc:direc, id_content:id_content }
   })
   .done(function( data ) {
     // console.log(data);  

@@ -63,17 +63,42 @@ if (!empty($_POST)) {
 			if ($_POST['direc']=='up') {
 				// el elemento de arriba lo bajo una casilla
 				$id_dest=db_fetch_cell("SELECT id_title from title_info_page where id_title=(select max(id_title) from title_info_page where id_title<".$_POST['id_title'].")");
-				$update=db_execute("UPDATE title_info_page SET id_title = '".$_POST['id_title']."' WHERE id_title = '".$id_dest."'");
+				// $update=db_execute("UPDATE title_info_page SET id_title = '".$_POST['id_title']."' WHERE id_title = '".$id_dest."'");
 				// el titulo a cambiar ocupa la posicion de arriba de la que estaba
-				$update=db_execute("UPDATE title_info_page SET id_title = '".$id_dest."' WHERE id_title = '".$id_max."'+1");
+				// $update=db_execute("UPDATE title_info_page SET id_title = '".$id_dest."' WHERE id_title = '".$id_max."'+1");
 			}else{
 				// el elemento de arriba lo subo una casilla
 				$id_dest=db_fetch_cell("SELECT id_title from title_info_page where id_title=(select min(id_title) from title_info_page where id_title>".$_POST['id_title'].")");
-				$update=db_execute("UPDATE title_info_page SET id_title = '".$_POST['id_title']."' WHERE id_title = '".$id_dest."'");
+				
+			}
+			$update=db_execute("UPDATE title_info_page SET id_title = '".$_POST['id_title']."' WHERE id_title = '".$id_dest."'");
 				// el titulo a cambiar ocupa la posicion de abajo de la que estaba
 				$update=db_execute("UPDATE title_info_page SET id_title = '".$id_dest."' WHERE id_title = '".$id_max."'+1");
-			}
 			// $update2=db_execute("UPDATE title_info_page SET id_title = '".$_POST['id_title']."'+1 WHERE id_title = '".$_POST['id_title']."' and id_content='".$_POST['id_content']."'");
+			if ($update==1) {
+				admin_info_page();
+			}
+			break;
+		case "7": //mover contenido en titulos
+			// print_r($_POST);
+			$id_max=db_fetch_cell("select MAX(id_content) from content_info_page");
+			// el id que voy a mover lo ponto de ultimo
+			$update=db_execute("UPDATE content_info_page SET id_content = '".$id_max."'+1 WHERE id_content = '".$_POST['id_content']."'");
+			if ($_POST['direc']=='up') {
+				// el elemento de arriba lo bajo una casilla
+				$id_dest=db_fetch_cell("SELECT id_content from content_info_page where id_content=(select max(id_content) from content_info_page where id_content<'".$_POST['id_content']."' AND id_title='".$_POST['id_title']."')");
+				
+			}else{
+			// 	// el elemento de arriba lo subo una casilla
+				$id_dest=db_fetch_cell("SELECT id_content from content_info_page where id_content=(select min(id_content) from content_info_page where id_content>'".$_POST['id_content']."' AND id_title='".$_POST['id_title']."')");
+				// $update=db_execute("UPDATE content_info_page SET id_content = '".$_POST['id_content']."' WHERE id_content = '".$id_dest."'");
+			// 	// el titulo a cambiar ocupa la posicion de abajo de la que estaba
+				// $update=db_execute("UPDATE content_info_page SET id_content = '".$id_dest."' WHERE id_content = '".$id_max."'+1");
+			}
+			$update=db_execute("UPDATE content_info_page SET id_content = '".$_POST['id_content']."' WHERE id_content = '".$id_dest."'");
+			// 	// el titulo a cambiar ocupa la posicion de arriba de la que estaba
+			$update=db_execute("UPDATE content_info_page SET id_content = '".$id_dest."' WHERE id_content = '".$id_max."'+1");
+			
 			if ($update==1) {
 				admin_info_page();
 			}
