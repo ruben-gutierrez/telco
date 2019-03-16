@@ -2524,5 +2524,3 @@ if (typeof jQuery === 'undefined') {
       }
       
     }
-
-

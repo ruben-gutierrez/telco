@@ -459,18 +459,22 @@ function exe_test(){
 
 
 
-// Funciones de los botones para modificar el testbed
+// Funciones de los botones para modificar informacion del testbed
 $(document).on('click', '.btn_action_info', function (element) {
   var btn_name=element.currentTarget.name;
   var parent_element_btn=element.currentTarget.parentElement.className;
+  var title_of_element=element.currentTarget.parentElement.parentElement.parentElement.id;
+  var element_current=element.currentTarget.id;
 
  switch (btn_name){
    case 'add':
-     console.log("funcion agregar");
+     // console.log("funcion agregar");
      if (parent_element_btn == 'panel_btn_title') {
-      console.log("titulo");
+       var formulario='<form class="form_info_page" id="add_title"><input type="text" name="main_title" value="" placeholder="Titulo de la seccion"></form>';
+       form_add_title(element_current,'Formulario agregar titulo', formulario);
      }else{
-       console.log("contenido");
+       var formulario='<form class="form_info_page" id="add_content"><input type="text" name="type" value="" placeholder="Tipo de contenido"><input type="text" name="content" value="" placeholder="Agregue el contenido"></form>';
+       form_add_content(element_current, title_of_element, 'Formulario agregar elemento', formulario);
      }
      break;
    case 'del':
@@ -484,75 +488,39 @@ $(document).on('click', '.btn_action_info', function (element) {
    case 'edit':
      console.log("funcion editar");
      if (parent_element_btn == 'panel_btn_title') {
-      console.log("titulo");
+      var formulario='<form class="form_edit_title" id="edit_title"><input type="text" name="main_title" value="" placeholder="Titulo de la seccion"></form>';
+       form_edit_title(element_current,'Formulario editar titulo', formulario);
      }else{
-       console.log("contenido");
+       var formulario='<form class="form_edit_content" id="edit_content"><input type="text" name="type" value="" placeholder="Tipo de contenido"><input type="text" name="content" value="" placeholder="Agregue el contenido"></form>';
+       form_edit_content(element_current, title_of_element, 'Formulario editar elemento', formulario);
      }
      break;
-   case 'up':
-     console.log("funcion subir");
-     if (parent_element_btn == 'panel_btn_title') {
-      console.log("titulo");
-     }else{
-       console.log("contenido");
-     }
-     break;
+   case 'up' :
    case 'down':
-     console.log("funcion bajar");
+     // console.log(btn_name);
      if (parent_element_btn == 'panel_btn_title') {
-      console.log("titulo");
+      // console.log("titulo");
+      
+      move_title(element_current, btn_name);
      }else{
        console.log("contenido");
      }
      break;
+
  }
-    
     // console.log(element.currentTarget.id);
     // console.log();
 });
 
 // ocultar y mostrar los botones de accion para modificar el contenido del testbed
-$(document).ready(function() {
-  $('.title_info_page').hover(function(element) {
-    /* Stuff to do when the mouse enters the element */
-    $(element.currentTarget.lastChild).show();
-    // console.log(element.currentTarget);
-  }, function(element) {
-    /* Stuff to do when the mouse leaves the element */
-    $(element.currentTarget.lastChild).hide();
-  });
-  $('.content_info_page').hover(function(element) {
-    /* Stuff to do when the mouse enters the element */
-    $(element.currentTarget.lastChild).show();
-    // console.log(element.currentTarget);
-  }, function(element) {
-    /* Stuff to do when the mouse leaves the element */
-    $(element.currentTarget.lastChild).hide();
-  });
 
+$(document).on('mouseenter', '.title_info_page , .content_info_page', function (element) {
+    $(element.currentTarget.lastChild).show();
 });
-
-
-
-//evento a cada elemento que se le de click en el DOM
-// document.onclick = captura_click;
-// function captura_click(e) {
-//   // Funcion para capturar el click del raton
-//   var HaHechoClick;
-//   if (e == null) {
-//     // Si hac click un elemento, lo leemos
-//     HaHechoClick = event.srcElement;
-//   } else {
-//     // Si ha hecho click sobre un destino, lo leemos
-//     HaHechoClick = e.target;
-//   }
-
-//   // Una prueba con salida en consola
-//   console.log("Contenido sobre lo que ha hecho click: "+HaHechoClick.id);  
-// }
-// 
-// 
-// 
+$(document).on('mouseleave', '.title_info_page , .content_info_page', function (element) {
+    $(element.currentTarget.lastChild).hide();
+});
+//funciones de los botones
 function del_info(table, id){
   $.ajax({
     method: "POST",
@@ -573,3 +541,185 @@ function del_info(table, id){
   });
 }
 
+
+function add_title(id){
+  var parametros = new FormData($('#add_title')[0]);
+  parametros.append('id',id);
+  parametros.append('action','2');
+  $.ajax({
+          url: 'admin_info.php',
+          type: 'POST',
+          contentType: false,
+          processData: false,
+          data: parametros,
+          beforesend: function(){
+
+          },
+          success: function(data){
+            // console.log(data);
+            $('#content_info_page').html(data);
+            // mensaje('Mensaje','Titulo agregado correctamente');
+          }
+        });
+}
+
+function add_content(id_content, id_title){
+  var parametros = new FormData($('#add_content')[0]);
+  parametros.append('id_content',id_content);
+  parametros.append('id_title',id_title);
+  parametros.append('action','3');
+  $.ajax({
+          url: 'admin_info.php',
+          type: 'POST',
+          contentType: false,
+          processData: false,
+          data: parametros,
+          beforesend: function(){
+
+          },
+          success: function(data){
+            // console.log(data);
+            $('#content_info_page').html(data);
+            // mensaje('Mensaje','Titulo agregado correctamente');
+          }
+        });
+}
+
+function edit_title(id){
+  var parametros = new FormData($('#edit_title')[0]);
+  parametros.append('id',id);
+  parametros.append('action','4');
+  $.ajax({
+          url: 'admin_info.php',
+          type: 'POST',
+          contentType: false,
+          processData: false,
+          data: parametros,
+          beforesend: function(){
+
+          },
+          success: function(data){
+            // console.log(data);
+            if (data!='') {
+              $('#content_info_page').html(data);
+            }
+            
+            // mensaje('Mensaje','Titulo agregado correctamente');
+          }
+        });
+}
+
+function edit_content(id_content, id_title){
+  var parametros = new FormData($('#edit_content')[0]);
+  parametros.append('id_content',id_content);
+  parametros.append('id_title',id_title);
+  parametros.append('action','5');
+  $.ajax({
+          url: 'admin_info.php',
+          type: 'POST',
+          contentType: false,
+          processData: false,
+          data: parametros,
+          beforesend: function(){
+
+          },
+          success: function(data){
+            // console.log(data);
+            if (data!='') {
+              $('#content_info_page').html(data);
+            }
+            // mensaje('Mensaje','Titulo agregado correctamente');
+          }
+        });
+}
+
+function move_title(id_title, direc){
+  $.ajax({
+    method: "POST",
+    url: "admin_info.php",
+    data: { action: "6", id_title: id_title, direc:direc }
+  })
+  .done(function( data ) {
+    // console.log(data);  
+    if (data!='') {
+      $('#content_info_page').html(data);
+    }
+  });
+}
+/////funciones para mensajes y ventanas de notificacion
+function form_add_title(id,title, content){
+  var confirm= alertify.confirm(title,content,null,null).set('labels', {ok:'Agregar', cancel:'Cancelar'}); 
+  
+  //callbak al pulsar botón positivo
+  confirm.set('onok', function(){
+    add_title(id);
+    
+      alertify.success('Titulo agregado');
+  });
+  //callbak al pulsar botón negativo
+  confirm.set('oncancel', function(){ 
+      alertify.error('Acción cancelada');
+  })  
+
+}
+function form_edit_title(id,title, content){
+  var confirm= alertify.confirm(title,content,null,null).set('labels', {ok:'Editar', cancel:'Cancelar'}); 
+  
+  //callbak al pulsar botón positivo
+  confirm.set('onok', function(){
+    edit_title(id);
+      alertify.success('Titulo agregado');
+  });
+  //callbak al pulsar botón negativo
+  confirm.set('oncancel', function(){ 
+      alertify.error('Acción cancelada');
+  })  
+
+}
+
+function form_add_content(id_content,id_title, title_form, formulario){
+  var confirm= alertify.confirm(title_form,formulario,null,null).set('labels', {ok:'Agregar', cancel:'Cancelar'}); 
+  
+  //callbak al pulsar botón positivo
+  confirm.set('onok', function(){
+    add_content(id_content, id_title);
+    alertify.success('Titulo agregado');
+  });
+  //callbak al pulsar botón negativo
+  confirm.set('oncancel', function(){ 
+      alertify.error('Acción cancelada');
+  })  
+
+}
+function form_edit_content(id_content,id_title, title_form, formulario){
+  var confirm= alertify.confirm(title_form,formulario,null,null).set('labels', {ok:'Agregar', cancel:'Cancelar'}); 
+  
+  //callbak al pulsar botón positivo
+  confirm.set('onok', function(){
+    edit_content(id_content, id_title);
+    alertify.success('Titulo agregado');
+  });
+  //callbak al pulsar botón negativo
+  confirm.set('oncancel', function(){ 
+      alertify.error('Acción cancelada');
+  })  
+
+}
+
+function confirmar(title, content){
+  var confirm= alertify.confirm(title,content,null,null).set('labels', {ok:'Confirmar', cancel:'Cancelar'}); 
+  
+  //callbak al pulsar botón positivo
+  confirm.set('onok', function(){
+    add_title(element.currentTarget.id);
+      alertify.success('Has confirmado');
+  });
+  //callbak al pulsar botón negativo
+  confirm.set('oncancel', function(){ 
+      alertify.error('Has Cancelado el dialog');
+  })  
+}
+
+function mensaje(title,msg){  
+      alertify.alert(title,msg).set('label', 'Aceptar');     
+}

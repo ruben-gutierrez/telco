@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Alertas Atractivas con javascript</title>
+	<link rel="stylesheet" href="alertifyJS/css/alertify.min.css" />
+	<link rel="stylesheet" href="alertifyJS/css/themes/semantic.min.css" />
+	<script src="alertifyJS/alertify.min.js"></script>
+	<script type="text/javascript">
+		
+		function mensaje(){	
+			alertify.alert("HEADER","Esto es un mensaje").set('label', 'Aceptar');     
+		}
+		function confirmar(){
+			var confirm= alertify.confirm('Formulario','<form class="form_info_page" id="add_content"><input type="text" name="type" value="" placeholder="Tipo de contenido"><input type="text" name="content" value="" placeholder="Agregue el contenido"></form>',null,null).set('labels', {ok:'Confirmar', cancel:'Cancelar'}); 
+			
+			//callbak al pulsar botón positivo
+			confirm.set('onok', function(){
+			    alertify.success('Has confirmado');
+			});
+			//callbak al pulsar botón negativo
+			confirm.set('oncancel', function(){ 
+			    alertify.error('Has Cancelado el dialog');
+			})	
+
+		}
+	</script>
+</head>
+<body>
+
+<input type="button" onclick="mensaje()" value="Probar Alerta">
+<input type="button" onclick="confirmar()" value="Probar Alerta Confirmacion">
+
+</body>
+</html>

@@ -144,20 +144,20 @@ global $config, $current_user;
  			<div class="content_section">
  					<label>Ingrese la información de la arquitectura</label>
  					<div id="content_infor_arq" style="display: none;">
-<<<<<<< HEAD
+
 					 <div>
 	 					<form method="post" id="form_dom_info" class="form_arq">
 						 <input type="hidden" value="9" name="action">
 						 <select name="dominio" onchange="desplegar_info_arq(this.value)">
 						 <option value="">Seleccionar</option>
-=======
+
 	 					<form method="post" id="form_info_new_arq" class="form_arq">
 	 						<label> Seleccione el dominio al cual se llenara la información</label>
 	 						<input type="hidden" name="action" value='6' required>
 							
 	 						<!-- <input type="text" name="dominio" placeholder="dominio" required> -->
 	 						<select name="dominio" placeholder='dominio'>
->>>>>>> 35b75da02f97ede2f06ef47b2c72585f8fa07015
+
 							<?php
 									$dominios=db_fetch_assoc("select dominio from arqs_testbedims");
 
@@ -166,7 +166,7 @@ global $config, $current_user;
 									}
 							?>	
 	 						</select> 
-<<<<<<< HEAD
+
 						 </form>
 						 </div>
 						 <form method="post" id="form_info_new_arq" class="form_arq">
@@ -175,9 +175,6 @@ global $config, $current_user;
 							
 	 						<!-- <input type="text" name="dominio" placeholder="dominio" required> -->
 							 <input type="hidden" name="dominio" value="" required>
-
-=======
->>>>>>> 35b75da02f97ede2f06ef47b2c72585f8fa07015
 
 	 						<select name="type" placeholder='Tipo de arquitectura'>
 	 						  <option value="aio">Todo en uno</option>
@@ -288,6 +285,7 @@ global $config, $current_user;
 					<?php  
 						admin_info_page();
 					?>
+					
  					
 	 				</div>
  					

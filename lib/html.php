@@ -2148,9 +2148,12 @@ function html_common_header($title, $selectedTheme = '') {
 	<title><?php echo $title; ?></title>
 	<meta http-equiv='Content-Type' content='text/html;charset=utf-8'>
 	<script type='text/javascript'>var theme='<?php print $selectedTheme;?>';</script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/alertifyJS/alertify.min.js'></script>
+	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
 	<link href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/images/telco_icon.ico' rel='shortcut icon'>
 	<link href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/images/telco_logo2.png' rel='icon' sizes='96x96'>
+	<link rel="stylesheet" href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/alertifyJS/css/alertify.min.css'/>
+	<link rel="stylesheet" href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/alertifyJS/css/themes/semantic.min.css'/>
 
 	<?php
 	print get_md5_include_css('include/themes/' . $selectedTheme .'/jquery.zoom.css');
@@ -2335,80 +2338,97 @@ function draw_table_testbed2($array_content){
 
 function show_info_page(){
 
-	 						// $title=db_fetch_assoc("select * from title_info_page t join content_info_page c ON t.id_title=c.id_title order by t.position, c.position");
-	 						$title=db_fetch_assoc("select * from title_info_page order by position");
-	 						foreach ($title as $key => $value) {
-	 							
-			 					print"<div id='title_info_page'>";
+	// $title=db_fetch_assoc("select * from title_info_page t join content_info_page c ON t.id_title=c.id_title order by t.position, c.position");
+	$title=db_fetch_assoc("select * from title_info_page order by position");
+	foreach ($title as $key => $value) {
+		
+		print"<div id='title_info_page'>";
 
-				 					print"<div class='main_title' id='".$value['id_title']."'>";
-				 					print "<h1>".$value['main_title']."</h1>";
-				 						$content=db_fetch_assoc("select * from content_info_page where id_title='".$value['id_title']."' order by position");
-				 						// print_r($content);
-				 						foreach ($content as $key2 => $value2) {
-				 							print("<div class='content' id='".$value2['id_content']."'>");
-				 							if ($value2['type'] =='img') {
-				 								print "<img src='".$value2['id_content']."'>";
-				 							}elseif ($value2['type'] =='sub1') {
-				 								print "<h3>".$value2['content']."</h3>";
-				 							}else{
-				 								print $value2['content'];
-				 							}
-				 								
-				 							print"</div>";
-				 						}
-				 			
-				 						
-				 					print"</div>";
-			 					print"</div>";
-			 				
-	 						}
-	 						
+			print"<div class='main_title' id='".$value['id_title']."'>";
+			print "<h1>".$value['main_title']."</h1>";
+				$content=db_fetch_assoc("select * from content_info_page where id_title='".$value['id_title']."' order by position");
+				// print_r($content);
+				foreach ($content as $key2 => $value2) {
+					print("<div class='content' id='".$value2['id_content']."'>");
+					if ($value2['type'] =='img') {
+						print "<img src='".$value2['id_content']."'>";
+					}elseif ($value2['type'] =='sub1') {
+						print "<h3>".$value2['content']."</h3>";
+					}else{
+						print $value2['content'];
+					}
+						
+					print"</div>";
+				}
+
+				
+			print"</div>";
+		print"</div>";
+
+	}
+
 }
 
 function admin_info_page(){
-
 	 						
-	 						$title=db_fetch_assoc("select * from title_info_page order by position");
-	 						foreach ($title as $key => $value) {
-	 							// print_r($title);
-			 					print"<div class='margin_title_info_page' >";
+	$title=db_fetch_assoc("select * from title_info_page order by id_title");
+	foreach ($title as $key => $value) {
+		// print_r($title);
+		print"<div class='margin_title_info_page' >";
 
-				 					print"<div class='title_info_page' id='".$value['id_title']."' >";
-				 						print "<h1 id='".$value['id_title']."'>".$value['main_title']."</h1>";
-				 						$content=db_fetch_assoc("select * from content_info_page where id_title='".$value['id_title']."' order by position");
-				 						// print_r($content);
-				 						foreach ($content as $key2 => $value2) {
-				 							print("<div class='content_info_page' id='".$value2['id_content']."'>");
-				 							// print("<div class='content_info_page' id='".$value2['id_content']."'>");
-					 							if ($value2['type'] =='img') {
-					 								print "<img src='".$value2['id_content']."'>";
-					 							}elseif ($value2['type'] =='sub1') {
-					 								print "<h3>".$value2['content']."</h3>";
-					 							}else{
-					 								print $value2['content'];
-					 							}
-					 							print"<div class='panel_btn_content' style='display: none;' >";
-						 							print"<button class='btn_action_info' type='button' id='".$value2['id_content']."' name='add'>Agregar contenido</button>";
-						 							print"<button class='btn_action_info' type='button' id='".$value2['id_content']."' name='del'>Eliminar</button>";
-						 							print"<button class='btn_action_info' type='button' id='".$value2['id_content']."' name='edit'>Editar</button>";
-						 							print"<button class='btn_action_info' type='button' id='".$value2['id_content']."' name='up'>Subir</button>";
-						 							print"<button class='btn_action_info' type='button' id='".$value2['id_content']."' name='down'>Bajar</button>";
-						 						print"</div>";
-				 							print"</div>";
-				 							
-				 						}
-				 			
-				 						print"<div class='panel_btn_title' style='display: none;'>";
-				 						print"<button class='btn_action_info' type='button' id='".$value['id_title']."' name='add'>Agregar titulo</button>";
-				 						print"<button class='btn_action_info' type='button' id='".$value['id_title']."' name='del'>Eliminar</button>";
-				 						print"<button class='btn_action_info' type='button' id='".$value['id_title']."' name='edit'>Editar</button>";
-				 						print"</div>";
-				 					print"</div>";
-				 					
-			 					print"</div>";
-			 				
-	 						}
+			print"<div class='title_info_page' id='".$value['id_title']."' >";
+				print "<h1 id='".$value['id_title']."'>".$value['main_title']."</h1>";
+				$content=db_fetch_assoc("select * from content_info_page where id_title='".$value['id_title']."' order by id_content");
+				// print_r($content);
+				if ( count($content)=='0') {
+					$add_first=db_execute("insert into content_info_page (id_title, type, content) values ('".$value['id_title']."', 'text','Agregar contenido al titulo')");
+					$id_first=db_fetch_cell("select id_content from content_info_page where id_title='".$value['id_title']."' order by id_content");
+					print("<div class='content_info_page' id='".$id_first."'>");
+					print "Agregar contenido al titulo";
+					print"<div class='panel_btn_content' style='display: none;' >";
+							print"<button class='btn_action_info' type='button' id='".$id_first."' name='add'>Agregar contenido</button>";
+							print"<button class='btn_action_info' type='button' id='".$id_first."' name='del'>Eliminar</button>";
+							print"<button class='btn_action_info' type='button' id='".$id_first."' name='edit'>Editar</button>";
+							print"<button class='btn_action_info' type='button' id='".$id_first."' name='up'>Subir</button>";
+							print"<button class='btn_action_info' type='button' id='".$id_first."' name='down'>Bajar</button>";
+						print"</div>";
+					print"</div>";
+				}else{
+					foreach ($content as $key2 => $value2) {
+					print("<div class='content_info_page' id='".$value2['id_content']."'>");
+					// print("<div class='content_info_page' id='".$value2['id_content']."'>");
+						if ($value2['type'] =='img') {
+							print "<img src='".$value2['id_content']."'>";
+						}elseif ($value2['type'] =='sub') {
+							print "<h3>".$value2['content']."</h3>";
+						}else{
+							print $value2['content'];
+						}
+						print"<div class='panel_btn_content' style='display: none;' >";
+							print"<button class='btn_action_info' type='button' id='".$value2['id_content']."' name='add'>Agregar contenido</button>";
+							print"<button class='btn_action_info' type='button' id='".$value2['id_content']."' name='del'>Eliminar</button>";
+							print"<button class='btn_action_info' type='button' id='".$value2['id_content']."' name='edit'>Editar</button>";
+							print"<button class='btn_action_info' type='button' id='".$value2['id_content']."' name='up'>Subir</button>";
+							print"<button class='btn_action_info' type='button' id='".$value2['id_content']."' name='down'>Bajar</button>";
+						print"</div>";
+					print"</div>";				 							
+				}
+				}
+				?> 
+
+				<?php
+				print"<div class='panel_btn_title' style='display: none;'>";
+				print"<button class='btn_action_info' type='button' id='".$value['id_title']."' name='add'>Agregar titulo</button>";
+				print"<button class='btn_action_info' type='button' id='".$value['id_title']."' name='del'>Eliminar</button>";
+				print"<button class='btn_action_info' type='button' id='".$value['id_title']."' name='edit'>Editar</button>";
+				print"<button class='btn_action_info' type='button' id='".$value['id_title']."' name='up'>subir</button>";
+				print"<button class='btn_action_info' type='button' id='".$value['id_title']."' name='down'>Bajar</button>";
+				print"</div>";
+			print"</div>";
+			
+		print"</div>";
+	
+	}
 	 						
 	 						
 }
