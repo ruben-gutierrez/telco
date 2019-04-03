@@ -47,7 +47,7 @@ function guardar_arq(){
   //post para enviar la informacion
   $.post("solicitud_asignacion.php",enviar,function(res){
       var respuesta = JSON.parse(res);
-      alert(respuesta);
+      mensaje(titulo,respuesta);
   }),"json";
 }
 
@@ -243,27 +243,46 @@ function add_arquitec(){
       
     }
     if (l == 0) {
+      if (ValidateIPaddress($('#form_new_arq')[0][3].value)) {
+          // console.log("entro e la funcion");
+          var parametros = new FormData($('#form_new_arq')[0]);
+          $.ajax({
+            url: 'solicitud_asignacion.php',
+            type: 'POST',
+            contentType: false,
+            processData: false,
+            data: parametros,
+            beforesend: function(){
 
-	// console.log("entro e la funcion");
-	var parametros = new FormData($('#form_new_arq')[0]);
-	$.ajax({
-		url: 'solicitud_asignacion.php',
-		type: 'POST',
-		contentType: false,
-		processData: false,
-		data: parametros,
-		beforesend: function(){
+            },
+            success: function(data){
+              // console.log(data);
+              
 
-		},
-		success: function(data){
-			// console.log(data);
-			$('#table_estado_arq').append(data);
-			$('#form_new_arq')[0].reset();
-			alert("Se agrego la arquitectura correctamente");
-			// log-reporting se agrego una nueva arquitectura
-		}
+              if (data=='upload fallo' || data=='') {
+                mensaje('Error', 'Recuerde que el dominio es único.\nVerifique los datos e intentelo nuevamente');
+              }else{
+                $('#table_estado_arq').append(data);
+              var formulario_info_arq=$('#form_info_new_arq')[0];
+              // var decision=confirmar('Agregar información de la arquitectura', formulario_info_arq);
+              mensaje('Agregar información de la arquitectura', formulario_info_arq);
+              $('.ajs-footer').hide();
+              var dominio=$('#form_new_arq')[0][3].value;
+              $('#form_info_new_arq')[0][2].value=dominio;
+              $('#form_new_arq')[0].reset();
+
+              // log-reporting se agrego una nueva arquitectura
+              }
+              
+            }
+          
+          });
+
+      }else{
+         mensaje('Alerta','La direccion IP esta mal escrita')
+      }
+
 	
-	});
   }else{
     alert("Los campos son obligatorios");
   } 
@@ -289,6 +308,11 @@ function inf_new_arq(){
       alert(data);
 			$('#form_info_new_arq')[0].reset();
 			$('#form_dom_info')[0].reset();
+      $('.ajs-button.ajs-ok').trigger('click');
+      see_table();
+
+      // refrestar el selector de informacion
+      refresh_selector('info_select_arq');
       // log-reporting se agrego una nueva arquitectura
     }
   });
@@ -344,6 +368,7 @@ function change_day_asig(){
 }
 
 function desplegar_info_arq( dato ){
+  // console.log("desplega funcion");
 	var parametros = new FormData($('#form_dom_info')[0]);
 	$.ajax({
     url: 'solicitud_asignacion.php',
@@ -353,35 +378,48 @@ function desplegar_info_arq( dato ){
     processData: false,
     data: parametros,
     beforesend: function(){
-
+      
     },
     success: function(data){
-      console.log(data);
+      // console.log(data);
       if ($.isEmptyObject(data)) {
-        $('#form_info_new_arq')[0][2].type='text';
+        // console.log("el array esta vacio");
+        $('#form_info_new_arq')[0].reset();
+        $('#form_info_new_arq')[0][1].value=$('#form_dom_info')[0][1].value;
       }else{
-        $('#form_info_new_arq')[0][2].value=data['dominio'];
-        $('#form_info_new_arq')[0][3].value=data['type'];
-        $('#form_info_new_arq')[0][4].value=data['fist_number_ims'];
-        $('#form_info_new_arq')[0][5].value=data['amount_extensions_ims'];
-        $('#form_info_new_arq')[0][6].value=data['ip_bono'];
-        $('#form_info_new_arq')[0][7].value=data['ip_sprout'];
-        $('#form_info_new_arq')[0][8].value=data['ip_homer'];
-        $('#form_info_new_arq')[0][9].value=data['ip_ellis'];
-        $('#form_info_new_arq')[0][10].value=data['ip_vellum'];
-        $('#form_info_new_arq')[0][11].value=data['ip_dime'];
-        $('#form_info_new_arq')[0][12].value=data['ip_ibcf'];
-        $('#form_info_new_arq')[0][13].value=data['ip_pstn'];
-        $('#form_info_new_arq')[0][14].value=data['fist_number_pstn'];
-        $('#form_info_new_arq')[0][15].value=data['amount_extensions_pstn'];
+        $('#form_info_new_arq')[0].reset();
+        $('#form_info_new_arq')[0][1].value=$('#form_dom_info')[0][1].value;
+        $('#form_info_new_arq')[0][1].value=data['dominio'];
+        $('#form_info_new_arq')[0][2].value=data['type'];
+        $('#form_info_new_arq')[0][3].value=data['fist_number_ims'];
+        $('#form_info_new_arq')[0][4].value=data['amount_extensions_ims'];
+        $('#form_info_new_arq')[0][5].value=data['ip_bono'];
+        $('#form_info_new_arq')[0][6].value=data['ip_sprout'];
+        $('#form_info_new_arq')[0][7].value=data['ip_homer'];
+        $('#form_info_new_arq')[0][8].value=data['ip_ellis'];
+        $('#form_info_new_arq')[0][9].value=data['ip_vellum'];
+        $('#form_info_new_arq')[0][10].value=data['ip_dime'];
+        $('#form_info_new_arq')[0][11].value=data['ip_ibcf'];
+        $('#form_info_new_arq')[0][12].value=data['ip_pstn'];
+        $('#form_info_new_arq')[0][13].value=data['fist_number_pstn'];
+        $('#form_info_new_arq')[0][14].value=data['amount_extensions_pstn'];
       }
     }
   });
 }
 
 function add_test(){
-  console.log("funcion js");
-  var parametro = new FormData($('#form_add_test')[0]);
+  // console.log("funcion js");
+  var cont=0;
+  var elements=$('#form_add_test')[0];
+  for (var i = elements.length - 1; i >= 0; i--) {
+    if ($('#form_add_test')[0][i]=='') {
+      cont +=1;
+    }
+    
+  }
+  if (cont>1) {
+    var parametro = new FormData($('#form_add_test')[0]);
   $.ajax({
     url: 'solicitud_asignacion.php',
     type: 'POST',
@@ -395,13 +433,16 @@ function add_test(){
       if (date != '') {
         alert("se agrego la prueba correctamente, ahora ingrese las opciones de l aprueba");
       }
-      console.log(date);
+      // console.log(date);
       $('#form_info_test')[0][2].value=date;
       $('#form_add_test')[0].reset();
       $('#form_1').hide();
       $('#form_2').show();
     }
   });
+}else{
+  mensaje('Alerta', 'Los campos deben estar llenos, intentelo nuevamente.');
+}
 }
 function add_info_test(){
   var parametros = new FormData($('#form_info_test')[0]);
@@ -417,6 +458,7 @@ function add_info_test(){
     success: function(data){
       // console.log(data);
       alert(data);
+
     }
   });
 }
@@ -432,6 +474,7 @@ function display_table_test(id_test){
     // console.log(msg);  
     $('#table_options_test').empty();
     $('#table_options_test').append(msg);
+
   });
 
 }
@@ -457,7 +500,18 @@ function exe_test(){
 }
 
 
-
+function fun1(){
+  $('#add_content')[0][1].remove();
+  $('#add_content').append('<input type="text" name="content"  placeholder="Contentido">');
+}
+function fun2(){
+  $('#add_content')[0][1].remove();
+  $('#add_content').append('<input type="file" name="content"  placeholder="Contentido">');
+}
+function fun3(){
+  $('#add_content')[0][1].remove();
+  $('#add_content').append('<textarea type="text" name="content"></textarea>');
+}
 
 // Funciones de los botones para modificar informacion del testbed
 $(document).on('click', '.btn_action_info', function (element) {
@@ -473,8 +527,14 @@ $(document).on('click', '.btn_action_info', function (element) {
        var formulario='<form class="form_info_page" id="add_title"><input type="text" name="main_title" value="" placeholder="Titulo de la seccion"></form>';
        form_add_title(element_current,'Formulario agregar titulo', formulario);
      }else{
-       var formulario='<form class="form_info_page" id="add_content"><input type="text" name="type" value="" placeholder="Tipo de contenido"><input type="text" name="content" value="" placeholder="Agregue el contenido"></form>';
+
+       // var formulario='<form class="form_info_page" id="add_content"><input type="text" name="type" value="" placeholder="Tipo de contenido"><input type="text" name="content" value="" placeholder="Agregue el contenido"></form>';
+       var formulario="<form class='form_info_page' id='add_content'><select name='type' ><option value='sub' onclick='fun1()'>Subtitulo</option><option value='img' onclick='fun2()'>Imagen</option><option value='text' onclick='fun3()'>Texto</option></select> <input type='text' name='content' value='' placeholder='Agregue el contenido'></form>";
        form_add_content(element_current, title_of_element, 'Formulario agregar elemento', formulario);
+
+
+
+
      }
      break;
    case 'del':
@@ -575,6 +635,7 @@ function add_content(id_content, id_title){
           processData: false,
           data: parametros,
           beforesend: function(){
+            console.log(parametros);
 
           },
           success: function(data){
@@ -737,3 +798,45 @@ function confirmar(title, content){
 function mensaje(title,msg){  
       alertify.alert(title,msg).set('label', 'Aceptar');     
 }
+
+function goToId(idName){
+  if($('#'+idName).length)
+  {
+    document.getElementById(idName).focus();
+
+    // var target_offset = $("#"+idName).offset();
+    // var target_top = target_offset.top;
+    // $('html,body').animate({scrollTop:target_top},{duration:"slow"});
+  }
+}
+
+function see_table(){
+  $('#table_arquitectura').show();$('#btn_notsee_table').show();$('#btn_see_table').hide();$('#add_arq').hide();
+}
+
+function refresh_selector(div_form){
+  console.log(div_form);
+  $.ajax({
+    method: "POST",
+    url: "admin_info.php",
+    data: { action: "8", func: div_form }
+  })
+  .done(function( data ) {
+    // console.log(data);
+    $('#'+div_form).empty();  
+    $('#'+div_form).html(data);
+  });
+}
+
+
+function ValidateIPaddress(ipaddress) {
+  if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ipaddress)) {
+   return (true);
+  }else{
+   return (false); 
+  } 
+}
+
+
+
+

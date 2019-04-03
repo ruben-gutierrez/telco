@@ -14,11 +14,11 @@
 						show_info_page();
 					?>
 		<!-- ponemos la tabla como menu -->
-		 <table class="content_testbed_info">
+		 <!-- <table class="content_testbed_info">
 			<?php
-			 draw_table_testbed2($contenido_info); 
-			draw_table_testbed2($contenido_info2);
-			draw_table_testbed2($contenido_info3);?>
-		</table> 
+			 // draw_table_testbed2($contenido_info); 
+			// draw_table_testbed2($contenido_info2);
+			// draw_table_testbed2($contenido_info3);?>
+		</table>  -->
 	</div>
 </div>

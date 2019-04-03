@@ -2,7 +2,7 @@
 global $current_user;
 
 include('./include/global.php');
-// include('./include/auth.php');
+
 
 
 // saber si post tiene valor
@@ -11,7 +11,7 @@ include('./include/global.php');
 //
 
 if (!empty($_POST)) {
-	
+	// include('./include/auth.php'); //se pone aqui poque se se pone arriba da error cuando se ejecuta automaticamente
 
 
 	// obtener vablabes a usar
@@ -26,8 +26,10 @@ if (!empty($_POST)) {
 	switch ($accion) { 
 
 		case "1"://guardar solicitud y asignarla si hay arq disponible
-			$num_arq_to_user=sizeof(arq_asignadas_to_user($current_user['email_address']));
+
+			$num_arq_to_user=sizeof(arq_asignadas_to_user($_POST['post_from_email']));
 			$arq_permit=db_fetch_cell_prepared("select value_info from data_testbedims where id_data='1'");
+			
 			agregar_solicitud($_POST['post_to_email'],$_POST['post_from_email'],$_POST['post_arquitectura'],$_POST['post_username'],$now);
 			// dominio de arquitectura disponible
 			//consulta si hay arquitecturas disponibles
@@ -70,15 +72,14 @@ if (!empty($_POST)) {
 						$new_name = $now . $_FILES['image']['name'];
 						rename('images/images_testbed/images_ims/temp/'.$_FILES['image']['name'], 'images/images_testbed/images_ims/'.$new_name );
 					}
-
-						$sql = "INSERT INTO arqs_testbedims (arquitectura, dominio, activo, usuario, descripcion, imagen) VALUES ('".$_POST['name_arq']."','".$_POST['dominio_arq']."','V','libre', '".$_POST['desc_arq']."','".$new_name."')";
-						$agregar=db_execute($sql);
-						if ( $agregar == '1') {
-							$id_arq=db_fetch_cell_prepared("SELECT id from arqs_testbedims order by id desc limit 1");
-							echo(return_file_arq($id_arq, $_POST['name_arq'], $_POST['dominio_arq'], $_POST['desc_arq'], $new_name));
-							}else{
-								echo('upload fallo');
-							}
+					$sql = "INSERT INTO arqs_testbedims (arquitectura, dominio, activo, usuario, descripcion, imagen) VALUES ('".$_POST['name_arq']."','".$_POST['dominio_arq']."','V','libre', '".$_POST['desc_arq']."','".$new_name."')";
+					$agregar=db_execute($sql);
+					if ( $agregar == '1') {
+						$id_arq=db_fetch_cell_prepared("SELECT id from arqs_testbedims order by id desc limit 1");
+						echo(return_file_arq($id_arq, $_POST['name_arq'], $_POST['dominio_arq'], $_POST['desc_arq'], $new_name));
+					}else{
+						echo('upload fallo');
+					}
 						
 				}else{
 						if (move_uploaded_file($_FILES['image']['tmp_name'], 'images/images_testbed/images_ims/'.$_FILES['image']['name'])) {
@@ -167,7 +168,7 @@ if (!empty($_POST)) {
 				}
 
 			break;
-		case '7':
+		case '7'://numero de arquitecturas por usuario
 			// echo "entro a la funcion";
 			$sql=db_execute("UPDATE data_testbedims set value_info='".$_POST['numero']."' where id_data='1'");
 			if ($sql == '1') {
@@ -175,7 +176,7 @@ if (!empty($_POST)) {
 			}
 			break;
 
-		case '8':
+		case '8':// dias de asignacion de cada arquitectura
 			$sql=db_execute("UPDATE data_testbedims set value_info='".$_POST['numero']."' where id_data='2'");
 			
 			if ($sql == '1') {
@@ -209,7 +210,7 @@ if (!empty($_POST)) {
 				echo ("");
 			}
 			break;
-		case '11'://agregar info test
+		case '11'://agregar opciones de test
 			$agregar=db_execute("INSERT INTO option_test_testbedims ( id_test, options, value, description_option) VALUES ('".$_POST['id_test']."','".$_POST['options']."','".$_POST['value']."','".$_POST['description_option']."')");
 
 			if ($agregar == 1 ) {
@@ -240,7 +241,9 @@ function return_file_arq($id,$nombre,$dominio,$descipcion, $imagen){
 				<td class='edisplay'>".$descipcion."</td>
 				<td class='edisplay'>".$imagen."</td>
 				<td>libre</td>
-				<td><button class='btn_arq_action' id='btn_liberar".$id."' name='liberar' style='background:green;'> <i class='fa fa-unlock fa-lg'></i></button><button class='btn_arq_action' id='btn_editar".$id."'name='editar' style='background:blue;'> <i class='fa fa-edit fa-lg'></i></button><button class='btn_arq_action' id='btn_eliminar".$id."' name='eliminar' style='background:red;'> <i class='fa fa-trash fa-lg'></i></button></td></tr>";
+				<td><button class='btn_arq_action' id='btn_liberar".$id."' name='liberar' style='background:green;'> <i class='fa fa-unlock fa-lg'></i></button></td>
+				<td><button class='btn_arq_action' id='btn_editar".$id."'name='editar' style='background:blue;'> <i class='fa fa-edit fa-lg'></i></button></td>
+				<td><button class='btn_arq_action' id='btn_eliminar".$id."' name='eliminar' style='background:red;'> <i class='fa fa-trash fa-lg'></i></button></td></tr>";
 	return $line;
 }
 

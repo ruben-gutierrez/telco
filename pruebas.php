@@ -49,7 +49,7 @@ if (isset($_GET['arq'])) {
                 <select name="dominio">
                   <option value="">Seleccionar</option>
                   <?php
-                    $dominios=db_fetch_assoc("select dominio from arqs_testbedims");
+                    $dominios=db_fetch_assoc("select dominio from arqs_testbedims where usuario= '".$user_email."'");
 
                     foreach ($dominios as $key => $value) {
                       print("<option value='".$value['dominio']."'>".$value['dominio']."</option>");

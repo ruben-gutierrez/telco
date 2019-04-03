@@ -2286,7 +2286,9 @@ function draw_table_estate_arq(){
 		<td class='edisplay'>".$line['descripcion']."</td>
 		<td class='edisplay'>".$line['imagen']."</td>
 		<td>".$line['usuario']."</td>
-		<td><button class='btn_arq_action' id='btn_liberar".$line['id']."' name='liberar' style='background:green;'> <i class='fa fa-unlock fa-lg'></i></button><button class='btn_arq_action' id='btn_editar".$line['id']."'name='editar' style='background:blue;'> <i class='fa fa-edit fa-lg'></i></button><button class='btn_arq_action' id='btn_eliminar".$line['id']."' name='eliminar' style='background:red;'> <i class='fa fa-trash fa-lg'></i></button></td></tr>";
+		<td><button class='btn_arq_action' id='btn_liberar".$line['id']."' name='liberar' style='background:green;'> <i class='fa fa-unlock fa-lg'></i></button></td>
+		<td><button class='btn_arq_action' id='btn_editar".$line['id']."'name='editar' style='background:blue;'> <i class='fa fa-edit fa-lg'></i></button></td>
+		<td><button class='btn_arq_action' id='btn_eliminar".$line['id']."' name='eliminar' style='background:red;'> <i class='fa fa-trash fa-lg'></i></button></td></tr>";
 	}
 }
 
@@ -2351,12 +2353,12 @@ function show_info_page(){
 				foreach ($content as $key2 => $value2) {
 					print("<div class='content' id='".$value2['id_content']."'>");
 					if ($value2['type'] =='img') {
-						print "<img src='".$value2['id_content']."'>";
-					}elseif ($value2['type'] =='sub1') {
-						print "<h3>".$value2['content']."</h3>";
-					}else{
-						print $value2['content'];
-					}
+							print "<img width='70%' src='images/images_testbed/images_ims/images_info_page/".$value2['content']."'>";
+						}elseif ($value2['type'] =='sub') {
+							print "<h3>".$value2['content']."</h3>";
+						}else{
+							print $value2['content'];
+						}
 						
 					print"</div>";
 				}
@@ -2398,7 +2400,7 @@ function admin_info_page(){
 					print("<div class='content_info_page' id='".$value2['id_content']."'>");
 					// print("<div class='content_info_page' id='".$value2['id_content']."'>");
 						if ($value2['type'] =='img') {
-							print "<img src='".$value2['id_content']."'>";
+							print "<img width='30%' src='images/images_testbed/images_ims/images_info_page/".$value2['content']."'>";
 						}elseif ($value2['type'] =='sub') {
 							print "<h3>".$value2['content']."</h3>";
 						}else{
@@ -2431,4 +2433,73 @@ function admin_info_page(){
 	}
 	 						
 	 						
+}
+
+
+
+
+
+function info_select_arq(){
+	?>
+	<form method="post" id="form_dom_info" class="form_arq">
+						 <input type="hidden" value="9" name="action">
+						 <label> Seleccione el dominio al cual se llenara la información</label>
+						 <select name="dominio"  onchange="desplegar_info_arq(this.value)">
+						 	<option value="">Seleccionar</option>
+							<?php
+									$dominios=db_fetch_assoc("select dominio from arqs_testbedims");
+
+									foreach ($dominios as $key => $value) {
+										print("<option value='".$value['dominio']."'>".$value['dominio']."</option>");
+									}
+							?>
+
+						</select>
+						</form>
+						
+						<form method="post" id="form_info_new_arq" class="form_arq">
+	 						
+	 						<input type="hidden" name="action" value='6' required>
+							
+	 						<!-- <input type="text" name="dominio" placeholder="dominio" required> -->
+							 <input type="hidden" name="dominio" value="" required>
+							<label>Seleccione el tipo de arquitectura</label>
+	 						<select type="select" name="type" placeholder='Tipo de arquitectura'>
+	 						  <option value="aio">Todo en uno</option>
+	 						  <option value="dist">Distribuida</option>
+	 						  <option value="dist_pstn">Distribuida + PSTN</option>
+	 						</select> 
+	 						
+	 						<label>Ingrese el número de la primer extención disponible en la arquitectura IMS</label>
+	 						<input type="text" name="fist_number_ims" placeholder="Número entero" required>
+	 						<label>Cantidad de extensiones disponibles en la arquitectura IMS </label>
+	 						<input type="number" name="amount_extensions_ims" placeholder="Cantidad de extensiones IMS" required>
+							
+							<label>Direccón IP del nodo bono</label>
+	 						<input type="text" name="host_bono" placeholder="xx.xx.xx.xx">
+
+	 						<label>Direccón IP del nodo sprout</label>
+	 						<input type="text" name="host_sprout" placeholder="xx.xx.xx.xx">
+	 						<label>Direccón IP del nodo homer</label>
+	 						<input type="text" name="host_homer" placeholder="xx.xx.xx.xx" required>
+	 						<label>Direccón IP del nodo ellis</label>
+	 						<input type="text" name="host_ellis" placeholder="xx.xx.xx.xx" >
+	 						<label>Direccón IP del nodo vellum</label>
+	 						<input type="text" name="host_vellum" placeholder="xx.xx.xx.xx" >
+	 						<label>Direccón IP del nodo dime</label>
+	 						<input type="text" name="host_dime" placeholder="xx.xx.xx.xx">
+	 						<label>Direccón IP del nodo IBCF</label>
+	 						<input type="text" name="host_ibcf" placeholder="xx.xx.xx.xx">
+	 						<label>Direccón IP de la PSTN (Asterisk)</label>
+	 						<input type="text" name="host_pstn" placeholder="xx.xx.xx.xx">
+	 						<label>Primer extension en la PSTN(Asterisk)</label>
+	 						<input type="text" name="fist_number_pstn" placeholder="Primer Numero de extension PSTN">
+	 						<label>Número de extensiones en la PSTN(Asterisk)</label>
+	 						<input type="number" name="amount_extensions_pstn" placeholder="Número entero">
+	 						<div id="buttons_add">
+	 						<input type="button" class="btn_form" id="btn_save_info" value="Guardar" onclick="inf_new_arq();">
+	 						<input type="button" class="btn_form" value="Cancelar" onclick="$('#content_infor_arq').hide();$('#btn_see_table4').show();$('#btn_notsee_table4').hide();$('.ajs-button.ajs-ok').trigger('click');">
+	 						</div>
+	 					</form>
+	<?php 
 }

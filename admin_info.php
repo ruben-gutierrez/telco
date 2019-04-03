@@ -9,11 +9,11 @@ include('./include/global.php');
 //si $_POST tiene valor entonces se asigna solicitud, se revisa si hay arq disponibles y luego se asigna.
 //de lo contrario el archivo se ejecuta desde el crontab y se debe verificar si se termino el tiempo de una asignacion
 //
-
+// print_r($_POST);
 if (!empty($_POST)) {
 	
-
-
+$now = date_create()->format('Y-m-d H:i:s');
+// echo $now;
 	// obtener vablabes a usar
 	$accion= $_POST['action'];	
 	$id= $_POST['id'];
@@ -35,8 +35,31 @@ if (!empty($_POST)) {
 				// $add=db_execute("insert into ".$_POST['table']." (id_tite, type, content,".$name_column.",main_title) values ('".$id_add."', '".$_POST['main_title']."')");
 			break;
 		case "3": //agregar contenido
+			// print_r($_POST);
+			// print_r($_FILES);
 			$update=db_execute("UPDATE content_info_page SET id_content = id_content + 1 WHERE id_content > '".$_POST['id_content']."' ORDER BY id_content DESC");
-			$add=db_execute("insert into content_info_page (id_content, id_title, type, content) values ('".$_POST['id_content']."'+1, '".$_POST['id_title']."', '".$_POST['type']."','".$_POST['content']."')");
+			if (empty($_FILES)) {
+				// echo "no hay archivo";
+				$content = str_replace("'", "`", $_POST['content']);
+				$add=db_execute("insert into content_info_page (id_content, id_title, type, content) values ('".$_POST['id_content']."'+1, '".$_POST['id_title']."', '".$_POST['type']."','".$content."')");
+			}else{
+				// echo "si hay archivo";	
+					if (move_uploaded_file($_FILES['content']['tmp_name'], 'images/images_testbed/images_ims/images_info_page/temp/'.$_FILES['content']['name'])) {
+
+						// echo "archivo en temp";
+						// $now = date_create()->format('Y-m-d H:i:s');
+						$new_name = $now . $_FILES['content']['name'];
+						rename('images/images_testbed/images_ims/images_info_page/temp/'.$_FILES['content']['name'], 'images/images_testbed/images_ims/images_info_page/'.$new_name );
+						// echo "archivo en images";
+					}
+
+
+					// echo $now;
+					// echo $_FILES['content']['name'];
+					// echo $new_name;
+				$add=db_execute("insert into content_info_page (id_content, id_title, type, content) values ('".$_POST['id_content']."'+1, '".$_POST['id_title']."', '".$_POST['type']."','".$new_name."')");
+
+			}
 			if ($add==1) {
 				admin_info_page();
 			}else{
@@ -50,7 +73,8 @@ if (!empty($_POST)) {
 			}
 			break;
 		case "5": //editar contenido
-			$update=db_execute("UPDATE content_info_page SET type = '".$_POST['type']."', content = '".$_POST['content']."' WHERE id_title = '".$_POST['id_title']."' and id_content='".$_POST['id_content']."'");
+			$content = str_replace("'", "`", $_POST['content']);
+			$update=db_execute("UPDATE content_info_page SET type = '".$_POST['type']."', content = '".$content."' WHERE id_title = '".$_POST['id_title']."' and id_content='".$_POST['id_content']."'");
 			if ($update==1) {
 				admin_info_page();
 			}
@@ -102,6 +126,12 @@ if (!empty($_POST)) {
 			if ($update==1) {
 				admin_info_page();
 			}
+			break;
+
+		case '8':
+			// echo $_POST['func'];
+			$func=$_POST['func'];
+			echo($func());
 			break;
 		default:
 			echo ("sin funcion");

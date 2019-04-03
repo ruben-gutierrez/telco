@@ -12,6 +12,7 @@ global $config, $current_user;
  <!-- contenido admin -->
  	<!-- // arquitecturas -->
 
+
  	<div class="admin_ims">
  		<section class="section_admin_arquitecuta">
  			<div class="name_section">
@@ -34,7 +35,9 @@ global $config, $current_user;
 		 						<th class='edisplay'>descripcion</th>
 		 						<th class='edisplay'>Imagen</th>
 		 						<th>Usuario</th>
-		 						<th>Accion</th>
+		 						<th>Liberar</th>
+		 						<th>Editar</th>
+		 						<th>Eliminar</th>
 		 					</tr>
 		 					
 		 				</thead>
@@ -43,11 +46,11 @@ global $config, $current_user;
 		 				draw_table_estate_arq(); ?>
 		 				</tbody>
 		 			</table>
-		 			<button id="display_add" onclick="$('#add_arq').show(500); $('#table_arquitectura').hide(500);$('#btn_notsee_table').hide();$('#btn_see_table').show();">Nuevo</button>
+		 			<button id="display_add" onclick="$('#add_arq').show(500); $('#table_arquitectura').hide(500);$('#btn_notsee_table').hide();$('#btn_see_table').show(); $('section.section_admin_arquitectura').focus();">Nuevo</button>
 		 		</div>	
 	 		</section>
 
-	 		<section id="add_arq" class="section_admin_arquitectura" style="display: none;">
+	 		<section id="add_arq" class="section_admin_arquitectura" tabindex='0' style="display: none;">
 	 			<div class="name_section">Agregar arquitectura</div>
 	 			<div class="content_section">
 	 				<form method="post" id="form_new_arq" class="form_arq" enctype="multipart/form-data">
@@ -131,7 +134,7 @@ global $config, $current_user;
  			</div>
  		</section>
 
- 		<section  id="info_arq" class="section_admin_arquitecuta">
+ 		<section  id="info_arq" class="section_admin_arquitecuta" tabindex="0">
  			<div class="name_section">
  				
  				<div style="display: inline-block;">
@@ -145,62 +148,12 @@ global $config, $current_user;
  					<label>Ingrese la información de la arquitectura</label>
  					<div id="content_infor_arq" style="display: none;">
 
-					 <div>
-	 					<form method="post" id="form_dom_info" class="form_arq">
-						 <input type="hidden" value="9" name="action">
-						 <select name="dominio" onchange="desplegar_info_arq(this.value)">
-						 <option value="">Seleccionar</option>
-
-	 					<form method="post" id="form_info_new_arq" class="form_arq">
-	 						<label> Seleccione el dominio al cual se llenara la información</label>
-	 						<input type="hidden" name="action" value='6' required>
-							
-	 						<!-- <input type="text" name="dominio" placeholder="dominio" required> -->
-	 						<select name="dominio" placeholder='dominio'>
-
-							<?php
-									$dominios=db_fetch_assoc("select dominio from arqs_testbedims");
-
-									foreach ($dominios as $key => $value) {
-										print("<option value='".$value['dominio']."'>".$value['dominio']."</option>");
-									}
-							?>	
-	 						</select> 
-
-						 </form>
-						 </div>
-						 <form method="post" id="form_info_new_arq" class="form_arq">
-	 						<label> Seleccione el dominio al cual se llenara la información</label>
-	 						<input type="hidden" name="action" value='6' required>
-							
-	 						<!-- <input type="text" name="dominio" placeholder="dominio" required> -->
-							 <input type="hidden" name="dominio" value="" required>
-
-	 						<select name="type" placeholder='Tipo de arquitectura'>
-	 						  <option value="aio">Todo en uno</option>
-	 						  <option value="dist">Distribuida</option>
-	 						  <option value="dist_pstn">Distribuida + PSTN</option>
-	 						</select> 
-	 						
-	 						
-	 						<input type="text" name="fist_number_ims" placeholder="Primer Numero de extension IMS" required>
-	 						<input type="number" name="amount_extensions_ims" placeholder="Cantidad de extensiones IMS" required>
-							
-	 						<input type="text" name="host_bono" placeholder="Host_Bono">
-	 						<input type="text" name="host_sprout" placeholder="Host_Sprout">
-	 						<input type="text" name="host_homer" placeholder="Host_Home" required>
-	 						<input type="text" name="host_ellis" placeholder="Host_Ellis" >
-	 						<input type="text" name="host_vellum" placeholder="Host_vellum" >
-	 						<input type="text" name="host_dime" placeholder="Host_Dime">
-	 						<input type="text" name="host_ibcf" placeholder="Host_Ibcf">
-	 						<input type="text" name="host_pstn" placeholder="Host_PSTN">
-	 						<input type="text" name="fist_number_pstn" placeholder="Primer Numero de extension PSTN">
-	 						<input type="number" name="amount_extensions_pstn" placeholder="Cantidad de extensiones PSTN">
-	 						<div>
-	 						<input type="button" class="btn_form" id="btn_save_info" value="Guardar" onclick="inf_new_arq()">
-	 						<input type="button" class="btn_form" value="Cancelar" onclick="$('#content_infor_arq').hide();$('#btn_see_table4').show();$('#btn_notsee_table4').hide();">
-	 						</div>
-	 					</form>
+					 	<div id="info_select_arq">
+						 	<?php
+						 	info_select_arq();
+						 	?>
+	 					
+						</div>
 	 				</div>
  			</div>
 
@@ -218,11 +171,12 @@ global $config, $current_user;
 			</div>
 			</div>
 			<div class="content_section">
-					<label>Seleccione la arquitectura y agregue la información de la prueba</label>
+					<label>Agregar prueba a una arquitectura</label>
 					<div id="content_add_test" style="display: none;">
 						<div id='form_1'>
 							<form method="post" id="form_add_test" class="form_arq" enctype="multipart/form-data">
 								<input type="hidden" name="action" value="10">
+								<label>Seleccione la arquitectura a la cual se agregara una prueba</label>
 								<select name="dominio">
 									<option value="">Seleccionar</option>
 									<?php
@@ -233,22 +187,25 @@ global $config, $current_user;
 										}
 									?>	
 				 				</select>
+				 				<label>Nombre de la prueba</label>
 
 			 						
-			 						<input type="text" name="name_test" placeholder="Nombre de prueba" required>
+		 						<input type="text" name="name_test" placeholder="Nombre de identificación de la prueba" required>
 			 						
 									
-			 						<input type="text" name="comand_test" placeholder="Comando de prueba">
+			 						<!-- <input type="text" name="comand_test" placeholder="Comando de prueba"> -->
 			 						<!-- <input type="text" name="description_test" placeholder="Descripcion"> -->
-			 						<textarea name="description_test" placeholder="Descripcion" required></textarea>
-			 						<input type="text" name="restriction_test" placeholder="Restriccciones" required>
-			 						<label><h3>Archivo XML</h3></label>
-			 						<input type="file" name="file_test" required>
+			 					<label>Descripción de la prueba</label>
+		 						<textarea name="description_test" placeholder="	Descripcion" required></textarea>
+								<label>Indique las restricciones de la prueba</label>
+		 						<input type="text" name="restriction_test" placeholder="Restricción" required>
+		 						<label><h3>Archivo XML </h3></label>
+		 						<input type="file" name="file_test" required>
 									
-			 						<div>
+		 						<div>
 			 						<input type="button" class="btn_form" id="btn_save_info" value="Siguiente" onclick="add_test()">
 			 						<input type="button" class="btn_form" value="Cancelar" onclick="$('#content_add_test').hide();$('#btn_see_table5').show();$('#btn_notsee_table5').hide();$('#form_add_test')[0].reset();">
-			 						</div>
+		 						</div>
 			 				</form>
 			 					
 						</div>
@@ -270,7 +227,8 @@ global $config, $current_user;
  				</div>
 			</div>
 		</section>
-		 <section class="section_admin_arquitecuta">
+
+		<section class="section_admin_arquitecuta">
  			<div class="name_section">
  				<div style="display: inline-block;">
  				<h4>Contenido pagina general</h4></div>

@@ -36,7 +36,6 @@ $from_email=$current_user['email_address'];
 			<input type="hidden" id="from_email" value="<?php echo($from_email);?>">
 			<input type="hidden" id="cuerpo" value="Se realiza la solicitud de habilitar la arquitectura">
 			<input type="button" value="Solicitar arquitectura" onclick="solicituar_arquitectura()">
-
 		</form>
 	</div>
 	

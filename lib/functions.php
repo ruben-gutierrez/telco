@@ -5191,7 +5191,7 @@ function agregar_solicitud($to_email,$from_email,$arquitectura,$username,$now){
 
 
 //asigna la arquitectura 
-function asignar_arquitectura($id_solicitud, $dominio_arq, $user){
+function asignar_arquitectura($id_solicitud, $dominio_arq, $user, $email_user){
 	$days=db_fetch_cell_prepared("select value_info from data_testbedims where id_data='2'");
 	$actual_datetime=date_create()->format('Y-m-d H:i:s');
 	$final_datetime=date('Y-m-d H:i:s',strtotime($actual_datetime."+ ".$days." days")); 
