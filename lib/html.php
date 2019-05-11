@@ -2297,12 +2297,12 @@ function draw_table_testbed_pruebas($user){
 	$dom_user=db_fetch_assoc("SELECT arquitectura, dominio, descripcion  from arqs_testbedims where usuario ='".$user."'");
 	// print_r($dom_user);
 	?>
-	<table class="table_estado_arq">
+	<table class="table_estado_arq animated fadeIn fast">
       <tr>
         <th>Arquitectura</th>
         <th>Prueba</th>
         <th>Descripcion</th>
-        <th>Acción</th>
+        <th>Ver Más...</th>
       </tr>  
       <?php 
 	foreach ($dom_user as $key => $value) {
@@ -2315,7 +2315,7 @@ function draw_table_testbed_pruebas($user){
 			<td> Arquitectura: ".$value['arquitectura']."<br> dominio:".$value['dominio']."</td>
 			<td>".$value2['name_test']."</td>
 			<td>".$value2['description_test']."\n Restricciones;\n".$value2['restriction']."</td>
-			<td><button class='btn_test_action' id='".$value2['id_test']."' style='background:green;' onClick='display_table_test(this.id)'> <i class='fa fa-info-circle fa-lg'></i></button></td>
+			<td><button class='btn_test_action' id='".$value2['id_test']."' style='background:#1351AF; border-radius:35px; color:#fff' onClick='display_table_test(this.id)'> <i class='fa fa-angle-double-right fa-3x'></i></button></td>
 			</tr>");
 		}
 		
@@ -2461,7 +2461,7 @@ function info_select_arq(){
 	 						
 	 						<input type="hidden" name="action" value='6' required>
 							
-	 						<!-- <input type="text" name="dominio" placeholder="dominio" required> -->
+	 						
 							 <input type="hidden" name="dominio" value="" required>
 							<label>Seleccione el tipo de arquitectura</label>
 	 						<select type="select" name="type" placeholder='Tipo de arquitectura'>

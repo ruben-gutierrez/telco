@@ -279,7 +279,7 @@ function add_arquitec(){
           });
 
       }else{
-         mensaje('Alerta','La direccion IP esta mal escrita')
+         mensaje('Alerta','La direccion IP esta mal escrita');
       }
 
 	
@@ -290,32 +290,48 @@ function add_arquitec(){
 }
 
 function inf_new_arq(){
-
-
-  // console.log("entro e la funcion");
-  var parametros = new FormData($('#form_info_new_arq')[0]);
-  $.ajax({
-    url: 'solicitud_asignacion.php',
-    type: 'POST',
-    contentType: false,
-    processData: false,
-    data: parametros,
-    beforesend: function(){
-
-    },
-    success: function(data){
-      // console.log(data);
-      alert(data);
-			$('#form_info_new_arq')[0].reset();
-			$('#form_dom_info')[0].reset();
-      $('.ajs-button.ajs-ok').trigger('click');
-      see_table();
-
-      // refrestar el selector de informacion
-      refresh_selector('info_select_arq');
-      // log-reporting se agrego una nueva arquitectura
+  var l=0;
+  for (var i = 0; i < $('#form_info_new_arq')[0].length; i++) {
+    if (searcWord('host', $('#form_info_new_arq')[0][i].name)) {
+      // alert('campo de direccion ip');
+      if (!ValidateIPaddress($('#form_info_new_arq')[0][i].value) && $('#form_info_new_arq')[0][i].value !='') {
+        // alert($('#form_info_new_arq')[0][i].value + 'campo con la informacion incorrecta');
+         l++;
+      }
+      
     }
-  });
+    
+  }
+  if (l==0) {
+    // alert('agregar info');
+      // console.log("entro e la funcion");
+      var parametros = new FormData($('#form_info_new_arq')[0]);
+      $.ajax({
+        url: 'solicitud_asignacion.php',
+        type: 'POST',
+        contentType: false,
+        processData: false,
+        data: parametros,
+        beforesend: function(){
+
+        },
+        success: function(data){
+          // console.log(data);
+          alert(data);
+          $('#form_info_new_arq')[0].reset();
+          $('#form_dom_info')[0].reset();
+          $('.ajs-button.ajs-ok').trigger('click');
+          see_table();
+
+          // refrestar el selector de informacion
+          refresh_selector('info_select_arq');
+          // log-reporting se agrego una nueva arquitectura
+        }
+      });
+  }else{
+    mensaje('Alerta', 'Verifique las direcciones IP agregadas, formato incorrecto');
+  }
+  
 }
 
 function change_arqs_by_user(){
@@ -382,27 +398,58 @@ function desplegar_info_arq( dato ){
     },
     success: function(data){
       // console.log(data);
+      if ($('#form_dom_info')[0][1].name == 'action') {
+        var dom=$('#form_dom_info')[0][2].value;
+      }else{
+        var dom=$('#form_dom_info')[0][1].value;
+      }
       if ($.isEmptyObject(data)) {
         // console.log("el array esta vacio");
         $('#form_info_new_arq')[0].reset();
-        $('#form_info_new_arq')[0][1].value=$('#form_dom_info')[0][1].value;
+        if ($('#form_info_new_arq')[0][1].name == 'action') {
+          $('#form_info_new_arq')[0][2].value=dom;
+        }else{
+          $('#form_info_new_arq')[0][1].value=dom; 
+        }
       }else{
-        $('#form_info_new_arq')[0].reset();
-        $('#form_info_new_arq')[0][1].value=$('#form_dom_info')[0][1].value;
-        $('#form_info_new_arq')[0][1].value=data['dominio'];
-        $('#form_info_new_arq')[0][2].value=data['type'];
-        $('#form_info_new_arq')[0][3].value=data['fist_number_ims'];
-        $('#form_info_new_arq')[0][4].value=data['amount_extensions_ims'];
-        $('#form_info_new_arq')[0][5].value=data['ip_bono'];
-        $('#form_info_new_arq')[0][6].value=data['ip_sprout'];
-        $('#form_info_new_arq')[0][7].value=data['ip_homer'];
-        $('#form_info_new_arq')[0][8].value=data['ip_ellis'];
-        $('#form_info_new_arq')[0][9].value=data['ip_vellum'];
-        $('#form_info_new_arq')[0][10].value=data['ip_dime'];
-        $('#form_info_new_arq')[0][11].value=data['ip_ibcf'];
-        $('#form_info_new_arq')[0][12].value=data['ip_pstn'];
-        $('#form_info_new_arq')[0][13].value=data['fist_number_pstn'];
-        $('#form_info_new_arq')[0][14].value=data['amount_extensions_pstn'];
+        if ($('#form_info_new_arq')[0][1].name == 'action') {
+          console.log("con info add");
+          $('#form_info_new_arq')[0].reset();
+          $('#form_info_new_arq')[0][2].value=dom;
+          // $('#form_info_new_arq')[0][1].value=data['dominio'];
+          $('#form_info_new_arq')[0][3].value=data['type'];
+          $('#form_info_new_arq')[0][4].value=data['fist_number_ims'];
+          $('#form_info_new_arq')[0][5].value=data['amount_extensions_ims'];
+          $('#form_info_new_arq')[0][6].value=data['ip_bono'];
+          $('#form_info_new_arq')[0][7].value=data['ip_sprout'];
+          $('#form_info_new_arq')[0][8].value=data['ip_homer'];
+          $('#form_info_new_arq')[0][9].value=data['ip_ellis'];
+          $('#form_info_new_arq')[0][10].value=data['ip_vellum'];
+          $('#form_info_new_arq')[0][11].value=data['ip_dime'];
+          $('#form_info_new_arq')[0][12].value=data['ip_ibcf'];
+          $('#form_info_new_arq')[0][13].value=data['ip_pstn'];
+          $('#form_info_new_arq')[0][14].value=data['fist_number_pstn'];
+          $('#form_info_new_arq')[0][15].value=data['amount_extensions_pstn'];
+        }else{
+          console.log("sin info add");
+          $('#form_info_new_arq')[0].reset();
+          $('#form_info_new_arq')[0][1].value=$('#form_dom_info')[0][1].value;
+          // $('#form_info_new_arq')[0][1].value=data['dominio'];
+          $('#form_info_new_arq')[0][2].value=data['type'];
+          $('#form_info_new_arq')[0][3].value=data['fist_number_ims'];
+          $('#form_info_new_arq')[0][4].value=data['amount_extensions_ims'];
+          $('#form_info_new_arq')[0][5].value=data['ip_bono'];
+          $('#form_info_new_arq')[0][6].value=data['ip_sprout'];
+          $('#form_info_new_arq')[0][7].value=data['ip_homer'];
+          $('#form_info_new_arq')[0][8].value=data['ip_ellis'];
+          $('#form_info_new_arq')[0][9].value=data['ip_vellum'];
+          $('#form_info_new_arq')[0][10].value=data['ip_dime'];
+          $('#form_info_new_arq')[0][11].value=data['ip_ibcf'];
+          $('#form_info_new_arq')[0][12].value=data['ip_pstn'];
+          $('#form_info_new_arq')[0][13].value=data['fist_number_pstn'];
+          $('#form_info_new_arq')[0][14].value=data['amount_extensions_pstn'];
+        }
+        
       }
     }
   });
@@ -840,3 +887,11 @@ function ValidateIPaddress(ipaddress) {
 
 
 
+function searcWord(searcWord, element){
+  var re = new RegExp(searcWord);
+  if (re.test(element)) {
+    return true;
+  }else{
+    return false;
+  }
+}

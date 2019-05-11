@@ -1953,7 +1953,7 @@ tr#realtime td:first-child {
 	margin: 0px 5px;
 	float: right;
 	margin: 21px 10px 0px 5px;
-	border-radius: 10px;
+	border-radius: 4px;
 }
 .menu_principal_selected {
 	color: white !important;
@@ -1963,7 +1963,7 @@ tr#realtime td:first-child {
 	margin: 0px 5px;
 	float: right;
 	margin: 21px 10px 0px 5px;
-	border-radius: 10px;
+	border-radius: 4px;
 }
 
 
@@ -2035,6 +2035,7 @@ ul.nav_sub{
 /*contenido page testbed*/
 .margin_page{
 	font-size: 15px;
+	padding: 0px 20px 0px 20px;
 }
 .content_testbed_info tr:nth-child(odd) td{
 	font-size: 20px;
@@ -2138,12 +2139,14 @@ ul.nav_sub{
 	font-size: 15px;
 	padding: 5px 10px 5px 5px;
 	border-bottom: ridge;
+	padding: 15px;
 
 }
 .table_estado_arq tr:nth-child(even) td{
 	font-size: 15px;
 	padding: 5px 10px 5px 5px;
 	border-bottom: ridge;
+	padding: 15px;
 
 }
 
@@ -2151,7 +2154,11 @@ ul.nav_sub{
 	font-size: 16px;
 	background-color: #D6D6D6;
 	border-collapse: collapse;
+	height: 3em;
+	padding: 0px 10px 0px 10px;
+
 }
+
 
 /*------------------------------------------------------------*/
 /*admin_testbednims*/
@@ -2250,6 +2257,34 @@ ul.nav_sub{
 
 .panel_btn_content{
 	float: right;
-=======
->>>>>>> 35b75da02f97ede2f06ef47b2c72585f8fa07015
+/*=======*/
+/*>>>>>>> 35b75da02f97ede2f06ef47b2c72585f8fa07015*/
+}
+
+
+/*Animaciones*/
+.animated{
+	-webkit-animation-duration:1s;
+	animation-duration:1s;
+	-webkit-animation-fill-mode: both;
+	animation-fill-mode: both;
+}
+.fast {
+	-webkit-animation-duration:0.4s;
+	animation-duration:0.4s;
+	-webkit-animation-fill-mode: both;
+	animation-fill-mode: both;
+}
+
+@keyframes fadeIn {
+	from {
+		opacity:0;
+	}
+	to{
+		opacity:1;
+	}
+}
+
+.fadeIn {
+	animation-name: fadeIn;
 }

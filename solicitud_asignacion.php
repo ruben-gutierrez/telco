@@ -26,7 +26,8 @@ if (!empty($_POST)) {
 	switch ($accion) { 
 
 		case "1"://guardar solicitud y asignarla si hay arq disponible
-
+			// echo "ingreso a la funcion2";
+			// print_r($_POST);
 			$num_arq_to_user=sizeof(arq_asignadas_to_user($_POST['post_from_email']));
 			$arq_permit=db_fetch_cell_prepared("select value_info from data_testbedims where id_data='1'");
 			
@@ -40,13 +41,17 @@ if (!empty($_POST)) {
 				echo "Lo sentimos, en este momento no hay arquitecturas disponibles. Se ha almacenado su solicitud pronto nos contataremos via e-mail.\n Gracias";
 			}else{
 				// Consulta si hay solicitud pendiente
+				// echo "hay arquitectecturas disponibles";
 				$id_solicitud_pendiente = solicitud_pendiente($_POST['post_arquitectura']);
 				if ($id_solicitud_pendiente['id'] == '') {
 					echo "no hay solicitudes pendientes para la arquitectura " . $_POST['post_arquitectura'];
 				}else{
+					// echo "hay solicitudes pendientes";
+					// echo $num_arq_to_user;
+					// echo $arq_permit;
 					if ($num_arq_to_user < $arq_permit) {
 						asignar_arquitectura($id_solicitud_pendiente['id'] , $dominio_libre['dominio'], $_POST['post_from_email']);
-						//asignar la arqutiectura al usuario en la plataforma
+						// asignar la arqutiectura al usuario en la plataforma
 						echo "Se ha asignado la arquitectura ". $_POST['post_arquitectura'] . "durante ".$days." dias.";
 					}else{
 						echo ("Puede reservar maximo ". $arq_permit ."arquitecturas en el testbed IMS");
