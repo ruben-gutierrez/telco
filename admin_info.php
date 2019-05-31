@@ -21,8 +21,16 @@ $now = date_create()->format('Y-m-d H:i:s');
 
 		case "1": //borrar elemento de la seccion de info
 			$name_column=db_fetch_cell("select COLUMN_NAME from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME = '".$_POST['table']."' LIMIT 1");
-			$del=db_execute("delete from ".$_POST['table']." where ".$name_column."='".$_POST['id']."'");
-			echo $del;
+			$number_content=db_fetch_cell("select count(".$name_column.") from ".$_POST['table']);
+
+			if ($number_content>1) {
+				$del=db_execute("delete from ".$_POST['table']." where ".$name_column."='".$_POST['id']."'");
+				echo $del;
+			}else{
+				echo 0;
+			}
+			
+			
 			break;
 		case "2": //agregar titulo
 			// $id_add=$_POST['id']+1;

@@ -85,6 +85,8 @@ th .fa {
 	position: relative;
 	width: 100%;
 	height: 100%;
+	margin-bottom: 100px;
+	padding-bottom: 50px;
 }
 
 input {
@@ -2195,6 +2197,7 @@ ul.nav_sub{
 	width: 40px;
 	border-radius: 50%;
 	margin-left: 10px;
+
 }
 
 .fa-lg{
@@ -2287,4 +2290,12 @@ ul.nav_sub{
 
 .fadeIn {
 	animation-name: fadeIn;
+}
+
+.btn_action_info{
+	padding: 10px;
+}
+
+.content_info_page h3{
+	margin-bottom: 0px;
 }

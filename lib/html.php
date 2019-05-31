@@ -2340,15 +2340,16 @@ function draw_table_testbed2($array_content){
 
 function show_info_page(){
 
-	// $title=db_fetch_assoc("select * from title_info_page t join content_info_page c ON t.id_title=c.id_title order by t.position, c.position");
-	$title=db_fetch_assoc("select * from title_info_page order by position");
+	//$title=db_fetch_assoc("select * from title_info_page t join content_info_page c ON t.id_title=c.id_title order by t.position, c.position");
+	$title=db_fetch_assoc("select * from title_info_page order by id_title");
+	//print_r($title);
 	foreach ($title as $key => $value) {
 		
 		print"<div id='title_info_page'>";
 
 			print"<div class='main_title' id='".$value['id_title']."'>";
 			print "<h1>".$value['main_title']."</h1>";
-				$content=db_fetch_assoc("select * from content_info_page where id_title='".$value['id_title']."' order by position");
+				$content=db_fetch_assoc("select * from content_info_page where id_title='".$value['id_title']."' order by id_content");
 				// print_r($content);
 				foreach ($content as $key2 => $value2) {
 					print("<div class='content' id='".$value2['id_content']."'>");
