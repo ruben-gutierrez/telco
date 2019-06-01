@@ -687,7 +687,6 @@ function add_content(id_content, id_title) {
         data: parametros,
         beforesend: function() {
             console.log(parametros);
-
         },
         success: function(data) {
             // console.log(data);

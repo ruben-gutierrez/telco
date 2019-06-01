@@ -22,6 +22,10 @@ $now = date_create()->format('Y-m-d H:i:s');
 		case "1": //borrar elemento de la seccion de info
 			$name_column=db_fetch_cell("select COLUMN_NAME from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME = '".$_POST['table']."' LIMIT 1");
 			$number_content=db_fetch_cell("select count(".$name_column.") from ".$_POST['table']);
+			$name_image=db_fetch_cell("select content from content_info_page where id_content = '".$_POST['id']."' AND type='img'");
+			if (!empty($name_image)) {
+				unlink('images/images_testbed/images_ims/images_info_page/'.$name_image);
+			}
 
 			if ($number_content>1) {
 				$del=db_execute("delete from ".$_POST['table']." where ".$name_column."='".$_POST['id']."'");
@@ -29,6 +33,7 @@ $now = date_create()->format('Y-m-d H:i:s');
 			}else{
 				echo 0;
 			}
+
 			
 			
 			break;
@@ -45,6 +50,8 @@ $now = date_create()->format('Y-m-d H:i:s');
 		case "3": //agregar contenido
 			// print_r($_POST);
 			// print_r($_FILES);
+
+
 			$update=db_execute("UPDATE content_info_page SET id_content = id_content + 1 WHERE id_content > '".$_POST['id_content']."' ORDER BY id_content DESC");
 			if (empty($_FILES)) {
 				// echo "no hay archivo";
@@ -52,14 +59,18 @@ $now = date_create()->format('Y-m-d H:i:s');
 				$add=db_execute("insert into content_info_page (id_content, id_title, type, content) values ('".$_POST['id_content']."'+1, '".$_POST['id_title']."', '".$_POST['type']."','".$content."')");
 			}else{
 				// echo "si hay archivo";	
-					if (move_uploaded_file($_FILES['content']['tmp_name'], 'images/images_testbed/images_ims/images_info_page/temp/'.$_FILES['content']['name'])) {
+
+					// if (move_uploaded_file($_FILES['content']['tmp_name'], 'images/images_testbed/images_ims/images_info_page/'.$_FILES['content']['name'])) {
 
 						// echo "archivo en temp";
-						// $now = date_create()->format('Y-m-d H:i:s');
+						$now = date_create()->format('Y-m-d H:i:s');
 						$new_name = $now . $_FILES['content']['name'];
-						rename('images/images_testbed/images_ims/images_info_page/temp/'.$_FILES['content']['name'], 'images/images_testbed/images_ims/images_info_page/'.$new_name );
+						move_uploaded_file($_FILES['content']['tmp_name'], 'images/images_testbed/images_ims/images_info_page/'.$new_name);
+						// rename('images/images_testbed/images_ims/images_info_page/temp/'.$_FILES['content']['name'], 'images/images_testbed/images_ims/images_info_page/'.$new_name );
 						// echo "archivo en images";
-					}
+					// }else{
+						// echo "no se pudo mover el archivo";
+					// }
 
 
 					// echo $now;
@@ -73,6 +84,7 @@ $now = date_create()->format('Y-m-d H:i:s');
 			}else{
 				echo $update;
 			}
+			
 			break;
 		case "4": //editar titulo
 			$update=db_execute("UPDATE title_info_page SET main_title = '".$_POST['main_title']."' WHERE id_title = '".$_POST['id']."'");
