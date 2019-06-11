@@ -22,7 +22,7 @@ if (!empty($_POST)) {
 	$days=db_fetch_cell_prepared("select value_info from data_testbedims where id_data='2'");
 	// Explain table testbed
 	// id  |  arquitectura | dominio | activo | usuario descripcion | imagen
-	// en esta tabla arquitectura es el nombre de la arquitectura, domini es la ip o nombre en el dns, activo hace referencia a la verificacion mediante ping de que esta funcionanado de lo contrario no se tomara en cuenta para la asignacion , usuario si este campo es diferente de libre entonces esta ocupado y las arquitecturas que tienen libre en este campo se pueden asignar
+	// en esta tabla arquitectura es el nombre de la arquitectura, domini es la ip o nombre en el dns, activo hace referencia a la verificacion mediante ping de que esta funcionanado de lo contrario no se tomara en cuenta para la asignacion , usuario si este campo es diferente de libre entonces esta ocupado y las arquitecturas que tienen libre en este campo se pueden asignar.
 	switch ($accion) { 
 
 		case "1"://guardar solicitud y asignarla si hay arq disponible
@@ -223,6 +223,20 @@ if (!empty($_POST)) {
 			}else{
 				echo ("no se pudo agregar la informacion intentelo nuevamente");
 			}
+			break;
+		case '12'://consultar info de dominio
+			// print($_POST['domain']);
+			$domain=db_fetch_cell_prepared("SELECT dominio from arqs_testbedims where id=".$_POST['domain']);
+			// print($domain);
+			$ips_domain=db_fetch_assoc("SELECT * from info_arq_testbedims WHERE dominio='".$domain."'");
+			// print_r($ips_domain);
+			$ips_aditionals=db_fetch_assoc("SELECT * from vm_aditional_testbedims where dominio='".$domain."'");
+
+			// if ($info_dom != '') {
+				echo json_encode($ips_domain+$ips_aditionals);
+				// echo json_encode($ips_aditionals);
+				
+			// }
 			break;
 		default:
 			echo ("sin funcion");

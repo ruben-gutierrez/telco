@@ -2154,6 +2154,7 @@ function html_common_header($title, $selectedTheme = '') {
 	<link href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/images/telco_logo2.png' rel='icon' sizes='96x96'>
 	<link rel="stylesheet" href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/alertifyJS/css/alertify.min.css'/>
 	<link rel="stylesheet" href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/alertifyJS/css/themes/semantic.min.css'/>
+	<link rel="stylesheet" href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/bootstrap/dist/css/bootstrap.min.css'/>
 
 	<?php
 	print get_md5_include_css('include/themes/' . $selectedTheme .'/jquery.zoom.css');
@@ -2229,6 +2230,7 @@ function graficar_menu_vertical_testbed($pagina, $array_info, $array_arquitectur
         	  <i class="fa fa-search"></i>
         	  <input type="text" class="form-control" placeholder="Buscar..." />
         	</div>
+        	
         </li>
 
 	<?php
@@ -2273,6 +2275,27 @@ function draw_table_testbed_arquitectura($array_content){
 			print "<td><img style='width: 500px; height: 300px;' src='images/images_testbed/images_ims/". $elements['Max(imagen)']."'</td>";
 					
 		print "</tr>"; 
+	}	
+	
+}
+
+function draw_table_domainsOfUser($emailUser){
+	$menu_options = $array_content;
+	$cont =0;
+	$arq_testbed=db_arq_byUser($emailUser);
+	// print_r($arq_testbed);
+	foreach ($arq_testbed as $item => $elements) {
+		$cont = $cont +1;
+		
+		print("
+			<tr>
+			    <th scope='row'>1</th>
+			    <td>".$elements['arquitectura']."</td>
+			    <td>".$elements['dominio']."</td>
+			    <td> <button class='btn' id='".$elements['dominio']."' onclick='showInfoDomain(".$elements['id'].")' > <i class='fa fa-info bg-info text-white p-2 rounded'></i></button></td>
+			</tr>"
+		);
+		
 	}	
 	
 }

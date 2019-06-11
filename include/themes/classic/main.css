@@ -2024,6 +2024,7 @@ ul.nav_sub{
 
 .description_page_testbed{
 	margin: 40px 0px;
+	padding: 10px 20px;
 }
 
 
@@ -2055,6 +2056,7 @@ ul.nav_sub{
   background-color: white;
   width: 90%;
   margin-left: 5%;
+  margin-bottom: 20px;
   border: solid 0.5px;
 }
 
@@ -2298,4 +2300,9 @@ ul.nav_sub{
 
 .content_info_page h3{
 	margin-bottom: 0px;
+}
+
+.section_arquitecture{
+	display: block;
+	margin-bottom: 20px;
 }

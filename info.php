@@ -2,6 +2,7 @@
 
 
  include('./include/auth.php');
+//  include('./include/global.php');
  global $contenido_info,$contenido_info2, $contenido_info3 ;
  top_header();
 ?>

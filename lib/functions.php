@@ -5293,6 +5293,12 @@ function db_arq_testbed(){
 
 }
 
+function db_arq_byUser($email_user){
+	// $arqs=db_fetch_assoc("SELECT arquitectura, dominio from arqs_testbedims WHERE usuario=".$email_user);
+	$arqs=db_fetch_assoc_prepared("SELECT id, arquitectura, dominio from arqs_testbedims where usuario='".$email_user."'");
+	return $arqs;
+}
+
 // realizar ping a un host 
 // $dominio : direccion ip o URL
 // return true-> si responde al ping

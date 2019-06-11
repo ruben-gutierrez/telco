@@ -14,47 +14,107 @@ $from_email=$current_user['email_address'];
 ?>
 
 <div class="margin_page">
-
-	<h1 class="titulo_arquitectura">Lista de Arquitecturas</h1>
-	<div class="description_page_testbed">El ambiente de prueba Telco2.0 IMS permite a los usuarios evaluar el rendiemiento del nucleo IMS clearwater con dos tipos de pruebas Una de ellas consiste en emular el nodo Bono (Proxy) para enviar peticiones y solicitudes al nodo Sprout (Nucleo IMS) para verificar el rendieminto de este. Otra de las pruebas consiste en emular los usuarios que se registran para utilizar algun servicio IMS.</div>
-	<!-- //tabla y boton de solicitud  -->
-	<div >
-		<!-- ponemos la tabla como menu -->
-		<table id="tabla" class="tabla_contenido">
-			<tr class='display' id="fila0">
-				<td id='subtitle'>Arquitectura</td> 
-				<td>Descripcion</td> 
-				<td>Imagen</td>
-			</tr>
-
-			<?php draw_table_testbed_arquitectura($contenido_arquitectura); ?>
-		</table>
 	
-		<form action="" class="formulario_solicitud">
-			<input type="hidden" id="to_email" value="rubengutierrez@unicauca.edu.co">
-			<input type="hidden" id="username" value="<?php echo($username);?>">
-			<input type="hidden" id="from_email" value="<?php echo($from_email);?>">
-			<input type="hidden" id="cuerpo" value="Se realiza la solicitud de habilitar la arquitectura">
-			<input type="button" value="Solicitar arquitectura" onclick="solicituar_arquitectura()">
-		</form>
-	</div>
+	<section class="section_arquitecture">
+		<nav class="navbar navbar-light bg-info row" onclick="show_hide_content_byClass('request_arquitecture', 'indicate_requestArquitecture')">
+			<a class="navbar-brand text-white"><b>Solicitar Arquitectura</b></a><div class="float-right indicate_requestArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
+		</nav>
 	
+	
+		<div class="row request_arquitecture">
+			
+			<!-- <h1 class="titulo_arquitectura">Lista de Arquitecturas</h1> -->
+			<div class="description_page_testbed">El ambiente de prueba Telco2.0 IMS permite a los usuarios evaluar el rendiemiento del nucleo IMS clearwater con dos tipos de pruebas Una de ellas consiste en emular el nodo Bono (Proxy) para enviar peticiones y solicitudes al nodo Sprout (Nucleo IMS) para verificar el rendieminto de este. Otra de las pruebas consiste en emular los usuarios que se registran para utilizar algun servicio IMS.</div>
+			<!-- //tabla y boton de solicitud  -->
+			<div class="col-md">
+				<!-- ponemos la tabla como menu -->
+				<table id="tabla" class="tabla_contenido ">
+					<tr class='display' id="fila0">
+						<td id='subtitle'>Arquitectura</td> 
+						<td>Descripcion</td> 
+						<td>Imagen</td>
+					</tr>
+
+					<?php draw_table_testbed_arquitectura($contenido_arquitectura); ?>
+				</table>
+			
+				<form action="" class="formulario_solicitud">
+					<input type="hidden" id="to_email" value="rubengutierrez@unicauca.edu.co">
+					<input type="hidden" id="username" value="<?php echo($username);?>">
+					<input type="hidden" id="from_email" value="<?php echo($from_email);?>">
+					<input type="hidden" id="cuerpo" value="Se realiza la solicitud de habilitar la arquitectura">
+					<input class="btn btn-primary btn-lg float-right" type="button" value="Solicitar arquitectura" onclick="solicituar_arquitectura()">
+				</form>
+		</div>
+	</section>
+	
+	<section class="section_arquitecture">
+		<nav class="navbar navbar-light bg-info row" onclick="show_hide_content_byClass('solicited_arquitecture', 'indicate_solicitedArquitecture')">
+			<a class="navbar-brand text-white"><b>Arquitecturas Asignadas</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
+		</nav>
+
+		<div class="row solicited_arquitecture">
+		
+			<!-- <h1 class="titulo_arquitectura">Lista de Arquitecturas</h1> -->
+			<div class="description_page_testbed">Arquitectuas asignadas, en esta sección puedes verificar las arquitecturas asignadas a tu cuenta de usuario para luego modificar la escalabilidad vertical de ellas teniendo la capacidad de moficicar la capacidad de la memoria RAM, disco duro y capacidad e procesador.</div>
+			<!-- //tabla y boton de solicitud  -->
+			<div class="col-md">
+				<table class="table table-striped">
+				  <thead>
+				    <tr>
+				      <th scope="col">#</th>
+				      <th scope="col">Arquitectura</th>
+				      <th scope="col">Dominio</th>
+				      <th scope="col">Ver</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+				  	
+				    <?php draw_table_domainsOfUser($from_email); ?>
+				    
+				  </tbody>
+				</table>
+				<!-- ponemos la tabla como menu -->
+				<!-- <table id="tabla" class="tabla_contenido ">
+					<tr class='display' id="fila0">
+						<td id='subtitle'>Arquitectura</td> 
+						<td>Descripcion</td> 
+						<td>Imagen</td>
+					</tr>
+
+					<?php 
+					// draw_table_testbed_arquitectura($contenido_arquitectura); 
+					?>
+				</table> -->
+			
+				<!-- <form action="" class="formulario_solicitud">
+					<input type="hidden" id="to_email" value="rubengutierrez@unicauca.edu.co">
+					<input type="hidden" id="username" value="<?php echo($username);?>">
+					<input type="hidden" id="from_email" value="<?php echo($from_email);?>">
+					<input type="hidden" id="cuerpo" value="Se realiza la solicitud de habilitar la arquitectura">
+					<input class="btn btn-primary btn-lg float-right" type="button" value="Solicitar arquitectura" onclick="solicituar_arquitectura()">
+				</form> -->
+			</div>
+		</div>
+
+	</section>
+
 	<!-- estado arquitecturas y boton de agrega, eliminar y editar arquitectura -->
-	<div>
+	<!-- <div>
 		<div id="div_editar_arq" style="display: none;">
 			<form enctype="multipart/form-data" class="form_editar_arq" style="display: inline-grid;">
 				
 				<input type="text" id="mod_nombre"  placeholder='Nombre' onclick="">
 				<input type="text" id="mod_dominio" name=""  placeholder='Dominio'>
-				<!--<input type="text" id="mod_descripcion"  placeholder="Descripcion" required>-->
+				<input type="text" id="mod_descripcion"  placeholder="Descripcion" required>
 				<textarea id="mod_descripcion"  placeholder="Descripcion" required></textarea>
 				Imagen de arquitectura: <input id="mod_img_arq" type="file"   accept=".jpg, .jpeg, .png">
 				<input type="button" value="Guardar" onclick="guardar_editar_arquitectura()" >
 				<input type="button" name="" value="cancelar" onclick="document.getElementById('div_editar_arq').style.display='none';
-	        document.getElementById('form_arq_state').style.display='block';">
+			document.getElementById('form_arq_state').style.display='block';">
 			</form>
 		</div>
-	</div>
+	</div> -->
 	<script type="text/javascript">
     function solicituar_arquitectura(){ 
         // Estas son variables a pasar por post
@@ -83,3 +143,4 @@ $from_email=$current_user['email_address'];
 	</script>
 
 </div>
+

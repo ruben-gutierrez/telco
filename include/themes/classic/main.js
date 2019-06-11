@@ -833,23 +833,7 @@ function form_edit_content(id_content, id_title, title_form, formulario) {
 
 }
 
-function confirmar(title, content) {
-    var confirm = alertify.confirm(title, content, null, null).set('labels', { ok: 'Confirmar', cancel: 'Cancelar' });
 
-    //callbak al pulsar botón positivo
-    confirm.set('onok', function() {
-        add_title(element.currentTarget.id);
-        alertify.success('Has confirmado');
-    });
-    //callbak al pulsar botón negativo
-    confirm.set('oncancel', function() {
-        alertify.error('Has Cancelado el dialog');
-    })
-}
-
-function mensaje(title, msg) {
-    alertify.alert(title, msg).set('label', 'Aceptar');
-}
 
 function goToId(idName) {
     if ($('#' + idName).length) {
@@ -901,4 +885,72 @@ function searcWord(searcWord, element) {
     } else {
         return false;
     }
+}
+
+function show_hide_content_byClass(content,incator){
+    console.log($('.'+incator)[0].children);
+    $('.'+incator)[0].children[0].classList.toggle('fa-eye');
+    $('.'+incator)[0].children[0].classList.toggle('fa-eye-slash');
+    if($('.'+content)[0].style.display == 'none'){
+        // console.log("oculto");
+        $('.'+content)[0].style.display = 'block';
+    }else{
+        // console.log("visible");
+        $('.'+content)[0].style.display = 'none';
+    }
+}
+
+function showInfoDomain(domain){
+    $.ajax({
+            method: "POST",
+            url: "solicitud_asignacion.php",
+            data: { action: "12", domain: domain }
+        })
+        .done(function(data) {
+            var answer = JSON.parse(data);
+            console.log(answer);
+            data="<div class='row'>";
+            data+='<table class="table">;
+            data+='<thead class="thead-dark">';
+            data+='<tr><th scope="col">#</th><th scope="col">First</th><th scope="col">Last</th><th scope="col">Handle</th></tr></thead><tbody>';
+            data+='<tr><th scope="row">1</th><td>Mark</td><td>Otto</td><td>@mdo</td></tr>';
+            data+="</div>";
+            mensaje("Dominio", data);
+
+        });   
+    // console.log(domain);
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function confirmar(title, content) {
+    var confirm = alertify.confirm(title, content, null, null).set('labels', { ok: 'Confirmar', cancel: 'Cancelar' });
+
+    //callbak al pulsar botón positivo
+    confirm.set('onok', function() {
+        add_title(element.currentTarget.id);
+        alertify.success('Has confirmado');
+    });
+    //callbak al pulsar botón negativo
+    confirm.set('oncancel', function() {
+        alertify.error('Has Cancelado el dialog');
+    })
+}
+
+function mensaje(title, msg) {
+    alertify.alert(title, msg).set('label', 'Aceptar');
 }
