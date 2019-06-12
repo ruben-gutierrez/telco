@@ -9,6 +9,7 @@ global $config, $current_user;
 
  ?>
 
+
  <!-- contenido admin -->
  	<!-- // arquitecturas -->
 
@@ -27,7 +28,8 @@ global $config, $current_user;
 	 		<section id="table_arquitectura" class="section_admin_arquitectura" style="display: none;">
 				<div class="name_section">Estado de arquitecturas disponibles</div>
 				<div class="content_section">
-		 			<table id="table_estado_arq" class="table_estado_arq">
+					
+		 			<table id="table_estado_arq" class="table_estado_arq ">
 		 				<thead>
 		 					<tr>
 		 						<th>Arquitectura</th>

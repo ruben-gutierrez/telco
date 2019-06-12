@@ -153,6 +153,10 @@ $now = date_create()->format('Y-m-d H:i:s');
 			$func=$_POST['func'];
 			echo($func());
 			break;
+		case '9':
+			echo (draw_table_domainsOfUser($_POST['emailUser']));
+			
+			break;
 		default:
 			echo ("sin funcion");
 			break;

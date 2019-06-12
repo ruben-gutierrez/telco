@@ -28,7 +28,8 @@ $from_email=$current_user['email_address'];
 			<!-- //tabla y boton de solicitud  -->
 			<div class="col-md">
 				<!-- ponemos la tabla como menu -->
-				<table id="tabla" class="tabla_contenido ">
+
+				<table id="tabla" class="tabla_contenido">
 					<tr class='display' id="fila0">
 						<td id='subtitle'>Arquitectura</td> 
 						<td>Descripcion</td> 
@@ -59,7 +60,9 @@ $from_email=$current_user['email_address'];
 			<div class="description_page_testbed">Arquitectuas asignadas, en esta sección puedes verificar las arquitecturas asignadas a tu cuenta de usuario para luego modificar la escalabilidad vertical de ellas teniendo la capacidad de moficicar la capacidad de la memoria RAM, disco duro y capacidad e procesador.</div>
 			<!-- //tabla y boton de solicitud  -->
 			<div class="col-md">
-				<table class="table table-striped">
+				<!-- <button class="btn btn-primary" onclick="">test</button> -->
+				<table class="table table-striped table_arq_byUser">
+				
 				  <thead>
 				    <tr>
 				      <th scope="col">#</th>
@@ -68,53 +71,19 @@ $from_email=$current_user['email_address'];
 				      <th scope="col">Ver</th>
 				    </tr>
 				  </thead>
-				  <tbody>
-				  	
+				  <?php 
+				  echo'<tbody class="arqAsingUser" id="'.$current_user['email_address'].'">';
+				  	?>
 				    <?php draw_table_domainsOfUser($from_email); ?>
 				    
 				  </tbody>
 				</table>
-				<!-- ponemos la tabla como menu -->
-				<!-- <table id="tabla" class="tabla_contenido ">
-					<tr class='display' id="fila0">
-						<td id='subtitle'>Arquitectura</td> 
-						<td>Descripcion</td> 
-						<td>Imagen</td>
-					</tr>
 
-					<?php 
-					// draw_table_testbed_arquitectura($contenido_arquitectura); 
-					?>
-				</table> -->
-			
-				<!-- <form action="" class="formulario_solicitud">
-					<input type="hidden" id="to_email" value="rubengutierrez@unicauca.edu.co">
-					<input type="hidden" id="username" value="<?php echo($username);?>">
-					<input type="hidden" id="from_email" value="<?php echo($from_email);?>">
-					<input type="hidden" id="cuerpo" value="Se realiza la solicitud de habilitar la arquitectura">
-					<input class="btn btn-primary btn-lg float-right" type="button" value="Solicitar arquitectura" onclick="solicituar_arquitectura()">
-				</form> -->
 			</div>
 		</div>
 
 	</section>
 
-	<!-- estado arquitecturas y boton de agrega, eliminar y editar arquitectura -->
-	<!-- <div>
-		<div id="div_editar_arq" style="display: none;">
-			<form enctype="multipart/form-data" class="form_editar_arq" style="display: inline-grid;">
-				
-				<input type="text" id="mod_nombre"  placeholder='Nombre' onclick="">
-				<input type="text" id="mod_dominio" name=""  placeholder='Dominio'>
-				<input type="text" id="mod_descripcion"  placeholder="Descripcion" required>
-				<textarea id="mod_descripcion"  placeholder="Descripcion" required></textarea>
-				Imagen de arquitectura: <input id="mod_img_arq" type="file"   accept=".jpg, .jpeg, .png">
-				<input type="button" value="Guardar" onclick="guardar_editar_arquitectura()" >
-				<input type="button" name="" value="cancelar" onclick="document.getElementById('div_editar_arq').style.display='none';
-			document.getElementById('form_arq_state').style.display='block';">
-			</form>
-		</div>
-	</div> -->
 	<script type="text/javascript">
     function solicituar_arquitectura(){ 
         // Estas son variables a pasar por post
@@ -133,6 +102,7 @@ $from_email=$current_user['email_address'];
         // agregar solicitud de arquitectura a sql
           $.post('solicitud_asignacion.php',{post_to_email:to_email,post_from_email:from_email,post_arquitectura:arquitectura_selec,post_username:username,action:accion},function(respuesta){
               alert(respuesta);
+              refreshTableArqByUser();
               <?php
               // send_mail($from_email, "rubengutierrez@unicauca.edu.co",, "prueba correo3");?>
           });

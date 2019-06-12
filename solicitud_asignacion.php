@@ -62,10 +62,14 @@ if (!empty($_POST)) {
 			break;
 
 		case "2"://liberar arquitectura
-			$arq_libre=db_execute("UPDATE arqs_testbedims SET  usuario='libre' WHERE id='" . $id . "'");
+			$email_user = db_fetch_cell_prepared("SELECT usuario from arqs_testbedims  WHERE id ='" . $id . "'");
 			$dom_asig = db_fetch_cell_prepared("SELECT dominio from arqs_testbedims  WHERE id ='" . $id . "'");
+			$arq_libre=db_execute("UPDATE arqs_testbedims SET  usuario='libre' WHERE id='" . $id . "'");
+			
+			
 			$mod_table_solicitud=db_execute("UPDATE solicitud_arq SET fecha_fin_asignacion =NOW() WHERE dominio='" . $dom_asig . "' ORDER BY id DESC LIMIT 1");
-			echo($arq_libre);
+				echo($arq_libre);
+			
 			break;
 		case "3"://agregar arquitectura
 			//verificar si la arquitectura esta en funcionamiento
@@ -224,7 +228,7 @@ if (!empty($_POST)) {
 				echo ("no se pudo agregar la informacion intentelo nuevamente");
 			}
 			break;
-		case '12'://consultar info de dominio
+		case '12'://consultar maquinas virtuales por usuario
 			// print($_POST['domain']);
 			$domain=db_fetch_cell_prepared("SELECT dominio from arqs_testbedims where id=".$_POST['domain']);
 			// print($domain);

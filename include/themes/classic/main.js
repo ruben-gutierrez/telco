@@ -35,8 +35,6 @@ function get_height() {
 
 
 // testbed ims
-
-
 function guardar_arq() {
     // validacion
 
@@ -900,33 +898,102 @@ function show_hide_content_byClass(content,incator){
     }
 }
 
-function showInfoDomain(domain){
+function showInfoDomain(IdDomain){
     $.ajax({
             method: "POST",
             url: "solicitud_asignacion.php",
-            data: { action: "12", domain: domain }
+            data: { action: "12", domain: IdDomain }
         })
         .done(function(data) {
-            var answer = JSON.parse(data);
-            console.log(answer);
-            data="<div class='row'>";
-            data+='<table class="table">;
-            data+='<thead class="thead-dark">';
-            data+='<tr><th scope="col">#</th><th scope="col">First</th><th scope="col">Last</th><th scope="col">Handle</th></tr></thead><tbody>';
-            data+='<tr><th scope="row">1</th><td>Mark</td><td>Otto</td><td>@mdo</td></tr>';
-            data+="</div>";
-            mensaje("Dominio", data);
-
+            if(data != ''){
+                var answer = JSON.parse(data);
+                console.log(answer);
+                data="<div class='row'>";
+                data+='<table class="table">';
+                data+='<thead class="thead-dark">';
+                data+='<tr><th scope="col">#</th><th scope="col">Direccioón IP</th><th scope="col">RAM             -  CPU            -  Almacenamiento</th></tr></thead><tbody>';
+                var num=1;
+                var ips={ip_bono:answer[0].ip_bono,ip_sprout:answer[0].ip_sprout,ip_ellis:answer[0].ip_ellis,ip_homer:answer[0].ip_homer,ip_vellum:answer[0].ip_vellum,ip_dime:answer[0].ip_dime,ip_ibcf:answer[0].ip_ibcf};
+                for (var x in ips) {
+                  if (ips[x] != '') {
+                    data += '<tr> <th scope="row">'+num+'</th><td>'+ips[x]+'</td>';
+                    data += '<td><form class="form" id="'+ips[x]+'">';
+                    data += '<input class="col-md-3" type="number" id="ram" placeholder="RAM">';
+                    data += '<input class="col-md-3" type="number" id="cpu" placeholder="CPU">';
+                    data += '<input class="col-md-3" type="number" id="hardDisk" placeholder="Almacenamiento">';
+                    data += '<input class="btn btn-primary ml-2" type="button" id="'+ips[x]+'" value="Editar" onclick="editarVM()"></form>';
+                    data +='</td></tr>';
+                    num +=1;
+                  }
+                }
+                data+='</div>';
+                mensaje("Maquinas VM de la Arquitectura", data);
+            }else{
+                mensaje("Maquinas VM de la Arquitectura", "Esta arquitectura no tiene Maquinas virtuales registradas.");
+            }
+            
         });   
-    // console.log(domain);
-
 }
 
 
 
 
+function freeDomain( id ){
+    var elec = confirm("¿Desea liberar la arquitectura?");
+            // console.log(id);
+            if (elec) {
+                var formData = new FormData();
+                formData.append('id', id);
+                // formData.append('emailUser', 'usuario');
+                formData.append('action', '2');
+                $.ajax({
+                    url: 'solicitud_asignacion.php',
+                    type: 'POST',
+                    contentType: false,
+                    processData: false,
+                    data: formData,
+                    beforesend: function() {
 
+                    },
+                    success: function(data) {
+                        // console.log(data);
+                        if (data == '1') {
+                            refreshTableArqByUser();
+                        } else {
+                            alert("Ha ocurrido un problema, intentelo mas tarde o contacte al administrador");
+                            // log-reporting
+                        }
 
+                    }
+
+                });
+
+            }
+
+}
+
+function refreshTableArqByUser(){
+    var formData = new FormData();
+    emailUser=$('.arqAsingUser')[0].id;
+    formData.append('emailUser', emailUser);
+    formData.append('action', '9');
+    $.ajax({
+        url: 'admin_info.php',
+        type: 'POST',
+        contentType: false,
+        processData: false,
+        data: formData,
+        beforesend: function() {
+
+        },
+        success: function(data) {
+            // console.log(data);
+            $('.arqAsingUser').empty();
+            $('.arqAsingUser').html(data);
+        }
+
+    });
+}
 
 
 
