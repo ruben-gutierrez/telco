@@ -651,7 +651,7 @@ li#user_display {
 .cactiPageHead {
 	background: #1c3589;
 	border-bottom: 1px solid #00438C;
-	height: 80px;
+	/*height: 80px;*/
 	width: 100%;
 }
 
@@ -1942,7 +1942,7 @@ tr#realtime td:first-child {
 /*elementos testbed ims*/
 
 .logo_principal {
-	height: 83px;
+	width: 50%;
 }
 
 
@@ -1971,7 +1971,7 @@ tr#realtime td:first-child {
 
 /*menu vertical*/
 
-.nav {
+/*.nav {
 	padding-left: 0px;
 	list-style: none;
 	font-size: 15px;
@@ -1989,7 +1989,7 @@ tr#realtime td:first-child {
 .nav li a:hover {
 	background-color: #C43838;
 	color: white;
-}
+}*/
 
 ul.nav_sub{
 	display: none;
@@ -2305,4 +2305,12 @@ ul.nav_sub{
 .section_arquitecture{
 	display: block;
 	margin-bottom: 20px;
+}
+
+.oculto{
+	display: none;
+}
+
+.muestra{
+	display: block;
 }

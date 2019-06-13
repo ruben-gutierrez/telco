@@ -41,16 +41,26 @@ $using_guest_account = false;
 <body>
 <div id='cactiPageHead' class='cactiPageHead' role='banner'>
 	<?php if ($oper_mode == OPER_MODE_NATIVE) { ;?>
-	<div id='tabs'>
-		<!-- menu de login -->
-		<div class='infoBar'><?php echo draw_login_status($using_guest_account);?> </div>
-
+	<!-- <nav id='tabs' class="navbar navbar-expand-lg navbar-dark bg-dark"> -->
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		
+		<!-- pestañas de navegacióonn -->
 		<?php html_show_tabs_left();?>
+
+		<!-- barra de busqueda -->
+		<div class="search oculto">
+			<form class="form-inline">
+	    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+	    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+	  </form></div>
+		<div class="mr-2 ml-3"><i class="fa fa-search fa-2x rounded-circle text-white" onclick="show_hide_content_byClass('search','none')"></i></div>
+		<!-- menu de login -->
+		<div><?php echo draw_login_status($using_guest_account);?> </div>
 		
 		
 		
 
-	</div>
+	</nav>
 	<div class='cactiConsolePageHeadBackdrop'></div>
 	<div class='scrollBar'></div>
 	<?php if (read_config_option('auth_method') != 0) {?><div class='infoBar' style="display: none;"> <?php echo draw_login_status($using_guest_account);?></div><?php }?>

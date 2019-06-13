@@ -33,9 +33,6 @@ $now = date_create()->format('Y-m-d H:i:s');
 			}else{
 				echo 0;
 			}
-
-			
-			
 			break;
 		case "2": //agregar titulo
 			// $id_add=$_POST['id']+1;

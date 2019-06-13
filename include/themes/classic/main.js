@@ -886,16 +886,22 @@ function searcWord(searcWord, element) {
 }
 
 function show_hide_content_byClass(content,incator){
-    console.log($('.'+incator)[0].children);
-    $('.'+incator)[0].children[0].classList.toggle('fa-eye');
-    $('.'+incator)[0].children[0].classList.toggle('fa-eye-slash');
-    if($('.'+content)[0].style.display == 'none'){
-        // console.log("oculto");
-        $('.'+content)[0].style.display = 'block';
+    // console.log($('.'+incator)[0].children);
+    if( incator == 'none'){
+         $('.'+content)[0].classList.toggle('oculto');
+         $('.'+content)[0].classList.toggle('muestra');
     }else{
-        // console.log("visible");
-        $('.'+content)[0].style.display = 'none';
+        $('.'+incator)[0].children[0].classList.toggle('fa-eye');
+        $('.'+incator)[0].children[0].classList.toggle('fa-eye-slash');
+        if($('.'+content)[0].style.display == 'none'){
+            // console.log("oculto");
+            $('.'+content)[0].style.display = 'block';
+        }else{
+            // console.log("visible");
+            $('.'+content)[0].style.display = 'none';
+        }
     }
+    
 }
 
 function showInfoDomain(IdDomain){

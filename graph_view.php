@@ -29,7 +29,7 @@ include_once('./lib/html_tree.php');
 include_once('./lib/html_graph.php');
 include_once('./lib/api_tree.php');
 include_once('./lib/timespan_settings.php');
-
+ 
 /* set the default graph action */
 set_default_graph_action();
 
@@ -189,7 +189,7 @@ case 'tree':
 	}
 
 	top_graph_header();
-
+	// top_header();
 	bottom_footer();
 
 	break;

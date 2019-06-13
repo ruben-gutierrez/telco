@@ -1416,34 +1416,75 @@ function html_show_tabs_left() {
 	}
 
 		?>
+		 <a class="navbar-brand" href="#"><img  class='logo_principal' src='images/logo_telco2.gif'></a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		    <span class="navbar-toggler-icon"></span>
+		  </button>
+	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		<ul class="navbar-nav mr-auto">
+		<!-- <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist"> -->
 
-	<a href="#">
+	
 		<!-- logo principal -->
 		<!-- <img  class='logo_principal' src='images/logo_telco_blanco.gif'> -->
-		<img  class='logo_principal' src='images/logo_telco2.gif'>
-		</a>
-		<div  class="nombre_principal" style="display: inline-block; color: #FFFFFF;"></div>
+		<!-- <a href="#"><img  class='logo_principal' src='images/logo_telco2.gif'></a> -->
+		
+		<!-- <div  class="nombre_principal" style="display: inline-block; color: #FFFFFF;"></div> -->
 		<?php
 
 	if (get_selected_theme() == 'classic') {
-		if ($show_console_tab == true) {
-			?><a <?php print (is_console_page(get_current_page()) ? " id='maintab-anchor" . rand() . "' class='selected'":"");?> href="<?php echo $config['url_path']; ?>index.php"><img src="<?php echo $config['url_path']; ?>images/tab_console<?php print (is_console_page(get_current_page()) ? '_down':'');?>.gif" alt="<?php print __('Console');?>"></a><?php
-		}
+		
 		// contenido testbed ims 
-		// // graficas
-
-		if ($realm_allowed[7]) {
+		// 
+		// 
+		// admin_testbedims
+		if ($realm_allowed[200]) {
 			if ($config['poller_id'] > 1 && $config['connection'] != 'online') {
 				// Don't show graphs tab when offline
 			} else {
 				$file = get_current_page();
-				if ($file == "graph_view.php") {
+				if ($file == "admin_testbedims.php") {
 				
-					print "<a id='maintab-anchor" . rand() . "' class='menu_principal_selected' href='" . html_escape($config['url_path'] . 'graph_view.php') . "'>Gráficas</a>";
+					// print "<a id='maintab-anchor" . rand() . "' class='menu_principal_selected' href='" . html_escape($config['url_path'] . 'admin_testbedims.php') . "'>Administrar</a>";
+					print "<li class='nav-item active'><a class='nav-link' href='" . html_escape($config['url_path'] . 'admin_testbedims.php') . "'>Administrar<span class='sr-only'>(current)</span></a></li>";
 				} else {
-					print "<a id='maintab-anchor" . rand() . "' class='menu_principal' href='" . html_escape($config['url_path'] . 'graph_view.php') . "'>Gráficas</a>";
-				}
+					// print "<a id='maintab-anchor" . rand() . "' class='menu_principal' href='" . html_escape($config['url_path'] . 'admin_testbedims.php') . "'>Administrar</a>";
+					print "<li class='nav-item'><a class='nav-link' href='" . html_escape($config['url_path'] . 'admin_testbedims.php') . "'>Administrar<span class='sr-only'>(current)</span></a></li>";
+				}				
+			}
+		}
+		// info
+		if ($realm_allowed[100]) {
+			if ($config['poller_id'] > 1 && $config['connection'] != 'online') {
+				// Don't show graphs tab when offline
+			} else {
+				$file = get_current_page();
+				if ($file == "info.php") {
 				
+					// print "<a id='maintab-anchor" . rand() . "' class='menu_principal_selected' href='" . html_escape($config['url_path'] . 'info.php') . "'>Información</a>";
+					print "<li class='nav-item active'><a class='nav-link' href='" . html_escape($config['url_path'] . 'info.php') . "'>Información<span class='sr-only'>(current)</span></a></li>";
+				} else {
+					// print "<a id='maintab-anchor" . rand() . "' class='menu_principal' href='" . html_escape($config['url_path'] . 'info.php') . "'>Información</a>";
+					print "<li class='nav-item'><a class='nav-link' href='" . html_escape($config['url_path'] . 'info.php') . "'>Información<span class='sr-only'>(current)</span></a></li>";
+				}				
+			}
+		}
+
+
+		// arquitectura
+		if ($realm_allowed[100]) {
+			if ($config['poller_id'] > 1 && $config['connection'] != 'online') {
+				// Don't show graphs tab when offline
+			} else {
+				$file = get_current_page();
+				if ($file == "arquitectura.php") {
+				
+					// print "<a id='maintab-anchor" . rand() . "' class='menu_principal_selected' href='" . html_escape($config['url_path'] . 'arquitectura.php') . "'>Arquitectura</a>";
+					print "<li class='nav-item active'><a class='nav-link' href='" . html_escape($config['url_path'] . 'arquitectura.php') . "'>Arquitectura<span class='sr-only'>(current)</span></a></li>";
+				} else {
+					// print "<a id='maintab-anchor" . rand() . "' class='menu_principal' href='" . html_escape($config['url_path'] . 'arquitectura.php') . "'>Arquitectura</a>";
+					print "<li class='nav-item'><a class='nav-link' href='" . html_escape($config['url_path'] . 'arquitectura.php') . "'>Arquitectura<span class='sr-only'>(current)</span></a></li>";
+				}
 			}
 		}
 		// pruebas
@@ -1454,80 +1495,76 @@ function html_show_tabs_left() {
 				$file = get_current_page();
 				if ($file == "pruebas.php") {
 				
-					print "<a id='maintab-anchor" . rand() . "' class='menu_principal_selected' href='" . html_escape($config['url_path'] . 'pruebas.php') . "'>Pruebas</a>";
+					// print "<a id='maintab-anchor" . rand() . "' class='menu_principal_selected' href='" . html_escape($config['url_path'] . 'pruebas.php') . "'>Pruebas</a>";
+					print "<li class='nav-item active'><a class='nav-link' href='" . html_escape($config['url_path'] . 'pruebas.php') . "'>Pruebas</a></li>";
 				} else {
-					print "<a id='maintab-anchor" . rand() . "' class='menu_principal' href='" . html_escape($config['url_path'] . 'pruebas.php') . "'>Pruebas</a>";
-				}
-			}
-		}
-		// arquitectura
-		if ($realm_allowed[100]) {
-			if ($config['poller_id'] > 1 && $config['connection'] != 'online') {
-				// Don't show graphs tab when offline
-			} else {
-				$file = get_current_page();
-				if ($file == "arquitectura.php") {
-				
-					print "<a id='maintab-anchor" . rand() . "' class='menu_principal_selected' href='" . html_escape($config['url_path'] . 'arquitectura.php') . "'>Arquitectura</a>";
-				} else {
-					print "<a id='maintab-anchor" . rand() . "' class='menu_principal' href='" . html_escape($config['url_path'] . 'arquitectura.php') . "'>Arquitectura</a>";
-				}
-			}
-		}
-		
-		
-		// info
-		if ($realm_allowed[100]) {
-			if ($config['poller_id'] > 1 && $config['connection'] != 'online') {
-				// Don't show graphs tab when offline
-			} else {
-				$file = get_current_page();
-				if ($file == "info.php") {
-				
-					print "<a id='maintab-anchor" . rand() . "' class='menu_principal_selected' href='" . html_escape($config['url_path'] . 'info.php') . "'>Información</a>";
-				} else {
-					print "<a id='maintab-anchor" . rand() . "' class='menu_principal' href='" . html_escape($config['url_path'] . 'info.php') . "'>Información</a>";
-				}				
-			}
-		}
-
-		// admin_testbedims
-		if ($realm_allowed[200]) {
-			if ($config['poller_id'] > 1 && $config['connection'] != 'online') {
-				// Don't show graphs tab when offline
-			} else {
-				$file = get_current_page();
-				if ($file == "admin_testbedims.php") {
-				
-					print "<a id='maintab-anchor" . rand() . "' class='menu_principal_selected' href='" . html_escape($config['url_path'] . 'admin_testbedims.php') . "'>Administrar</a>";
-				} else {
-					print "<a id='maintab-anchor" . rand() . "' class='menu_principal' href='" . html_escape($config['url_path'] . 'admin_testbedims.php') . "'>Administrar</a>";
-				}				
-			}
-		}
-		
-
-
-		if ($realm_allowed[21] || $realm_allowed[22]) {
-			if ($config['poller_id'] > 1) {
-				// Don't show reports tabe if not poller 1
-			} else {
-				if (substr_count($_SERVER["REQUEST_URI"], "reports_")) {
-					print '<a href="' . $config['url_path'] . ($realm_allowed[22] ? 'reports_admin.php':'reports_user.php') . '"><img src="' . $config['url_path'] . 'images/tab_nectar_down.gif" alt="' . __('Reporting') . '"></a>';
-				} else {
-					print '<a href="' . $config['url_path'] . ($realm_allowed[22] ? 'reports_admin.php':'reports_user.php') . '"><img src="' . $config['url_path'] . 'images/tab_nectar.gif" alt="' . __('Reporting') . '"></a>';
+					// print "<a id='maintab-anchor" . rand() . "' class='menu_principal' href='" . html_escape($config['url_path'] . 'pruebas.php') . "'>Pruebas</a>";
+					print "<li class='nav-item'><a class='nav-link' href='" . html_escape($config['url_path'] . 'pruebas.php') . "'>Pruebas</a></li>";
 				}
 			}
 		}
 
-		if ($realm_allowed[18] || $realm_allowed[19]) {
-			if (substr_count($_SERVER["REQUEST_URI"], "clog")) {
-				print '<a href="' . $config['url_path'] . ($realm_allowed[18] ? 'clog.php':'clog_user.php') . '"><img src="' . $config['url_path'] . 'images/tab_clog_down.png" alt="' . __('Logs'). '"></a>';
+		// // graficas
+
+		if ($realm_allowed[7]) {
+			if ($config['poller_id'] > 1 && $config['connection'] != 'online') {
+				// Don't show graphs tab when offline
 			} else {
-				print '<a href="' . $config['url_path'] . ($realm_allowed[18] ? 'clog.php':'clog_user.php') . '"><img src="' . $config['url_path'] . 'images/tab_clog.png" alt="' . __('Logs') . '"></a>';
+				$file = get_current_page();
+				if ($file == "graph_view.php") {
+					
+					// print "<li class='nav-item active'><a id='maintab-anchor" . rand() . "' class='menu_principal_selected' href='" . html_escape($config['url_path'] . 'graph_view.php') . "'>Gráficas</a></li>";
+					// print "<li class='nav-item active'><a class='nav-link' href='" . html_escape($config['url_path'] . 'graph_view.php') . "'>Gráficas<span class='sr-only'>(current)</span></a></li>";
+					print "<li class='nav-item active'><a class='nav-link' href='" . html_escape($config['url_path'] . 'graph_view.php') . "'>Gráficas</a></li>";
+				} else {
+					// print "<li class='nav-item active'><a id='maintab-anchor" . rand() . "' class='menu_principal' href='" . html_escape($config['url_path'] . 'graph_view.php') . "'>Gráficas</a></li>";
+					// print "<li class='nav-item'><a class='nav-link' href='" . html_escape($config['url_path'] . 'graph_view.php') . "'>Gráficas<span class='sr-only'>(current)</span></a></li>";
+					print "<li class='nav-item'><a class='nav-link' href='" . html_escape($config['url_path'] . 'graph_view.php') . "'>Gráficas</a></li>";
+				}
+				
 			}
 		}
+		
+		
+		
 
+		
+		
+		//consola
+		if ($show_console_tab == true) {
+			?> <li class='nav-item'><a class='nav-link' href="<?php echo $config['url_path']; ?>index.php") . "'>Consola<span class='sr-only'>(current)</span></a></li>
+
+				<!-- <a <?php print (is_console_page(get_current_page()) ? " id='maintab-anchor" . rand() . "' class='selected'":"");?> href="<?php echo $config['url_path']; ?>index.php"><img src="<?php echo $config['url_path']; ?>images/tab_console<?php print (is_console_page(get_current_page()) ? '_down':'');?>.gif" alt="<?php print __('Console');?>"></a> -->
+
+				<?php
+		}
+		//se oculta la funcion de nectar y la funcion de clog
+
+		// if ($realm_allowed[21] || $realm_allowed[22]) {
+		// 	if ($config['poller_id'] > 1) {
+		// 		// Don't show reports tabe if not poller 1
+		// 	} else {
+		// 		if (substr_count($_SERVER["REQUEST_URI"], "reports_")) {
+		// 			print '<a href="' . $config['url_path'] . ($realm_allowed[22] ? 'reports_admin.php':'reports_user.php') . '"><img src="' . $config['url_path'] . 'images/tab_nectar_down.gif" alt="' . __('Reporting') . '"></a>';
+		// 		} else {
+		// 			print '<a href="' . $config['url_path'] . ($realm_allowed[22] ? 'reports_admin.php':'reports_user.php') . '"><img src="' . $config['url_path'] . 'images/tab_nectar.gif" alt="' . __('Reporting') . '"></a>';
+		// 		}
+		// 	}
+		// }
+
+		// if ($realm_allowed[18] || $realm_allowed[19]) {
+		// 	if (substr_count($_SERVER["REQUEST_URI"], "clog")) {
+		// 		print '<a href="' . $config['url_path'] . ($realm_allowed[18] ? 'clog.php':'clog_user.php') . '"><img src="' . $config['url_path'] . 'images/tab_clog_down.png" alt="' . __('Logs'). '"></a>';
+		// 	} else {
+		// 		print '<a href="' . $config['url_path'] . ($realm_allowed[18] ? 'clog.php':'clog_user.php') . '"><img src="' . $config['url_path'] . 'images/tab_clog.png" alt="' . __('Logs') . '"></a>';
+		// 	}
+		// }
+
+		?>
+			</ul>
+			
+		</div>
+		<?php 
 		api_plugin_hook('top_graph_header_tabs');
 
 		if ($config['poller_id'] > 1 && $config['connection'] != 'online') {
@@ -1716,6 +1753,9 @@ function html_show_tabs_left() {
 		}
 		print "</ul></nav></div>\n";
 	}
+
+
+
 }
 
 function html_graph_tabs_right($current_user) {
@@ -2221,8 +2261,9 @@ function graficar_menu_vertical_testbed($pagina, $array_info, $array_arquitectur
 	}
 
 	?>
-	<ul class="nav" id="side-menu">
-		<li class="sidebar-search">
+	
+	<ul class="nav flex-column" id="side-menu">
+		<!-- <li class="sidebar-search">
 			<div class="flexsearch">
 					
 			</div>
@@ -2231,25 +2272,25 @@ function graficar_menu_vertical_testbed($pagina, $array_info, $array_arquitectur
         	  <input type="text" class="form-control" placeholder="Buscar..." />
         	</div>
         	
-        </li>
+        </li> -->
 
 	<?php
 	foreach ($array_graficar as $key => $value) {
 		if ( !is_array($value)) {
 			for ($n = 1; $n <= sizeof($value); $n++) {
-               ?>        <li>
-                            <a href=<?php $value.php;?>><?php echo $value; ?></a>
+               ?>        <li class="nav-item">
+                            <a class="nav-link" href=<?php $value.php;?>><?php echo $value; ?></a>
                         </li>
 				<?php }
 		}else{
 		?>
-			<li>
+			<li class="nav-item">
 
 			<a href=''><i class='<?php echo $value[0] ?>'></i><?php echo $key; ?><span class='fa arrow'></span></a>
 				<?php for ($i = 1; $i < sizeof($value); $i++) {?>
 					<ul class="nav_sub">
-                        <li>
-                            <a href="panels-wells.html"><?php echo $value[$i] ?></a>
+                        <li class="nav-item">
+                            <a class="nav-link" href="panels-wells.html"><?php echo $value[$i] ?></a>
                         </li>
 					</ul>
 				<?php }

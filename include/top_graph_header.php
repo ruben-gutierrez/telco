@@ -74,12 +74,11 @@ load_current_session_value('action', 'sess_cacti_graph_action', $graph_views['2'
 <body>
 <div id='cactiPageHead' class='cactiPageHead' role='banner'>
 	<?php if ($oper_mode == OPER_MODE_NATIVE) { ;?>
-	<div id='tabs'>
-		<div class='infoBar'><?php echo draw_login_status($using_guest_account);?></div><?php
-	html_show_tabs_left();?></div>
+
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark"><?php html_show_tabs_left();?><?php
+	echo draw_login_status($using_guest_account);?></nav>
 	<div class='cactiGraphHeaderBackground' style="display: none;"><div id='gtabs'><?php print html_graph_tabs_right($current_user);?></div>
 <?php if (read_config_option('auth_method') != 0) {?><div class='infoBar'><?php echo draw_login_status($using_guest_account);?></div><?php }?></div>
-
 </div>
 <div id='breadCrumbBar' class='breadCrumbBar' style="display: none;">
 	<div id='navBar' class='navBar'><?php echo draw_navigation_text();?></div>
