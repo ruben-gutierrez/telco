@@ -2303,6 +2303,38 @@ function graficar_menu_vertical_testbed($pagina, $array_info, $array_arquitectur
     </ul>
     <?php 
 }
+function displayCardsArq($array_content, $user ){
+	$arq_testbed=db_arq_testbed();
+	// print_r($arq_testbed);
+	?>
+	<div class="card-columns">
+	<?php 
+	foreach ($arq_testbed as $item => $elements) {
+		?>
+		
+		  <div class="card">
+		    <img src="images/images_testbed/images_ims/<?php echo($elements['Max(imagen)']) ?>" class="card-img-top" alt="...">
+		    <div class="card-body">
+		      <h5 class="card-title">Arquitectura <br><?php echo($elements['arquitectura']); ?></h5>
+		      <p class="card-text"><?php echo($elements['Max(descripcion)']); ?></p>
+		    </div>
+		    <div class="card-footer">
+		    	<div class="center">
+		    	<?php 
+		    	print('<button class="btn btn-success" onclick=solicituar_arquitectura("rubengutierrez@unicauca.edu.co","'.$user["email_address"].'","'.$user["username"].'","'.$elements["arquitectura"].'")> Reservar</button>'); 
+		    	?>
+		    	<!-- <input class="btn btn-success" type="button" value="Reservar" onclick=""> -->
+				</div>
+		    </div>
+		  </div>
+	  	
+
+		<?php 
+	}
+	?>
+	</div>
+	<?php
+}
 
 function draw_table_testbed_arquitectura($array_content){
 	$menu_options = $array_content;

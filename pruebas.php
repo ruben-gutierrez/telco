@@ -12,37 +12,43 @@ if (isset($_GET['arq'])) {
 }
 ?>
 <div class="margin_page">
-	<h1 class="titulo_arquitectura">Servicios Ambiente de Prueba IMS</h1>
-	<div>
-		<!-- descripcion de las pruebas-->
-		<div class="description_page_testbed">El ambiente de prueba Telco2.0 IMS permite a los usuarios evaluar el rendiemiento del nucleo IMS clearwater con dos tipos de pruebas Una de ellas consiste en emular el nodo Bono (Proxy) para enviar peticiones y solicitudes al nodo Sprout (Nucleo IMS) para verificar el rendieminto de este. Otra de las pruebas consiste en emular los usuarios que se registran para utilizar algun servicio IMS.
-		</div>
-    <div id="table_desciption_test">
-      <?php 
-      draw_table_testbed_pruebas($user_email);
-      ?>
-      
-    </div>
-    <div id="table_options_test">
-    
-    </div>
-			
+  <nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('table_tests', 'indicate_requestArquitecture')">
+      <a class="navbar-brand text-white"><b>Ejecutar Pruebas</b></a><div class="float-right indicate_requestArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
+    </nav>
+    <div class="table_tests">
+      	 <!-- <h1 class="titulo_arquitectura">Servicios Ambiente de Prueba IMS</h1> -->
+      	
+      		<!-- descripcion de las pruebas-->
+      		<div class="description_page_testbed">El ambiente de prueba Telco2.0 IMS permite a los usuarios evaluar el rendiemiento del nucleo IMS clearwater con dos tipos de pruebas Una de ellas consiste en emular el nodo Bono (Proxy) para enviar peticiones y solicitudes al nodo Sprout (Nucleo IMS) para verificar el rendieminto de este. Otra de las pruebas consiste en emular los usuarios que se registran para utilizar algun servicio IMS.
+      		</div>
+          <div id="table_desciption_test">
+            <?php 
+            draw_table_testbed_pruebas($user_email);
+            ?>
+            
+          </div>
+          <div id="table_options_test">
+          
+          </div>
+      			
 
 	</div>
   <div>
-    <section id="test_dom" class="section_admin_arquitecuta">
-      <div class="name_section">
-        
-        <div style="display: inline-block;">
-        <h4>Agregar pruebas a dominio</h4></div>
-        <div class="dips" style="display: inline-block; margin: auto;">
+    <section id="test_dom" class="section_admin_arquitecuta" style="margin-top: 20px;">
+   <!--    <div class="name_section"> -->
+        <nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('content_section', 'indicate_requestArquitecture')">
+            <a class="navbar-brand text-white"><b>Crear Prueba</b></a><div class="float-right indicate_requestArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
+          </nav>
+        <!-- <div style="display: inline-block;"> -->
+        <!-- <h4>Agregar pruebas a dominio</h4></div> -->
+       <!--  <div class="dips" style="display: inline-block; margin: auto;">
           <button id="btn_see_table5" class="btn_see" onclick="$('#content_add_test').show();$('#btn_notsee_table5').show();$('#btn_see_table5').hide();"><i class="fa fa-angle-double-down fa-2x"></i></button>
           <button id="btn_notsee_table5" class="btn_see" onclick="$('#content_add_test').hide();$('#btn_see_table5').show();$('#btn_notsee_table5').hide();" style="display: none;"><i class="fa fa-angle-double-up fa-2x"></i></button>
-      </div>
-      </div>
+      </div> -->
+      <!-- </div> -->
       <div class="content_section">
           <label>Seleccione la arquitectura y agregue la información de la prueba</label>
-          <div id="content_add_test" style="display: none;">
+          <div id="content_add_test" style="display: block;">
             <div id='form_1'>
               <form method="post" id="form_add_test" class="form_arq" enctype="multipart/form-data">
                 <input type="hidden" name="action" value="10">

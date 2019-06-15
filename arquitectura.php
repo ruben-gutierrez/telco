@@ -16,7 +16,7 @@ $from_email=$current_user['email_address'];
 <div class="margin_page">
 	
 	<section class="section_arquitecture">
-		<nav class="navbar navbar-light bg-info row" onclick="show_hide_content_byClass('request_arquitecture', 'indicate_requestArquitecture')">
+		<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('request_arquitecture', 'indicate_requestArquitecture')">
 			<a class="navbar-brand text-white"><b>Solicitar Arquitectura</b></a><div class="float-right indicate_requestArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
 		</nav>
 	
@@ -28,29 +28,38 @@ $from_email=$current_user['email_address'];
 			<!-- //tabla y boton de solicitud  -->
 			<div class="col-md">
 				<!-- ponemos la tabla como menu -->
+				
+				<?php
 
-				<table id="tabla" class="tabla_contenido">
+					displayCardsArq($contenido_arquitectura, $current_user);
+
+				?>
+
+
+				<!-- <table id="tabla" class="tabla_contenido">
 					<tr class='display' id="fila0">
 						<td id='subtitle'>Arquitectura</td> 
 						<td>Descripcion</td> 
 						<td>Imagen</td>
-					</tr>
+					</tr> -->
 
-					<?php draw_table_testbed_arquitectura($contenido_arquitectura); ?>
-				</table>
+					<?php 
+					// draw_table_testbed_arquitectura($contenido_arquitectura); 
+					?>
+				<!-- </table> -->
 			
-				<form action="" class="formulario_solicitud">
+				<!-- <form action="" class="formulario_solicitud">
 					<input type="hidden" id="to_email" value="rubengutierrez@unicauca.edu.co">
 					<input type="hidden" id="username" value="<?php echo($username);?>">
 					<input type="hidden" id="from_email" value="<?php echo($from_email);?>">
 					<input type="hidden" id="cuerpo" value="Se realiza la solicitud de habilitar la arquitectura">
-					<input class="btn btn-primary btn-lg float-right" type="button" value="Solicitar arquitectura" onclick="solicituar_arquitectura()">
-				</form>
+					<input class="btn btn-primary btn-lg float-right" type="button" value="Solicitar arquitectura" onclick="solicituar_arquitectura('','','','old')">
+				</form> -->
 		</div>
 	</section>
 	
 	<section class="section_arquitecture">
-		<nav class="navbar navbar-light bg-info row" onclick="show_hide_content_byClass('solicited_arquitecture', 'indicate_solicitedArquitecture')">
+		<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('solicited_arquitecture', 'indicate_solicitedArquitecture')">
 			<a class="navbar-brand text-white"><b>Arquitecturas Asignadas</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
 		</nav>
 
@@ -85,14 +94,17 @@ $from_email=$current_user['email_address'];
 	</section>
 
 	<script type="text/javascript">
-    function solicituar_arquitectura(){ 
+    function solicituar_arquitectura(to_email,from_email, username, arquitectura_selec){ 
         // Estas son variables a pasar por post
-       
-        var to_email=$("#to_email").val();
-        var from_email=$("#from_email").val();
-        var cuerpo=$("#cuerpo").val();
-        var username=$("#username").val();
-        var arquitectura_selec=arquitectura;
+        // console.log(arquitectura_selec);
+       if (arquitectura_selec =='old') {
+       	var to_email=$("#to_email").val();
+       	var from_email=$("#from_email").val();
+       	// var cuerpo=$("#cuerpo").val();
+       	var username=$("#username").val();
+       	var arquitectura_selec=arquitectura;
+       }
+
         var accion='1';
         
         // confirmar solicitud de arquitectura
