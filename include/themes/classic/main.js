@@ -1032,3 +1032,23 @@ function confirmar(title, content) {
 function mensaje(title, msg) {
     alertify.alert(title, msg).set('label', 'Aceptar');
 }
+
+
+
+function queryFlavors(){
+    var formData = new FormData();
+    formData.append('action', '1');
+    $.ajax({
+        url: 'scripts/query_openstack.php',
+        type: 'POST',
+        contentType: false,
+        processData: false,
+        data: formData,
+        beforesend: function() {
+        },
+        success: function(data) {
+            console.log (data);
+        }
+
+    });
+}
