@@ -941,6 +941,11 @@ function showInfoDomain(IdDomain){
         });   
 }
 
+function addVmtoDomain(idDomain){
+    var content='<form>  <div class="form-row">    <div class="form-group col-md-6">      <label>Direccion IP</label>      <input type="text" class="form-control" id="dirIpNewVm" placeholder="x.x.x.x">    </div>    <div class="form-group col-md-6">      <label>Nombre</label>      <input type="text" class="form-control" id="nameNewVm" placeholder="Nombre">    </div>  </div>  <div class="form-group"> <input type="hidden" class="form-control" id="networkNewMv" value="">  </div>  <div class="form-group">    <label>Flavor</label>    <input type="text" class="form-control" id="flavorNewVm" placeholder="Ram/Procesadores/Almacenamiento ">  </div>  <div class="form-row">    <div class="form-group col-md-6">      <label for="inputCity">Keygen</label>      <input type="text" class="form-control" id="keygenNewVm" placeholder="file.pem">    </div>    <div class="form-group col-md-4">      <label>Sistema Operativo</label>      <select id="imageNewVm" class="form-control">        <option selected>Choose...</option>        <option>Ubuntu14</option><option>Ubuntu16</option> <option>centos19</option><option>Lubuntu</option>     </select>    </div>    <div class="form-group col-md-2">      <label for="inputZip">Zip</label>      <input type="text" class="form-control" id="inputZip">    </div>  </div>  <div class="form-group">    <div class="form-check">      <input class="form-check-input" type="checkbox" id="gridCheck">      <label class="form-check-label" for="gridCheck">        Check me out      </label>    </div>  </div>  <button type="submit" class="btn btn-primary">Sign in</button></form>';
+    confirmar("Agregar Maquina Virtual", content);
+}
+
 
 
 

@@ -2365,7 +2365,10 @@ function draw_table_domainsOfUser($emailUser){
 			    <th scope='row'>".$cont."</th>
 			    <td>".$elements['arquitectura']."</td>
 			    <td>".$elements['dominio']."</td>
-			    <td> <button class='btn' id='".$elements['dominio']."' onclick='showInfoDomain(".$elements['id'].")' > <i class='fa fa-info bg-info text-white p-2 rounded'></i></button> <button class='btn btn-primary' id='".$elements['dominio']."' onclick='freeDomain(".$elements['id'].")' > Liberar</button></td>
+			    <td> 
+			    <button class='btn' id='".$elements['dominio']."' onclick='showInfoDomain(".$elements['id'].")' > <i class='fa fa-info bg-info text-white p-2 rounded'></i>Info</button>
+			    <button class='btn btn-primary' id='".$elements['dominio']."' onclick='freeDomain(".$elements['id'].")' > Liberar</button>
+			    <button class='btn' id='".$elements['dominio']."' onclick='addVmtoDomain(".$elements['id'].")' > <i class='fa fa-info bg-primary text-white p-2 rounded'>|Agregar VM</i></button></td>
 			</tr>"
 		);
 		
