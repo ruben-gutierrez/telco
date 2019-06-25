@@ -1,2 +1,0 @@
-#!/bin/bash 
-curl -g -i -X GET http://10.55.5.155/compute/v2.1/flavors/detail?is_public=None    -H 'Accept: application/json'    -H 'User-Agent: python-novaclient'   -H 'X-Auth-Token: gAAAAABdC9Qf-3J6y35SZ7QcwXhO_KlikaQrSwOpCNhZnyPgT31zeC8GW-qVZNatz-oav6VJc76lWu4rHsLh6g9DdcKinz1G1JWK2pf1fhP-DXTqjKRIUFBkuiefXix834UeX6mByZDHnnK-RP9CtGUdrC4niCIQ1vECgv2uugS9IlLuJ-_vfik'   -H 'X-OpenStack-Nova-API-Version: 2.1' 

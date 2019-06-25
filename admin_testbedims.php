@@ -48,7 +48,7 @@ global $config, $current_user;
 		 				draw_table_estate_arq(); ?>
 		 				</tbody>
 		 			</table>
-		 			<button id="display_add" onclick="$('#add_arq').show(500); $('#table_arquitectura').hide(500);$('#btn_notsee_table').hide();$('#btn_see_table').show(); $('section.section_admin_arquitectura').focus();">Nuevo</button>
+		 			<button class="btn btn-primary text-center" id="display_add" onclick="$('#add_arq').show(500); $('#table_arquitectura').hide(500);$('#btn_notsee_table').hide();$('#btn_see_table').show(); $('section.section_admin_arquitectura').focus();">Nuevo</button>
 		 		</div>	
 	 		</section>
 

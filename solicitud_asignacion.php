@@ -72,42 +72,26 @@ if (!empty($_POST)) {
 			
 			break;
 		case "3"://agregar arquitectura
-			//verificar si la arquitectura esta en funcionamiento
- 			//			if (verifi_arq_ping($_POST['dominio_arq'])) {
-				// verificar si existe el archivo
-				
-				if ( file_exists('images/images_testbed/images_ims/'.$_FILES['image']['name']) ) {
-					if (move_uploaded_file($_FILES['image']['tmp_name'], 'images/images_testbed/images_ims/temp/'.$_FILES['image']['name'])) {
-						$new_name = $now . $_FILES['image']['name'];
-						rename('images/images_testbed/images_ims/temp/'.$_FILES['image']['name'], 'images/images_testbed/images_ims/'.$new_name );
-					}
-					$sql = "INSERT INTO arqs_testbedims (arquitectura, dominio, activo, usuario, descripcion, imagen) VALUES ('".$_POST['name_arq']."','".$_POST['dominio_arq']."','V','libre', '".$_POST['desc_arq']."','".$new_name."')";
-					$agregar=db_execute($sql);
-					if ( $agregar == '1') {
-						$id_arq=db_fetch_cell_prepared("SELECT id from arqs_testbedims order by id desc limit 1");
-						echo(return_file_arq($id_arq, $_POST['name_arq'], $_POST['dominio_arq'], $_POST['desc_arq'], $new_name));
-					}else{
-						echo('upload fallo');
-					}
-						
-				}else{
-						if (move_uploaded_file($_FILES['image']['tmp_name'], 'images/images_testbed/images_ims/'.$_FILES['image']['name'])) {
-							$up2=db_execute("UPDATE arqs_testbedims SET imagen='".$_FILES['image']['name']."' WHERE id='" . $id_arq . "'");
-						}else{
-							echo('upload fallo');
-						}
-						$sql = "INSERT INTO arqs_testbedims (arquitectura, dominio, activo, usuario, descripcion, imagen) VALUES ('".$_POST['name_arq']."','".$_POST['dominio_arq']."','V','libre', '".$_POST['desc_arq']."','".$_FILES['image']['name']."')";
-						$agregar=db_execute($sql);
-						if ( $agregar == '1') {
-							$id_arq=db_fetch_cell_prepared("SELECT id from arqs_testbedims order by id desc limit 1");
-							echo(return_file_arq($id_arq, $_POST['name_arq'], $_POST['dominio_arq'], $_POST['desc_arq'], $_FILES['image']['name']));
-						}
+				//crear la red en openstack
+				$name_net=$_POST['name_arq'];
+				$description=$_POST['desc_arq'];
+				$domain=$_POST['dominio_arq'];
+				if (move_uploaded_file($_FILES['image']['tmp_name'], 'images/images_testbed/images_ims/temp/'.$_FILES['image']['name'])) {
+					$new_name = $now . $_FILES['image']['name'];
+					rename('images/images_testbed/images_ims/temp/'.$_FILES['image']['name'], 'images/images_testbed/images_ims/'.$new_name );
 				}
-			 //			}else{
-			 //				echo ("La arquitectura no responde el ping");
-			 //			}
-
-			
+				// inserta la informacion en la base de dataos
+				$sql = "INSERT INTO arqs_testbedims (arquitectura, dominio, activo, usuario, descripcion, imagen) VALUES ('".$_POST['name_arq']."','".$_POST['dominio_arq']."','V','libre', '".$_POST['desc_arq']."','".$new_name."')";
+				$agregar=db_execute($sql);
+				if ( $agregar == '1') {
+					// crea la red en openstack
+					$result_create_net=create_net("$name_net", "$description", $domain);
+					// retorna la actualizacion de la tabla
+					$id_arq=db_fetch_cell_prepared("SELECT id from arqs_testbedims order by id desc limit 1");
+					echo(return_file_arq($id_arq, $_POST['name_arq'], $_POST['dominio_arq'], $_POST['desc_arq'], $new_name));
+				}else{
+					echo('upload fallo');
+				}
 			break;
 
 		case "4": //eliminar arquitectura

@@ -1030,9 +1030,10 @@ function mensaje(title, msg) {
 
 
 
-function queryFlavors(){
+function queryOpenstack(name_net){
     var formData = new FormData();
     formData.append('action', '1');
+    formData.append('name_net', name_net);
     $.ajax({
         url: 'scripts/query_openstack.php',
         type: 'POST',
@@ -1042,8 +1043,18 @@ function queryFlavors(){
         beforesend: function() {
         },
         success: function(data) {
-            console.log (data);
+            // var answerOpenstack=JSON.parse(data);
+            // console.log (answerOpenstack);
+            console.log(data);
         }
+
+        
 
     });
 }
+
+
+//for
+            // for (var object in answerOpenstack['flavors']){
+            //     console.log(object);
+            // }
