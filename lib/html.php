@@ -2372,6 +2372,11 @@ function draw_table_domainsOfUser($emailUser){
 	}	
 	
 }
+
+function draw_table_nets_openstack(){
+	// realizar consulta de las redes de openstack
+	// y graficar los datos de las redes de openstack
+}
 function draw_table_estate_arq(){
 	$inf_arq=info_arquitecturas();
 	// print_r($inf_arq);

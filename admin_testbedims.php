@@ -272,7 +272,7 @@ global $config, $current_user;
 				  </thead>
 				  <tbody>
 					<?php 
-					draw_table_nets_openstack(); 
+					draw_table_nets_openstack();
 					?>
 				    
 				  </tbody>
