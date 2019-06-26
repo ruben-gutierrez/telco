@@ -85,7 +85,7 @@ if (!empty($_POST)) {
 				$agregar=db_execute($sql);
 				if ( $agregar == '1') {
 					// crea la red en openstack
-					$result_create_net=create_net("$name_net", "$description", $domain);
+					$result_create_net=create_net($name_net, $description, $domain);
 					// retorna la actualizacion de la tabla
 					$id_arq=db_fetch_cell_prepared("SELECT id from arqs_testbedims order by id desc limit 1");
 					echo(return_file_arq($id_arq, $_POST['name_arq'], $_POST['dominio_arq'], $_POST['desc_arq'], $new_name));

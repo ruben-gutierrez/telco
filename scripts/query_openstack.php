@@ -22,7 +22,8 @@ if (!empty($_POST)) {
 
         case "1": //agregar una red
             // echo (shell_exec("../test.sh"));
-            create_net('1','2','1');
+            $resp=create_net('dario','description','99.99.99.0');
+            print_r($resp);
             
             // $respuesta=shell_exec("./request_openstack.sh $name_net");
             // $arrayJson = json_decode($respuesta, true);

@@ -5322,10 +5322,11 @@ function verifi_arq_ping($dominio){
 
 
 function create_net($name_net, $description, $domain){
-	$respuesta=shell_exec("./scripts/request_openstack.sh $name_net $description");
+	$action = "network";
+	#datos del openstack: $1-> action, $2-> name_net, $4 -> description
+	$respuesta=shell_exec("./scripts/request_openstack.sh $action $name_net $description");
 	$arrayJson = json_decode($respuesta, true);
 	// print_r($arrayJson);
-
 
 	if(key($arrayJson) == "error" || $arrayJson == ''){
 		echo "fail openstack";
@@ -5334,8 +5335,11 @@ function create_net($name_net, $description, $domain){
 		$name_net=$arrayJson['network']['name'];
 		$description_net=$arrayJson['network']['description'];
 		$result=db_execute("INSERT INTO network_openstack(id_net, name_net, description_net,domain) values ('$id_net','$name_net', '$description_net', '$domain')");
+		
 		if( $result == '1'){
-			//crear la subred
+			#$1-> action: subnet, $2-> id_net:nombre de la red, $3-> domain:dominio de la red, $4 name_net:nombre de la subred
+			$action = "subnet";
+			$respuesta=shell_exec("./scripts/request_openstack.sh $action $id_net $domain $name_net");
 		}else{
 			// echo("fail");
 		}

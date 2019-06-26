@@ -250,7 +250,39 @@ global $config, $current_user;
 	 				</div>
  					
  			</div>
- 		</section>
+		 </section>
+		 <section class="section_arquitecture">
+		<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('networks_openstack', 'indicate_solicitedArquitecture')">
+			<a class="navbar-brand text-white"><b>Arquitecturas de Openstack</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
+		</nav>
+
+		<div class="row networks_openstack">
+			<div class="col-md">
+				<!-- <button class="btn btn-primary" onclick="">test</button> -->
+				<table class="table table-striped table_arq_byUser">
+				
+				  <thead>
+				    <tr>
+				      <th scope="col">Id de Red</th>
+				      <th scope="col">Nombre de Red</th>
+				      <th scope="col">Descripcion</th>
+				      <th scope="col">Dominio</th>
+				      <th scope="col">Estado</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+					<?php 
+					draw_table_nets_openstack(); 
+					?>
+				    
+				  </tbody>
+				</table>
+
+			</div>
+		</div>
+
+	</section>
+		 
  	</div>
 
 

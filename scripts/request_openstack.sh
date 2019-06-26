@@ -4,29 +4,55 @@ OS_IP_OPENSTACK=10.55.5.155
 
 # al ejecutar este script se obtiene el token el cual se almacena en la variable token
 token=$(./scripts/createToken.sh)
+# token=$(./createToken.sh)
 # echo $token
 # 
+
 # request destination
 
-# especificRecuest=:9696/v2.0/networks
+# 
 # especificRecuest=/compute/v2.1/flavors/detail
 # especificRecuest=/compute/v2.1/servers/detail
-
 # curl -s -H GET http://$OS_IP_OPENSTACK$especificRecuest -H  "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" | python -mjson.tool 
+if [ $1 == 'consult' ]
+then
+    if [ $2 == 'networks']
+    then
+        especificRecuest=:9696/v2.0/networks
+    fi
+    curl -s -H GET http://$OS_IP_OPENSTACK$especificRecuest -H  "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" | python -mjson.tool 
+fi
 
 
+if [ $1 == 'network' ]
+then
+    curl -s -H POST http://$OS_IP_OPENSTACK:9696/v2.0/networks -H "Content-Type: application/json" -H "User-Agent: openstacksdk/0.31.0 keystoneauth1/3.14.0 python-requests/2.22.0 CPython/2.7.15+" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -d '{"network": {"name": "'$2'", "description":"'$3'","admin_state_up": true}}' | python -m json.tool
+fi
+
+if [ $1 == 'subnet' ]
+then
+    curl -g -i -X POST http://$OS_IP_OPENSTACK:9696/v2.0/subnets -H "Content-Type: application/json" -H "User-Agent: openstacksdk/0.31.0 keystoneauth1/3.14.0 python-requests/2.22.0 CPython/2.7.15+" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -d '{"subnet": {"ip_version": 4, "network_id": "'$2'", "cidr": "'$3'/24", "name": "'$4'"}}'
+fi
+
+
+
+
+# echo $subnet
+# echo $respuesta | jq '.[]'
+# id= $net | jq '.network.id'
+# echo $id
 # name_net=test1
 
 #crear red
 #openstack network create test5 --enable
 # en cURL
-curl -s -H POST http://10.55.5.155:9696/v2.0/networks -H "Content-Type: application/json" -H "User-Agent: openstacksdk/0.31.0 keystoneauth1/3.14.0 python-requests/2.22.0 CPython/2.7.15+" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -d '{"network": {"name": "'$1'", "description":"'$2'","admin_state_up": true}}' | python -m json.tool
+# curl -s -H POST http://10.55.5.155:9696/v2.0/networks -H "Content-Type: application/json" -H "User-Agent: openstacksdk/0.31.0 keystoneauth1/3.14.0 python-requests/2.22.0 CPython/2.7.15+" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -d '{"network": {"name": "'$1'", "description":"'$2'","admin_state_up": true}}' | python -m json.tool
 # curl -s -H POST http://10.55.5.155:9696/v2.0/networks -H "Content-Type: application/json" -H "User-Agent: openstacksdk/0.31.0 keystoneauth1/3.14.0 python-requests/2.22.0 CPython/2.7.15+" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -d '{"network": {"name": "chavis gay", "description":"chavis bien marica","admin_state_up": true}}' | python -m json.tool
 
 #crear subred
-#openstack subnet create test_subnet --network test5 --gateway 192.168.3.1 --subnet-range 192.168.3.0/24
+#openstack subnet create test_subnet --network ruben2 --gateway 192.168.3.1 --subnet-range 192.168.3.0/24
 # curl -s -X POST http://10.55.5.155:9696/v2.0/subnets -H "Content-Type: application/json" -H "User-Agent: openstacksdk/0.31.0 keystoneauth1/3.14.0 python-requests/2.22.0 CPython/2.7.15+" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -d '{"subnet": {"ip_version": 4, "network_name": "test1", "cidr": "192.168.3.0/24", "gateway_ip": "192.168.3.1", "name": "test_subnet"}}'
-
+# curl -g -i -X POST http://10.55.5.155:9696/v2.0/subnets -H "Content-Type: application/json" -H "User-Agent: openstacksdk/0.31.0 keystoneauth1/3.14.0 python-requests/2.22.0 CPython/2.7.15+" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -d '{"subnet": {"ip_version": 4, "network_id": "'$id_net'", "cidr": "'$4'/24", "name": "'$2'"}}'
 
 
 
