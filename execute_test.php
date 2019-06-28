@@ -51,6 +51,6 @@ echo shell_exec("scp /var/www/html/telco/content_test.sh openstack@10.55.5.155:/
 echo shell_exec("ssh openstack@10.55.5.155 cp content_test.sh content_test.py");
 echo shell_exec("ssh openstack@10.55.5.155 python3 content_test.py");
 
-
 //ejecutar el scrip que se encuentra en sipp desde el servidor actual
 ?>
+

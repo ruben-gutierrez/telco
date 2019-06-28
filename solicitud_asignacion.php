@@ -65,57 +65,42 @@ if (!empty($_POST)) {
 			$email_user = db_fetch_cell_prepared("SELECT usuario from arqs_testbedims  WHERE id ='" . $id . "'");
 			$dom_asig = db_fetch_cell_prepared("SELECT dominio from arqs_testbedims  WHERE id ='" . $id . "'");
 			$arq_libre=db_execute("UPDATE arqs_testbedims SET  usuario='libre' WHERE id='" . $id . "'");
-			
-			
 			$mod_table_solicitud=db_execute("UPDATE solicitud_arq SET fecha_fin_asignacion =NOW() WHERE dominio='" . $dom_asig . "' ORDER BY id DESC LIMIT 1");
 				echo($arq_libre);
 			
 			break;
 		case "3"://agregar arquitectura
-			//verificar si la arquitectura esta en funcionamiento
- 			//			if (verifi_arq_ping($_POST['dominio_arq'])) {
-				// verificar si existe el archivo
-				
-				if ( file_exists('images/images_testbed/images_ims/'.$_FILES['image']['name']) ) {
-					if (move_uploaded_file($_FILES['image']['tmp_name'], 'images/images_testbed/images_ims/temp/'.$_FILES['image']['name'])) {
-						$new_name = $now . $_FILES['image']['name'];
-						rename('images/images_testbed/images_ims/temp/'.$_FILES['image']['name'], 'images/images_testbed/images_ims/'.$new_name );
-					}
-					$sql = "INSERT INTO arqs_testbedims (arquitectura, dominio, activo, usuario, descripcion, imagen) VALUES ('".$_POST['name_arq']."','".$_POST['dominio_arq']."','V','libre', '".$_POST['desc_arq']."','".$new_name."')";
-					$agregar=db_execute($sql);
-					if ( $agregar == '1') {
-						$id_arq=db_fetch_cell_prepared("SELECT id from arqs_testbedims order by id desc limit 1");
-						echo(return_file_arq($id_arq, $_POST['name_arq'], $_POST['dominio_arq'], $_POST['desc_arq'], $new_name));
-					}else{
-						echo('upload fallo');
-					}
-						
-				}else{
-						if (move_uploaded_file($_FILES['image']['tmp_name'], 'images/images_testbed/images_ims/'.$_FILES['image']['name'])) {
-							$up2=db_execute("UPDATE arqs_testbedims SET imagen='".$_FILES['image']['name']."' WHERE id='" . $id_arq . "'");
-						}else{
-							echo('upload fallo');
-						}
-						$sql = "INSERT INTO arqs_testbedims (arquitectura, dominio, activo, usuario, descripcion, imagen) VALUES ('".$_POST['name_arq']."','".$_POST['dominio_arq']."','V','libre', '".$_POST['desc_arq']."','".$_FILES['image']['name']."')";
-						$agregar=db_execute($sql);
-						if ( $agregar == '1') {
-							$id_arq=db_fetch_cell_prepared("SELECT id from arqs_testbedims order by id desc limit 1");
-							echo(return_file_arq($id_arq, $_POST['name_arq'], $_POST['dominio_arq'], $_POST['desc_arq'], $_FILES['image']['name']));
-						}
+				//crear la red en openstack
+				$name_net=$_POST['name_arq'];
+				$description=$_POST['desc_arq'];
+				$domain=$_POST['dominio_arq'];
+				if (move_uploaded_file($_FILES['image']['tmp_name'], 'images/images_testbed/images_ims/temp/'.$_FILES['image']['name'])) {
+					$new_name = $now . $_FILES['image']['name'];
+					rename('images/images_testbed/images_ims/temp/'.$_FILES['image']['name'], 'images/images_testbed/images_ims/'.$new_name );
 				}
-			 //			}else{
-			 //				echo ("La arquitectura no responde el ping");
-			 //			}
-
-			
+				// inserta la informacion en la base de dataos
+				$sql = "INSERT INTO arqs_testbedims (arquitectura, dominio, activo, usuario, descripcion, imagen) VALUES ('".$_POST['name_arq']."','".$_POST['dominio_arq']."','V','libre', '".$_POST['desc_arq']."','".$new_name."')";
+				$agregar=db_execute($sql);
+				if ( $agregar == '1') {
+					// crea la red en openstack
+					$result_create_net=create_net($name_net, $description, $domain);
+					// retorna la actualizacion de la tabla
+					$id_arq=db_fetch_cell_prepared("SELECT id from arqs_testbedims order by id desc limit 1");
+					echo(return_file_arq($id_arq, $_POST['name_arq'], $_POST['dominio_arq'], $_POST['desc_arq'], $new_name));
+				}else{
+					echo('upload fallo');
+				}
 			break;
 
 		case "4": //eliminar arquitectura
 				$file_name=db_fetch_cell_prepared("select imagen from arqs_testbedims where id='".$id."'");
+				$id_net=db_fetch_cell_prepared("select id_net from arqs_testbedims t JOIN network_openstack o ON t.dominio = o.domain where t.id='".$id."'");
 				$eliminar=db_execute("DELETE FROM arqs_testbedims WHERE id='".$id."'");
 				if ( $eliminar == '1') {				
 					unlink('images/images_testbed/images_ims/'.$file_name);
 				}
+				// echo($id_net);
+				delete_net($id_net);
 				echo($eliminar);
 			break;
 
@@ -163,8 +148,28 @@ if (!empty($_POST)) {
 			break;
 
 		case '6'://subir informacioon de arquitectura
+				$nodes=array('bono'=>$_POST['host_bono'],
+					'sprout'=>$_POST['host_sprout'],
+					'ellis'=>$_POST['host_ellis'],
+					'homer'=>$_POST['host_homer'],
+					'vellum'=>$_POST['host_vellum'],
+					'dime'=>$_POST['host_dime'],
+					'homer'=>$_POST['host_homer'],
+					'homer'=>$_POST['host_homer']
+				);
+					
+				
 				$idmod=db_fetch_cell_prepared("SELECT id_info from info_arq_testbedims where dominio='".$_POST['dominio']."'");
 				if ($idmod == '') {
+					#como no hay informacion entonces crear maquinas
+						#consultar id net
+						$id_net=id_net_ofDomain($_POST['dominio']);
+					foreach ($nodes as $nameVm=>$ipVm){
+						if( $ipVm != '' ){
+							// create_vm( $nameVm, $id_image, "42", $id_net);
+							create_vm( $nameVm, "a25c56b1-eb49-4cf6-bf09-eed2a417e703", "42", $id_net);
+						}
+					}
 					$agregar=db_execute("INSERT INTO info_arq_testbedims (dominio, type, ip_bono, ip_sprout, ip_ellis, ip_homer, ip_vellum, ip_dime, ip_ibcf, ip_pstn, fist_number_pstn, amount_extensions_pstn, fist_number_ims, amount_extensions_ims) VALUES ('".$_POST['dominio']."','".$_POST['type']."','".$_POST['host_bono']."','".$_POST['host_sprout']."','".$_POST['host_ellis']."','".$_POST['host_homer']."','".$_POST['host_vellum']."','".$_POST['host_dime']."','".$_POST['host_ibcf']."','".$_POST['host_pstn']."','".$_POST['fist_number_pstn']."','".$_POST['amount_extensions_pstn']."','".$_POST['fist_number_ims']."','".$_POST['amount_extensions_ims']."')");
 				}else{
 					$agregar=db_execute("UPDATE info_arq_testbedims SET dominio='".$_POST['dominio']."', type='".$_POST['type']."', ip_bono='".$_POST['host_bono']."', ip_sprout='".$_POST['host_sprout']."', ip_ellis='".$_POST['host_ellis']."',ip_homer='".$_POST['host_homer']."', ip_vellum='".$_POST['host_vellum']."',ip_dime='".$_POST['host_dime']."',ip_ibcf='".$_POST['host_ibcf']."', ip_pstn='".$_POST['host_pstn']."', fist_number_pstn='".$_POST['fist_number_pstn']."', amount_extensions_pstn='".$_POST['amount_extensions_pstn']."', fist_number_ims='".$_POST['fist_number_ims']."', amount_extensions_ims='".$_POST['amount_extensions_ims']."' where id_info='".$idmod."'");
@@ -175,6 +180,8 @@ if (!empty($_POST)) {
 				}else{
 					echo "No existe el dominio ".$_POST['dominio'];
 				}
+
+
 
 			break;
 		case '7'://numero de arquitecturas por usuario

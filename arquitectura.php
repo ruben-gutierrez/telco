@@ -14,7 +14,8 @@ $from_email=$current_user['email_address'];
 ?>
 
 <div class="margin_page">
-	<button type="button" class="btn btn-outline-primary" onclick="queryFlavors()">Generar Token</button>
+	<input type="text" id="name_net">
+	<button type="button" class="btn btn-outline-primary" onclick="queryOpenstack($('#name_net')[0].value)">Generar Token</button>
 <div class="content"></div>
 	<section class="section_arquitecture">
 		<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('request_arquitecture', 'indicate_requestArquitecture')">

@@ -48,7 +48,7 @@ global $config, $current_user;
 		 				draw_table_estate_arq(); ?>
 		 				</tbody>
 		 			</table>
-		 			<button id="display_add" onclick="$('#add_arq').show(500); $('#table_arquitectura').hide(500);$('#btn_notsee_table').hide();$('#btn_see_table').show(); $('section.section_admin_arquitectura').focus();">Nuevo</button>
+		 			<button class="btn btn-primary text-center" id="display_add" onclick="$('#add_arq').show(500); $('#table_arquitectura').hide(500);$('#btn_notsee_table').hide();$('#btn_see_table').show(); $('section.section_admin_arquitectura').focus();">Nuevo</button>
 		 		</div>	
 	 		</section>
 
@@ -158,8 +158,6 @@ global $config, $current_user;
 						</div>
 	 				</div>
  			</div>
-
-
  		</section>
 
  		<section id="test_dom" class="section_admin_arquitecuta">
@@ -250,7 +248,133 @@ global $config, $current_user;
 	 				</div>
  					
  			</div>
- 		</section>
+		 </section>
+	<section class="section_arquitecture">
+		<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('networks_openstack', 'indicate_solicitedArquitecture')">
+				<a class="navbar-brand text-white"><b>Arquitecturas de Openstack</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
+		</nav>
+
+		<div class="row networks_openstack">
+			<div class="col-md">
+					<!-- <button class="btn btn-primary" onclick="">test</button> -->
+				<table class="table table-striped table_arq_byUser">
+				
+				  <thead>
+				    <tr>
+				      <th scope="col">Id de Red</th>
+				      <th scope="col">Nombre de Red</th>
+				      <th scope="col">Descripcion</th>
+				      <th scope="col">Dominio</th>
+				      <th scope="col">Estado</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+					<?php 
+					draw_table_nets_openstack();
+					?>
+				  </tbody>
+				</table>
+
+			</div>
+		</div>
+
+	</section>
+
+	<section class="section_arquitecture">
+		<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('flavors_openstack', 'indicate_solicitedArquitecture')">
+				<a class="navbar-brand text-white"><b>Flavors de Openstack</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
+		</nav>
+
+		<div class="row flavors_openstack">
+			<div class="col-md">
+					<!-- <button class="btn btn-primary" onclick="">test</button> -->
+				<table class="table table-striped table_flavors_openstack">
+				
+				  <thead>
+				    <tr>
+				      <th scope="col">Id Flavor</th>
+				      <th scope="col">Nombre Flavor</th>
+				      <th scope="col">RAM</th>
+				      <th scope="col">Disco</th>
+				      <th scope="col">Virtual CPU</th>
+				      <th scope="col">Publico</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+					<?php 
+					draw_table_flavors_openstack();
+					?>
+				  </tbody>
+				</table>
+
+			</div>
+		</div>
+
+	</section>
+	<section class="section_arquitecture">
+		<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('images_openstack', 'indicate_solicitedArquitecture')">
+				<a class="navbar-brand text-white"><b>Imagenes alojadas en Openstack</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
+		</nav>
+
+		<div class="row images_openstack">
+			<div class="col-md">
+					<!-- <button class="btn btn-primary" onclick="">test</button> -->
+				<table class="table table-striped table_images_openstack">
+				
+				  <thead>
+				    <tr>
+				      <th scope="col">Id Imagen</th>
+				      <th scope="col">Nombre Imagen</th>
+				      <th scope="col">Estado</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+					<?php 
+					draw_table_images_openstack();
+					?>
+				  </tbody>
+				</table>
+
+			</div>
+		</div>
+
+	</section>
+
+	<section class="section_arquitecture">
+		<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('servers_openstack', 'indicate_solicitedArquitecture')">
+				<a class="navbar-brand text-white"><b>Instancias de Openstack</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
+		</nav>
+
+		<div class="row servers_openstack">
+			<div class="col-md">
+					<!-- <button class="btn btn-primary" onclick="">test</button> -->
+				<table class="table table-striped table_servers_openstack">
+				
+				  <thead>
+				    <tr>
+				      <th scope="col">Id server</th>
+				      <th scope="col">Nombre Instancia</th>
+				      <th scope="col">Id Imagen</th>
+				      <th scope="col">IP Local</th>
+				      <th scope="col">IP Public</th>
+				      <th scope="col">Id Flavor</th>
+				      <th scope="col">Key Name</th>
+				      <th scope="col">Estado</th>
+				      <th scope="col">Grupo de Seguridad</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+					<?php 
+					draw_table_servers_openstack();
+					?>
+				  </tbody>
+				</table>
+
+			</div>
+		</div>
+
+	</section>
+		 
  	</div>
 
 

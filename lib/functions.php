@@ -5319,4 +5319,46 @@ function verifi_arq_ping($dominio){
 	}
 
 }
+// Funciones openstack
+// se crea la red, la subred y se agrega a la base de datos de telco
+function create_net($name_net, $description, $domain){
+	$action = "create_network";
+	#datos del openstack: $1-> action, $2-> name_net, $4 -> description
+	$respuesta=shell_exec("./scripts/request_openstack.sh $action $name_net $description");
+	$arrayJson = json_decode($respuesta, true);
+	// print_r($arrayJson);
 
+	if(key($arrayJson) == "error" || $arrayJson == ''){
+		echo "fail openstack";
+	}else{
+		$id_net=$arrayJson['network']['id'];
+		$name_net=$arrayJson['network']['name'];
+		$description_net=$arrayJson['network']['description'];
+		$status_net=$arrayJson['network']['status'];
+		$result=db_execute("INSERT INTO network_openstack(id_net, name_net, description_net,domain, status) values ('$id_net','$name_net', '$description_net', '$domain','$status_net')");
+		
+		if( $result == '1'){
+			#$1-> action: subnet, $2-> id_net:nombre de la red, $3-> domain:dominio de la red, $4 name_net:nombre de la subred
+			$action = "subnet";
+			$respuesta=shell_exec("./scripts/request_openstack.sh $action $id_net $domain $name_net");
+		}else{
+			// echo("fail");
+		}
+	}
+}
+
+function delete_net($id_net){
+	$action='delete_network';
+	shell_exec("./scripts/request_openstack.sh $action $id_net");
+}
+
+function create_vm($name_server, $id_image, $flavor_ref, $id_net){
+	$action='create_vm';
+	#$1-> action, $2-> name_server, $3->id_image, $4->flavor_ref, $5->id_net
+	shell_exec("./scripts/request_openstack.sh $action $name_server $id_image $flavor_ref $id_net");
+}
+
+function id_net_ofDomain($domain){
+	$id_net=db_fetch_cell_prepared("select id_net from arqs_testbedims t JOIN network_openstack o ON t.dominio = o.domain where t.dominio='".$domain."'");
+	return $id_net;
+}
