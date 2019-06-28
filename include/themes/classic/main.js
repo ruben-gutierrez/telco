@@ -62,6 +62,7 @@ $(document).on("click", ".btn_arq_action", function()﻿ {
 
     // console.log(fila);
     var id = $(this)[0].id.substr(-1, 1);
+    // console.log(id);
     var id_dec = $(this)[0].id.substr(-2, 1);
     var id_cen = $(this)[0].id.substr(-3, 1);
     var id_mil = $(this)[0].id.substr(-4, 1);
@@ -138,6 +139,7 @@ $(document).on("click", ".btn_arq_action", function()﻿ {
             break;
 
         case 'eliminar':
+                console.log(id);
             var elec2 = confirm("¿Desea eliminar la arquitectura?");
             if (elec2) {
                 var formData = new FormData();
@@ -305,12 +307,13 @@ function inf_new_arq() {
         // console.log("entro e la funcion");
         var parametros = new FormData($('#form_info_new_arq')[0]);
         $.ajax({
+            // action=6
             url: 'solicitud_asignacion.php',
             type: 'POST',
             contentType: false,
             processData: false,
             data: parametros,
-            beforesend: function() {
+            beforesend: function(){
 
             },
             success: function(data) {

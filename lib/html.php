@@ -2374,9 +2374,113 @@ function draw_table_domainsOfUser($emailUser){
 }
 
 function draw_table_nets_openstack(){
-	// realizar consulta de las redes de openstack
-	// y graficar los datos de las redes de openstack
+	$nets_openstack=db_fetch_assoc("SELECT * from network_openstack");
+	// print_r($nets_openstack);
+	foreach ($nets_openstack as $key => $line) {
+		print"<tr id='".$line['id_net']."'>
+		<td>".$line['id_net']."</td>
+		<td>".$line['name_net']."</td>
+		<td>".$line['description_net']."</td>
+		<td>".$line['domain']."</td>
+		<td>".$line['status']."</td></tr>";
+		
+	}
+	
 }
+function draw_table_flavors_openstack(){
+	consult_flavors_openstack();
+	$flavors_openstack=db_fetch_assoc("SELECT * from flavor_openstack");
+	// print_r($flavors_openstack);
+	foreach ($flavors_openstack as $key => $line) {
+		print"<tr id='".$line['id_flavor']."'>
+		<td>".$line['id_flavor']."</td>
+		<td>".$line['name_flavor']."</td>
+		<td>".$line['ram']."</td>
+		<td>".$line['disk']."</td>
+		<td>".$line['vcpus']."</td>
+		<td>".$line['public']."</td></tr>";
+	}
+}
+
+function consult_flavors_openstack(){
+	$flavors=shell_exec("./scripts/request_openstack.sh consult flavor");
+	$flavorsJson = json_decode($flavors, true);
+	foreach( $flavorsJson['flavors'] as $index=>$data){
+		$id_flavor=$data['id'];
+		$name_flavor=$data['name'];
+		$ram_flavor=$data['ram'];
+		$disk_flavor=$data['disk'];
+		$vcpus_flavor=$data['vcpus'];
+		$public_flavor=$data['os-flavor-access:is_public'];
+		
+		db_execute("INSERT INTO flavor_openstack(id_flavor, name_flavor, ram, disk, vcpus, public, id_instance) values ('$id_flavor','$name_flavor', '$ram_flavor', '$disk_flavor','$vcpus_flavor', '$public_flavor', '33')");
+	}
+	
+	 
+}
+
+function draw_table_images_openstack(){
+	consult_images_openstack();
+	$images_openstack=db_fetch_assoc("SELECT * from image_openstack");
+	// print_r($flavors_openstack);
+	foreach ($images_openstack as $key => $line) {
+		print"<tr id='".$line['id_flavor']."'>
+		<td>".$line['id_image']."</td>
+		<td>".$line['name_image']."</td>
+		<td>".$line['status']."</td></tr>";
+	}
+}
+function consult_images_openstack(){
+	$images=shell_exec("./scripts/request_openstack.sh consult images");
+	$imagesJson = json_decode($images, true);
+	// print_r($imagesJson);
+	foreach( $imagesJson['images'] as $index=>$data){
+		$id_image=$data['id'];
+		$name_image=$data['name'];
+		$status=$data['status'];
+		db_execute("INSERT INTO image_openstack(id_image, name_image, status) values ('$id_image','$name_image', '$status')");
+	}
+}
+
+function draw_table_servers_openstack(){
+	consult_servers_openstack();
+	$servers_openstack=db_fetch_assoc("SELECT * from server_openstack");
+	// print_r($servers_openstack);
+	foreach ($servers_openstack as $key => $line) {
+		print"<tr id='".$line['id_server']."'>
+		<td>".$line['id_server']."</td>
+		<td>".$line['name_server']."</td>
+		<td>".$line['id_image']."</td>
+		<td>".$line['ip_local']."</td>
+		<td>".$line['ip_public']."</td>
+		<td>".$line['id_flavor']."</td>
+		<td>".$line['key_name']."</td>
+		<td>".$line['status']."</td>
+		<td>".$line['name_security_group']."</td></tr>";
+	}
+}
+
+function consult_servers_openstack(){
+	$servers=shell_exec("./scripts/request_openstack.sh consult servers");
+	$serversJson = json_decode($servers, true);
+	// print_r($serversJson['servers']['0']);
+	foreach( $serversJson['servers'] as $index=>$data){
+		$id_server=$data['id'];
+		$name_server=$data['name'];
+	  $id_image=$data['image']['id'];
+		$ip_local=$data['addresses']['private']['0']['addr'];
+		// $ip_public=$data['addresses'];
+		$ip_public="test";
+		$id_flavor=$data['flavor']['id'];
+		$key_name=$data['key_name'];
+		$status=$data['status'];
+		$name_security_group=$data['security_groups']['0']['name'];
+		db_execute("INSERT INTO server_openstack(id_server, name_server, id_image, ip_local, ip_public,id_flavor,key_name,status,name_security_group) values ('$id_server','$name_server', '$id_image', '$ip_local','$ip_public','$id_flavor', '$key_name', '$status','$name_security_group' )");
+	}
+}
+
+
+
 function draw_table_estate_arq(){
 	$inf_arq=info_arquitecturas();
 	// print_r($inf_arq);
