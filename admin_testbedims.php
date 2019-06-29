@@ -152,7 +152,8 @@ global $config, $current_user;
 
 					 	<div id="info_select_arq">
 						 	<?php
-						 	info_select_arq();
+							 // info_select_arq();
+							 type_coreIMS();
 						 	?>
 	 					
 						</div>
@@ -366,6 +367,39 @@ global $config, $current_user;
 				  <tbody>
 					<?php 
 					draw_table_servers_openstack();
+					?>
+				  </tbody>
+				</table>
+
+			</div>
+		</div>
+
+	</section>
+
+
+	<section class="section_arquitecture">
+		<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('subnets_openstack', 'indicate_solicitedArquitecture')">
+				<a class="navbar-brand text-white"><b>Subredes de Openstack</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
+		</nav>
+
+		<div class="row subnets_openstack">
+			<div class="col-md">
+					<!-- <button class="btn btn-primary" onclick="">test</button> -->
+				<table class="table table-striped table_servers_openstack">
+				
+				  <thead>
+				    <tr>
+				      <th scope="col">Id Subred</th>
+				      <th scope="col">Nombre Subred</th>
+				      <th scope="col">Descripción</th>
+				      <th scope="col">Id Red</th>
+				      <th scope="col">Ip Subred</th>
+				      <th scope="col">Gateway</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+					<?php 
+					draw_table_subnets_openstack();
 					?>
 				  </tbody>
 				</table>

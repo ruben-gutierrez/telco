@@ -148,38 +148,75 @@ if (!empty($_POST)) {
 			break;
 
 		case '6'://subir informacioon de arquitectura
-				$nodes=array('bono'=>$_POST['host_bono'],
+				$nodes_dist_pstn=array('bono'=>$_POST['host_bono'],
 					'sprout'=>$_POST['host_sprout'],
 					'ellis'=>$_POST['host_ellis'],
 					'homer'=>$_POST['host_homer'],
 					'vellum'=>$_POST['host_vellum'],
 					'dime'=>$_POST['host_dime'],
 					'homer'=>$_POST['host_homer'],
-					'homer'=>$_POST['host_homer']
+					'dime'=>$_POST['host_dime'],
+					'asterisk'=>$_POST['host_asterisk'],
+					'ibcf'=>$_POST['host_ibcf'],
 				);
-					
-				
-				$idmod=db_fetch_cell_prepared("SELECT id_info from info_arq_testbedims where dominio='".$_POST['dominio']."'");
+				$nodes_dist=array('bono'=>$_POST['host_bono'],
+					'sprout'=>$_POST['host_sprout'],
+					'ellis'=>$_POST['host_ellis'],
+					'homer'=>$_POST['host_homer'],
+					'vellum'=>$_POST['host_vellum'],
+					'dime'=>$_POST['host_dime'],
+					'homer'=>$_POST['host_homer'],
+					'dime'=>$_POST['host_dime'],
+				);
+				$idmod=db_fetch_cell_prepared("SELECT s.id_subnet FROM arqs_testbedims a inner JOIN network_openstack n ON a.dominio = n.domain  inner JOIN subnet_openstack s ON n.id_net = s.id_
+				net");
+				// $idmod=db_fetch_cell_prepared("SELECT id_info from info_arq_testbedims where dominio='".$_POST['dominio']."'");
 				if ($idmod == '') {
-					#como no hay informacion entonces crear maquinas
-						#consultar id net
-						$id_net=id_net_ofDomain($_POST['dominio']);
-					foreach ($nodes as $nameVm=>$ipVm){
-						if( $ipVm != '' ){
-							// create_vm( $nameVm, $id_image, "42", $id_net);
-							create_vm( $nameVm, "a25c56b1-eb49-4cf6-bf09-eed2a417e703", "42", $id_net);
-						}
+					$id_net=id_net_ofDomain($_POST['dominio']);
+					// #como no hay informacion entonces crear maquinas
+					// #vefirigar que tipo de nucleo selecciono
+					switch ($_POST['type']) {
+						case 'aio':
+							// #crear solo 1 ubuntu 14
+							// #guardar solo bono
+							// create_vm( "aio", "a25c56b1-eb49-4cf6-bf09-eed2a417e703", "2", $id_net);
+							create_vm( "aio", "a25c56b1-eb49-4cf6-bf09-eed2a417e703", "2", "45b19847-4889-46ba-ab8b-0b6665273c1f");
+							break;
+						case 'dist':
+							// crear 5 nodos mas dns
+							foreach ($nodes_dist as $nameVm=>$ipVm){
+									// create_vm( $nameVm, $id_image, "42", $id_net);
+									create_vm( $nameVm, "a25c56b1-eb49-4cf6-bf09-eed2a417e703", "2", $id_net);
+								
+							}
+							break;
+						case 'dist_pstn':
+							// crear 7 nodos mas dns
+							foreach ($nodes_dist_pstn as $nameVm=>$ipVm){
+									// create_vm( $nameVm, $id_image, "42", $id_net);
+									create_vm( $nameVm, "a25c56b1-eb49-4cf6-bf09-eed2a417e703", "2", $id_net);
+								
+							}
+							break;
+						
+						default:
+							// # code...
+							break;
 					}
-					$agregar=db_execute("INSERT INTO info_arq_testbedims (dominio, type, ip_bono, ip_sprout, ip_ellis, ip_homer, ip_vellum, ip_dime, ip_ibcf, ip_pstn, fist_number_pstn, amount_extensions_pstn, fist_number_ims, amount_extensions_ims) VALUES ('".$_POST['dominio']."','".$_POST['type']."','".$_POST['host_bono']."','".$_POST['host_sprout']."','".$_POST['host_ellis']."','".$_POST['host_homer']."','".$_POST['host_vellum']."','".$_POST['host_dime']."','".$_POST['host_ibcf']."','".$_POST['host_pstn']."','".$_POST['fist_number_pstn']."','".$_POST['amount_extensions_pstn']."','".$_POST['fist_number_ims']."','".$_POST['amount_extensions_ims']."')");
+						// lo que retorna la creacion de maquinas llenar la informacion de la tabla
+						
+					
+					// $agregar=db_execute("INSERT INTO info_arq_testbedims (dominio, type, ip_bono, ip_sprout, ip_ellis, ip_homer, ip_vellum, ip_dime, ip_ibcf, ip_pstn, fist_number_pstn, amount_extensions_pstn, fist_number_ims, amount_extensions_ims) VALUES ('".$_POST['dominio']."','".$_POST['type']."','".$_POST['host_bono']."','".$_POST['host_sprout']."','".$_POST['host_ellis']."','".$_POST['host_homer']."','".$_POST['host_vellum']."','".$_POST['host_dime']."','".$_POST['host_ibcf']."','".$_POST['host_pstn']."','".$_POST['fist_number_pstn']."','".$_POST['amount_extensions_pstn']."','".$_POST['fist_number_ims']."','".$_POST['amount_extensions_ims']."')");
 				}else{
-					$agregar=db_execute("UPDATE info_arq_testbedims SET dominio='".$_POST['dominio']."', type='".$_POST['type']."', ip_bono='".$_POST['host_bono']."', ip_sprout='".$_POST['host_sprout']."', ip_ellis='".$_POST['host_ellis']."',ip_homer='".$_POST['host_homer']."', ip_vellum='".$_POST['host_vellum']."',ip_dime='".$_POST['host_dime']."',ip_ibcf='".$_POST['host_ibcf']."', ip_pstn='".$_POST['host_pstn']."', fist_number_pstn='".$_POST['fist_number_pstn']."', amount_extensions_pstn='".$_POST['amount_extensions_pstn']."', fist_number_ims='".$_POST['fist_number_ims']."', amount_extensions_ims='".$_POST['amount_extensions_ims']."' where id_info='".$idmod."'");
+
+					// $agregar=db_execute("UPDATE info_arq_testbedims SET dominio='".$_POST['dominio']."', type='".$_POST['type']."', ip_bono='".$_POST['host_bono']."', ip_sprout='".$_POST['host_sprout']."', ip_ellis='".$_POST['host_ellis']."',ip_homer='".$_POST['host_homer']."', ip_vellum='".$_POST['host_vellum']."',ip_dime='".$_POST['host_dime']."',ip_ibcf='".$_POST['host_ibcf']."', ip_pstn='".$_POST['host_pstn']."', fist_number_pstn='".$_POST['fist_number_pstn']."', amount_extensions_pstn='".$_POST['amount_extensions_pstn']."', fist_number_ims='".$_POST['fist_number_ims']."', amount_extensions_ims='".$_POST['amount_extensions_ims']."' where id_info='".$idmod."'");
 				}
 					
-				if ($agregar == 1) {
-					echo "Se agrego la informacion del dominio".$_POST['dominio']." correctamente";	
-				}else{
-					echo "No existe el dominio ".$_POST['dominio'];
-				}
+				// if ($agregar == 1) {
+				// 	echo "Se agrego la informacion del dominio".$_POST['dominio']." correctamente";	
+				// }else{
+				// 	echo "No existe el dominio ".$_POST['dominio'];
+				// }
 
 
 

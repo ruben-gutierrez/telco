@@ -2482,7 +2482,38 @@ function consult_servers_openstack(){
 	}
 }
 
+function draw_table_subnets_openstack(){
+	consult_subnets_openstack();
+	$subnets_openstack=db_fetch_assoc("SELECT * from subnet_openstack");
+	// print_r($subnets_openstack);
+	foreach ($subnets_openstack['subnets'] as $key => $line) {
+		print"<tr id='".$line['id_sunbet']."'>
+		<td>".$line['id_subnet']."</td>
+		<td>".$line['name_subnet']."</td>
+		<td>".$line['description_subnet']."</td>
+		<td>".$line['id_net']."</td>
+		<td>".$line['cidr_subnet']."</td>
+		<td>".$line['gateway_ip_subnet']."</td></tr>";
+	}
+	// "description","network_id","gateway_ip","cidr","id","name"
+	// [{"service_types":[],"description":"","enable_dhcp":true,"tags":[],"network_id":"02795444-2d61-407e-bb78-6b6a7aea61b8","tenant_id":"0cd526329d2544eeb839299287e5620c","created_at":"2019-06-27T22:38:03Z","dns_nameservers":[],"updated_at":"2019-06-27T22:38:03Z","ipv6_ra_mode":null,"allocation_pools":[{"start":"10.10.10.2","end":"10.10.10.254"}],"gateway_ip":"10.10.10.1","revision_number":0,"ipv6_address_mode":null,"ip_version":4,"host_routes":[],"cidr":"10.10.10.0/24","project_id":"0cd526329d2544eeb839299287e5620c","id":"45b19847-4889-46ba-ab8b-0b6665273c1f","subnetpool_id":null,"name":"test1"},{"service_types":[],"description":"shared-subnet","enable_dhcp":true,"tags":[],"network_id":"4c07b58e-d7c1-4dda-a6af-b797321b0244","tenant_id":"b7bccd2331a84914ac2a746fcd6c01c7","created_at":"2019-06-12T00:26:28Z","dns_nameservers":[],"updated_at":"2019-06-12T00:26:28Z","ipv6_ra_mode":null,"allocation_pools":[{"start":"192.168.233.2","end":"192.168.233.254"}],"gateway_ip":"192.168.233.1","revision_number":0,"ipv6_address_mode":null,"ip_version":4,"host_routes":[],"cidr":"192.168.233.0/24","project_id":"b7bccd2331a84914ac2a746fcd6c01c7","id":"4f4edde8-008a-4736-83d6-b74ec807fc5b","subnetpool_id":null,"name":"shared-subnet"}
+}
 
+function consult_subnets_openstack(){
+	$subnets=shell_exec("./scripts/request_openstack.sh consult subnets");
+	$subnetsJson = json_decode($subnets, true);
+	// print_r($serversJson['servers']['0']);
+	foreach( $subnetsJson['servers'] as $index=>$data){
+		$id_subnet=$data['id'];
+		$name_subnet=$data['name'];
+	  	$id_net=$data['network_id'];
+		$ip_local=$data['addresses']['private']['0']['addr'];
+		$description_subnet=$data['description'];
+		$cidr_subnet="cidr";
+		$gateway_ip_subnet=$data['gateway_ip'];
+		db_execute("INSERT INTO subnet_openstack(id_subnet, name_subnet, description_subnet, id_net, cidr_subnet,gateway_ip_subnet) values ('$id_subnet','$name_subnet', '$description_subnet', '$id_net','$cidr_subnet','$gateway_ip_subnet')");
+	}
+}
 
 function draw_table_estate_arq(){
 	$inf_arq=info_arquitecturas();
@@ -2707,6 +2738,45 @@ function info_select_arq(){
 	 						<input type="number" name="amount_extensions_pstn" placeholder="Número entero">
 	 						<div id="buttons_add">
 	 						<input type="button" class="btn_form" id="btn_save_info" value="Guardar" onclick="inf_new_arq();">
+	 						<input type="button" class="btn_form" value="Cancelar" onclick="$('#content_infor_arq').hide();$('#btn_see_table4').show();$('#btn_notsee_table4').hide();$('.ajs-button.ajs-ok').trigger('click');">
+	 						</div>
+	 					</form>
+	<?php 
+}
+
+
+function type_coreIMS(){
+	?>
+	<form method="post" id="form_dom_info" class="form_arq">
+						 <input type="hidden" value="9" name="action">
+						 <label> Seleccione el dominio al cual se llenara la información</label>
+						 <select name="dominio"  onchange="desplegar_info_arq(this.value)">
+						 	<option value="">Seleccionar</option>
+							<?php
+									$dominios=db_fetch_assoc("select dominio from arqs_testbedims");
+
+									foreach ($dominios as $key => $value) {
+										print("<option value='".$value['dominio']."'>".$value['dominio']."</option>");
+									}
+							?>
+
+						</select>
+						</form>
+						
+						<form method="post" id="form_info_new_arq" class="form_arq">
+	 						
+	 						<input type="hidden" name="action" value='6' required>
+							
+	 						
+							 <input type="hidden" name="dominio" value="" required>
+							<label>Seleccione el tipo de arquitectura</label>
+	 						<select type="select" name="type" placeholder='Tipo de arquitectura'>
+	 						  <option value="aio">Todo en uno</option>
+	 						  <option value="dist">Distribuida</option>
+	 						  <option value="dist_pstn">Distribuida + PSTN</option>
+	 						</select> 
+	 						<div id="buttons_add">
+	 						<input type="button" class="btn_form" id="btn_save_info" value="Guardar" onclick="create_core();">
 	 						<input type="button" class="btn_form" value="Cancelar" onclick="$('#content_infor_arq').hide();$('#btn_see_table4').show();$('#btn_notsee_table4').hide();$('.ajs-button.ajs-ok').trigger('click');">
 	 						</div>
 	 					</form>

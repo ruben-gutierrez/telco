@@ -29,11 +29,14 @@ case $1 in
             servers)
                 especificRecuest=/compute/v2.1/servers/detail
             ;;
+            subnets)
+                especificRecuest=/v2.0/subnets
+            ;;
             *)
                 echo "error"
             ;;
         esac
-            # curl -g -i -X GET "http://10.55.5.155/image/v2/images" -H "User-Agent: openstacksdk/0.31.0 keystoneauth1/3.14.0 python-requests/2.22.0 CPython/2.7.15+" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')"
+            # curl -g -i -X GET http://10.55.5.155:9696/v2.0/subnets -H "Accept: application/json" -H "User-Agent: openstacksdk/0.31.0 keystoneauth1/3.14.0 python-requests/2.22.0 CPython/2.7.15+" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')"
             curl -s -H GET http://$OS_IP_OPENSTACK$especificRecuest -H  "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" | python -mjson.tool 
           ;;
      create_network)
