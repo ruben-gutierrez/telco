@@ -6,7 +6,7 @@ global $config, $current_user;
 // include('./include/global.php');
 //agregar header y la barra lateral de navegación
  top_header();
-
+ delete_info_openstack();
  ?>
 
 
@@ -58,10 +58,17 @@ global $config, $current_user;
 	 				<form method="post" id="form_new_arq" class="form_arq" enctype="multipart/form-data">
 	 					<input type="hidden" name="action" value="3">
 	 					<input type="text" name="name_arq" placeholder="Nombre" autofocus required>
-	 					<input type="text" name="dominio_arq" placeholder="Dominio" required>
+						 <input type="text" name="dominio_arq" placeholder="Dominio" required>
+						 <label>Seleccione el tipo de arquitectura</label>
+	 						<select type="select" name="type" placeholder='Tipo de arquitectura'>
+	 						  <option value="aio">Todo en uno</option>
+	 						  <option value="dist">Distribuida</option>
+	 						  <option value="dist_pstn">Distribuida + PSTN</option>
+	 						</select> 
 	 					<textarea name="desc_arq" placeholder="Descripcion" required></textarea>
 		 				<label><h3>Imagen de arquitectura</h3></label>
-		 				<input type="file" name="image" accept=".jpg, .jpeg, .png" required>
+						 <input type="file" name="image" accept=".jpg, .jpeg, .png" required>
+						 
 		 				<div>
 
 		 					<input id="btn_new_arq" name="btn_save" class="btn_form" type="button" value="Guardar" onclick="add_arquitec()">
@@ -140,14 +147,14 @@ global $config, $current_user;
  			<div class="name_section">
  				
  				<div style="display: inline-block;">
- 				<h4>Informacion de la arquitectura</h4></div>
+ 				<h4>Agregar Nucleo </h4></div>
  				<div class="dips" style="display: inline-block; margin: auto;">
  				<button id="btn_see_table4" class="btn_see" onclick="$('#content_infor_arq').show();$('#btn_notsee_table4').show();$('#btn_see_table4').hide();"><i class="fa fa-angle-double-down fa-2x"></i></button>
  				<button id="btn_notsee_table4" class="btn_see" onclick="$('#content_infor_arq').hide();$('#btn_see_table4').show();$('#btn_notsee_table4').hide();" style="display: none;"><i class="fa fa-angle-double-up fa-2x"></i></button>
  				</div>
  			</div>
  			<div class="content_section">
- 					<label>Ingrese la información de la arquitectura</label>
+ 					<label>Seleccione el tipo de nucleo</label>
  					<div id="content_infor_arq" style="display: none;">
 
 					 	<div id="info_select_arq">

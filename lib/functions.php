@@ -5355,10 +5355,82 @@ function delete_net($id_net){
 function create_vm($name_server, $id_image, $flavor_ref, $id_net){
 	$action='create_vm';
 	#$1-> action, $2-> name_server, $3->id_image, $4->flavor_ref, $5->id_net
-	shell_exec("./scripts/request_openstack.sh $action $name_server $id_image $flavor_ref $id_net");
+	$vm_created=shell_exec("./scripts/request_openstack.sh $action $name_server $id_image $flavor_ref $id_net");
+	return $vm_created;
+}
+
+function id_subnet_ofDomain($domain){
+	$id_net=db_fetch_cell_prepared("SELECT s.id_subnet FROM arqs_testbedims a inner JOIN network_openstack n ON a.dominio = n.domain  inner JOIN subnet_openstack s ON n.id_net = s.id_net where a.dominio='".$domain."'");
+	return $id_net;
 }
 
 function id_net_ofDomain($domain){
-	$id_net=db_fetch_cell_prepared("select id_net from arqs_testbedims t JOIN network_openstack o ON t.dominio = o.domain where t.dominio='".$domain."'");
+	$id_net=db_fetch_cell_prepared("SELECT n.id_net FROM arqs_testbedims a inner JOIN network_openstack n ON a.dominio = n.domain where a.dominio='".$domain."'");
 	return $id_net;
+}
+
+function delete_info_openstack(){
+	db_execute("delete from flavor_openstack");
+	db_execute("delete from server_openstack");
+	db_execute("delete from subnet_openstack");
+	db_execute("delete from image_openstack");
+
+}
+
+function create_vm_to_core($domain,$typeDomain){
+	$nodes_dist_pstn=array('bono'=>'',
+					'sprout'=>'',
+					'ellis'=>'',
+					'homer'=>'',
+					'vellum'=>'',
+					'dime'=>'',
+					'asterisk'=>'',
+					'ibcf'=>''
+				);
+				$nodes_dist=array('bono'=>'',
+					'sprout'=>'',
+					'ellis'=>'',
+					'homer'=>'',
+					'vellum'=>'',
+					'dime'=>''
+				);
+	$id_net=id_net_ofDomain($domain);
+					// #como no hay informacion entonces crear maquinas
+					// #vefirigar que tipo de nucleo selecciono
+					switch ($typeDomain) {
+						case 'aio':
+							// #crear solo 1 ubuntu 14
+							// #guardar solo bono
+							// create_vm( "aio", "a25c56b1-eb49-4cf6-bf09-eed2a417e703", "2", $id_net);
+							echo $id_subnet;
+							//$vm_create=create_vm( "aio", "a25c56b1-eb49-4cf6-bf09-eed2a417e703", "2", $id_subnet);
+							$vm_create=create_vm( "aio", "a25c56b1-eb49-4cf6-bf09-eed2a417e703", "42", $id_net);
+							$vmJson = json_decode($vm_create, true);
+							print_r($vmJson);
+							$agregar=db_execute("INSERT INTO core_domain (id_server, domain, type_domain) values ( '".$vmJson['server']['id']."','".$domain."','".$typeDomain."')");
+
+							break;
+						case 'dist':
+							// crear 5 nodos mas dns
+							foreach ($nodes_dist as $nameVm=>$ipVm){
+									// create_vm( $nameVm, $id_image, "42", $id_net);
+									$vm_create=create_vm( $nameVm, "a25c56b1-eb49-4cf6-bf09-eed2a417e703", "42", $id_net);
+									$vmJson = json_decode($vm_create, true);
+									$agregar=db_execute("INSERT INTO core_domain (id_server, domain, type_domain) values ( '".$vmJson['server']['id']."','".$domain."','".$typeDomain."')");
+							}
+							break;
+						case 'dist_pstn':
+							// crear 7 nodos mas dns
+							foreach ($nodes_dist_pstn as $nameVm=>$ipVm){
+									// create_vm( $nameVm, $id_image, "42", $id_subnet);
+									$vm_create=create_vm( $nameVm, "a25c56b1-eb49-4cf6-bf09-eed2a417e703", "42", $id_net);
+									$vmJson = json_decode($vm_create, true);
+									$agregar=db_execute("INSERT INTO core_domain (id_server, domain, type_domain) values ( '".$vmJson['server']['id']."','".$domain."','".$typeDomain."')");
+							}
+							break;
+						
+						default:
+							// # code...
+							break;
+					}
 }

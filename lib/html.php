@@ -2342,7 +2342,7 @@ function draw_table_testbed_arquitectura($array_content){
 	$arq_testbed=db_arq_testbed();
 	foreach ($arq_testbed as $item => $elements) {
 		$cont = $cont +1;
-		print "<tr class='display' name='".$elements['arquitectura']."' id='fila".$cont."' onclick='seleccionar(this);'>";		
+		print "<tr class='display' name='".$elements['arquitectura']."' id='".$cont."' onclick='seleccionar(this);'>";		
 			print "<td id='subtitle'>".$elements['arquitectura']."</td>";
 			print "<td>".$elements['Max(descripcion)']."</td>";
 			print "<td><img style='width: 500px; height: 300px;' src='images/images_testbed/images_ims/". $elements['Max(imagen)']."'</td>";
@@ -2366,9 +2366,11 @@ function draw_table_domainsOfUser($emailUser){
 			    <td>".$elements['arquitectura']."</td>
 			    <td>".$elements['dominio']."</td>
 			    <td> 
-			    <button class='btn' id='".$elements['dominio']."' onclick='showInfoDomain(".$elements['id'].")' > <i class='fa fa-info bg-info text-white p-2 rounded'></i>Info</button>
-			    <button class='btn btn-primary' id='".$elements['dominio']."' onclick='freeDomain(".$elements['id'].")' > Liberar</button>
-			    <button class='btn' id='".$elements['dominio']."' onclick='addVmtoDomain(".$elements['id'].")' > <i class='fa fa-info bg-primary text-white p-2 rounded'>|Agregar VM</i></button></td>
+						<button class='btn' id='".$elements['dominio']."' onclick='showInfoDomain(".$elements['id'].")' > <i class='fa fa-info bg-info text-white p-2 rounded'></i>Info</button>
+						<button class='btn btn-primary' id='".$elements['dominio']."' onclick='freeDomain(".$elements['id'].")' > Liberar</button>
+						<button class='btn' id='".$elements['dominio']."' onclick='addVmtoDomain(".$elements['id'].")' > <i class='fa fa-info bg-primary text-white p-2 rounded'>|Agregar VM</i></button>
+						<button class='btn' id='".$elements['dominio']."' onclick='addVmtoDomain(".$elements['id'].")' > <i class='fa fa-info bg-primary text-white p-2 rounded'>|Nucleo IMS</i></button>
+					</td>
 			</tr>"
 		);
 		
@@ -2485,14 +2487,14 @@ function consult_servers_openstack(){
 function draw_table_subnets_openstack(){
 	consult_subnets_openstack();
 	$subnets_openstack=db_fetch_assoc("SELECT * from subnet_openstack");
-	// print_r($subnets_openstack);
-	foreach ($subnets_openstack['subnets'] as $key => $line) {
+	//print_r($subnets_openstack['0']);
+	foreach ($subnets_openstack as $line) {
 		print"<tr id='".$line['id_sunbet']."'>
 		<td>".$line['id_subnet']."</td>
 		<td>".$line['name_subnet']."</td>
 		<td>".$line['description_subnet']."</td>
 		<td>".$line['id_net']."</td>
-		<td>".$line['cidr_subnet']."</td>
+		<td>".$line['cidr']."</td>
 		<td>".$line['gateway_ip_subnet']."</td></tr>";
 	}
 	// "description","network_id","gateway_ip","cidr","id","name"
@@ -2502,16 +2504,16 @@ function draw_table_subnets_openstack(){
 function consult_subnets_openstack(){
 	$subnets=shell_exec("./scripts/request_openstack.sh consult subnets");
 	$subnetsJson = json_decode($subnets, true);
-	// print_r($serversJson['servers']['0']);
-	foreach( $subnetsJson['servers'] as $index=>$data){
+	//print_r($subnetsJson);
+	foreach( $subnetsJson['subnets'] as $index=>$data){
 		$id_subnet=$data['id'];
 		$name_subnet=$data['name'];
-	  	$id_net=$data['network_id'];
-		$ip_local=$data['addresses']['private']['0']['addr'];
+	  $id_net=$data['network_id'];
+		
 		$description_subnet=$data['description'];
-		$cidr_subnet="cidr";
+		$cidr_subnet=$data['cidr'];
 		$gateway_ip_subnet=$data['gateway_ip'];
-		db_execute("INSERT INTO subnet_openstack(id_subnet, name_subnet, description_subnet, id_net, cidr_subnet,gateway_ip_subnet) values ('$id_subnet','$name_subnet', '$description_subnet', '$id_net','$cidr_subnet','$gateway_ip_subnet')");
+		db_execute("INSERT INTO subnet_openstack (id_subnet, name_subnet, description_subnet, id_net, cidr, gateway_ip_subnet) values ('$id_subnet','$name_subnet', '$description_subnet', '$id_net','$cidr_subnet','$gateway_ip_subnet')");
 	}
 }
 
@@ -2747,10 +2749,14 @@ function info_select_arq(){
 
 function type_coreIMS(){
 	?>
-	<form method="post" id="form_dom_info" class="form_arq">
-						 <input type="hidden" value="9" name="action">
-						 <label> Seleccione el dominio al cual se llenara la información</label>
-						 <select name="dominio"  onchange="desplegar_info_arq(this.value)">
+
+						
+						<form method="post" id="form_info_new_arq" class="form_arq">
+	 						
+	 						<input type="hidden" name="action" value='6' required>
+							
+	 						
+							 <select name="dominio">
 						 	<option value="">Seleccionar</option>
 							<?php
 									$dominios=db_fetch_assoc("select dominio from arqs_testbedims");
@@ -2761,14 +2767,6 @@ function type_coreIMS(){
 							?>
 
 						</select>
-						</form>
-						
-						<form method="post" id="form_info_new_arq" class="form_arq">
-	 						
-	 						<input type="hidden" name="action" value='6' required>
-							
-	 						
-							 <input type="hidden" name="dominio" value="" required>
 							<label>Seleccione el tipo de arquitectura</label>
 	 						<select type="select" name="type" placeholder='Tipo de arquitectura'>
 	 						  <option value="aio">Todo en uno</option>

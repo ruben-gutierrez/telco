@@ -258,19 +258,18 @@ function add_arquitec() {
                 success: function(data) {
                     // console.log(data);
 
-
+                    
+                
+                    
                     if (data == 'upload fallo' || data == '') {
                         mensaje('Error', 'Recuerde que el dominio es único.\nVerifique los datos e intentelo nuevamente');
                     } else {
                         $('#table_estado_arq').append(data);
-                        var formulario_info_arq = $('#form_info_new_arq')[0];
-                        // var decision=confirmar('Agregar información de la arquitectura', formulario_info_arq);
-                        mensaje('Agregar información de la arquitectura', formulario_info_arq);
+                       
+                        mensaje('Arquitectura', 'Creada con exito');
                         $('.ajs-footer').hide();
-                        var dominio = $('#form_new_arq')[0][3].value;
-                        $('#form_info_new_arq')[0][2].value = dominio;
                         $('#form_new_arq')[0].reset();
-
+                        
                         // log-reporting se agrego una nueva arquitectura
                     }
 
@@ -290,21 +289,6 @@ function add_arquitec() {
 }
 
 function create_core() {
-    // var l = 0;
-    // for (var i = 0; i < $('#form_info_new_arq')[0].length; i++) {
-    //     if (searcWord('host', $('#form_info_new_arq')[0][i].name)) {
-    //         // alert('campo de direccion ip');
-    //         if (!ValidateIPaddress($('#form_info_new_arq')[0][i].value) && $('#form_info_new_arq')[0][i].value != '') {
-    //             // alert($('#form_info_new_arq')[0][i].value + 'campo con la informacion incorrecta');
-    //             l++;
-    //         }
-
-    //     }
-
-    // }
-    // if (l == 0) {
-        // alert('agregar info');
-        // console.log("entro e la funcion");
         var parametros = new FormData($('#form_info_new_arq')[0]);
         $.ajax({
             // action=6
@@ -314,24 +298,13 @@ function create_core() {
             processData: false,
             data: parametros,
             beforesend: function(){
-
+                console.log("Procesando");
             },
             success: function(data) {
                 console.log(data);
-                // alert(data);
-                // $('#form_info_new_arq')[0].reset();
-                // $('#form_dom_info')[0].reset();
-                // $('.ajs-button.ajs-ok').trigger('click');
-                // see_table();
-
-                // // refrestar el selector de informacion
-                // refresh_selector('info_select_arq');
-                // // log-reporting se agrego una nueva arquitectura
+                
             }
         });
-    // } else {
-    //     mensaje('Alerta', 'Verifique las direcciones IP agregadas, formato incorrecto');
-    // }
 
 }
 

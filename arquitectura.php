@@ -14,8 +14,6 @@ $from_email=$current_user['email_address'];
 ?>
 
 <div class="margin_page">
-	<input type="text" id="name_net">
-	<button type="button" class="btn btn-outline-primary" onclick="queryOpenstack($('#name_net')[0].value)">Generar Token</button>
 <div class="content"></div>
 	<section class="section_arquitecture">
 		<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('request_arquitecture', 'indicate_requestArquitecture')">
@@ -63,7 +61,7 @@ $from_email=$current_user['email_address'];
 	
 	<section class="section_arquitecture">
 		<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('solicited_arquitecture', 'indicate_solicitedArquitecture')">
-			<a class="navbar-brand text-white"><b>Arquitecturas Asignadas</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
+			<a class="navbar-brand text-white"><b>Arquitecturas Reservadas</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
 		</nav>
 
 		<div class="row solicited_arquitecture">
