@@ -154,6 +154,15 @@ $now = date_create()->format('Y-m-d H:i:s');
 			echo (draw_table_domainsOfUser($_POST['emailUser']));
 			
 			break;
+		case '10':
+			$images=images_openstack();
+			echo('<option value="">Elegir...</option>');
+			foreach($images as $image ){
+				echo ('<option value="'.$image['id_image'].'">'.$image['name_image'].'</option>');
+				// print_r($images);
+			}
+			
+			break;
 		default:
 			echo ("sin funcion");
 			break;

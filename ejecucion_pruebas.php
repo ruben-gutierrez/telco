@@ -15,8 +15,10 @@ if (!empty($_POST)) {
 			$name_test=db_fetch_cell("select name_test from test_testbedims where id_test='".$_POST['id_test2']."'");
 			$options_test=db_fetch_assoc("SELECT options, value, description_option from option_test_testbedims where id_test='".$_POST['id_test2']."'");
 				?>
+				<div class="row">
+				<div class="col">
 				<div>
-					<h4>Opciones de la prueba <?php echo $name_test ;?> </h4>
+					<h4>Prueba </h4><?php echo $name_test ;?> 
 				</div>
 				<form method="post" id="form_execute_test" enctype="multipart/form-data">
 			      	<input type="hidden" name="action" value="2">
@@ -42,10 +44,14 @@ if (!empty($_POST)) {
 			      }
 				
 				?>
-				<input type="button" id="btn_exe_test" value="Ejecutar" onclick="exe_test()">
+				</div>
 				
+				</div>
 				</form> 
 				</table>
+				<div class="colmd-4">
+				<input type="button" class="btn btn-primary pull-right" id="btn_exe_test" value="Ejecutar" onclick="exe_test()">
+				</div>
 				<?php
 			break;
 		case '2': //crear archivo, eviarlo por scp y ejecutarlo

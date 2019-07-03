@@ -2321,7 +2321,7 @@ function displayCardsArq($array_content, $user ){
 		    <div class="card-footer">
 		    	<div class="center">
 		    	<?php 
-		    	print('<button class="btn btn-success" onclick=solicituar_arquitectura("rubengutierrez@unicauca.edu.co","'.$user["email_address"].'","'.$user["username"].'","'.$elements["arquitectura"].'")> Reservar</button>'); 
+		    	print('<button class="btn btn-success" onclick=solicituar_arquitectura("rubengutierrez@unicauca.edu.co","'.$user["email_address"].'","'.$user["username"].'","'.$elements["arquitectura"].'")> <i class="fa fa-link text-white p-2 rounded"> | Solicitar</i> </button>'); 
 		    	?>
 		    	<!-- <input class="btn btn-success" type="button" value="Reservar" onclick=""> -->
 				</div>
@@ -2357,6 +2357,7 @@ function draw_table_domainsOfUser($emailUser){
 	$cont =0;
 	$arq_testbed=db_arq_byUser($emailUser);
 	// print_r($arq_testbed);
+	$images=images_openstack();
 	foreach ($arq_testbed as $item => $elements) {
 		$cont = $cont +1;
 		
@@ -2366,11 +2367,10 @@ function draw_table_domainsOfUser($emailUser){
 			    <td>".$elements['arquitectura']."</td>
 			    <td>".$elements['dominio']."</td>
 			    <td> 
-						<button class='btn' id='".$elements['dominio']."' onclick='showInfoDomain(".$elements['id'].")' > <i class='fa fa-info bg-info text-white p-2 rounded'></i>Info</button>
-						<button class='btn btn-primary' id='".$elements['dominio']."' onclick='freeDomain(".$elements['id'].")' > Liberar</button>
-						<button class='btn' id='".$elements['dominio']."' onclick='addVmtoDomain(".$elements['id'].")' > <i class='fa fa-info bg-primary text-white p-2 rounded'>|Agregar VM</i></button>
-						<button class='btn' id='".$elements['dominio']."' onclick='addVmtoDomain(".$elements['id'].")' > <i class='fa fa-info bg-primary text-white p-2 rounded'>|Nucleo IMS</i></button>
-					</td>
+						<button class='btn' id='".$elements['dominio']."' onclick='showInfoDomain(".$elements['id'].")' > <i class='fa fa-cogs bg-primary text-white p-2 rounded'> | Configuraciones</i> </button>
+						<button class='btn' id='".$elements['dominio']."' onclick='freeDomain(".$elements['id'].")' ><i class='fa fa-unlink bg-danger text-white p-2 rounded'> | Liberar</i> </button>
+						<button class='btn' id='".$elements['dominio']."' onclick='addVmtoDomain(".$elements['id'].",".$images.")' > <i class='fa fa-plus bg-warning text-white p-2 rounded'> | Agregar VM</i></button>
+				</td>
 			</tr>"
 		);
 		
@@ -2556,7 +2556,7 @@ function draw_table_testbed_pruebas($user){
 			<td> Arquitectura: ".$value['arquitectura']."<br> dominio:".$value['dominio']."</td>
 			<td>".$value2['name_test']."</td>
 			<td>".$value2['description_test']."\n Restricciones;\n".$value2['restriction']."</td>
-			<td><button class='btn_test_action' id='".$value2['id_test']."' style='background:#1351AF; border-radius:35px; color:#fff' onClick='display_table_test(this.id)'> <i class='fa fa-angle-double-right fa-3x'></i></button></td>
+			<td><button class='btn btn-outline-secondary' id='".$value2['id_test']."' onClick='display_table_test(this.id)'> <i class='fa fa-list-alt fa-2x'></i></button></td>
 			</tr>");
 		}
 		

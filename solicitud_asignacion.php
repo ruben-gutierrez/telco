@@ -281,19 +281,62 @@ if (!empty($_POST)) {
 				echo ("no se pudo agregar la informacion intentelo nuevamente");
 			}
 			break;
+			
 		case '12'://consultar maquinas virtuales por usuario
 			// print($_POST['domain']);
 			$domain=db_fetch_cell_prepared("SELECT dominio from arqs_testbedims where id=".$_POST['domain']);
 			// print($domain);
-			$ips_domain=db_fetch_assoc("SELECT * from info_arq_testbedims WHERE dominio='".$domain."'");
+			$ips_domain=db_fetch_assoc("select s.name_server, s.ip_local from server_openstack s inner join core_domain c on c.id_server=s.id_server where c.domain='".$domain."'");
+			// $ips_domain=db_fetch_assoc("select s.id_server, s.name_server, s.ip_local from server_openstack s inner join core_domain c on c.id_server=s.id_server");
 			// print_r($ips_domain);
-			$ips_aditionals=db_fetch_assoc("SELECT * from vm_aditional_testbedims where dominio='".$domain."'");
+			$ips_aditionals=db_fetch_assoc("SELECT id_server,name_server, ip_local from vm_aditional_testbedims where dominio='".$domain."'");
 
 			// if ($info_dom != '') {
-				echo json_encode($ips_domain+$ips_aditionals);
+				// echo json_encode($ips_domain+$ips_aditionals);
+				echo json_encode($ips_domain);
 				// echo json_encode($ips_aditionals);
 				
 			// }
+			break;
+			case '13'://agregar vm a dominio user
+			// print_r($_POST);
+			$id_net=db_fetch_cell_prepared("SELECT n.id_net from network_openstack n INNER JOIN arqs_testbedims a ON a.dominio=n.domain where a.id='".$_POST['idDomain']."'");
+			$flavor=id_flavor( $_POST['ramNewVm'],$_POST['vcpuNewVm'],$_POST['diskNewVm']);
+			$vm=create_vm($_POST['nameNewVm'], $_POST['imageNewVm'],$flavor,$id_net);
+			$vmJson = json_decode($vm, true);
+				// print_r($vmJson);
+			$id_dom=$_POST['idDomain'];
+			$domain=db_fetch_cell_prepared("select dominio from arqs_testbedims where id='".$id_dom."'");
+			$name=$_POST['nameNewVm'];
+			$disk=$_POST['diskNewVm'];
+			$vcpu=$_POST['vcpuNewVm'];
+			$ram=$_POST['ramNewVm'];
+			$image=$_POST['imageNewVm'];
+			$id_server=$vmJson['server']['id'];
+
+
+			echo $domain;
+			echo $name;
+			echo $disk;
+			echo $vcpu;
+			echo $ram;
+			echo $image;
+			echo $id_server;
+			
+			$agregate=db_execute("INSERT INTO vm_aditional_testbedims(id_server,dominio, name_server,RAM,disk,vcpu,id_flavor,image) values ('".$id_server."','".$domain."','".$name."','".$ram."','".$disk."','".$vcpu."','".$flavor."','".$image."')");
+			
+			
+			// echo $agregate;
+			// $ips_domain=db_fetch_assoc("select s.name_server, s.ip_local from server_openstack s inner join core_domain c on c.id_server=s.id_server where c.domain='".$domain."'");
+			// // $ips_domain=db_fetch_assoc("select s.id_server, s.name_server, s.ip_local from server_openstack s inner join core_domain c on c.id_server=s.id_server");
+			// // print_r($ips_domain);
+			// $ips_aditionals=db_fetch_assoc("SELECT id_server,name_server, ip_local from vm_aditional_testbedims where dominio='".$domain."'");
+
+			// // if ($info_dom != '') {
+			// 	// echo json_encode($ips_domain+$ips_aditionals);
+			// 	echo json_encode($ips_domain);
+			// 	// echo json_encode($ips_aditionals);
+			// // }
 			break;
 		default:
 			echo ("sin funcion");

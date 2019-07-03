@@ -67,10 +67,10 @@ if (isset($_GET['arq'])) {
                   <input type="text" name="name_test" placeholder="Nombre de prueba" required>
                   
                   
-                  <input type="text" name="comand_test" placeholder="Comando de prueba">
+                  <input type="hidden" name="comand_test" placeholder="Comando de prueba" value="no">
                   <!-- <input type="text" name="description_test" placeholder="Descripcion"> -->
                   <textarea name="description_test" placeholder="Descripcion" required></textarea>
-                  <input type="text" name="restriction_test" placeholder="Restriccciones" required>
+                  <input type="hidden" name="restriction_test" placeholder="Restriccciones" value="no">
                   <label><h3>Archivo XML</h3></label>
                   <input type="file" name="file_test" required>
                   

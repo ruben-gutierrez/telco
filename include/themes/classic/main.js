@@ -328,7 +328,7 @@ function change_arqs_by_user() {
             }
             $('#content_arqByUsuary').hide();
             $('#btn_see_table2').show();
-            $('#btn_notsee_table2').hide();
+            // $('#btn_notsee_table2').hide();
         }
     });
 }
@@ -890,27 +890,30 @@ function showInfoDomain(IdDomain){
         .done(function(data) {
             if(data != ''){
                 var answer = JSON.parse(data);
-                console.log(answer);
+                // console.log(answer);
                 data="<div class='row'>";
                 data+='<table class="table">';
                 data+='<thead class="thead-dark">';
-                data+='<tr><th scope="col">#</th><th scope="col">Direccioón IP</th><th scope="col">RAM             -  CPU            -  Almacenamiento</th></tr></thead><tbody>';
-                var num=1;
-                var ips={ip_bono:answer[0].ip_bono,ip_sprout:answer[0].ip_sprout,ip_ellis:answer[0].ip_ellis,ip_homer:answer[0].ip_homer,ip_vellum:answer[0].ip_vellum,ip_dime:answer[0].ip_dime,ip_ibcf:answer[0].ip_ibcf};
-                for (var x in ips) {
-                  if (ips[x] != '') {
-                    data += '<tr> <th scope="row">'+num+'</th><td>'+ips[x]+'</td>';
-                    data += '<td><form class="form" id="'+ips[x]+'">';
-                    data += '<input class="col-md-3" type="number" id="ram" placeholder="RAM">';
-                    data += '<input class="col-md-3" type="number" id="cpu" placeholder="CPU">';
-                    data += '<input class="col-md-3" type="number" id="hardDisk" placeholder="Almacenamiento">';
-                    data += '<input class="btn btn-primary ml-2" type="button" id="'+ips[x]+'" value="Editar" onclick="editarVM()"></form>';
-                    data +='</td></tr>';
-                    num +=1;
-                  }
+                data+='<tr><th scope="col">Nombre</th><th scope="col">Direccioón IP</th><th scope="col">Caracteristicas</th><th scope="col">Terminal</th></tr></thead><tbody>';
+                // var num=1;
+                // var ips={ip_bono:answer[0].ip_bono,ip_sprout:answer[0].ip_sprout,ip_ellis:answer[0].ip_ellis,ip_homer:answer[0].ip_homer,ip_vellum:answer[0].ip_vellum,ip_dime:answer[0].ip_dime,ip_ibcf:answer[0].ip_ibcf};
+                for (var x in answer) {
+                    // console.log(answer[x]['name_server']);
+                
+                    data += '<tr> <th scope="row">'+answer[x]['name_server']+'</th><td>'+answer[x]['ip_local']+'</td>';
+                    data += '<td><form class="form" id="'+answer[x]['id_server']+'">';
+                    data += '<input class="col-md-3" type="number" name="ram" placeholder="RAM">';
+                    data += '<input class="col-md-3" type="number" name="cpu" placeholder="CPU">';
+                    data += '<input class="col-md-3" type="number" name="hardDisk" placeholder="Disk">';
+                    data += '<input class="btn btn-outline-info ml-2" type="button" id="'+answer[x]['id_server']+'" value="Editar" onclick="editarVM(`'+answer[x]['id_server']+'`)"></form>';
+                    data +='</td>';
+                    data += '<td><button class="btn btn-outline-success">Terminal</button></td></tr>';
+                    // num +=1;
+                
                 }
                 data+='</div>';
                 mensaje("Maquinas VM de la Arquitectura", data);
+                // mensaje("Maquinas VM de la Arquitectura", answer);
             }else{
                 mensaje("Maquinas VM de la Arquitectura", "Esta arquitectura no tiene Maquinas virtuales registradas.");
             }
@@ -918,11 +921,62 @@ function showInfoDomain(IdDomain){
         });   
 }
 
-function addVmtoDomain(idDomain){
-    var content='<form>  <div class="form-row">    <div class="form-group col-md-6">      <label>Direccion IP</label>      <input type="text" class="form-control" id="dirIpNewVm" placeholder="x.x.x.x">    </div>    <div class="form-group col-md-6">      <label>Nombre</label>      <input type="text" class="form-control" id="nameNewVm" placeholder="Nombre">    </div>  </div>  <div class="form-group"> <input type="hidden" class="form-control" id="networkNewMv" value="">  </div>  <div class="form-group">    <label>Flavor</label>    <input type="text" class="form-control" id="flavorNewVm" placeholder="Ram/Procesadores/Almacenamiento ">  </div>  <div class="form-row">    <div class="form-group col-md-6">      <label for="inputCity">Keygen</label>      <input type="text" class="form-control" id="keygenNewVm" placeholder="file.pem">    </div>    <div class="form-group col-md-4">      <label>Sistema Operativo</label>      <select id="imageNewVm" class="form-control">        <option selected>Choose...</option>        <option>Ubuntu14</option><option>Ubuntu16</option> <option>centos19</option><option>Lubuntu</option>     </select>    </div>    <div class="form-group col-md-2">      <label for="inputZip">Zip</label>      <input type="text" class="form-control" id="inputZip">    </div>  </div>  <div class="form-group">    <div class="form-check">      <input class="form-check-input" type="checkbox" id="gridCheck">      <label class="form-check-label" for="gridCheck">        Check me out      </label>    </div>  </div>  <button type="submit" class="btn btn-primary">Sign in</button></form>';
-    confirmar("Agregar Maquina Virtual", content);
+function editarVM(id_server){
+    console.log(id_server);
 }
 
+function addVmtoDomain(idDomain){
+    // var content='<form>  <div class="form-row">    <div class="form-group col-md-6">     <div class="form-group col-md-6">      <label>Nombre</label>      <input type="text" class="form-control" name="nameNewVm" placeholder="Nombre">    </div>  </div>  <div class="form-group"> <input type="hidden" class="form-control" id="networkNewMv" value="">  </div>  <div class="form-group">    <label>Flavor</label>    <input type="text" class="form-control col-md-2" id="flavorNewVm" placeholder="RAM "> <input type="text" class="form-control col-md-2" id="flavorNewVm" placeholder="VCPU "> <input type="text" class="form-control col-md-2" id="flavorNewVm" placeholder="DISK "></div>    <div class="form-group col-md-4">      <label>Sistema Operativo</label>      <select id="imageNewVm" class="form-control">        <option selected>Choose...</option>        <option>Ubuntu14</option><option>Ubuntu16</option> <option>centos19</option><option>Lubuntu</option>     </select>    </div>    </div>  <div class="form-group">    <div class="form-check">      <input class="form-check-input" type="checkbox" id="gridCheck">      <label class="form-check-label" for="gridCheck">        Check me out      </label>    </div>  </div>  <button type="submit" class="btn btn-primary">Sign in</button></form>';
+    var parametros = new FormData();
+    parametros.append('action', '10');
+    $.ajax({
+        url: 'admin_info.php',
+        type: 'POST',
+        contentType: false,
+        processData: false,
+        data: parametros,
+        beforesend: function() {
+
+        },
+        success: function(data) {
+            var content='<form id="add_vm_domain">  <input type="hidden" class="form-control" name="idDomain" value="'+idDomain+'"> <div class="form-row">    <div class="form-group col-md-6">     <div class="form-group col">      <label>Nombre</label>      <input type="text" class="form-control" name="nameNewVm" placeholder="Nombre"> </div> <div class="form-group col">      <label>Sistema Operativo</label>      <select name="imageNewVm" class="form-control">        '+data+' </select>    </div>  </div>    <div class="form-group ">    <label>Flavor</label>    <input type="number" class="form-control col-md-6" name="ramNewVm" placeholder="RAM "> <input type="number" class="form-control col-md-6" name="vcpuNewVm" placeholder="VCPU "> <input type="number" class="form-control col-md-6" name="diskNewVm" placeholder="DISK "></div>       </div>   </div></form>';
+        addVM("Agregar Maquina Virtual", content);
+        }
+
+    });
+   
+    
+    
+}
+function addVM(title, content) {
+    var confirm = alertify.confirm(title, content, null, null).set('labels', { ok: 'Confirmar', cancel: 'Cancelar' });
+
+    //callbak al pulsar botón positivo
+    confirm.set('onok', function() {
+        var parametros = new FormData($('#add_vm_domain')[0]);
+        parametros.append('action', '13');
+        $.ajax({
+            url: 'solicitud_asignacion.php',
+            type: 'POST',
+            contentType: false,
+            processData: false,
+            data: parametros,
+            beforesend: function() {
+
+            },
+            success: function(data) {
+                console.log(data);
+                // add_title(element.currentTarget.id);
+                // alertify.success('VM agregada');
+            }
+
+        });
+    });
+    //callbak al pulsar botón negativo
+    confirm.set('oncancel', function() {
+        alertify.error('Cancelado');
+    })
+}
 
 
 
@@ -1002,12 +1056,22 @@ function confirmar(title, content) {
     });
     //callbak al pulsar botón negativo
     confirm.set('oncancel', function() {
-        alertify.error('Has Cancelado el dialog');
+        alertify.error('Has Cancelado el dialogo');
     })
 }
 
-function mensaje(title, msg) {
-    alertify.alert(title, msg).set('label', 'Aceptar');
+
+
+
+function mensaje(title, msg, footer) {
+    if(footer==false){
+       
+        alertify.alert(title, msg);
+        $('.ajs-footer').hide();
+    }else{
+        alertify.alert(title, msg).set('label', 'Aceptar');
+    }
+    
 }
 
 

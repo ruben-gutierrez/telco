@@ -5434,3 +5434,34 @@ function create_vm_to_core($domain,$typeDomain){
 							break;
 					}
 }
+
+function images_openstack(){
+	return db_fetch_assoc("SELECT id_image, name_image FROM image_openstack");
+}
+
+function id_flavor($ram,$vcpu,$disk){
+	$idFlavor=db_fetch_cell_prepared("SELECT id_flavor FROM flavor_openstack where ram='".$ram."' AND disk='".$disk."' AND vcpus='".$vcpu."'");
+	if( $idFlavor == ''){
+		// echo "crear flavor";
+		$name=$ram.$disk.$vcpu;
+		$flavor_create=create_flavor( $name, $disk, $ram, $vcpu);
+		$flavorJson = json_decode($flavor_create, true);
+		$id_flavor=$flavorJson['flavor']['id'];
+		$name_flavor=$flavorJson['flavor']['name'];
+		$ram_flavor=$flavorJson['flavor']['ram'];
+		$disk_flavor=$flavorJson['flavor']['disk'];
+		$vcpus_flavor=$flavorJson['flavor']['vcpus'];
+		$public_flavor=$flavorJson['flavor']['os-flavor-access:is_public'];
+		db_execute("INSERT INTO flavor_openstack(id_flavor, name_flavor, ram, disk, vcpus, public, id_instance) values ('$id_flavor','$name_flavor', '$ram_flavor', '$disk_flavor','$vcpus_flavor', '$public_flavor', '33')");
+		return $flavorJson['flavor']['id'];
+	}else{
+		// echo "flavor credo";
+		return $idFlavor;
+	}
+}
+
+function create_flavor($name, $disk, $ram, $vcpus){
+	$action="create_flavor";
+	$vm_created=shell_exec("./scripts/request_openstack.sh $action $vcpus $disk $name $ram");
+	return $vm_created;
+}
