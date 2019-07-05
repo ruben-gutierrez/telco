@@ -960,8 +960,11 @@ function addVmtoDomain(idDomain){
         },
         success: function(data) {
             
+<<<<<<< HEAD
             
             //console.log(data);
+=======
+>>>>>>> 9c89ea7537a2f6a0a001207279cc0e3ee31b6212
             var content='<form id="add_vm_domain">  <input type="hidden" class="form-control" name="idDomain" value="'+idDomain+'"> <div class="form-row">    <div class="form-group col-md-6">     <div class="form-group col">      <label>Nombre</label>      <input type="text" class="form-control" name="nameNewVm" placeholder="Nombre"> </div> <div class="form-group col">      <label>Sistema Operativo</label>      <select name="imageNewVm" class="form-control">        '+data+' </select>    </div>  </div>    <div class="form-group ">    <label>Flavor</label>    <input type="number" class="form-control col-md-6" name="ramNewVm" placeholder="RAM "> <input type="number" class="form-control col-md-6" name="vcpuNewVm" placeholder="VCPU "> <input type="number" class="form-control col-md-6" name="diskNewVm" placeholder="DISK "></div>       </div>   </div></form>';
             // console.log(content);
             addVM("Agregar Maquina Virtual", content);
@@ -1005,6 +1008,7 @@ function addVM(title, content) {
 
 function freeDomain( id ){
     var elec = confirm("¿Desea liberar la arquitectura?");
+<<<<<<< HEAD
    
    
     
@@ -1012,6 +1016,7 @@ function freeDomain( id ){
                 var formData = new FormData();
                 formData.append('id', id);
                 //formData.append('emailUser', 'usuario');
+
                 formData.append('action', '2');
                 $.ajax({
                     url: 'solicitud_asignacion.php',
@@ -1023,6 +1028,7 @@ function freeDomain( id ){
 
                     },
                     success: function(data) {
+<<<<<<< HEAD
                        // console.log(data);
                         if (data == '1') {
                             refreshTableArqByUser();
@@ -1036,6 +1042,21 @@ function freeDomain( id ){
                  });
 
              }
+=======
+                        // console.log(data);
+                        if (data == '1') {
+                            refreshTableArqByUser();
+                        } else {
+                            alert("Ha ocurrido un problema, intentelo mas tarde o contacte al administrador");
+                            // log-reporting
+                        }
+
+                    }
+
+                });
+
+            }
+>>>>>>> 9c89ea7537a2f6a0a001207279cc0e3ee31b6212
 
 }
 
