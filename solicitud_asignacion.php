@@ -300,6 +300,7 @@ if (!empty($_POST)) {
 			$id_net=db_fetch_cell_prepared("SELECT n.id_net from network_openstack n INNER JOIN arqs_testbedims a ON a.dominio=n.domain where a.id='".$_POST['idDomain']."'");
 			$flavor=id_flavor( $_POST['ramNewVm'],$_POST['vcpuNewVm'],$_POST['diskNewVm']);
 			$vm=create_vm($_POST['nameNewVm'], $_POST['imageNewVm'],$flavor,$id_net);
+			consult_servers_openstack();
 			$vmJson = json_decode($vm, true);
 				// print_r($vmJson);
 			$id_dom=$_POST['idDomain'];
@@ -312,19 +313,21 @@ if (!empty($_POST)) {
 			$id_server=$vmJson['server']['id'];
 
 
-			// echo $domain;
-			// echo $name;
-			// echo $disk;
-			// echo $vcpu;
-			// echo $ram;
-			// echo $image;
-			// echo $id_server;
+			echo $domain;
+			 echo $name;
+			 echo $disk;
+			 echo $vcpu;
+			 echo $ram;
+			 echo "imagen";
+			 echo $image;
+			 echo "id server";
+			 echo $id_server;
 			
 			$agregate=db_execute("INSERT INTO vm_aditional_testbedims(id_server,dominio, name_server,RAM,disk,vcpu,id_flavor,image) values ('".$id_server."','".$domain."','".$name."','".$ram."','".$disk."','".$vcpu."','".$flavor."','".$image."')");
-			if($agregate == 1){
-				$server=db_fetch_row_prepared("SELECT * from vm_aditional_testbedims WHERE id_server='".$id_server."'");
-				print_r($server);
-			}
+			//if($agregate == 1){
+			//	$server=db_fetch_row_prepared("SELECT * from vm_aditional_testbedims WHERE id_server='".$id_server."'");
+			//	print_r($server);
+			//}
 			break;
 		case '14'://consultar maquinas virtuales por usuario
 			$flavor=id_flavor( $_POST['ram'],$_POST['cpu'],$_POST['hardDisk']);
@@ -352,9 +355,9 @@ function return_file_arq($id,$nombre,$dominio,$descipcion, $imagen){
 				<td class='edisplay'>".$descipcion."</td>
 				<td class='edisplay'>".$imagen."</td>
 				<td>libre</td>
-				<td><button class='btn_arq_action btn btn-outline-success btn-sm' id='btn_liberar".$id."' name='liberar' style='background:green;'> <i class='fa fa-unlink'></i></button>
-				<button class='btn_arq_action btn btn-outline-warning btn-sm' id='btn_editar".$id."'name='editar' style='background:blue;'> <i class='fa fa-edit'></i></button>
-				<button class='btn_arq_action btn btn-outline-danger btn-sm' id='btn_eliminar".$id."' name='eliminar' style='background:red;'> <i class='fa fa-trash'></i></button></td></tr>";
+				<td><button class='btn_arq_action btn btn-outline-success btn-sm' id='btn_liberar".$id."' name='liberar' style='background:green;'> <i class='fa fa-unlink'> Liberar</i></button>
+				<button class='btn_arq_action btn btn-outline-warning btn-sm' id='btn_editar".$id."'name='editar' style='background:blue;'> <i class='fa fa-edit'> Editar</i></button>
+				<button class='btn_arq_action btn btn-outline-danger btn-sm' id='btn_eliminar".$id."' name='eliminar' style='background:red;'> <i class='fa fa-trash'> Eliminar</i></button></td></tr>";
 	return $line;
 }
 

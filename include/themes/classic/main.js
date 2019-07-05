@@ -959,6 +959,9 @@ function addVmtoDomain(idDomain){
 
         },
         success: function(data) {
+            
+            
+            //console.log(data);
             var content='<form id="add_vm_domain">  <input type="hidden" class="form-control" name="idDomain" value="'+idDomain+'"> <div class="form-row">    <div class="form-group col-md-6">     <div class="form-group col">      <label>Nombre</label>      <input type="text" class="form-control" name="nameNewVm" placeholder="Nombre"> </div> <div class="form-group col">      <label>Sistema Operativo</label>      <select name="imageNewVm" class="form-control">        '+data+' </select>    </div>  </div>    <div class="form-group ">    <label>Flavor</label>    <input type="number" class="form-control col-md-6" name="ramNewVm" placeholder="RAM "> <input type="number" class="form-control col-md-6" name="vcpuNewVm" placeholder="VCPU "> <input type="number" class="form-control col-md-6" name="diskNewVm" placeholder="DISK "></div>       </div>   </div></form>';
             // console.log(content);
             addVM("Agregar Maquina Virtual", content);
@@ -986,6 +989,7 @@ function addVM(title, content) {
 
             },
             success: function(data) {
+                console.log(data);
                 alertify.success('VM agregada');
             }
 
@@ -1000,39 +1004,38 @@ function addVM(title, content) {
 
 
 function freeDomain( id ){
-    // var elec = confirm("¿Desea liberar la arquitectura?");
-    var ele=confirmar2("Liberar");
-    console.log(ele);
-    // console.log(eleccion);
-            // console.log(id);
-            // if (elec) {
-            //     var formData = new FormData();
-            //     formData.append('id', id);
-            //     // formData.append('emailUser', 'usuario');
-            //     formData.append('action', '2');
-            //     $.ajax({
-            //         url: 'solicitud_asignacion.php',
-            //         type: 'POST',
-            //         contentType: false,
-            //         processData: false,
-            //         data: formData,
-            //         beforesend: function() {
+    var elec = confirm("¿Desea liberar la arquitectura?");
+   
+   
+    
+            if (elec) {
+                var formData = new FormData();
+                formData.append('id', id);
+                //formData.append('emailUser', 'usuario');
+                formData.append('action', '2');
+                $.ajax({
+                    url: 'solicitud_asignacion.php',
+                    type: 'POST',
+                    contentType: false,
+                    processData: false,
+                    data: formData,
+                    beforesend: function() {
 
-            //         },
-            //         success: function(data) {
-            //             // console.log(data);
-            //             if (data == '1') {
-            //                 refreshTableArqByUser();
-            //             } else {
-            //                 alert("Ha ocurrido un problema, intentelo mas tarde o contacte al administrador");
-            //                 // log-reporting
-            //             }
+                    },
+                    success: function(data) {
+                       // console.log(data);
+                        if (data == '1') {
+                            refreshTableArqByUser();
+                        } else {
+                             alert("Ha ocurrido un problema, intentelo mas tarde o contacte al administrador");
+                              //log-reporting
+                         }
 
-            //         }
+                     }
 
-            //     });
+                 });
 
-            // }
+             }
 
 }
 
