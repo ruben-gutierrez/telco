@@ -2023,7 +2023,7 @@ ul.nav_sub{
 
 
 .description_page_testbed{
-	margin: 40px 0px;
+	/* margin: 40px 0px; */
 	padding: 10px 20px;
 }
 
@@ -2194,13 +2194,7 @@ ul.nav_sub{
 	color: #fff;
 }
 
-.btn_arq_action{
-	height: 40px;
-	width: 40px;
-	border-radius: 50%;
-	margin-left: 10px;
 
-}
 
 .fa-lg{
 	color: white;
@@ -2247,12 +2241,12 @@ ul.nav_sub{
 
 /*pagina info*/
 .title_info_page{
-	background: #8EA2EB;
+	/* background: #8EA2EB; */
 	padding-bottom: 5px;
 }
 
 .content_info_page{
-	background: #DD7575;
+	/* background: #DD7575; */
 	margin: 10px 5px;
 }
 
@@ -2314,3 +2308,8 @@ ul.nav_sub{
 .muestra{
 	display: block;
 }
+
+
+
+
+/* crear slide */

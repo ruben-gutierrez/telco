@@ -5465,3 +5465,107 @@ function create_flavor($name, $disk, $ram, $vcpus){
 	$vm_created=shell_exec("./scripts/request_openstack.sh $action $vcpus $disk $name $ram");
 	return $vm_created;
 }
+
+
+function guide_test_bono(){
+	// page1
+	print("<p>Definir flujo de mensajes para 1 llamada</p>");
+
+	?>
+	<div class="container p-1" id="page1">
+		<div class="container">
+			<!-- <div class="row">
+				
+				<p>Asignar nombre a escenario</p>
+				
+				<div class="row bg-secondary">
+					<pre class="text-white text-center">
+&ltscenario name="Call Load Test"&gt
+</pre>
+				
+				</div>
+			</div>
+			 -->
+				<!-- <div class="row">
+					Definir variables a usar en el script
+				</div>
+				<div class="row bg-secondary">
+					<pre>
+&ltUser variables="my_dn,peer_dn,call_repeat" /&gt
+&ltnop hide="true"&gt
+	&ltaction&gt
+	&lt!-- Get my and peer's DN --&gt
+	&ltassignstr assign_to="my_dn" value="[field0]" /&gt
+	&lt!-- field1 is my_auth, but we can't store it in a variable --&gt
+	&ltassignstr assign_to="peer_dn" value="[field2]" /&gt
+	&lt!-- field3 is peer_auth, but we can't store it in a variable --&gt
+	&ltassign assign_to="reg_repeat" value="0"/&gt
+	&ltassign assign_to="call_repeat" value="0"/&gt
+	&lt/action&gt
+&lt/nop&gt
+&ltpause distribution="uniform" min="1000" max="5000" /&gt</pre>
+				</div> -->
+			
+			<!--<div class="row">
+				<div class="row">
+				Este register se encarga de contactar el core IMS para iniciar el proceso de registro
+				</div>
+				<div class="row bg-secondary">
+					<pre class="text-white">
+  &ltsend&gt
+    &lt![CDATA[
+      REGISTER sip:[$my_dn]@[service] SIP/2.0
+      Via: SIP/2.0/[transport] [local_ip]:[local_port];rport;branch=[branch]-[$my_dn]-[$reg_repeat]
+      Route: &ltsip:[service];transport=[transport];lr&gt
+      Max-Forwards: 70
+      From: &ltsip:[$my_dn]@[service]&gt;tag=[pid]SIPpTag00[call_number]
+      To: &ltsip:[$my_dn]@[service]&gt
+      Call-ID: [$my_dn]///[call_id]
+      CSeq: [cseq] REGISTER
+      User-Agent: Accession 4.0.0.0
+      Supported: outbound, path
+      Contact: &ltsip:[$my_dn]@[local_ip]:[local_port];transport=[transport];ob&gt;+sip.ice;reg-id=1;+sip.instance="&lturn:uuid:00000000-0000-0000-0000-000000000001&gt"
+      Expires: 3600
+      Allow: PRACK, INVITE, ACK, BYE, CANCEL, UPDATE, SUBSCRIBE, NOTIFY, REFER, MESSAGE, OPTIONS
+      Content-Length: 0
+    ]]&gt
+&lt/send&gt</pre>
+				</div>
+			</div> -->
+			<!-- <div class="row">
+				<div class="row">
+					<p>401 Unauthorized:The request requires user authentication. This response is issued by UASs and registrars</p>
+					<p>La autenticación requiere contraseña</p>
+				</div>
+				<div class="row bg-secondary">
+					<pre class="text-white text-center">&ltscenario name="Call Load Test"&gt</pre>
+				</div>
+			</div>
+			<div class="row">
+				<div class="row">
+				<span>Enviar REGISTER con contraseña</span>
+				Este REGISTER se encargar de enviar información de autenticación
+				</div>
+				<div class="row bg-secondary">
+					<pre class="text-white text-center">&ltscenario name="Call Load Test"&gt</pre>
+				</div>
+			</div>
+			<div class="row">
+				<div class="row">
+					<span>Espera respuesta 200</span>
+					<p>200 OK:Indicates the request was successful</p>
+					<p>Autenticación exitosa</p>
+				</div>
+				<div class="row bg-secondary">
+					<pre class="text-white text-center">&ltscenario name="Call Load Test"&gt</pre>
+				</div>
+			</div> -->
+		</div>
+	</div>
+<?php
+
+}
+
+
+
+	

@@ -11,17 +11,19 @@ if (isset($_GET['arq'])) {
 		header("location:pruebas.php");
 }
 ?>
+
+
 <div class="margin_page">
-  <nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('table_tests', 'indicate_requestArquitecture')">
-      <a class="navbar-brand text-white"><b>Ejecutar Pruebas</b></a><div class="float-right indicate_requestArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
+  <nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('tests', 'indicate_requestArquitecture')">
+      <a class="navbar-brand text-white"><b>Pruebas</b></a><div class="float-right indicate_requestArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
     </nav>
-    <div class="table_tests">
+    <div class="tests">
       	 <!-- <h1 class="titulo_arquitectura">Servicios Ambiente de Prueba IMS</h1> -->
       	
       		<!-- descripcion de las pruebas-->
       		<div class="description_page_testbed">El ambiente de prueba Telco2.0 IMS permite a los usuarios evaluar el rendiemiento del nucleo IMS clearwater con dos tipos de pruebas Una de ellas consiste en emular el nodo Bono (Proxy) para enviar peticiones y solicitudes al nodo Sprout (Nucleo IMS) para verificar el rendieminto de este. Otra de las pruebas consiste en emular los usuarios que se registran para utilizar algun servicio IMS.
       		</div>
-          <div id="table_desciption_test">
+          <div id="container table_desciption_test">
             <?php 
             draw_table_testbed_pruebas($user_email);
             ?>
@@ -32,8 +34,37 @@ if (isset($_GET['arq'])) {
           </div>
       			
 
-	</div>
+  </div>
+  
   <div>
+
+
+  <nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('test_bono', 'indicate_requestArquitecture')">
+      <a class="navbar-brand text-white"><b>Guia Prueba Bono</b></a><div class="float-right indicate_requestArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
+    </nav>
+    <div class="test_bono">
+      	 <!-- <h1 class="titulo_arquitectura">Servicios Ambiente de Prueba IMS</h1> -->
+      	
+      		<!-- descripcion de las pruebas-->
+      		<div class="container description_page_testbed">
+            Guia para realizar prueba bono.
+      		</div>
+          <div id="table_desciption_test" class="container">
+            <?php 
+            guide_test_bono();
+            ?>
+            
+          </div>
+          <div id="table_options_test">
+          
+          </div>
+      			
+
+  </div>
+  
+  <div>
+
+
     <section id="test_dom" class="section_admin_arquitecuta" style="margin-top: 20px;">
    <!--    <div class="name_section"> -->
         <nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('content_section', 'indicate_requestArquitecture')">
@@ -149,7 +180,9 @@ if (isset($_GET['arq'])) {
       // }); 
     }
 
-
+<script>$(function () {
+  $('[data-toggle="popover"]').popover()
+})</script>
 
 
 </script>

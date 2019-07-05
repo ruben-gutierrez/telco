@@ -18,7 +18,6 @@ $now = date_create()->format('Y-m-d H:i:s');
 	$accion= $_POST['action'];	
 	$id= $_POST['id'];
 	switch ($accion) { 
-
 		case "1": //borrar elemento de la seccion de info
 			$name_column=db_fetch_cell("select COLUMN_NAME from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME = '".$_POST['table']."' LIMIT 1");
 			$number_content=db_fetch_cell("select count(".$name_column.") from ".$_POST['table']);
@@ -159,7 +158,6 @@ $now = date_create()->format('Y-m-d H:i:s');
 			echo('<option value="">Elegir...</option>');
 			foreach($images as $image ){
 				echo ('<option value="'.$image['id_image'].'">'.$image['name_image'].'</option>');
-				// print_r($images);
 			}
 			
 			break;

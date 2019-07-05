@@ -2195,6 +2195,10 @@ function html_common_header($title, $selectedTheme = '') {
 	<link rel="stylesheet" href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/alertifyJS/css/alertify.min.css'/>
 	<link rel="stylesheet" href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/alertifyJS/css/themes/semantic.min.css'/>
 	<link rel="stylesheet" href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/bootstrap/dist/css/bootstrap.min.css'/>
+	<link rel="stylesheet" href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/bootstrap/dist/js/bootstrap.min.js'/>
+	<link rel="stylesheet" href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/bootstrap/dist/js/bootstrap.js'/>
+	<link rel="stylesheet" href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/bootstrap/dist/css/bootstrap.css'/>
+
 
 	<?php
 	print get_md5_include_css('include/themes/' . $selectedTheme .'/jquery.zoom.css');
@@ -2527,9 +2531,9 @@ function draw_table_estate_arq(){
 		<td class='edisplay'>".$line['descripcion']."</td>
 		<td class='edisplay'>".$line['imagen']."</td>
 		<td>".$line['usuario']."</td>
-		<td><button class='btn_arq_action' id='btn_liberar".$line['id']."' name='liberar' style='background:green;'> <i class='fa fa-unlock fa-lg'></i></button></td>
-		<td><button class='btn_arq_action' id='btn_editar".$line['id']."'name='editar' style='background:blue;'> <i class='fa fa-edit fa-lg'></i></button></td>
-		<td><button class='btn_arq_action' id='btn_eliminar".$line['id']."' name='eliminar' style='background:red;'> <i class='fa fa-trash fa-lg'></i></button></td></tr>";
+		<td><button class='btn_arq_action btn btn-outline-success btn-sm' id='btn_liberar".$line['id']."' name='liberar'> <i class='fa fa-unlink'> Liberar</i></button>
+		<button class='btn_arq_action btn btn-outline-warning btn-sm' id='btn_editar".$line['id']."'name='editar' > <i class='fa fa-edit'>Editar</i></button>
+		<button class='btn_arq_action btn btn-outline-danger btn-sm' id='btn_eliminar".$line['id']."' name='eliminar'> <i class='fa fa-trash'>Eliminar</i></button></td></tr>";
 	}
 }
 
@@ -2538,6 +2542,39 @@ function draw_table_testbed_pruebas($user){
 	$dom_user=db_fetch_assoc("SELECT arquitectura, dominio, descripcion  from arqs_testbedims where usuario ='".$user."'");
 	// print_r($dom_user);
 	?>
+	<div id="cardsTest"> <?php
+	foreach ($dom_user as $key => $value) {
+		?>
+		<div class="row m-2">
+			<!-- <div class="col"> -->
+				<?php 
+				$test_info=db_fetch_assoc("SELECT id_test, name_test, description_test, restriction from test_testbedims where dominio ='".$value['dominio']."'");
+				foreach ($test_info as $key2 => $value2) {
+				?>
+				<div class="card m-2">
+				<div class="card-header">
+					<h5> <?php echo $value2['name_test']?></h5>
+				</div>
+				<div class="card-body">
+					Arquitectura: <?php echo $value['arquitectura']?> " <?php echo $value['dominio']?>"
+					
+					<p class="card-text"><?php echo $value2['description_test']?></p>
+					<button class="btn btn-outline-danger" id="<?php echo $value2['id_test']?>" onClick="">Eliminar</button>
+					<button class="btn btn-primary m-2" id="<?php echo $value2['id_test']?>" onClick="$('#cardsTest').hide();display_table_test(this.id)">Opciones</button>
+				</div>
+				</div>
+				<?php
+				}
+				?>
+			<!-- </div> -->
+			
+		</div>
+	<?php
+	}
+	?>
+	</div>
+
+	<div id="tableTest" style="display:none">
 	<table class="table_estado_arq animated fadeIn fast">
       <tr>
         <th>Arquitectura</th>
@@ -2556,13 +2593,16 @@ function draw_table_testbed_pruebas($user){
 			<td> Arquitectura: ".$value['arquitectura']."<br> dominio:".$value['dominio']."</td>
 			<td>".$value2['name_test']."</td>
 			<td>".$value2['description_test']."\n Restricciones;\n".$value2['restriction']."</td>
-			<td><button class='btn btn-outline-secondary' id='".$value2['id_test']."' onClick='display_table_test(this.id)'> <i class='fa fa-list-alt fa-2x'></i></button></td>
+			<td><button class='btn btn-outline-secondary' id='".$value2['id_test']."' onClick='display_table_test(this.id)'> <i class='fa fa-list-alt'> Opciones</i></button>
+			<buton class='btn btn-outline-danger'><i class='fa fa-trash'> Eliminar</i></buton>
+			</td>
 			</tr>");
 		}
 		
 	}
 	?>
 	</table>
+</div>
 	<?php
 }
 
@@ -2595,7 +2635,7 @@ function show_info_page(){
 				foreach ($content as $key2 => $value2) {
 					print("<div class='content' id='".$value2['id_content']."'>");
 					if ($value2['type'] =='img') {
-							print "<img width='70%' src='images/images_testbed/images_ims/images_info_page/".$value2['content']."'>";
+							print "<div class='center'><img width='30%' src='images/images_testbed/images_ims/images_info_page/".$value2['content']."'></div>";
 						}elseif ($value2['type'] =='sub') {
 							print "<h3>".$value2['content']."</h3>";
 						}else{
@@ -2620,7 +2660,7 @@ function admin_info_page(){
 		// print_r($title);
 		print"<div class='margin_title_info_page' >";
 
-			print"<div class='title_info_page' id='".$value['id_title']."' >";
+			print"<div class='title_info_page bg-secondary text-white' id='".$value['id_title']."' >";
 				print "<h1 id='".$value['id_title']."'>".$value['main_title']."</h1>";
 				$content=db_fetch_assoc("select * from content_info_page where id_title='".$value['id_title']."' order by id_content");
 				// print_r($content);
@@ -2630,16 +2670,16 @@ function admin_info_page(){
 					print("<div class='content_info_page' id='".$id_first."'>");
 					print "Agregar contenido al titulo";
 					print"<div class='panel_btn_content' style='display: none;' >";
-							print"<button class='btn_action_info' type='button' id='".$id_first."' name='add'>Agregar contenido</button>";
-							print"<button class='btn_action_info' type='button' id='".$id_first."' name='del'>Eliminar</button>";
-							print"<button class='btn_action_info' type='button' id='".$id_first."' name='edit'>Editar</button>";
-							print"<button class='btn_action_info' type='button' id='".$id_first."' name='up'>Subir</button>";
-							print"<button class='btn_action_info' type='button' id='".$id_first."' name='down'>Bajar</button>";
+							print"<button class='btn_action_info btn btn-info ml-1' type='button' id='".$id_first."' name='add'>Agregar contenido</button>";
+							print"<button class='btn_action_info btn btn-danger ml-1' type='button' id='".$id_first."' name='del'>Eliminar</button>";
+							print"<button class='btn_action_info btn btn-warning ml-1' type='button' id='".$id_first."' name='edit'>Editar</button>";
+							print"<button class='btn_action_info btn btn-success ml-1' type='button' id='".$id_first."' name='up'>Subir</button>";
+							print"<button class='btn_action_info btn btn-success ml-1' type='button' id='".$id_first."' name='down'>Bajar</button>";
 						print"</div>";
 					print"</div>";
 				}else{
 					foreach ($content as $key2 => $value2) {
-					print("<div class='content_info_page' id='".$value2['id_content']."'>");
+					print("<div class='content_info_page bg-light text-dark' id='".$value2['id_content']."'>");
 					// print("<div class='content_info_page' id='".$value2['id_content']."'>");
 						if ($value2['type'] =='img') {
 							print "<img width='30%' src='images/images_testbed/images_ims/images_info_page/".$value2['content']."'>";
@@ -2649,11 +2689,11 @@ function admin_info_page(){
 							print $value2['content'];
 						}
 						print"<div class='panel_btn_content' style='display: none;' >";
-							print"<button class='btn_action_info' type='button' id='".$value2['id_content']."' name='add'>Agregar contenido</button>";
-							print"<button class='btn_action_info' type='button' id='".$value2['id_content']."' name='del'>Eliminar</button>";
-							print"<button class='btn_action_info' type='button' id='".$value2['id_content']."' name='edit'>Editar</button>";
-							print"<button class='btn_action_info' type='button' id='".$value2['id_content']."' name='up'>Subir</button>";
-							print"<button class='btn_action_info' type='button' id='".$value2['id_content']."' name='down'>Bajar</button>";
+							print"<button class='btn_action_info btn btn-info ml-1' type='button' id='".$value2['id_content']."' name='add'>Agregar contenido</button>";
+							print"<button class='btn_action_info btn btn-danger ml-1' type='button' id='".$value2['id_content']."' name='del'>Eliminar</button>";
+							print"<button class='btn_action_info btn btn-warning ml-1' type='button' id='".$value2['id_content']."' name='edit'>Editar</button>";
+							print"<button class='btn_action_info btn btn-success ml-1' type='button' id='".$value2['id_content']."' name='up'><i class='fa fa-angle-up'></i></button>";
+							print"<button class='btn_action_info btn btn-success ml-1' type='button' id='".$value2['id_content']."' name='down'><i class='fa fa-angle-down'></i></button>";
 						print"</div>";
 					print"</div>";				 							
 				}
@@ -2662,11 +2702,11 @@ function admin_info_page(){
 
 				<?php
 				print"<div class='panel_btn_title' style='display: none;'>";
-				print"<button class='btn_action_info' type='button' id='".$value['id_title']."' name='add'>Agregar titulo</button>";
-				print"<button class='btn_action_info' type='button' id='".$value['id_title']."' name='del'>Eliminar</button>";
-				print"<button class='btn_action_info' type='button' id='".$value['id_title']."' name='edit'>Editar</button>";
-				print"<button class='btn_action_info' type='button' id='".$value['id_title']."' name='up'>subir</button>";
-				print"<button class='btn_action_info' type='button' id='".$value['id_title']."' name='down'>Bajar</button>";
+				print"<button class='btn_action_info btn btn-primary ml-2' type='button' id='".$value['id_title']."' name='add'>Agregar titulo</button>";
+				print"<button class='btn_action_info btn btn-danger ml-2' type='button' id='".$value['id_title']."' name='del'>Eliminar</button>";
+				print"<button class='btn_action_info btn btn-warning ml-2' type='button' id='".$value['id_title']."' name='edit'>Editar</button>";
+				print"<button class='btn_action_info btn btn-success ml-2' type='button' id='".$value['id_title']."' name='up'><i class='fa fa-angle-up'></i></button>";
+				print"<button class='btn_action_info btn btn-success ml-2' type='button' id='".$value['id_title']."' name='down'><i class='fa fa-angle-down'></i></button>";
 				print"</div>";
 			print"</div>";
 			
@@ -2755,28 +2795,29 @@ function type_coreIMS(){
 	 						
 	 						<input type="hidden" name="action" value='6' required>
 							
-	 						
-							 <select name="dominio">
-						 	<option value="">Seleccionar</option>
-							<?php
-									$dominios=db_fetch_assoc("select dominio from arqs_testbedims");
+	 						<span for="dominio">Seleccione arquitectura</span>
+							 <select name="dominio" class="mb-2">
+								<option value="">Seleccionar</option>
+								<?php
+										$dominios=db_fetch_assoc("select dominio from arqs_testbedims");
 
-									foreach ($dominios as $key => $value) {
-										print("<option value='".$value['dominio']."'>".$value['dominio']."</option>");
-									}
-							?>
+										foreach ($dominios as $key => $value) {
+											print("<option value='".$value['dominio']."'>".$value['dominio']."</option>");
+										}
+								?>
 
-						</select>
-							<label>Seleccione el tipo de arquitectura</label>
-	 						<select type="select" name="type" placeholder='Tipo de arquitectura'>
+							</select>
+							<span for="type">Asignar tipo de arquitectura</span>
+	 						<select type="select" name="type" placeholder='Tipo de arquitectura' class="mb-2">
 	 						  <option value="aio">Todo en uno</option>
 	 						  <option value="dist">Distribuida</option>
 	 						  <option value="dist_pstn">Distribuida + PSTN</option>
 	 						</select> 
-	 						<div id="buttons_add">
-	 						<input type="button" class="btn_form" id="btn_save_info" value="Guardar" onclick="create_core();">
-	 						<input type="button" class="btn_form" value="Cancelar" onclick="$('#content_infor_arq').hide();$('#btn_see_table4').show();$('#btn_notsee_table4').hide();$('.ajs-button.ajs-ok').trigger('click');">
+	 						<div id="buttons_add center">
+								<input type="button" class="btn_form btn btn-outline-danger mb-3" value="Cancelar" onclick="$('#content_infor_arq').hide();$('#btn_see_table4').show();$('#btn_notsee_table4').hide();$('.ajs-button.ajs-ok').trigger('click');">
+	 							<input type="button" class="btn_form btn btn-primary mb-3 " id="btn_save_info" value="Guardar" onclick="create_core();">
 	 						</div>
-	 					</form>
+						 </form>
+						 
 	<?php 
 }

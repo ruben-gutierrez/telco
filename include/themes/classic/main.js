@@ -888,35 +888,38 @@ function showInfoDomain(IdDomain){
             data: { action: "12", domain: IdDomain }
         })
         .done(function(data) {
-            if(data != ''){
-                var answer = JSON.parse(data);
-                // console.log(answer);
-                data="<div class='row'>";
-                data+='<table class="table">';
-                data+='<thead class="thead-dark">';
-                data+='<tr><th scope="col">Nombre</th><th scope="col">Direccioón IP</th><th scope="col">Caracteristicas</th><th scope="col">Terminal</th></tr></thead><tbody>';
-                // var num=1;
-                // var ips={ip_bono:answer[0].ip_bono,ip_sprout:answer[0].ip_sprout,ip_ellis:answer[0].ip_ellis,ip_homer:answer[0].ip_homer,ip_vellum:answer[0].ip_vellum,ip_dime:answer[0].ip_dime,ip_ibcf:answer[0].ip_ibcf};
-                for (var x in answer) {
-                    // console.log(answer[x]['name_server']);
-                
-                    data += '<tr> <th scope="row">'+answer[x]['name_server']+'</th><td>'+answer[x]['ip_local']+'</td>';
-                    data += '<td><form class="form" id="'+answer[x]['id_server']+'">';
-                    data += '<input class="col-md-3" type="number" name="ram" placeholder="RAM">';
-                    data += '<input class="col-md-3" type="number" name="cpu" placeholder="CPU">';
-                    data += '<input class="col-md-3" type="number" name="hardDisk" placeholder="Disk">';
-                    data += '<input class="btn btn-outline-info ml-2" type="button" id="'+answer[x]['id_server']+'" value="Editar" onclick="editarVM(`'+answer[x]['id_server']+'`)"></form>';
-                    data +='</td>';
-                    data += '<td><button class="btn btn-outline-success">Terminal</button></td></tr>';
-                    // num +=1;
-                
+            console.log(data);
+            
+                if(data.length > 0 ){
+                    var answer = JSON.parse(data);
+                    // console.log(answer);
+                    data="<div class='row'>";
+                    data+='<table class="table">';
+                    data+='<thead class="thead-dark">';
+                    data+='<tr><th scope="col">Nombre</th><th scope="col">Direccioón IP</th><th scope="col">Caracteristicas</th><th scope="col">Terminal</th></tr></thead><tbody>';
+                    // var num=1;
+                    // var ips={ip_bono:answer[0].ip_bono,ip_sprout:answer[0].ip_sprout,ip_ellis:answer[0].ip_ellis,ip_homer:answer[0].ip_homer,ip_vellum:answer[0].ip_vellum,ip_dime:answer[0].ip_dime,ip_ibcf:answer[0].ip_ibcf};
+                    for (var x in answer) {
+                        // console.log(answer[x]['name_server']);
+                    
+                        data += '<tr> <th scope="row">'+answer[x]['name_server']+'</th><td>'+answer[x]['ip_local']+'</td>';
+                        data += '<td><form class="form" id="'+answer[x]['id_server']+'">';
+                        data += '<input class="col-md-3" type="number" name="ram" placeholder="RAM">';
+                        data += '<input class="col-md-3" type="number" name="cpu" placeholder="CPU">';
+                        data += '<input class="col-md-3" type="number" name="hardDisk" placeholder="Disk">';
+                        data += '<input class="btn btn-outline-info ml-2" type="button" id="'+answer[x]['id_server']+'" value="Editar" onclick="editarVM(`'+answer[x]['id_server']+'`)"></form>';
+                        data +='</td>';
+                        data += '<td><button class="btn btn-outline-success">Terminal</button></td></tr>';
+                        // num +=1;
+                    
+                    }
+                    data+='</div>';
+                    mensaje("Maquinas VM de la Arquitectura", data);
+                    // mensaje("Maquinas VM de la Arquitectura", answer);
+                }else{
+                    mensaje("Maquinas VM de la Arquitectura", "Esta arquitectura no tiene Maquinas virtuales registradas.");
                 }
-                data+='</div>';
-                mensaje("Maquinas VM de la Arquitectura", data);
-                // mensaje("Maquinas VM de la Arquitectura", answer);
-            }else{
-                mensaje("Maquinas VM de la Arquitectura", "Esta arquitectura no tiene Maquinas virtuales registradas.");
-            }
+           
             
         });   
 }
@@ -940,7 +943,8 @@ function addVmtoDomain(idDomain){
         },
         success: function(data) {
             var content='<form id="add_vm_domain">  <input type="hidden" class="form-control" name="idDomain" value="'+idDomain+'"> <div class="form-row">    <div class="form-group col-md-6">     <div class="form-group col">      <label>Nombre</label>      <input type="text" class="form-control" name="nameNewVm" placeholder="Nombre"> </div> <div class="form-group col">      <label>Sistema Operativo</label>      <select name="imageNewVm" class="form-control">        '+data+' </select>    </div>  </div>    <div class="form-group ">    <label>Flavor</label>    <input type="number" class="form-control col-md-6" name="ramNewVm" placeholder="RAM "> <input type="number" class="form-control col-md-6" name="vcpuNewVm" placeholder="VCPU "> <input type="number" class="form-control col-md-6" name="diskNewVm" placeholder="DISK "></div>       </div>   </div></form>';
-        addVM("Agregar Maquina Virtual", content);
+            console.log(content);
+            addVM("Agregar Maquina Virtual", content);
         }
 
     });
@@ -981,36 +985,39 @@ function addVM(title, content) {
 
 
 function freeDomain( id ){
-    var elec = confirm("¿Desea liberar la arquitectura?");
+    // var elec = confirm("¿Desea liberar la arquitectura?");
+    var ele=confirmar2("Liberar");
+    console.log(ele);
+    // console.log(eleccion);
             // console.log(id);
-            if (elec) {
-                var formData = new FormData();
-                formData.append('id', id);
-                // formData.append('emailUser', 'usuario');
-                formData.append('action', '2');
-                $.ajax({
-                    url: 'solicitud_asignacion.php',
-                    type: 'POST',
-                    contentType: false,
-                    processData: false,
-                    data: formData,
-                    beforesend: function() {
+            // if (elec) {
+            //     var formData = new FormData();
+            //     formData.append('id', id);
+            //     // formData.append('emailUser', 'usuario');
+            //     formData.append('action', '2');
+            //     $.ajax({
+            //         url: 'solicitud_asignacion.php',
+            //         type: 'POST',
+            //         contentType: false,
+            //         processData: false,
+            //         data: formData,
+            //         beforesend: function() {
 
-                    },
-                    success: function(data) {
-                        // console.log(data);
-                        if (data == '1') {
-                            refreshTableArqByUser();
-                        } else {
-                            alert("Ha ocurrido un problema, intentelo mas tarde o contacte al administrador");
-                            // log-reporting
-                        }
+            //         },
+            //         success: function(data) {
+            //             // console.log(data);
+            //             if (data == '1') {
+            //                 refreshTableArqByUser();
+            //             } else {
+            //                 alert("Ha ocurrido un problema, intentelo mas tarde o contacte al administrador");
+            //                 // log-reporting
+            //             }
 
-                    }
+            //         }
 
-                });
+            //     });
 
-            }
+            // }
 
 }
 
@@ -1037,6 +1044,9 @@ function refreshTableArqByUser(){
     });
 }
 
+function test(){
+    return 1;
+}
 
 
 
@@ -1044,21 +1054,20 @@ function refreshTableArqByUser(){
 
 
 
-
-
-function confirmar(title, content) {
+function confirmar(title, content, namefunction) {
     var confirm = alertify.confirm(title, content, null, null).set('labels', { ok: 'Confirmar', cancel: 'Cancelar' });
-
+    
     //callbak al pulsar botón positivo
     confirm.set('onok', function() {
-        add_title(element.currentTarget.id);
         alertify.success('Has confirmado');
     });
     //callbak al pulsar botón negativo
     confirm.set('oncancel', function() {
         alertify.error('Has Cancelado el dialogo');
     })
+    
 }
+
 
 
 
@@ -1098,9 +1107,3 @@ function queryOpenstack(name_net){
 
     });
 }
-
-
-//for
-            // for (var object in answerOpenstack['flavors']){
-            //     console.log(object);
-            // }

@@ -287,18 +287,15 @@ if (!empty($_POST)) {
 			$domain=db_fetch_cell_prepared("SELECT dominio from arqs_testbedims where id=".$_POST['domain']);
 			// print($domain);
 			$ips_domain=db_fetch_assoc("select s.name_server, s.ip_local from server_openstack s inner join core_domain c on c.id_server=s.id_server where c.domain='".$domain."'");
+
 			// $ips_domain=db_fetch_assoc("select s.id_server, s.name_server, s.ip_local from server_openstack s inner join core_domain c on c.id_server=s.id_server");
 			// print_r($ips_domain);
 			$ips_aditionals=db_fetch_assoc("SELECT id_server,name_server, ip_local from vm_aditional_testbedims where dominio='".$domain."'");
 
-			// if ($info_dom != '') {
-				// echo json_encode($ips_domain+$ips_aditionals);
-				echo json_encode($ips_domain);
-				// echo json_encode($ips_aditionals);
-				
-			// }
+			echo json_encode($ips_domain+$ips_aditionals);
+
 			break;
-			case '13'://agregar vm a dominio user
+		case '13'://agregar vm a dominio user
 			// print_r($_POST);
 			$id_net=db_fetch_cell_prepared("SELECT n.id_net from network_openstack n INNER JOIN arqs_testbedims a ON a.dominio=n.domain where a.id='".$_POST['idDomain']."'");
 			$flavor=id_flavor( $_POST['ramNewVm'],$_POST['vcpuNewVm'],$_POST['diskNewVm']);
@@ -349,10 +346,9 @@ if (!empty($_POST)) {
 		foreach ($dominios_asignados as $key => $array) {
 			validar_asignacion($array['dominio'],$array['usuario']);
 		}
-	}
-
-	
+	}	
 }
+
 
 function return_file_arq($id,$nombre,$dominio,$descipcion, $imagen){
 	$line="<tr id='line".$id."'><td>".$nombre."</td>
@@ -360,9 +356,9 @@ function return_file_arq($id,$nombre,$dominio,$descipcion, $imagen){
 				<td class='edisplay'>".$descipcion."</td>
 				<td class='edisplay'>".$imagen."</td>
 				<td>libre</td>
-				<td><button class='btn_arq_action' id='btn_liberar".$id."' name='liberar' style='background:green;'> <i class='fa fa-unlock fa-lg'></i></button></td>
-				<td><button class='btn_arq_action' id='btn_editar".$id."'name='editar' style='background:blue;'> <i class='fa fa-edit fa-lg'></i></button></td>
-				<td><button class='btn_arq_action' id='btn_eliminar".$id."' name='eliminar' style='background:red;'> <i class='fa fa-trash fa-lg'></i></button></td></tr>";
+				<td><button class='btn_arq_action btn btn-outline-success btn-sm' id='btn_liberar".$id."' name='liberar' style='background:green;'> <i class='fa fa-unlink'></i></button>
+				<button class='btn_arq_action btn btn-outline-warning btn-sm' id='btn_editar".$id."'name='editar' style='background:blue;'> <i class='fa fa-edit'></i></button>
+				<button class='btn_arq_action btn btn-outline-danger btn-sm' id='btn_eliminar".$id."' name='eliminar' style='background:red;'> <i class='fa fa-trash'></i></button></td></tr>";
 	return $line;
 }
 

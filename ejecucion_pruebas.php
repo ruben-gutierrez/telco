@@ -15,11 +15,36 @@ if (!empty($_POST)) {
 			$name_test=db_fetch_cell("select name_test from test_testbedims where id_test='".$_POST['id_test2']."'");
 			$options_test=db_fetch_assoc("SELECT options, value, description_option from option_test_testbedims where id_test='".$_POST['id_test2']."'");
 				?>
-				<div class="row">
-				<div class="col">
+				<div class="row ">
+				<div class="col center">
 				<div>
-					<h4>Prueba </h4><?php echo $name_test ;?> 
+					<h4>Prueba: <?php echo $name_test ;?>  </h4>
 				</div>
+
+				<div id="optionsTestFrom" class="row" >
+					<form method="post" id="form_execute_test" class="center" enctype="multipart/form-data">
+						<input type="hidden" name="action" value="2">
+						<?php 
+						foreach ($options_test as $key => $value) {
+							?>
+							<div class="form-group text-left" title="<?php echo $value['description_option']?>">
+								<label for="<?php echo $value['options']?>" ><?php echo $value['options']?> <i class="fa fa-question-circle" ></i></label>
+								<input type="text" class="form-control" id="<?php echo $value['options']?>" name="<?php echo $value['options']?>" placeholder="<?php echo $value['value']?>">
+							</div>
+							
+						<?php
+						}
+						
+						?>
+						<div class="colmd-4">
+							<input type="button" class="btn btn-primary pull-right m-2" id="btn_exe_test" value="Ejecutar" onclick="exe_test()">
+							<input type="button" class="btn btn-outline-secondary pull-right m-2" id="btn_exe_test" value="Atras" onclick="$('#cardsTest').show();$('#table_options_test').empty()">
+						</div>
+					</form>
+				</div>
+
+
+				<div id="optionsTestTable" style="display:none">
 				<form method="post" id="form_execute_test" enctype="multipart/form-data">
 			      	<input type="hidden" name="action" value="2">
 				<table class="table_estado_arq">
@@ -49,9 +74,8 @@ if (!empty($_POST)) {
 				</div>
 				</form> 
 				</table>
-				<div class="colmd-4">
-				<input type="button" class="btn btn-primary pull-right" id="btn_exe_test" value="Ejecutar" onclick="exe_test()">
 				</div>
+				
 				<?php
 			break;
 		case '2': //crear archivo, eviarlo por scp y ejecutarlo

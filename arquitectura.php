@@ -12,7 +12,25 @@ $username=$current_user['username'];
 $from_email=$current_user['email_address'];
 
 ?>
-
+<div class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Modal body text goes here.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="margin_page">
 <div class="content"></div>
 	<section class="section_arquitecture">
@@ -94,6 +112,8 @@ $from_email=$current_user['email_address'];
 
 	</section>
 
+
+
 	<script type="text/javascript">
     function solicituar_arquitectura(to_email,from_email, username, arquitectura_selec){ 
         // Estas son variables a pasar por post
@@ -126,4 +146,6 @@ $from_email=$current_user['email_address'];
 	</script>
 
 </div>
+
+
 
