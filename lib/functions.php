@@ -5338,7 +5338,7 @@ function create_net($name_net, $description, $domain){
 		$result=db_execute("INSERT INTO network_openstack(id_net, name_net, description_net,domain, status) values ('$id_net','$name_net', '$description_net', '$domain','$status_net')");
 		
 		if( $result == '1'){
-			#$1-> action: subnet, $2-> id_net:nombre de la red, $3-> domain:dominio de la red, $4 name_net:nombre de la subred
+			// #$1-> action: subnet, $2-> id_net:nombre de la red, $3-> domain:dominio de la red, $4 name_net:nombre de la subred
 			$action = "subnet";
 			$respuesta=shell_exec("./scripts/request_openstack.sh $action $id_net $domain $name_net");
 		}else{
@@ -5354,9 +5354,14 @@ function delete_net($id_net){
 
 function create_vm($name_server, $id_image, $flavor_ref, $id_net){
 	$action='create_vm';
-	#$1-> action, $2-> name_server, $3->id_image, $4->flavor_ref, $5->id_net
+	// #$1-> action, $2-> name_server, $3->id_image, $4->flavor_ref, $5->id_net
 	$vm_created=shell_exec("./scripts/request_openstack.sh $action $name_server $id_image $flavor_ref $id_net");
 	return $vm_created;
+}
+function update_vm($id_server, $flavor){
+	$action='change_flavor';
+	$vm_modificate=shell_exec("./scripts/request_openstack.sh $action $id_server $flavor");
+	return $vm_modificate;
 }
 
 function id_subnet_ofDomain($domain){

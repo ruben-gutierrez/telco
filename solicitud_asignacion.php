@@ -312,28 +312,24 @@ if (!empty($_POST)) {
 			$id_server=$vmJson['server']['id'];
 
 
-			echo $domain;
-			echo $name;
-			echo $disk;
-			echo $vcpu;
-			echo $ram;
-			echo $image;
-			echo $id_server;
+			// echo $domain;
+			// echo $name;
+			// echo $disk;
+			// echo $vcpu;
+			// echo $ram;
+			// echo $image;
+			// echo $id_server;
 			
 			$agregate=db_execute("INSERT INTO vm_aditional_testbedims(id_server,dominio, name_server,RAM,disk,vcpu,id_flavor,image) values ('".$id_server."','".$domain."','".$name."','".$ram."','".$disk."','".$vcpu."','".$flavor."','".$image."')");
-			
-			
-			// echo $agregate;
-			// $ips_domain=db_fetch_assoc("select s.name_server, s.ip_local from server_openstack s inner join core_domain c on c.id_server=s.id_server where c.domain='".$domain."'");
-			// // $ips_domain=db_fetch_assoc("select s.id_server, s.name_server, s.ip_local from server_openstack s inner join core_domain c on c.id_server=s.id_server");
-			// // print_r($ips_domain);
-			// $ips_aditionals=db_fetch_assoc("SELECT id_server,name_server, ip_local from vm_aditional_testbedims where dominio='".$domain."'");
+			if($agregate == 1){
+				$server=db_fetch_row_prepared("SELECT * from vm_aditional_testbedims WHERE id_server='".$id_server."'");
+				print_r($server);
+			}
+			break;
+		case '14'://consultar maquinas virtuales por usuario
+			$flavor=id_flavor( $_POST['ram'],$_POST['cpu'],$_POST['hardDisk']);
+			update_vm($id_server, $flavor);
 
-			// // if ($info_dom != '') {
-			// 	// echo json_encode($ips_domain+$ips_aditionals);
-			// 	echo json_encode($ips_domain);
-			// 	// echo json_encode($ips_aditionals);
-			// // }
 			break;
 		default:
 			echo ("sin funcion");

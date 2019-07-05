@@ -60,6 +60,10 @@ case $1 in
      create_flavor)
            curl -s -H  POST http://$OS_IP_OPENSTACK/compute/v2.1/flavors -H "Accept: application/json" -H "Content-Type: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H "X-OpenStack-Nova-API-Version: 2.1" -d '{"flavor": {"vcpus": "'$2'", "disk": "'$3'", "name": "'$4'", "os-flavor-access:is_public": true, "rxtx_factor": 1.0, "OS-FLV-EXT-DATA:ephemeral": 0, "ram": "'$5'", "id": null, "swap": 0}}'| python -m json.tool
           ;;
+     change_flavor)
+        #  openstack server resize --flavor --confirm <name flavor> 
+           
+          ;;
      *)
           echo "error"
           ;;

@@ -888,13 +888,13 @@ function showInfoDomain(IdDomain){
             data: { action: "12", domain: IdDomain }
         })
         .done(function(data) {
-            console.log(data);
+            // console.log(data);
             
                 if(data.length > 0 ){
                     var answer = JSON.parse(data);
                     // console.log(answer);
                     data="<div class='row'>";
-                    data+='<table class="table">';
+                    data+='<table class="table" id="table_vms_domain">';
                     data+='<thead class="thead-dark">';
                     data+='<tr><th scope="col">Nombre</th><th scope="col">Direccioón IP</th><th scope="col">Caracteristicas</th><th scope="col">Terminal</th></tr></thead><tbody>';
                     // var num=1;
@@ -903,7 +903,8 @@ function showInfoDomain(IdDomain){
                         // console.log(answer[x]['name_server']);
                     
                         data += '<tr> <th scope="row">'+answer[x]['name_server']+'</th><td>'+answer[x]['ip_local']+'</td>';
-                        data += '<td><form class="form" id="'+answer[x]['id_server']+'">';
+                        data += '<td><form class="form" id="vertical_scalability">';
+                        data += '<input type="hidden" name="id_server" value="'+answer[x]['id_server']+'" placeholder="RAM">';
                         data += '<input class="col-md-3" type="number" name="ram" placeholder="RAM">';
                         data += '<input class="col-md-3" type="number" name="cpu" placeholder="CPU">';
                         data += '<input class="col-md-3" type="number" name="hardDisk" placeholder="Disk">';
@@ -925,7 +926,23 @@ function showInfoDomain(IdDomain){
 }
 
 function editarVM(id_server){
-    console.log(id_server);
+    var parametros = new FormData($('#vertical_scalability')[0]);
+    parametros.append('action', '14');
+    $.ajax({
+        url: 'solicitud_asignacion.php',
+        type: 'POST',
+        contentType: false,
+        processData: false,
+        data: parametros,
+        beforesend: function() {
+
+        },
+        success: function(data) {
+            console.log(data);
+            alertify.success('VM Modificada');
+        }
+
+    });
 }
 
 function addVmtoDomain(idDomain){
@@ -943,7 +960,7 @@ function addVmtoDomain(idDomain){
         },
         success: function(data) {
             var content='<form id="add_vm_domain">  <input type="hidden" class="form-control" name="idDomain" value="'+idDomain+'"> <div class="form-row">    <div class="form-group col-md-6">     <div class="form-group col">      <label>Nombre</label>      <input type="text" class="form-control" name="nameNewVm" placeholder="Nombre"> </div> <div class="form-group col">      <label>Sistema Operativo</label>      <select name="imageNewVm" class="form-control">        '+data+' </select>    </div>  </div>    <div class="form-group ">    <label>Flavor</label>    <input type="number" class="form-control col-md-6" name="ramNewVm" placeholder="RAM "> <input type="number" class="form-control col-md-6" name="vcpuNewVm" placeholder="VCPU "> <input type="number" class="form-control col-md-6" name="diskNewVm" placeholder="DISK "></div>       </div>   </div></form>';
-            console.log(content);
+            // console.log(content);
             addVM("Agregar Maquina Virtual", content);
         }
 
@@ -969,9 +986,7 @@ function addVM(title, content) {
 
             },
             success: function(data) {
-                console.log(data);
-                // add_title(element.currentTarget.id);
-                // alertify.success('VM agregada');
+                alertify.success('VM agregada');
             }
 
         });
