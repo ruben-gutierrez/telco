@@ -352,9 +352,9 @@ function return_file_arq($id,$nombre,$dominio,$descipcion, $imagen){
 				<td class='edisplay'>".$descipcion."</td>
 				<td class='edisplay'>".$imagen."</td>
 				<td>libre</td>
-				<td><button class='btn_arq_action btn btn-outline-success btn-sm' id='btn_liberar".$id."' name='liberar' style='background:green;'> <i class='fa fa-unlink'></i></button>
-				<button class='btn_arq_action btn btn-outline-warning btn-sm' id='btn_editar".$id."'name='editar' style='background:blue;'> <i class='fa fa-edit'></i></button>
-				<button class='btn_arq_action btn btn-outline-danger btn-sm' id='btn_eliminar".$id."' name='eliminar' style='background:red;'> <i class='fa fa-trash'></i></button></td></tr>";
+				<td><button class='btn_arq_action btn btn-outline-success btn-sm' id='btn_liberar".$id."' name='liberar' style='background:green;'> <i class='fa fa-unlink'> Liberar</i></button>
+				<button class='btn_arq_action btn btn-outline-warning btn-sm' id='btn_editar".$id."'name='editar' style='background:blue;'> <i class='fa fa-edit'> Editar</i></button>
+				<button class='btn_arq_action btn btn-outline-danger btn-sm' id='btn_eliminar".$id."' name='eliminar' style='background:red;'> <i class='fa fa-trash'> Eliminar</i></button></td></tr>";
 	return $line;
 }
 
