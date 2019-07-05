@@ -307,6 +307,7 @@ if (!empty($_POST)) {
 			$name=$_POST['nameNewVm'];
 			$disk=$_POST['diskNewVm'];
 			$vcpu=$_POST['vcpuNewVm'];
+			
 			$ram=$_POST['ramNewVm'];
 			$image=$_POST['imageNewVm'];
 			$id_server=$vmJson['server']['id'];
