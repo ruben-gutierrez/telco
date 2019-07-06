@@ -904,11 +904,12 @@ function showInfoDomain(IdDomain){
                     
                         data += '<tr> <th scope="row">'+answer[x]['name_server']+'</th><td>'+answer[x]['ip_local']+'</td>';
                         data += '<td><form class="form" id="vertical_scalability">';
-                        data += '<input type="hidden" name="id_server" value="'+answer[x]['id_server']+'" placeholder="RAM">';
+                        data += '<div class="col"><input type="hidden" name="id_server" value="'+answer[x]['id_server']+'" placeholder="RAM">';
                         data += '<input class="col-md-3" type="number" name="ram" placeholder="RAM">';
                         data += '<input class="col-md-3" type="number" name="cpu" placeholder="CPU">';
-                        data += '<input class="col-md-3" type="number" name="hardDisk" placeholder="Disk">';
-                        data += '<input class="btn btn-outline-info ml-2" type="button" id="'+answer[x]['id_server']+'" value="Editar" onclick="editarVM(`'+answer[x]['id_server']+'`)"></form>';
+                        data += '<input class="col-md-3" type="number" name="hardDisk" placeholder="Disk"></div>';
+                        data += '<div class="col"><input class="btn btn-outline-info btn-sm m-1" type="button" id="'+answer[x]['id_server']+'" value="Editar" onclick="editarVM()">';
+                        data += '<input class="btn btn-outline-danger btn-sm m-1" type="button" id="'+answer[x]['id_server']+'" value="Eliminar" onclick="eliminarVM()"></div></form>';
                         data +='</td>';
                         data += '<td><button class="btn btn-outline-success">Terminal</button></td></tr>';
                         // num +=1;
@@ -924,8 +925,11 @@ function showInfoDomain(IdDomain){
             
         });   
 }
+function eliminarVM(){
+ console.log("Eliminar VM")
+}
 
-function editarVM(id_server){
+function editarVM(){
     var parametros = new FormData($('#vertical_scalability')[0]);
     parametros.append('action', '14');
     $.ajax({
@@ -960,11 +964,7 @@ function addVmtoDomain(idDomain){
         },
         success: function(data) {
             
-<<<<<<< HEAD
-            
-            //console.log(data);
-=======
->>>>>>> 9c89ea7537a2f6a0a001207279cc0e3ee31b6212
+
             var content='<form id="add_vm_domain">  <input type="hidden" class="form-control" name="idDomain" value="'+idDomain+'"> <div class="form-row">    <div class="form-group col-md-6">     <div class="form-group col">      <label>Nombre</label>      <input type="text" class="form-control" name="nameNewVm" placeholder="Nombre"> </div> <div class="form-group col">      <label>Sistema Operativo</label>      <select name="imageNewVm" class="form-control">        '+data+' </select>    </div>  </div>    <div class="form-group ">    <label>Flavor</label>    <input type="number" class="form-control col-md-6" name="ramNewVm" placeholder="RAM "> <input type="number" class="form-control col-md-6" name="vcpuNewVm" placeholder="VCPU "> <input type="number" class="form-control col-md-6" name="diskNewVm" placeholder="DISK "></div>       </div>   </div></form>';
             // console.log(content);
             addVM("Agregar Maquina Virtual", content);
@@ -1008,7 +1008,7 @@ function addVM(title, content) {
 
 function freeDomain( id ){
     var elec = confirm("¿Desea liberar la arquitectura?");
-<<<<<<< HEAD
+
    
    
     
@@ -1028,7 +1028,6 @@ function freeDomain( id ){
 
                     },
                     success: function(data) {
-<<<<<<< HEAD
                        // console.log(data);
                         if (data == '1') {
                             refreshTableArqByUser();
@@ -1042,21 +1041,9 @@ function freeDomain( id ){
                  });
 
              }
-=======
-                        // console.log(data);
-                        if (data == '1') {
-                            refreshTableArqByUser();
-                        } else {
-                            alert("Ha ocurrido un problema, intentelo mas tarde o contacte al administrador");
-                            // log-reporting
-                        }
 
-                    }
+                      
 
-                });
-
-            }
->>>>>>> 9c89ea7537a2f6a0a001207279cc0e3ee31b6212
 
 }
 
