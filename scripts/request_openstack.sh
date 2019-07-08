@@ -58,7 +58,7 @@ case $1 in
            curl -s -H POST http://$OS_IP_OPENSTACK/compute/v2.1/servers -H "Accept: application/json" -H "Content-Type: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H "X-OpenStack-Nova-API-Version: 2.1" -d '{"server": {"name": "'$2'", "imageRef": "'$3'", "key_name": "demo", "flavorRef": "'$4'", "max_count": 1, "min_count": 1, "networks": [{"uuid": "'$5'"}]}}' | python -m json.tool
           ;;
     delete_vm)
-         curl -g -i -X DELETE http://10.55.5.155/compute/v2.1/servers/b984181a-8437-4434-8c01-f76334443fc1 -H "Accept: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token: {SHA256}50d3f742eddd5fd73aea82c581c4e1b22f2eaf6ebbc51dca175b18a0a1bb5a54" -H "X-OpenStack-Nova-API-Version: 2.1"
+         curl -s -H DELETE http://$OS_IP_OPENSTACK/compute/v2.1/servers/$2 -H "Accept: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H "X-OpenStack-Nova-API-Version: 2.1"
 
           ;;
      create_flavor)

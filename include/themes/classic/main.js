@@ -326,8 +326,8 @@ function change_arqs_by_user() {
             if (data != '') {
                 $('#number_actual')[0].innerHTML = data;
             }
-            $('#content_arqByUsuary').hide();
-            $('#btn_see_table2').show();
+            // $('#content_arqByUsuary').hide();
+            // $('#btn_see_table2').show();
             // $('#btn_notsee_table2').hide();
         }
     });
@@ -349,13 +349,14 @@ function change_day_asig() {
             if (data != '') {
                 $('#number_day_actual')[0].innerHTML = data;
             }
-            $('#content_day_asig').hide();
-            $('#btn_see_table3').show();
-            $('#btn_notsee_table3').hide();
+            // $('#content_day_asig').hide();
+            // $('#btn_see_table3').show();
+            // $('#btn_notsee_table3').hide();
         }
     });
 
 }
+
 
 function desplegar_info_arq(dato) {
     //solicitud_asignacion.php action 6
@@ -881,11 +882,14 @@ function show_hide_content_byClass(content,incator){
     
 }
 
-function showInfoDomain(IdDomain){
+function showInfoDomain(IdDomain, core){
+    // console.log(core);
+
+
     $.ajax({
             method: "POST",
             url: "solicitud_asignacion.php",
-            data: { action: "12", domain: IdDomain }
+            data: { action: "12", domain: IdDomain, core: core }
         })
         .done(function(data) {
             // console.log(data);
@@ -893,6 +897,9 @@ function showInfoDomain(IdDomain){
                 if(data.length > 0 ){
                     var answer = JSON.parse(data);
                     // console.log(answer);
+                   
+
+                    data="<div class='container'>";
                     data="<div class='row'>";
                     data+='<table class="table" id="table_vms_domain">';
                     data+='<thead class="thead-dark">';
@@ -904,18 +911,24 @@ function showInfoDomain(IdDomain){
                     
                         data += '<tr> <th scope="row">'+answer[x]['name_server']+'</th><td>'+answer[x]['ip_local']+'</td>';
                         data += '<td><form class="form" id="vertical_scalability">';
-                        data += '<div class="col"><input type="hidden" name="id_server" value="'+answer[x]['id_server']+'" placeholder="RAM">';
+                        data += '<div class="row"><input type="hidden" name="id_server" value="'+answer[x]['id_server']+'" placeholder="RAM">';
                         data += '<input class="col-md-3" type="number" name="ram" placeholder="RAM">';
                         data += '<input class="col-md-3" type="number" name="cpu" placeholder="CPU">';
-                        data += '<input class="col-md-3" type="number" name="hardDisk" placeholder="Disk"></div>';
-                        data += '<div class="col"><input class="btn btn-outline-info btn-sm m-1" type="button" id="'+answer[x]['id_server']+'" value="Editar" onclick="editarVM()">';
-                        data += '<input class="btn btn-outline-danger btn-sm m-1" type="button" id="'+answer[x]['id_server']+'" value="Eliminar" onclick="eliminarVM()"></div></form>';
+                        data += '<input class="col-md-3" type="number" name="hardDisk" placeholder="Disk">';
+                        data += '<input class="btn btn-outline-info btn-sm m-1" type="button" id="'+answer[x]['id_server']+'" value="Editar" onclick="editarVM()">';
+                        data += '<div class="row">';
+                        data += '<input class="btn btn-outline-danger btn-sm m-1" type="button" id="'+answer[x]['id_server']+'" value="Eliminar" onclick="eliminarVM('+answer[x]['id_server']+')">';
+                        data += '<input class="btn btn-outline-secondary btn-sm m-1" type="button" id="'+answer[x]['id_server']+'" value="Encender" onclick="onVM('+answer[x]['id_server']+')">';
+                        data += '<input class="btn btn-outline-secondary btn-sm m-1" type="button" id="'+answer[x]['id_server']+'" value="Apagar" onclick="offVM('+answer[x]['id_server']+')">';
+                        data += '<input class="btn btn-outline-secondary btn-sm m-1" type="button" id="'+answer[x]['id_server']+'" value="Punto de control" onclick="takeSnaptVM('+answer[x]['id_server']+')">';
+                        data += '<input class="btn btn-outline-secondary btn-sm m-1" type="button" id="'+answer[x]['id_server']+'" value="Reestablecer" onclick="returnSnaptVM('+answer[x]['id_server']+')"></div></form>';
                         data +='</td>';
                         data += '<td><button class="btn btn-outline-success">Terminal</button></td></tr>';
                         // num +=1;
                     
                     }
-                    data+='</div>';
+                    data+='</div></div>';
+                    
                     mensaje("Maquinas VM de la Arquitectura", data);
                     // mensaje("Maquinas VM de la Arquitectura", answer);
                 }else{
@@ -925,8 +938,45 @@ function showInfoDomain(IdDomain){
             
         });   
 }
-function eliminarVM(){
- console.log("Eliminar VM")
+
+function eliminarVM(idServer){
+    $.ajax({
+        method: "POST",
+        url: "requestOpenstack.php",
+        data: { action: "1", idServer: idServer }
+    })
+    .done(function(data) {
+        if(data == "1"){
+            alertify.success('VM agregada');
+        }else{
+            alertify.error('Error al borrar VM, intentelo más tarde o contacta al administrador');
+        }
+        
+            
+    }); 
+}
+function onVM(idServer){
+    var answer=openstackSendIdServer("2",idServer);
+}
+function offVM(idServer){
+ console.log(sendIdServerToServer("15", idServer));
+}
+function takeSnaptVMVM(idServer){
+ console.log(sendIdServerToServer("15", idServer));
+}
+function returnSnaptVM(idServer){
+ console.log(sendIdServerToServer("15", idServer));
+}
+
+function openstackSendIdServer(action, idServer){
+    $.ajax({
+        method: "POST",
+        url: "requestOpenstack.php",
+        data: { action: action, idServer: idServer }
+    })
+    .done(function(data) {
+       return data;            
+    }); 
 }
 
 function editarVM(){
@@ -947,6 +997,26 @@ function editarVM(){
         }
 
     });
+}
+function sendIdServerToServer(action, id_server){
+    var parametros = new FormData();
+    parametros.append('action', action);
+    parametros.append('id_server', id_server);
+    $.ajax({
+        url: 'solicitud_asignacion.php',
+        type: 'POST',
+        contentType: false,
+        processData: false,
+        data: parametros,
+        beforesend: function() {
+
+        },
+        success: function(data) {
+           return data;
+        }
+
+    });
+
 }
 
 function addVmtoDomain(idDomain){

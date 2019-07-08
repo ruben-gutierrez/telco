@@ -5571,6 +5571,14 @@ function guide_test_bono(){
 
 }
 
-
-
-	
+//si el borrado es exitoso se retorna 1 de lo contrario retorna 0
+function deleteVm($idServer){
+	$action='delete_vm';
+	$answer=shell_exec("./scripts/request_openstack.sh $action $idServer");
+	$delVm = json_decode($answer, true);
+	if(key($delVm) == "error" || $delVm == ''){
+		return "0";
+	}else{
+		return "1";
+	}
+}

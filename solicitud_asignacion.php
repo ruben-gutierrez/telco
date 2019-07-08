@@ -283,17 +283,14 @@ if (!empty($_POST)) {
 			break;
 			
 		case '12'://consultar maquinas virtuales por usuario
-			// print($_POST['domain']);
 			$domain=db_fetch_cell_prepared("SELECT dominio from arqs_testbedims where id=".$_POST['domain']);
-			// print($domain);
-			$ips_domain=db_fetch_assoc("select s.name_server, s.ip_local from server_openstack s inner join core_domain c on c.id_server=s.id_server where c.domain='".$domain."'");
-
-			// $ips_domain=db_fetch_assoc("select s.id_server, s.name_server, s.ip_local from server_openstack s inner join core_domain c on c.id_server=s.id_server");
-			// print_r($ips_domain);
+			$ips_domain=db_fetch_assoc("select s.id_server, s.name_server, s.ip_local from server_openstack s inner join core_domain c on c.id_server=s.id_server where c.domain='".$domain."'");
 			$ips_aditionals=db_fetch_assoc("SELECT id_server,name_server, ip_local from vm_aditional_testbedims where dominio='".$domain."'");
-
-			echo json_encode($ips_domain+$ips_aditionals);
-
+			if ($_POST['core']== "true") {
+				echo json_encode($ips_domain);
+			}else{
+				echo json_encode($ips_aditionals);
+			}
 			break;
 		case '13'://agregar vm a dominio user
 			// print_r($_POST);
@@ -335,6 +332,10 @@ if (!empty($_POST)) {
 		case '14'://consultar maquinas virtuales por usuario
 			$flavor=id_flavor( $_POST['ram'],$_POST['cpu'],$_POST['hardDisk']);
 			update_vm($id_server, $flavor);
+
+			break;
+		case '15'://consultar maquinas virtuales por usuario
+			echo $_POST['id_server'];
 
 			break;
 		default:

@@ -22,7 +22,7 @@ global $config, $current_user;
 			</nav>
 			
  			<div class="content_section"><p>En esta sección se puede agregar, modificar eliminar y ilberar las arquitecturas disponibles en el testbed</p></div> 
-	 		<section id="table_arquitectura" class="section_admin_arquitectura" style="display: none;">
+	 		<section id="table_arquitectura" class="section_admin_arquitectura" >
 			
 				<div class="content_section">
 					
@@ -47,28 +47,55 @@ global $config, $current_user;
 	 		</section>
 
 	 		<section id="add_arq" class="section_admin_arquitectura" tabindex='0' style="display: none;">
-	 			<div class="name_section">Agregar arquitectura</div>
-	 			<div class="content_section">
+	 			<div class="name_section bg-dark">Agregar arquitectura</div>
+	 			<div class="content_section container-6 ">
 	 				<form method="post" id="form_new_arq" class="form_arq" enctype="multipart/form-data">
 	 					<input type="hidden" name="action" value="3">
-	 					<input type="text" name="name_arq" placeholder="Nombre" autofocus required>
-						 <input type="text" name="dominio_arq" placeholder="Dominio" required>
-						 <label>Seleccione el tipo de arquitectura</label>
-	 						<select type="select" name="type" placeholder='Tipo de arquitectura'>
-	 						  <option value="aio">Todo en uno</option>
-	 						  <option value="dist">Distribuida</option>
-	 						  <option value="dist_pstn">Distribuida + PSTN</option>
-	 						</select> 
-	 					<textarea name="desc_arq" placeholder="Descripcion" required></textarea>
-		 				<label><h3>Imagen de arquitectura</h3></label>
-						 <input type="file" name="image" accept=".jpg, .jpeg, .png" required>
-						 
-		 				<div>
+						 <div class="row">
+							<div class="col">
+								<label class="col-6" for="name_arq">Nombre de arquitectura</label>
+								<input class="col-6" type="text" name="name_arq" placeholder="Nombre" autofocus required>
+								<label class="col-6" for="dominio_arq">Dominio de arquitectura</label>
+								<input class="col-6" type="text" name="dominio_arq" placeholder="Dirección de red" required>
+								<label class="col-6" for="type">Seleccione el tipo de arquitectura</label>
+								<select class="col-6" type="select" name="type"  >
+									<option value="aio">Todo en uno</option>
+									<option value="dist">Distribuida</option>
+									<option value="dist_pstn">Distribuida + PSTN</option>
+								</select> 
+								<label class="col-6" for="desc_arq">Descripción</label>
+								<textarea name="desc_arq" placeholder="Texto menor de 400 caracteres" required></textarea>
+							</div>
+							<div class="col">
 
-		 					<input id="btn_new_arq" name="btn_save" class="btn_form" type="button" value="Guardar" onclick="add_arquitec()">
-		 					<input  id="btn_cancelar" class="btn_form"type="button" value="Cancelar" onclick="$('#table_arquitectura').show(500);$('#add_arq').hide(600);$('#btn_notsee_table').show();$('#btn_see_table').hide();">
-		 				</div>
-		 				
+								<div class="col">
+									<label class="col-6" for="vm_aditional">Máximo número de VM adicionales</label>
+									<input class="col-6" type="number" name="vm_aditional" placeholder="Número entero">
+								</div>
+								<div class="col">
+									<label class="col-6" for="vm_aditional">Máximo número de VM adicionales</label>
+									<input class="col-6" type="number" name="vm_aditional" placeholder="Número entero">
+								</div>
+								
+								<div class="col">
+									<label class="col-6" for="vm_aditional">Máximo número de VM adicionales</label>
+									<input class="col-6" type="number" name="vm_aditional" placeholder="Número entero">
+								</div>
+								<div class="col">
+									<label class="col-6" for="vm_aditional">Máximo número de VM adicionales</label>
+									<input class="col-6" type="number" name="vm_aditional" placeholder="Número entero">
+								</div>
+							
+								<label for="image"><h3>Imagen de arquitectura</h3></label>
+								<input type="file" name="image" accept=".jpg, .jpeg, .png" required>
+							</div>
+						</div>
+						<div class="row center mt-3">
+
+							<input id="btn_new_arq" name="btn_save" class="btn_form btn btn-primary" type="button" value="Guardar" onclick="add_arquitec()">
+							<input  id="btn_cancelar" class="btn_form btn btn-outline-danger" type="button" value="Cancelar" onclick="$('#table_arquitectura').show(500);$('#add_arq').hide(600);$('#btn_notsee_table').show();$('#btn_see_table').hide();">
+						</div>
+					
 		 				
 		 			</form>
 	 			</div>
@@ -95,38 +122,75 @@ global $config, $current_user;
 	 		</section>
  		</section>
  		<section class="section_admin_arquitecuta">
-			<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('content_arqByUsuary', 'indicate_solicitedArquitecture')">
-					<a class="navbar-brand text-white"><b> Arquitecturas por Usuario</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
+			<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('content_restrictions', 'indicate_solicitedArquitecture')">
+					<a class="navbar-brand text-white"><b> Restricciones</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
 			</nav>	 
 			 
- 			<div class="content_section">
- 					<label>Numero de arquitectura que puede reservar cada usuario:<label id="number_actual"><?php echo(db_fetch_cell_prepared("select value_info from data_testbedims where id_data='1'")); ?></label></label>
- 					<div id="content_arqByUsuary" style="display: none;" class="content_arqByUsuary">
-	 					Cambiar a
-	 					<form class="form_arq" method="post" id="form_arq_by_user">
-	 						<input type="hidden" name="action" value="7">
-	 						<input type="number" name="numero" value="1" required>
-	 						<input class="btn btn-outline-warning" type="button" name="btn_set" value="Cambiar" onclick="change_arqs_by_user()">
-	 					</form>
- 					</div>
+ 			<div class="content_section container">
+			 	<label>Restricciones del testbed IMS</label>
+				<div class="content_restrictions" style="display:none">
+					<div class="row">
+							
+
+					
+						<div id="content_arqByUsuary" class="col content_arqByUsuary">
+						<label>Arquitecturas a reservar:<label id="number_actual"><?php echo(db_fetch_cell_prepared("select value_info from data_testbedims where id_data='1'")); ?></label></label>
+
+							<form class="form_arq" method="post" id="form_arq_by_user">
+								<input type="hidden" name="action" value="7">
+								<input type="number" name="numero" value="1" required>
+								<input class="btn btn-outline-warning" type="button" name="btn_set" value="Cambiar" onclick="change_arqs_by_user()">
+							</form>
+						</div>
+				
+						
+						<div id="content_day_asig" class="col day_asig">
+							<label>Dias de asignación:<label id="number_day_actual"><?php echo(db_fetch_cell_prepared("select value_info from data_testbedims where id_data='2'")); ?></label></label>
+							<form class="form_arq" method="post" id="form_day_asig">
+								<input type="hidden" name="action" value="8">
+								<input type="number" name="numero" value="1" required>
+								<input class="btn btn-outline-warning" type="button" name="btn_set" value="Cambiar" onclick="change_day_asig()">
+							</form>
+						</div>
+						
+
+
+					</div>
+						
+					
+
+
+
+					
+				</div>
  			</div>
  		</section>
- 		<section class="section_admin_arquitecuta">
-		 	<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('day_asig', 'indicate_solicitedArquitecture')">
-					<a class="navbar-brand text-white"><b> Dias de Asignación</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
-			</nav>
- 			<div class="content_section">
- 					<label>Numero de dias que se asigna la arquitectura:<label id="number_day_actual"><?php echo(db_fetch_cell_prepared("select value_info from data_testbedims where id_data='2'")); ?></label></label>
- 					<div id="content_day_asig" style="display: none;" class="day_asig">
-	 					Cambiar a
-	 					<form class="form_arq" method="post" id="form_day_asig">
-	 						<input type="hidden" name="action" value="8">
-	 						<input type="number" name="numero" value="1" required>
-	 						<input class="btn btn-outline-warning" type="button" name="btn_set" value="Cambiar" onclick="change_day_asig()">
-	 					</form>
- 					</div>
- 			</div>
- 		</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		 
 
  		<section  id="info_arq" class="section_admin_arquitecuta" tabindex="0">
 		 	<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('type_arq', 'indicate_solicitedArquitecture')">
