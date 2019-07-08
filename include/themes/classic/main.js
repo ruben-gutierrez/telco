@@ -909,7 +909,7 @@ function showInfoDomain(IdDomain, core){
                     for (var x in answer) {
                         // console.log(answer[x]['name_server']);
                     
-                        data += '<tr> <th scope="row">'+answer[x]['name_server']+'</th><td>'+answer[x]['ip_local']+'</td>';
+                        data += '<tr id="'+answer[x]['id_server']+'"> <th scope="row">'+answer[x]['name_server']+'</th><td>'+answer[x]['ip_local']+'</td>';
                         data += '<td><form class="form" id="vertical_scalability">';
                         data += '<div class="row"><input type="hidden" name="id_server" value="'+answer[x]['id_server']+'" placeholder="RAM">';
                         data += '<input class="col-md-3" type="number" name="ram" placeholder="RAM">';
@@ -917,7 +917,7 @@ function showInfoDomain(IdDomain, core){
                         data += '<input class="col-md-3" type="number" name="hardDisk" placeholder="Disk">';
                         data += '<input class="btn btn-outline-info btn-sm m-1" type="button" id="'+answer[x]['id_server']+'" value="Editar" onclick="editarVM()">';
                         data += '<div class="row">';
-                        data += '<input class="btn btn-outline-danger btn-sm m-1" type="button" id="'+answer[x]['id_server']+'" value="Eliminar" onclick="eliminarVM('+answer[x]['id_server']+')">';
+                        data += '<input class="btn btn-outline-danger btn-sm m-1" type="button" id="'+answer[x]['id_server']+'" value="Eliminar" onclick="eliminarVM(`'+answer[x]['id_server']+'`)">';
                         data += '<input class="btn btn-outline-secondary btn-sm m-1" type="button" id="'+answer[x]['id_server']+'" value="Encender" onclick="onVM('+answer[x]['id_server']+')">';
                         data += '<input class="btn btn-outline-secondary btn-sm m-1" type="button" id="'+answer[x]['id_server']+'" value="Apagar" onclick="offVM('+answer[x]['id_server']+')">';
                         data += '<input class="btn btn-outline-secondary btn-sm m-1" type="button" id="'+answer[x]['id_server']+'" value="Punto de control" onclick="takeSnaptVM('+answer[x]['id_server']+')">';
@@ -925,7 +925,6 @@ function showInfoDomain(IdDomain, core){
                         data +='</td>';
                         data += '<td><button class="btn btn-outline-success">Terminal</button></td></tr>';
                         // num +=1;
-                    
                     }
                     data+='</div></div>';
                     
@@ -940,14 +939,18 @@ function showInfoDomain(IdDomain, core){
 }
 
 function eliminarVM(idServer){
+    console.log(idServer);
     $.ajax({
         method: "POST",
         url: "requestOpenstack.php",
         data: { action: "1", idServer: idServer }
     })
     .done(function(data) {
+        // console.log(data);
         if(data == "1"){
-            alertify.success('VM agregada');
+            $('.alertify').remove()
+            alertify.success('VM Eliminada');
+
         }else{
             alertify.error('Error al borrar VM, intentelo más tarde o contacta al administrador');
         }

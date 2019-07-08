@@ -84,6 +84,7 @@ $no_http_header_files = array(
 	'cmd.php',
 	'admin_info.php',
 	'solicitud_asignacion.php',
+	'requestOpenstack.php',
 	'ejecucion_pruebas.php',
 	'poller.php',
 	'poller_commands.php',
