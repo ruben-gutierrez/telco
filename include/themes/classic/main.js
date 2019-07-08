@@ -936,6 +936,7 @@ function showInfoDomain(IdDomain, core){
            
             
         });   
+        
 }
 
 function eliminarVM(idServer){
