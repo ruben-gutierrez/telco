@@ -5583,3 +5583,17 @@ function deleteVm($idServer){
 		return "1";
 	}
 }
+
+
+function onVm($idServer){
+	$action='start_server';
+	$answer=shell_exec("./scripts/request_openstack.sh $action $idServer");
+	$stopVm = json_decode($answer, true);
+	print_r($stopVm);
+	//if(key($stopVm) == "error"){
+	//	return "0";
+	//}else{
+	//	return "1";
+	//}
+
+}

@@ -936,7 +936,7 @@ function showInfoDomain(IdDomain, core){
            
             
         });   
-        
+
 }
 
 function eliminarVM(idServer){
@@ -961,6 +961,9 @@ function eliminarVM(idServer){
 }
 function onVM(idServer){
     var answer=openstackSendIdServer("2",idServer);
+    if( answer == '1'){
+        
+    }
 }
 function offVM(idServer){
  console.log(sendIdServerToServer("15", idServer));

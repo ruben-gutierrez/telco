@@ -21,8 +21,10 @@ if (!empty($_POST)) {
             }
             print_r($ans);
             break;
-        case '1':
-            # code...
+        case '2':
+            // echo $_POST['idServer'];
+            $ans=onVm($_POST['idServer']);
+            print_r($ans);
             break;
         case '1':
             # code...

@@ -59,7 +59,7 @@ case $1 in
           ;;
     delete_vm)
         #  curl -s -H DELETE http://$OS_IP_OPENSTACK/compute/v2.1/servers/$2 -H "Accept: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H "X-OpenStack-Nova-API-Version: 2.1"
-        curl -g -i -X DELETE http://$OS_IP_OPENSTACK/compute/v2.1/servers/$2 -H "Accept: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token:  $(echo $token | tr -d '[[:space:]]')" -H "X-OpenStack-Nova-API-Version: 2.1"
+        curl -s -H DELETE http://$OS_IP_OPENSTACK/compute/v2.1/servers/$2 -H "Accept: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token:  $(echo $token | tr -d '[[:space:]]')" -H "X-OpenStack-Nova-API-Version: 2.1"
           ;;
      create_flavor)
            curl -s -H  POST http://$OS_IP_OPENSTACK/compute/v2.1/flavors -H "Accept: application/json" -H "Content-Type: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H "X-OpenStack-Nova-API-Version: 2.1" -d '{"flavor": {"vcpus": "'$2'", "disk": "'$3'", "name": "'$4'", "os-flavor-access:is_public": true, "rxtx_factor": 1.0, "OS-FLV-EXT-DATA:ephemeral": 0, "ram": "'$5'", "id": null, "swap": 0}}'| python -m json.tool
@@ -72,11 +72,11 @@ case $1 in
           ;;
     stop_server)
         #  openstack --debug server stop <id_server>
-           curl -g -i -X POST http://10.55.5.155/compute/v2.1/servers/f86f1533-0793-4e81-84b3-5264b530f7d1/action -H "Accept: application/json" -H "Content-Type: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token: {SHA256}ff380c6150324d41139f6af690be550c56ef02dc29ce7a6f18f70baf82f0ef43" -H "X-OpenStack-Nova-API-Version: 2.1" -d '{"os-stop": null}'
+           curl s -H POST http://$OS_IP_OPENSTACK/compute/v2.1/servers/$2 -H "Accept: application/json" -H "Content-Type: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H "X-OpenStack-Nova-API-Version: 2.1" -d '{"os-stop": null}'
           ;;
     start_server)
         #  openstack --debug server start <id_server>
-           curl -g -i -X POST http://10.55.5.155/compute/v2.1/servers/f86f1533-0793-4e81-84b3-5264b530f7d1/action -H "Accept: application/json" -H "Content-Type: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token: {SHA256}c54ddf71473ec39a3361a90e8d4dcd732a1ba40c6c6cd5d4b1a32cba450c5785" -H "X-OpenStack-Nova-API-Version: 2.1" -d '{"os-start": null}'
+           curl -s -H POST http://$OS_IP_OPENSTACK/compute/v2.1/servers/$2 -H "Accept: application/json" -H "Content-Type: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H "X-OpenStack-Nova-API-Version: 2.1" -d '{"os-start": null}'
           ;;
     pause_server)
         #  openstack --debug server pause <id_server>
