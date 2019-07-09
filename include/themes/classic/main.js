@@ -915,13 +915,13 @@ function showInfoDomain(IdDomain, core){
                         data += '<input class="col-md-3" type="number" name="ram" placeholder="RAM">';
                         data += '<input class="col-md-3" type="number" name="cpu" placeholder="CPU">';
                         data += '<input class="col-md-3" type="number" name="hardDisk" placeholder="Disk">';
-                        data += '<input class="btn btn-outline-info btn-sm m-1" type="button" id="'+answer[x]['id_server']+'" value="Editar" onclick="editarVM()">';
+                        data += '<input class="btn btn-outline-info btn-sm m-1" type="button" id="'+answer[x]['id_server']+'" value="Editar" onclick="editarVM()"></form>';
                         data += '<div class="row">';
                         data += '<input class="btn btn-outline-danger btn-sm m-1" type="button" id="'+answer[x]['id_server']+'" value="Eliminar" onclick="eliminarVM(`'+answer[x]['id_server']+'`)">';
                         data += '<input class="btn btn-outline-secondary btn-sm m-1" type="button" id="'+answer[x]['id_server']+'" value="Encender" onclick="onVM('+answer[x]['id_server']+')">';
                         data += '<input class="btn btn-outline-secondary btn-sm m-1" type="button" id="'+answer[x]['id_server']+'" value="Apagar" onclick="offVM('+answer[x]['id_server']+')">';
                         data += '<input class="btn btn-outline-secondary btn-sm m-1" type="button" id="'+answer[x]['id_server']+'" value="Punto de control" onclick="takeSnaptVM('+answer[x]['id_server']+')">';
-                        data += '<input class="btn btn-outline-secondary btn-sm m-1" type="button" id="'+answer[x]['id_server']+'" value="Reestablecer" onclick="returnSnaptVM('+answer[x]['id_server']+')"></div></form>';
+                        data += '<input class="btn btn-outline-secondary btn-sm m-1" type="button" id="'+answer[x]['id_server']+'" value="Reestablecer" onclick="returnSnaptVM('+answer[x]['id_server']+')"></div>';
                         data +='</td>';
                         data += '<td><button class="btn btn-outline-success">Terminal</button></td></tr>';
                         // num +=1;
@@ -960,13 +960,18 @@ function eliminarVM(idServer){
     }); 
 }
 function onVM(idServer){
+<<<<<<< HEAD
     var answer=openstackSendIdServer("2",idServer);
     if( answer == '1'){
         
     }
+=======
+    var answer=openstackSendIdServer("4",idServer);
+>>>>>>> 1a67e44a09a849ec076a71ae22eb8a8570aa4a9d
 }
 function offVM(idServer){
- console.log(sendIdServerToServer("15", idServer));
+    var answer=openstackSendIdServer("3",idServer);
+
 }
 function takeSnaptVMVM(idServer){
  console.log(sendIdServerToServer("15", idServer));
