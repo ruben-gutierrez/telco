@@ -21,6 +21,32 @@ if (!empty($_POST)) {
             }
             print_r($ans);
             break;
+        case '2':
+            
+            $idFlavor=id_flavor($_POST['ram'],$_POST['vcpu'], $_POST['disk']);
+            print_r( reziseServer($_POST['idServer'], $idFlavor) );
+            break;
+        case '3':
+            print_r(stopServer($_POST['idServer']));
+            break;
+        case '4':
+            print_r(startServer($_POST['idServer']));
+            break;
+        case '5':
+            print_r(pauseServer($_POST['idServer']));
+            break;
+        case '6':
+            print_r(unpauseServer($_POST['idServer']));
+            break;
+        case '7':
+            print_r(createRouter($_POST['nameRouter']));
+            break;
+        case '8':
+     
+            break;
+        case '1':
+            # code...
+            break;
         case '1':
             # code...
             break;

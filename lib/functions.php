@@ -5583,3 +5583,117 @@ function deleteVm($idServer){
 		return "1";
 	}
 }
+
+
+function reziseServer($idServer, $idFlavor){
+	$action='rezise_server';
+	$answer=shell_exec("./scripts/request_openstack.sh $action $idServer $idFlavor");
+	$ans = json_decode($answer, true);
+	print_r($ans);
+	// if(key($delVm) == "error"){
+	// 	return "0";
+	// }else{
+	// 	return "1";
+	// }
+}
+
+function stopServer($idServer){
+	$action='stop_server';
+	$answer=shell_exec("./scripts/request_openstack.sh $action $idServer");
+	$ans = json_decode($answer, true);
+	print_r($ans);
+	// if(key($delVm) == "error"){
+	// 	return "0";
+	// }else{
+	// 	return "1";
+	// }
+}
+
+function startServer($idServer){
+	$action='start_server';
+	$answer=shell_exec("./scripts/request_openstack.sh $action $idServer");
+	$ans = json_decode($answer, true);
+	print_r($ans);
+	// if(key($delVm) == "error"){
+	// 	return "0";
+	// }else{
+	// 	return "1";
+	// }
+}
+function pauseServer($idServer){
+	$action='pause_server';
+	$answer=shell_exec("./scripts/request_openstack.sh $action $idServer");
+	$ans = json_decode($answer, true);
+	print_r($ans);
+	// if(key($delVm) == "error"){
+	// 	return "0";
+	// }else{
+	// 	return "1";
+	// }
+}
+function unpauseServer($idServer){
+	$action='unpause_server';
+	$answer=shell_exec("./scripts/request_openstack.sh $action $idServer");
+	$ans = json_decode($answer, true);
+	print_r($ans);
+	// if(key($delVm) == "error"){
+	// 	return "0";
+	// }else{
+	// 	return "1";
+	// }
+}
+function createRouter($nameRouter){
+	$action='create_router';
+	$answer=shell_exec("./scripts/request_openstack.sh $action $nameRouter");
+	$ans = json_decode($answer, true);
+	print_r($ans);
+	// if(key($delVm) == "error"){
+	// 	return "0";
+	// }else{
+	// 	return "1";
+	// }
+}
+function conectRouterNetPublic($idRouter, $idNet){
+	$action='conect_router_netPublic';
+	$answer=shell_exec("./scripts/request_openstack.sh $action $idRouter $idNet");
+	$ans = json_decode($answer, true);
+	print_r($ans);
+	// if(key($delVm) == "error"){
+	// 	return "0";
+	// }else{
+	// 	return "1";
+	// }
+}
+function conectRouterNetPrivate($idRouter, $idNet){
+	$action='conect_router_netPrivate';
+	$answer=shell_exec("./scripts/request_openstack.sh $action $idRouter $idNet");
+	$ans = json_decode($answer, true);
+	print_r($ans);
+	// if(key($delVm) == "error"){
+	// 	return "0";
+	// }else{
+	// 	return "1";
+	// }
+}
+function addIpFloatServer($idRouter, $idSubNet){
+	$action='add_ipFloat_server';
+	$answer=shell_exec("./scripts/request_openstack.sh $action $idRouter $idSubNet");
+	$ans = json_decode($answer, true);
+	print_r($ans);
+	// if(key($delVm) == "error"){
+	// 	return "0";
+	// }else{
+	// 	return "1";
+	// }
+}
+function createIpfloat($idFloatNet){
+	$action='create_ipfloat';
+	$answer=shell_exec("./scripts/request_openstack.sh $action $idFloatNet");
+	$ans = json_decode($answer, true);
+	print_r($ans);
+	// if(key($delVm) == "error"){
+	// 	return "0";
+	// }else{
+	// 	return "1";
+	// }
+}
