@@ -5328,7 +5328,7 @@ function create_net($name_net, $description, $domain){
 	$arrayJson = json_decode($respuesta, true);
 	// print_r($arrayJson);
 
-	if(key($arrayJson) == "error" || $arrayJson == ''){
+	if(key($arrayJson) == "error"){
 		echo "fail openstack";
 	}else{
 		$id_net=$arrayJson['network']['id'];
@@ -5358,10 +5358,13 @@ function create_vm($name_server, $id_image, $flavor_ref, $id_net){
 	$vm_created=shell_exec("./scripts/request_openstack.sh $action $name_server $id_image $flavor_ref $id_net");
 	return $vm_created;
 }
-function update_vm($id_server, $flavor){
-	$action='change_flavor';
-	$vm_modificate=shell_exec("./scripts/request_openstack.sh $action $id_server $flavor");
-	return $vm_modificate;
+function rezise_vm($id_server, $idFlavor){
+	$action='rezise_server';
+	$vm_modificate=shell_exec("./scripts/request_openstack.sh $action $id_server $idFlavor");
+	print($vm_modificate);
+	echo $id_server;
+	echo "flavor";
+	echo $idFlavor;
 }
 
 function id_subnet_ofDomain($domain){
@@ -5577,6 +5580,7 @@ function deleteVm($idServer){
 	$action='delete_vm';
 	$answer=shell_exec("./scripts/request_openstack.sh $action $idServer");
 	$delVm = json_decode($answer, true);
+	// print_r($delVm);
 	if(key($delVm) == "error"){
 		return "0";
 	}else{
@@ -5585,9 +5589,8 @@ function deleteVm($idServer){
 }
 
 
-<<<<<<< HEAD
 function onVm($idServer){
-	$action='start_server';
+	$action='on_server';
 	$answer=shell_exec("./scripts/request_openstack.sh $action $idServer");
 	$stopVm = json_decode($answer, true);
 	print_r($stopVm);
@@ -5596,8 +5599,8 @@ function onVm($idServer){
 	//}else{
 	//	return "1";
 	//}
+	}
 
-=======
 function reziseServer($idServer, $idFlavor){
 	$action='rezise_server';
 	$answer=shell_exec("./scripts/request_openstack.sh $action $idServer $idFlavor");
@@ -5610,8 +5613,8 @@ function reziseServer($idServer, $idFlavor){
 	// }
 }
 
-function stopServer($idServer){
-	$action='stop_server';
+function offServer($idServer){
+	$action='off_server';
 	$answer=shell_exec("./scripts/request_openstack.sh $action $idServer");
 	$ans = json_decode($answer, true);
 	print_r($ans);
@@ -5622,17 +5625,17 @@ function stopServer($idServer){
 	// }
 }
 
-function startServer($idServer){
-	$action='start_server';
-	$answer=shell_exec("./scripts/request_openstack.sh $action $idServer");
-	$ans = json_decode($answer, true);
-	print_r($ans);
-	// if(key($delVm) == "error"){
-	// 	return "0";
-	// }else{
-	// 	return "1";
-	// }
-}
+// function startServer($idServer){
+// 	$action='start_server';
+// 	$answer=shell_exec("./scripts/request_openstack.sh $action $idServer");
+// 	$ans = json_decode($answer, true);
+// 	print_r($ans);
+// 	// if(key($delVm) == "error"){
+// 	// 	return "0";
+// 	// }else{
+// 	// 	return "1";
+// 	// }
+// }
 function pauseServer($idServer){
 	$action='pause_server';
 	$answer=shell_exec("./scripts/request_openstack.sh $action $idServer");
@@ -5709,5 +5712,31 @@ function createIpfloat($idFloatNet){
 	// }else{
 	// 	return "1";
 	// }
->>>>>>> 1a67e44a09a849ec076a71ae22eb8a8570aa4a9d
+
+}
+function createInstantImage($name, $idServer){
+	$action="create_instant_image";
+	$answer=shell_exec("./scripts/request_openstack.sh $action $name");
+	$ans = json_decode($answer, true);
+	return($ans);
+	// $action="set_instant_image";
+	// print_r(shell_exec("./scripts/request_openstack.sh $action $idImage $idServer $name"));
+}
+function deleteInstantImage($idImage){
+	$action="delete_instant_image";
+	$answer=shell_exec("./scripts/request_openstack.sh $action $idImage");
+	$ans = json_decode($answer, true);
+	return($ans);
+}
+function setInstantImage($idImage, $idServer, $name){
+	$action="set_instant_image";
+	$answer=shell_exec("./scripts/request_openstack.sh $action $idImage $idServer $name");
+	$ans = json_decode($answer, true);
+	return($ans);
+}
+function rebuildServerImage($idServer, $idImage){
+	$action="rebuild_server_image";
+	$answer=shell_exec("./scripts/request_openstack.sh $action $idServer $idImage");
+	$ans = json_decode($answer, true);
+	return($ans);
 }

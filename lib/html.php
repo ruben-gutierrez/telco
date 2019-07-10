@@ -2471,6 +2471,7 @@ function draw_table_servers_openstack(){
 }
 
 function consult_servers_openstack(){
+	db_execute("delete from server_openstack");
 	$servers=shell_exec("./scripts/request_openstack.sh consult servers");
 	$serversJson = json_decode($servers, true);
 	// print_r($serversJson['servers']['0']);

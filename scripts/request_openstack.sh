@@ -47,7 +47,7 @@ case $1 in
           curl -s -H POST http://$OS_IP_OPENSTACK:9696/v2.0/networks -H "Content-Type: application/json" -H "User-Agent: openstacksdk/0.31.0 keystoneauth1/3.14.0 python-requests/2.22.0 CPython/2.7.15+" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -d '{"network": {"name": "'$2'", "description":"'$3'","admin_state_up": true}}' | python -m json.tool
           ;;
      delete_network)
-            #openstack --debug network delete <name_net>
+            #openstack network delete <name_net>
           curl -g -i -X DELETE http://$OS_IP_OPENSTACK:9696/v2.0/networks/$2 -H "Accept: " -H "User-Agent: openstacksdk/0.31.0 keystoneauth1/3.14.0 python-requests/2.22.0 CPython/2.7.15+" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')"
           ;;
      subnet)
@@ -59,39 +59,30 @@ case $1 in
           ;;
     delete_vm)
         #  curl -s -H DELETE http://$OS_IP_OPENSTACK/compute/v2.1/servers/$2 -H "Accept: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H "X-OpenStack-Nova-API-Version: 2.1"
-        curl -s -H DELETE http://$OS_IP_OPENSTACK/compute/v2.1/servers/$2 -H "Accept: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token:  $(echo $token | tr -d '[[:space:]]')" -H "X-OpenStack-Nova-API-Version: 2.1"
+        curl -g -i -X DELETE http://$OS_IP_OPENSTACK/compute/v2.1/servers/$2 -H "Accept: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token:  $(echo $token | tr -d '[[:space:]]')" -H "X-OpenStack-Nova-API-Version: 2.1"
           ;;
      create_flavor)
            curl -s -H  POST http://$OS_IP_OPENSTACK/compute/v2.1/flavors -H "Accept: application/json" -H "Content-Type: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H "X-OpenStack-Nova-API-Version: 2.1" -d '{"flavor": {"vcpus": "'$2'", "disk": "'$3'", "name": "'$4'", "os-flavor-access:is_public": true, "rxtx_factor": 1.0, "OS-FLV-EXT-DATA:ephemeral": 0, "ram": "'$5'", "id": null, "swap": 0}}'| python -m json.tool
           ;;
     rezise_server)
-        #  openstack --debug server resize --flavor <id_flavor> <id_server>
-           curl -s -H POST http://$OS_IP_OPENSTACK/compute/v2.1/servers/$2/action -H "Accept: application/json" -H "Content-Type: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H "X-OpenStack-Nova-API-Version: 2.1" -d '{"resize": {"flavorRef": "'$3'"}}'
-           sleep 30
-           curl -s -H POST http://$OS_IP_OPENSTACK/compute/v2.1/servers/$2/action -H "Accept: application/json" -H "Content-Type: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H "X-OpenStack-Nova-API-Version: 2.1" -d '{"confirmResize": null}'
+         curl -s -H POST http://$OS_IP_OPENSTACK/compute/v2.1/servers/$2/action -H "Accept: application/json" -H "Content-Type: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H "X-OpenStack-Nova-API-Version: 2.1" -d '{"resize": {"flavorRef": "'$3'"}}'
+         sleep 180
+         curl -g -i -X POST http://$OS_IP_OPENSTACK/compute/v2.1/servers/$2/action -H "Accept: application/json" -H "Content-Type: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H "X-OpenStack-Nova-API-Version: 2.1" -d '{"confirmResize": null}'
           ;;
-    stop_server)
-        #  openstack --debug server stop <id_server>
-<<<<<<< HEAD
-           curl s -H POST http://$OS_IP_OPENSTACK/compute/v2.1/servers/$2 -H "Accept: application/json" -H "Content-Type: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H "X-OpenStack-Nova-API-Version: 2.1" -d '{"os-stop": null}'
-          ;;
-    start_server)
-        #  openstack --debug server start <id_server>
-           curl -s -H POST http://$OS_IP_OPENSTACK/compute/v2.1/servers/$2 -H "Accept: application/json" -H "Content-Type: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H "X-OpenStack-Nova-API-Version: 2.1" -d '{"os-start": null}'
-=======
+    off_server)
+        #  openstack server stop <id_server>
            curl -s -H POST http://$OS_IP_OPENSTACK/compute/v2.1/servers/$2/action -H "Accept: application/json" -H "Content-Type: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H "X-OpenStack-Nova-API-Version: 2.1" -d '{"os-stop": null}'
           ;;
-    start_server)
-        #  openstack --debug server start <id_server>
+    on_server)
+        #  openstack server start <id_server>
            curl -s -H POST http://$OS_IP_OPENSTACK/compute/v2.1/servers/$2/action -H "Accept: application/json" -H "Content-Type: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H "X-OpenStack-Nova-API-Version: 2.1" -d '{"os-start": null}'
->>>>>>> 1a67e44a09a849ec076a71ae22eb8a8570aa4a9d
           ;;
     pause_server)
-        #  openstack --debug server pause <id_server>
+        #  openstack server pause <id_server>
            curl -s -H POST http://$OS_IP_OPENSTACK/compute/v2.1/servers/$2/action -H "Accept: application/json" -H "Content-Type: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H "X-OpenStack-Nova-API-Version: 2.1" -d '{"pause": null}'
           ;;
     unpause_server)
-        #  openstack --debug server unpause <id_server>
+        #  openstack server unpause <id_server>
            curl -s -H POST http://$OS_IP_OPENSTACK/compute/v2.1/servers/$2/action -H "Accept: application/json" -H "Content-Type: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H "X-OpenStack-Nova-API-Version: 2.1" -d '{"unpause": null}'
           ;;
      create_router)
@@ -99,11 +90,11 @@ case $1 in
            curl -s -H POST http://$OS_IP_OPENSTACK:9696/v2.0/routers -H "Content-Type: application/json" -H "User-Agent: openstacksdk/0.31.0 keystoneauth1/3.14.0 python-requests/2.22.0 CPython/2.7.15+" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -d '{"router": {"name": "'$2'", "admin_state_up": true}}'
           ;;
      conect_router_netPublic)
-            #  openstack --debug router set --external-gateway public router3
+            #  openstack router set --external-gateway public router3
            curl -s -H PUT http://$OS_IP_OPENSTACK:9696/v2.0/routers/$2 -H "Content-Type: application/json" -H "User-Agent: openstacksdk/0.31.0 keystoneauth1/3.14.0 python-requests/2.22.0 CPython/2.7.15+" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -d '{"router": {"external_gateway_info": {"network_id": "'$3'"}}}'
           ;;
      conect_router_netPrivate)
-            #  openstack --debug  router add subnet router3 test2
+            #  openstack  router add subnet router3 test2
            curl -s -H PUT http://$OS_IP_OPENSTACK:9696/v2.0/routers/$2/add_router_interface -H "Content-Type: application/json" -H "User-Agent: openstacksdk/0.31.0 keystoneauth1/3.14.0 python-requests/2.22.0 CPython/2.7.15+" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -d '{"subnet_id": "'$3'"}'
           ;;
      add_ipFloat_server)
@@ -111,8 +102,24 @@ case $1 in
            curl -s -H PUT http://$OS_IP_OPENSTACK:9696/v2.0/routers/$2/add_router_interface -H "Content-Type: application/json" -H "User-Agent: openstacksdk/0.31.0 keystoneauth1/3.14.0 python-requests/2.22.0 CPython/2.7.15+" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -d '{"subnet_id": "'$3'"}'
           ;;
      create_ipfloat)
-            #  openstack --debug floating ip create <id_net_float>
+            #  openstack floating ip create <id_net_float>
            curl -s -H POST http://$OS_IP_OPENSTACK:9696/v2.0/floatingips -H "Content-Type: application/json" -H "User-Agent: openstacksdk/0.31.0 keystoneauth1/3.14.0 python-requests/2.22.0 CPython/2.7.15+" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -d '{"floatingip": {"floating_network_id": "'$2'"}}'
+          ;;
+     create_instant_image)
+            # openstack image create imagetest2
+           curl -s -H POST -H 'Accept-Encoding: gzip, deflate' -H 'Accept: */*' -H 'User-Agent: python-glanceclient' -H 'Connection: keep-alive' -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H 'Content-Type: application/json' -d '{"container_format": "bare", "disk_format": "qcow2", "name": "'$2'"}' http://$OS_IP_OPENSTACK/image/v2/images | python -m json.tool
+          ;;
+     delete_instant_image)
+            # openstack image delete imagetest2
+            curl -s -H DELETE -H 'Accept-Encoding: gzip, deflate' -H 'Accept: */*' -H 'User-Agent: python-glanceclient' -H 'Connection: keep-alive' -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H 'Content-Type: application/octet-stream' http://$OS_IP_OPENSTACK/image/v2/images/$2 | python -m json.tool
+          ;;
+     set_instant_image)
+            # openstack --debug image set --name inst_test2 --instance-id <id_server> <id_instance>
+            curl -g -i -X PATCH -H 'Accept-Encoding: gzip, deflate' -H 'Accept: */*' -H 'User-Agent: python-glanceclient' -H 'Connection: keep-alive' -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H 'Content-Type: application/openstack-images-v2.1-json-patch' -d '[{"path": "/instance_id", "value": "'$3'", "op": "add"}, {"path": "/name", "value": "'$4'", "op": "replace"}]' http://$OS_IP_OPENSTACK/image/v2/images/$2 
+          ;;
+     rebuild_server_image)
+            # openstack --debug image set --name inst_test2 --instance-id <id_server> <id_instance>
+            curl -g -i -X POST http://$OS_IP_OPENSTACK/compute/v2.1/servers/$2/action -H "Accept: application/json" -H "Content-Type: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H "X-OpenStack-Nova-API-Version: 2.1" -d '{"rebuild": {"imageRef": "'$3'"}}'
           ;;
      *)
           echo "error"

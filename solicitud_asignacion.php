@@ -283,9 +283,10 @@ if (!empty($_POST)) {
 			break;
 			
 		case '12'://consultar maquinas virtuales por usuario
+			consult_servers_openstack();
 			$domain=db_fetch_cell_prepared("SELECT dominio from arqs_testbedims where id=".$_POST['domain']);
-			$ips_domain=db_fetch_assoc("select s.id_server, s.name_server, s.ip_local from server_openstack s inner join core_domain c on c.id_server=s.id_server where c.domain='".$domain."'");
-			$ips_aditionals=db_fetch_assoc("SELECT id_server,name_server, ip_local from vm_aditional_testbedims where dominio='".$domain."'");
+			$ips_domain=db_fetch_assoc("SELECT s.id_server, s.name_server, s.ip_local, s.status from server_openstack s inner join core_domain c on c.id_server=s.id_server inner join  flavor_openstack f on f.id_flavor=s.id_flavor where c.domain='".$domain."'");
+			$ips_aditionals=db_fetch_assoc("SELECT v.id_server,v.name_server, v.ip_local, s.status, f.ram, f.vcpus, f.disk from vm_aditional_testbedims v inner join server_openstack s on v.id_server=s.id_server inner join flavor_openstack f on f.id_flavor=s.id_flavor where v.dominio='".$domain."'");
 			if ($_POST['core']== "true") {
 				echo json_encode($ips_domain);
 			}else{
@@ -330,12 +331,42 @@ if (!empty($_POST)) {
 			}
 			break;
 		case '14'://consultar maquinas virtuales por usuario
-			$flavor=id_flavor( $_POST['ram'],$_POST['cpu'],$_POST['hardDisk']);
-			update_vm($id_server, $flavor);
+
+			$idflavor=id_flavor( $_POST['ram'],$_POST['vcpu'],$_POST['disk']);
+			// echo $idflavor;
+			print_r(reziseServer($_POST['id_server'], $idflavor));
 
 			break;
-		case '15'://consultar maquinas virtuales por usuario
-			echo $_POST['id_server'];
+		case '15'://tomar snapthot o punto de control de una vm
+		$idInstant=db_fetch_cell_prepared("SELECT id_instant from instant_images_openstack WHERE id_server='".$_POST['id_server']."'");
+			if( empty($idInstant) ){
+				$answer=createInstantImage( $_POST['name_server'], $_POST['id_server']);
+				if ( !empty($answer['id'])) {
+					$agregar=db_execute("INSERT INTO instant_images_openstack ( id_instant, name_instant, id_server, status_instant, disk_format,size) VALUES ('".$answer['id']."','".$answer['name']."','".$_POST['id_server']."','".$answer['status']."','".$answer['disk_format']."','".$answer['size']."')");
+					if($agregar == '1'){
+						print_r(setInstantImage($answer['id'], $_POST['id_server'], $answer['name']));
+					}else{
+						echo "fallo al guardar la imagen";
+					}
+					
+				}else{
+					echo "Fallo crear la imagen";
+				}
+			}else{
+				setInstantImage($idInstant, $_POST['id_server'], $_POST['name_server']);
+			}
+			
+			// print_r($answer['id']);
+			// print_r($answer);
+			// echo "test";
+
+			break;
+		case '16'://consultar maquinas virtuales por usuario
+			$idInstant=db_fetch_cell_prepared("SELECT id_instant from instant_images_openstack WHERE id_server='".$_POST['id_server']."'");
+			print_r(rebuildServerImage($_POST['id_server'], $idInstant));
+			// print_r($answer['id']);
+			// print_r($answer);
+			// echo "test";
 
 			break;
 		default:

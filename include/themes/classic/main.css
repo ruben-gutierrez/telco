@@ -2311,5 +2311,14 @@ ul.nav_sub{
 
 
 
-
-/* crear slide */
+.logo{
+	animation: Logo-load infinite 20s linear;
+}
+@keyframes Logo-load {
+	from{
+		transform: rotate(0deg);
+	}
+	to{
+		transform: rotate(360deg)
+	}
+}

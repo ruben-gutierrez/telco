@@ -893,6 +893,8 @@ function showInfoDomain(IdDomain, core){
         })
         .done(function(data) {
             // console.log(data);
+           
+            
             
                 if(data.length > 0 ){
                     var answer = JSON.parse(data);
@@ -908,21 +910,30 @@ function showInfoDomain(IdDomain, core){
                     // var ips={ip_bono:answer[0].ip_bono,ip_sprout:answer[0].ip_sprout,ip_ellis:answer[0].ip_ellis,ip_homer:answer[0].ip_homer,ip_vellum:answer[0].ip_vellum,ip_dime:answer[0].ip_dime,ip_ibcf:answer[0].ip_ibcf};
                     for (var x in answer) {
                         // console.log(answer[x]['name_server']);
-                    
-                        data += '<tr id="'+answer[x]['id_server']+'"> <th scope="row">'+answer[x]['name_server']+'</th><td>'+answer[x]['ip_local']+'</td>';
+                        status=answer[x]['status'];
+                        if(status == "SHUTOFF"){
+                            status="Apagada";
+                        }else{
+                            status="Encendida";
+                        }
+                        data += '<tr id="'+answer[x]['id_server']+'"> <th scope="row">'+answer[x]['name_server']+'<br> '+status+'<div id="prop_vm">ram:'+answer[x]['ram']+'<br>Disk: '+answer[x]['disk']+'<br> Vcpu: '+answer[x]['vcpus']+'</div></th><td>'+answer[x]['ip_local']+'</td>';
                         data += '<td><form class="form" id="vertical_scalability">';
                         data += '<div class="row"><input type="hidden" name="id_server" value="'+answer[x]['id_server']+'" placeholder="RAM">';
                         data += '<input class="col-md-3" type="number" name="ram" placeholder="RAM">';
-                        data += '<input class="col-md-3" type="number" name="cpu" placeholder="CPU">';
-                        data += '<input class="col-md-3" type="number" name="hardDisk" placeholder="Disk">';
-                        data += '<input class="btn btn-outline-info btn-sm m-1" type="button" id="'+answer[x]['id_server']+'" value="Editar" onclick="editarVM()"></form>';
+                        data += '<input class="col-md-3" type="number" name="vcpu" placeholder="CPU">';
+                        data += '<input class="col-md-3" type="number" name="disk" placeholder="Disk">';
+                        data += '<input class="btn btn-outline-info btn-sm m-1" type="button" id="'+answer[x]['id_server']+'" value="Editar" onclick="reziseVM(`'+answer[x]['id_server']+'`)">  <div class="logo ml-2"><i class="fa fa-spinner fa-3x" id="'+answer[x]['id_server']+'" style="display:none"></i></div></form>';
                         data += '<div class="row">';
-                        data += '<input class="btn btn-outline-danger btn-sm m-1" type="button" id="'+answer[x]['id_server']+'" value="Eliminar" onclick="eliminarVM(`'+answer[x]['id_server']+'`)">';
-                        data += '<input class="btn btn-outline-secondary btn-sm m-1" type="button" id="'+answer[x]['id_server']+'" value="Encender" onclick="onVM('+answer[x]['id_server']+')">';
-                        data += '<input class="btn btn-outline-secondary btn-sm m-1" type="button" id="'+answer[x]['id_server']+'" value="Apagar" onclick="offVM('+answer[x]['id_server']+')">';
-                        data += '<input class="btn btn-outline-secondary btn-sm m-1" type="button" id="'+answer[x]['id_server']+'" value="Punto de control" onclick="takeSnaptVM('+answer[x]['id_server']+')">';
-                        data += '<input class="btn btn-outline-secondary btn-sm m-1" type="button" id="'+answer[x]['id_server']+'" value="Reestablecer" onclick="returnSnaptVM('+answer[x]['id_server']+')"></div>';
-                        data +='</td>';
+                        if( status == "Apagada"){
+                            data += '<button class="btn " id="'+answer[x]['id_server']+'" type="button" title="Encender" onclick="onVM(`'+answer[x]['id_server']+'`)"><i class="fa fa-power-off text-danger fa-2x"></i></button>';
+                        }else{
+                            data += '<button class="btn "  id="'+answer[x]['id_server']+'" type="button" title="Apagar. Tarda 1 min" onclick="offVM(`'+answer[x]['id_server']+'`)"><i class="fa fa-power-off text-success fa-2x"></i></button>';
+                        }
+                        
+                        data += '<input class="btn btn-outline-secondary btn-sm m-1" type="button" id="'+answer[x]['id_server']+'" value="Punto de control" onclick="takeSnaptVM(`'+answer[x]['id_server']+'`,`'+answer[x]['name_server']+'`)">';
+                        data += '<input class="btn btn-outline-secondary btn-sm m-1" type="button" id="'+answer[x]['id_server']+'" value="Reestablecer" onclick="returnSnaptVM(`'+answer[x]['id_server']+'`)">';
+                        data += '<button class="btn btn-outline-danger btn-sm m-1" type="button" onclick="eliminarVM(`'+answer[x]['id_server']+'`)">Eliminar</button></div>';
+                        data += '</td>';
                         data += '<td><button class="btn btn-outline-success">Terminal</button></td></tr>';
                         // num +=1;
                     }
@@ -931,6 +942,7 @@ function showInfoDomain(IdDomain, core){
                     mensaje("Maquinas VM de la Arquitectura", data);
                     // mensaje("Maquinas VM de la Arquitectura", answer);
                 }else{
+                    
                     mensaje("Maquinas VM de la Arquitectura", "Esta arquitectura no tiene Maquinas virtuales registradas.");
                 }
            
@@ -940,7 +952,7 @@ function showInfoDomain(IdDomain, core){
 }
 
 function eliminarVM(idServer){
-    console.log(idServer);
+    // console.log(idServer);
     $.ajax({
         method: "POST",
         url: "requestOpenstack.php",
@@ -949,8 +961,9 @@ function eliminarVM(idServer){
     .done(function(data) {
         // console.log(data);
         if(data == "1"){
-            $('.alertify').remove()
+            
             alertify.success('VM Eliminada');
+            $('.alertify').remove();
 
         }else{
             alertify.error('Error al borrar VM, intentelo más tarde o contacta al administrador');
@@ -960,24 +973,55 @@ function eliminarVM(idServer){
     }); 
 }
 function onVM(idServer){
-<<<<<<< HEAD
+    $('.alertify').remove();
     var answer=openstackSendIdServer("2",idServer);
-    if( answer == '1'){
-        
-    }
-=======
-    var answer=openstackSendIdServer("4",idServer);
->>>>>>> 1a67e44a09a849ec076a71ae22eb8a8570aa4a9d
+    return answer;
 }
 function offVM(idServer){
+    $('.alertify').remove();
     var answer=openstackSendIdServer("3",idServer);
-
+    return answer;
 }
-function takeSnaptVMVM(idServer){
- console.log(sendIdServerToServer("15", idServer));
+function takeSnaptVM(idServer, nameServer){
+    var action='15';
+    var parametros = new FormData();
+    parametros.append('action', action);
+    parametros.append('id_server', idServer);
+    parametros.append('name_server', nameServer);
+    $.ajax({
+        url: 'solicitud_asignacion.php',
+        type: 'POST',
+        contentType: false,
+        processData: false,
+        data: parametros,
+        beforesend: function() {
+
+        },
+        success: function(data) {
+           console.log(data);
+        }
+
+    });
 }
 function returnSnaptVM(idServer){
- console.log(sendIdServerToServer("15", idServer));
+    var action='16';
+    var parametros = new FormData();
+    parametros.append('action', action);
+    parametros.append('id_server', idServer);
+    $.ajax({
+        url: 'solicitud_asignacion.php',
+        type: 'POST',
+        contentType: false,
+        processData: false,
+        data: parametros,
+        beforesend: function() {
+
+        },
+        success: function(data) {
+           console.log(data);
+        }
+
+    });
 }
 
 function openstackSendIdServer(action, idServer){
@@ -991,9 +1035,11 @@ function openstackSendIdServer(action, idServer){
     }); 
 }
 
-function editarVM(){
+function reziseVM(idServer){
+    $('i#'+idServer+'.fa').show();
     var parametros = new FormData($('#vertical_scalability')[0]);
     parametros.append('action', '14');
+
     $.ajax({
         url: 'solicitud_asignacion.php',
         type: 'POST',
@@ -1001,14 +1047,17 @@ function editarVM(){
         processData: false,
         data: parametros,
         beforesend: function() {
-
+           
         },
         success: function(data) {
-            console.log(data);
+            $('i#'+idServer+'.fa').hide();
+            $('.alertify').remove();
+            // console.log(data);
             alertify.success('VM Modificada');
         }
 
     });
+    
 }
 function sendIdServerToServer(action, id_server){
     var parametros = new FormData();

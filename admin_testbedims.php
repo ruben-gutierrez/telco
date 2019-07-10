@@ -6,7 +6,7 @@ global $config, $current_user;
 // include('./include/global.php');
 //agregar header y la barra lateral de navegación
  top_header();
-//  delete_info_openstack();
+ delete_info_openstack();
  ?>
 
 
@@ -69,23 +69,22 @@ global $config, $current_user;
 							<div class="col">
 
 								<div class="col">
-									<label class="col-6" for="vm_aditional">Máximo número de VM adicionales</label>
+									<label class="col-6" for="vm_aditional">Máx VM adicionales</label>
 									<input class="col-6" type="number" name="vm_aditional" placeholder="Número entero">
 								</div>
 								<div class="col">
-									<label class="col-6" for="vm_aditional">Máximo número de VM adicionales</label>
+									<label class="col-6" for="vm_aditional">Máx RAM por vm</label>
 									<input class="col-6" type="number" name="vm_aditional" placeholder="Número entero">
 								</div>
 								
 								<div class="col">
-									<label class="col-6" for="vm_aditional">Máximo número de VM adicionales</label>
+									<label class="col-6" for="vm_aditional">Max vcpu por vm</label>
 									<input class="col-6" type="number" name="vm_aditional" placeholder="Número entero">
 								</div>
 								<div class="col">
-									<label class="col-6" for="vm_aditional">Máximo número de VM adicionales</label>
+									<label class="col-6" for="vm_aditional">Máx disk por vm</label>
 									<input class="col-6" type="number" name="vm_aditional" placeholder="Número entero">
 								</div>
-							
 								<label for="image"><h3>Imagen de arquitectura</h3></label>
 								<input type="file" name="image" accept=".jpg, .jpeg, .png" required>
 							</div>
@@ -385,7 +384,8 @@ global $config, $current_user;
 				      <th scope="col">Id Flavor</th>
 				      <th scope="col">Key Name</th>
 				      <th scope="col">Estado</th>
-				      <th scope="col">Grupo de Seguridad</th>
+					  <th scope="col">Grupo de Seguridad</th>
+					  <button onclick=""></button>
 				    </tr>
 				  </thead>
 				  <tbody>

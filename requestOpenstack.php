@@ -22,20 +22,14 @@ if (!empty($_POST)) {
             print_r($ans);
             break;
         case '2':
-<<<<<<< HEAD
             // echo $_POST['idServer'];
-            $ans=onVm($_POST['idServer']);
-            print_r($ans);
-=======
-            
-            $idFlavor=id_flavor($_POST['ram'],$_POST['vcpu'], $_POST['disk']);
-            print_r( reziseServer($_POST['idServer'], $idFlavor) );
-            break;
+            print_r(onVm($_POST['idServer']));
+           break;
         case '3':
-            print_r(stopServer($_POST['idServer']));
+            print_r(offServer($_POST['idServer']));
             break;
         case '4':
-            print_r(startServer($_POST['idServer']));
+            // print_r(startServer($_POST['idServer']));
             break;
         case '5':
             print_r(pauseServer($_POST['idServer']));
@@ -47,14 +41,14 @@ if (!empty($_POST)) {
             print_r(createRouter($_POST['nameRouter']));
             break;
         case '8':
-     
+            $idFlavor=id_flavor($_POST['ram'],$_POST['vcpu'], $_POST['disk']);
+            print_r( reziseServer($_POST['idServer'], $idFlavor) );
             break;
         case '1':
             # code...
             break;
         case '1':
             # code...
->>>>>>> 1a67e44a09a849ec076a71ae22eb8a8570aa4a9d
             break;
         case '1':
             # code...
