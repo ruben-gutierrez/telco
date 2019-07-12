@@ -5740,3 +5740,24 @@ function rebuildServerImage($idServer, $idImage){
 	$ans = json_decode($answer, true);
 	return($ans);
 }
+
+
+function add_restrictions($domain,$vm,$ram, $disk, $vcpu){
+	db_execute("INSERT INTO restriction_domain (name_restriction, limit_restriction, state_restriction, domain) VALUES ('max_ram','".$ram."','0','".$domain."')");
+	db_execute("INSERT INTO restriction_domain (name_restriction, limit_restriction, state_restriction, domain) VALUES ('max_disk','".$disk."','0','".$domain."')");
+	db_execute("INSERT INTO restriction_domain (name_restriction, limit_restriction, state_restriction, domain) VALUES ('max_vcpu','".$vcpu."','0','".$domain."')");
+	db_execute("INSERT INTO restriction_domain (name_restriction, limit_restriction, state_restriction, domain) VALUES ('max_vm','".$vm."','0','".$domain."')");
+
+}
+
+function update_restrictions($domain,$vm,$ram, $disk, $vcpu){
+	db_execute("UPDATE restriction_domain SET limit_restriction='".$ram."' WHERE domain='".$domain."' AND name_restriction='max_ram'");
+	db_execute("UPDATE restriction_domain SET limit_restriction='".$disk."' WHERE domain='".$domain."' AND name_restriction='max_disk'");
+	db_execute("UPDATE restriction_domain SET limit_restriction='".$vcpu."' WHERE domain='".$domain."' AND name_restriction='max_vcpu'");
+	db_execute("UPDATE restriction_domain SET limit_restriction='".$vm."' WHERE domain='".$domain."' AND name_restriction='max_vm'");
+
+}
+
+function domainOfId($id){
+	return(db_fetch_cell_prepared("select dominio from arqs_testbedims where id='".$id."'"));
+}

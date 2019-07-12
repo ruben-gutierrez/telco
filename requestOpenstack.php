@@ -15,10 +15,12 @@ if (!empty($_POST)) {
         case '1':
             // echo $_POST['idServer'];
             $ans=deleteVm($_POST['idServer']);
-            if ($ans == "1") {
+            // if ($ans == "1") {
+
+                db_execute_prepared("DELETE FROM server_openstack WHERE id_server = '".$_POST['idServer']."'");
                 db_execute_prepared("DELETE FROM vm_aditional_testbedims WHERE id_server = '".$_POST['idServer']."'");
                 db_execute_prepared("DELETE FROM core_domain WHERE id_server = '".$_POST['idServer']."'");
-            }
+            // }
             print_r($ans);
             break;
         case '2':

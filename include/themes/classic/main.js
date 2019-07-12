@@ -185,18 +185,18 @@ function edit_arq() {
     for (var i = 0; i <= 2; i++) {
         info_arq.push(fila.cells[i].textContent);
     }
-    console.log(info_arq);
+    // console.log(info_arq);
     // comparacion
-    var f = 0;
-    info_arq.forEach(function(value, index) {
-        if ($('#form_edit_arq')[0][index + 2].value != value) {
-            f++;
-        }
+    // var f = 0;
+    // info_arq.forEach(function(value, index) {
+    //     if ($('#form_edit_arq')[0][index + 2].value != value) {
+    //         f++;
+    //     }
 
-    });
-    if (f == 0) {
-        alert("no se han cambiado los valores");
-    } else {
+    // });
+    // if (f == 0) {
+    //     alert("no se han cambiado los valores");
+    // } else {
         var parametros = new FormData($('#form_edit_arq')[0]);
         parametros.append('id', id);
         $.ajax({
@@ -229,7 +229,7 @@ function edit_arq() {
 
         });
 
-    }
+    // }
 }
 //funcion agregar una nueva arquitectura
 function add_arquitec() {
@@ -883,7 +883,7 @@ function show_hide_content_byClass(content,incator){
 }
 
 function showInfoDomain(IdDomain, core){
-    // console.log(core);
+    
 
 
     $.ajax({
@@ -899,7 +899,7 @@ function showInfoDomain(IdDomain, core){
                 if(data.length > 0 ){
                     var answer = JSON.parse(data);
                     // console.log(answer);
-                   
+                //    console.log(core);
 
                     data="<div class='container'>";
                     data="<div class='row'>";
@@ -1084,6 +1084,7 @@ function addVmtoDomain(idDomain){
     // var content='<form>  <div class="form-row">    <div class="form-group col-md-6">     <div class="form-group col-md-6">      <label>Nombre</label>      <input type="text" class="form-control" name="nameNewVm" placeholder="Nombre">    </div>  </div>  <div class="form-group"> <input type="hidden" class="form-control" id="networkNewMv" value="">  </div>  <div class="form-group">    <label>Flavor</label>    <input type="text" class="form-control col-md-2" id="flavorNewVm" placeholder="RAM "> <input type="text" class="form-control col-md-2" id="flavorNewVm" placeholder="VCPU "> <input type="text" class="form-control col-md-2" id="flavorNewVm" placeholder="DISK "></div>    <div class="form-group col-md-4">      <label>Sistema Operativo</label>      <select id="imageNewVm" class="form-control">        <option selected>Choose...</option>        <option>Ubuntu14</option><option>Ubuntu16</option> <option>centos19</option><option>Lubuntu</option>     </select>    </div>    </div>  <div class="form-group">    <div class="form-check">      <input class="form-check-input" type="checkbox" id="gridCheck">      <label class="form-check-label" for="gridCheck">        Check me out      </label>    </div>  </div>  <button type="submit" class="btn btn-primary">Sign in</button></form>';
     var parametros = new FormData();
     parametros.append('action', '10');
+    parametros.append('id_domain', idDomain);
     $.ajax({
         url: 'admin_info.php',
         type: 'POST',
@@ -1094,11 +1095,15 @@ function addVmtoDomain(idDomain){
 
         },
         success: function(data) {
-            
+            if(data == '0'){
+                alert("No puede agregar máquinas virtuales");
+            }else{
+                var content='<form id="add_vm_domain">  <input type="hidden" class="form-control" name="idDomain" value="'+idDomain+'"> <div class="form-row">    <div class="form-group col-md-6">     <div class="form-group col">      <label>Nombre</label>      <input type="text" class="form-control" name="nameNewVm" placeholder="Nombre"> </div> <div class="form-group col">      <label>Sistema Operativo</label>      <select name="imageNewVm" class="form-control">        '+data+' </select>    </div>  </div>    <div class="form-group ">    <label>Flavor</label>    <input type="number" class="form-control col-md-6" name="ramNewVm" placeholder="RAM "> <input type="number" class="form-control col-md-6" name="vcpuNewVm" placeholder="VCPU "> <input type="number" class="form-control col-md-6" name="diskNewVm" placeholder="DISK "></div>       </div>   </div></form>';
+                // console.log(content);
+                addVM("Agregar Maquina Virtual", content);
+            }
 
-            var content='<form id="add_vm_domain">  <input type="hidden" class="form-control" name="idDomain" value="'+idDomain+'"> <div class="form-row">    <div class="form-group col-md-6">     <div class="form-group col">      <label>Nombre</label>      <input type="text" class="form-control" name="nameNewVm" placeholder="Nombre"> </div> <div class="form-group col">      <label>Sistema Operativo</label>      <select name="imageNewVm" class="form-control">        '+data+' </select>    </div>  </div>    <div class="form-group ">    <label>Flavor</label>    <input type="number" class="form-control col-md-6" name="ramNewVm" placeholder="RAM "> <input type="number" class="form-control col-md-6" name="vcpuNewVm" placeholder="VCPU "> <input type="number" class="form-control col-md-6" name="diskNewVm" placeholder="DISK "></div>       </div>   </div></form>';
-            // console.log(content);
-            addVM("Agregar Maquina Virtual", content);
+            
         }
 
     });

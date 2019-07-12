@@ -154,11 +154,19 @@ $now = date_create()->format('Y-m-d H:i:s');
 			
 			break;
 		case '10':
-			$images=images_openstack();
-			echo('<option value="">Elegir...</option>');
-			foreach($images as $image ){
-				echo ('<option value="'.$image['id_image'].'">'.$image['name_image'].'</option>');
+			$domain=domainOfid($_POST['id_domain']);
+			$vms=db_execute("select count(*) from vm_aditional_testbedims where dominio='".$domain."'");
+			$restriction=db_fetch_cell_prepared("select limit_restriction from restriction_domain where domain='".$domain."'");
+			if ($restriction > $vms) {
+				$images=images_openstack();
+				echo('<option value="">Elegir...</option>');
+				foreach($images as $image ){
+					echo ('<option value="'.$image['id_image'].'">'.$image['name_image'].'</option>');
+				}
+			}else{
+				echo "0";
 			}
+			
 			
 			break;
 		default:

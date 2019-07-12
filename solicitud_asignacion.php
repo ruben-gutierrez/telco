@@ -81,7 +81,9 @@ if (!empty($_POST)) {
 				// inserta la informacion en la base de dataos
 				$sql = "INSERT INTO arqs_testbedims (arquitectura, dominio, activo, usuario, descripcion, imagen) VALUES ('".$_POST['name_arq']."','".$_POST['dominio_arq']."','V','libre', '".$_POST['desc_arq']."','".$new_name."')";
 				$agregar=db_execute($sql);
+
 				if ( $agregar == '1') {
+					add_restricctions($_POST['dominio_arq'],$_POST['max_vm_aditional'],$_POST['max_ram'],$_POST['max_disk'],$_POST['max_vcpu']);
 					// crea la red en openstack
 					$result_create_net=create_net($name_net, $description, $domain);
 					//crear maquina dependiento de el tipo de core
@@ -108,10 +110,11 @@ if (!empty($_POST)) {
 
 		case "5": //modificar arqutiectura
 			$error=0;
-
+			update_restrictions($_POST['dominio_arq'],$_POST['max_vm_aditional'],$_POST['max_ram'],$_POST['max_disk'],$_POST['max_vcpu']);
 			$file_name=db_fetch_cell_prepared("select imagen from arqs_testbedims where id='".$id."'");
 			if ($_FILES['image']['name'] == '') {
 				$up=db_execute("UPDATE arqs_testbedims SET arquitectura = '" . $_POST['name_arq'] . "', dominio ='" . $_POST['dominio_arq'] . "', usuario ='libre', descripcion='".$_POST['desc_arq']."' WHERE id='" . $id . "'");
+				
 			}else{
 				
 				
@@ -124,11 +127,11 @@ if (!empty($_POST)) {
 				
 				}else{
 					$up=db_execute("UPDATE arqs_testbedims SET arquitectura = '" . $_POST['name_arq'] . "', dominio ='" . $_POST['dominio_arq'] . "', usuario ='libre', descripcion='".$_POST['desc_arq']."', imagen='".$_FILES['image']['name']."' WHERE id='" . $id . "'");
-				if (move_uploaded_file($_FILES['image']['tmp_name'], 'images/images_testbed/images_ims/'.$_FILES['image']['name'])) {
-						$up2=db_execute("UPDATE arqs_testbedims SET imagen='".$_FILES['image']['name']."' WHERE id='" . $id . "'");
-					}else{
-						echo($error++);
-					}
+					if (move_uploaded_file($_FILES['image']['tmp_name'], 'images/images_testbed/images_ims/'.$_FILES['image']['name'])) {
+							$up2=db_execute("UPDATE arqs_testbedims SET imagen='".$_FILES['image']['name']."' WHERE id='" . $id . "'");
+						}else{
+							echo($error++);
+						}
 				}
 			}
 			if ( $up == '1') {
@@ -139,7 +142,7 @@ if (!empty($_POST)) {
 			 		<td class='edisplay'>".$_POST['desc_arq']."</td>
 			 		<td class='edisplay'>".$file_name."</td>
 			 		<td>libre</td>
-			 		<td><button class='btn_arq_action' id='btn_liberar".$id."' name='liberar' style='background:green;'> <i class='fa fa-unlock fa-lg'></i></button><button class='btn_arq_action' id='btn_editar".$id."'name='editar' style='background:blue;'> <i class='fa fa-edit fa-lg'></i></button><button class='btn_arq_action' id='btn_eliminar".$id."' name='eliminar' style='background:red;'> <i class='fa fa-trash fa-lg'></i></button></td></tr>");
+			 		<td><button class='btn_arq_action btn btn-outline-success btn-sm' id='btn_liberar".$id."' name='liberar' style='background:green;'> <i class='fa fa-unlink'> Liberar</i></button><button class='btn_arq_action btn btn-outline-warning btn-sm' id='btn_editar".$id."'name='editar' style='background:blue;'> <i class='fa fa-edit'>Editar</i></button><button class='btn_arq_action btn btn-outline-danger btn-sm' id='btn_eliminar".$id."' name='eliminar' style='background:red;'> <i class='fa fa-trash'>Eliminar</i></button></td></tr>");
 				
 
 			}else{

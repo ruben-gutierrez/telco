@@ -6,7 +6,7 @@ global $config, $current_user;
 // include('./include/global.php');
 //agregar header y la barra lateral de navegación
  top_header();
- delete_info_openstack();
+//  delete_info_openstack();
  ?>
 
 
@@ -70,20 +70,20 @@ global $config, $current_user;
 
 								<div class="col">
 									<label class="col-6" for="vm_aditional">Máx VM adicionales</label>
-									<input class="col-6" type="number" name="vm_aditional" placeholder="Número entero">
+									<input class="col-6" type="number" name="max_vm_aditional" placeholder="Número entero" required>
 								</div>
 								<div class="col">
 									<label class="col-6" for="vm_aditional">Máx RAM por vm</label>
-									<input class="col-6" type="number" name="vm_aditional" placeholder="Número entero">
+									<input class="col-6" type="number" name="max_ram" placeholder="Mb" required>
 								</div>
 								
 								<div class="col">
 									<label class="col-6" for="vm_aditional">Max vcpu por vm</label>
-									<input class="col-6" type="number" name="vm_aditional" placeholder="Número entero">
+									<input class="col-6" type="number" name="max_vcpu" placeholder="Ej: 1" required>
 								</div>
 								<div class="col">
 									<label class="col-6" for="vm_aditional">Máx disk por vm</label>
-									<input class="col-6" type="number" name="vm_aditional" placeholder="Número entero">
+									<input class="col-6" type="number" name="max_disk" placeholder="Gb" required>
 								</div>
 								<label for="image"><h3>Imagen de arquitectura</h3></label>
 								<input type="file" name="image" accept=".jpg, .jpeg, .png" required>
@@ -101,18 +101,53 @@ global $config, $current_user;
 	 		</section>
 	 		<section id="mod_arq" class="section_admin_arquitectura" style="display: none;">
 	 			<div class="name_section">Editar arquitectura</div>
-	 			<div class="content_section">
-		 			<form method="post" id="form_edit_arq" class="form_arq" enctype="multipart/form-data">
-		 				<input type="hidden" name="action" value="5">
-		 				<input type="text" id="name_arq" name="name_arq"placeholder="Nombre" autofocus>
-	 					<input type="text" id="dominio_arq" name="dominio_arq" placeholder="Dominio">
-	 					<textarea name="desc_arq" id="desc_arq" placeholder="Descripcion"></textarea>
-		 				<label><h3>Imagen de arquitectura</h3></label>
-		 				<input type="file" name="image" accept=".jpg, .jpeg, .png">
-		 				<div>
+	 			<div class="content_section container">
+
+					 <form method="post" id="form_edit_arq" class="form_arq" enctype="multipart/form-data">
+					 <div class="row">
+					 	<div class="col-8">
+							<input type="hidden" name="action" value="5">
+							<div class="col mt-3">
+								<label class="col-6" for="name_arq">Nombre de arquitectura</label>
+								<input class="col" type="text" id="name_arq" name="name_arq" placeholder="Nombre" autofocus>
+							</div>
+							<div class="col mt-3">
+								<label class="col-6" for="dominio_arq">Domino de arquitectura</label>
+								<input class="col" type="fixed" id="dominio_arq" name="dominio_arq">
+							</div>
+							<div class="col mt-3">
+								<label class="col-6" for="desc_arq">Descripcion de arquitectura</label>
+								<textarea class="col" name="desc_arq" id="desc_arq" placeholder="Max 50 caracteres"></textarea>
+							</div>
+							<div class="col mt-3">
+								<label class="col-6" for="image"> Imagen de arquitectura</label>
+								<input class="col" type="file" name="image" accept=".jpg, .jpeg, .png">
+							</div>
+						 </div>
+						 <div class="col-4">
+							<div class="col mt-3">
+								<label class="col-6" for="vm_aditional">Máx VM adicionales</label>
+								<input class="col" type="number" name="max_vm_aditional" placeholder="Número entero" value="1" required>
+							</div>
+							<div class="col mt-3">
+								<label class="col-6" for="vm_aditional">Máx RAM por vm</label>
+								<input class="col" type="number" name="max_ram" placeholder="Mb" value="512" required>
+							</div>
+
+							<div class="col mt-3">
+								<label class="col-6" for="vm_aditional">Max vcpu por vm</label>
+								<input class="col" type="number" name="max_vcpu" placeholder="Ej: 1" value="1" required>
+							</div>
+							<div class="col mt-3">
+								<label class="col-6" for="vm_aditional">Máx disk por vm</label>
+								<input class="col" type="number" name="max_disk" placeholder="Gb" value="20" required>
+							</div>
+						</div> 
+					</div>
+						 <div class="col center">
 		 					<!-- <input type="hidden" name="action" value="7"> -->
-		 					<input id="btn_edit_arq" class="btn_form" type="button" value="Guardar" onclick="edit_arq()">
-		 					<input  id="btn_cancelar" class="btn_form" type="button" value="Cancelar" onclick="$('#table_arquitectura').show(500);$('#mod_arq').hide(600);">
+		 					<input id="btn_edit_arq" class="btn_form btn btn-primary" type="button" value="Guardar" onclick="edit_arq()">
+		 					<input  id="btn_cancelar" class="btn_form btn btn-outline-danger" type="button" value="Cancelar" onclick="$('#table_arquitectura').show(500);$('#mod_arq').hide(600);">
 		 				</div>
 		 				
 		 				
