@@ -298,39 +298,30 @@ if (!empty($_POST)) {
 			break;
 		case '13'://agregar vm a dominio user
 			// print_r($_POST);
-			$id_net=db_fetch_cell_prepared("SELECT n.id_net from network_openstack n INNER JOIN arqs_testbedims a ON a.dominio=n.domain where a.id='".$_POST['idDomain']."'");
-			$flavor=id_flavor( $_POST['ramNewVm'],$_POST['vcpuNewVm'],$_POST['diskNewVm']);
-			$vm=create_vm($_POST['nameNewVm'], $_POST['imageNewVm'],$flavor,$id_net);
-			consult_servers_openstack();
-			$vmJson = json_decode($vm, true);
-				 print_r($vmJson);
-			$id_dom=$_POST['idDomain'];
-			$domain=db_fetch_cell_prepared("select dominio from arqs_testbedims where id='".$id_dom."'");
-			$name=$_POST['nameNewVm'];
 			$disk=$_POST['diskNewVm'];
 			$vcpu=$_POST['vcpuNewVm'];
-			
 			$ram=$_POST['ramNewVm'];
-			$image=$_POST['imageNewVm'];
-			$id_server=$vmJson['server']['id'];
-
-
-			// echo $domain;
-			//  echo $name;
-			//  echo $disk;
-			//  echo $vcpu;
-			//  echo $ram;
-			//  echo "imagen";
-			//  echo $image;
-			//  echo "id server";
-			//  echo $id_server;
-			//  echo "   flavor";
-			//  echo $flavor;
-			
-			$agregate=db_execute("insert into vm_aditional_testbedims(id_server,dominio, name_server,RAM,disk,vcpu,id_flavor,image) values ('".$id_server."','".$domain."','".$name."','".$ram."','".$disk."','".$vcpu."','".$flavor."','".$image."')");
-			if($agregate == 1){
-				$server=db_fetch_row_prepared("SELECT * from vm_aditional_testbedims WHERE id_server='".$id_server."'");
-				print_r($server);
+			$resp=validate_recourses($domain, $ram, $disk, $vcpu);
+			if ( $resp == '111' ) {
+				$id_net=db_fetch_cell_prepared("SELECT n.id_net from network_openstack n INNER JOIN arqs_testbedims a ON a.dominio=n.domain where a.id='".$_POST['idDomain']."'");
+				$flavor=id_flavor( $_POST['ramNewVm'],$_POST['vcpuNewVm'],$_POST['diskNewVm']);
+				$vm=create_vm($_POST['nameNewVm'], $_POST['imageNewVm'],$flavor,$id_net);
+				consult_servers_openstack();
+				$vmJson = json_decode($vm, true);
+					print_r($vmJson);
+				$id_dom=$_POST['idDomain'];
+				$domain=db_fetch_cell_prepared("select dominio from arqs_testbedims where id='".$id_dom."'");
+				$name=$_POST['nameNewVm'];
+				
+				$image=$_POST['imageNewVm'];
+				$id_server=$vmJson['server']['id'];
+				$agregate=db_execute("insert into vm_aditional_testbedims(id_server,dominio, name_server,RAM,disk,vcpu,id_flavor,image) values ('".$id_server."','".$domain."','".$name."','".$ram."','".$disk."','".$vcpu."','".$flavor."','".$image."')");
+				if($agregate == 1){
+					$server=db_fetch_row_prepared("SELECT * from vm_aditional_testbedims WHERE id_server='".$id_server."'");
+					print_r($server);
+				}
+			}else{
+				echo "0";
 			}
 			break;
 		case '14'://consultar maquinas virtuales por usuario

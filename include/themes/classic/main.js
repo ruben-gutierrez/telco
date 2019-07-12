@@ -1128,10 +1128,13 @@ function addVM(title, content) {
 
             },
             success: function(data) {
-                console.log(data);
-                alertify.success('VM agregada');
+                if (data == '0') {
+                    alertify.error('Error, Verifique los recursos máximos');
+                }else{
+                    // console.log(data);
+                    alertify.success('VM agregada');
+                }
             }
-
         });
     });
     //callbak al pulsar botón negativo

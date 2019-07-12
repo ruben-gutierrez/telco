@@ -5761,3 +5761,27 @@ function update_restrictions($domain,$vm,$ram, $disk, $vcpu){
 function domainOfId($id){
 	return(db_fetch_cell_prepared("select dominio from arqs_testbedims where id='".$id."'"));
 }
+// esta funcion retornara una terna binaria, | ram | disk | vcpu |
+//	111 -si los recursos son validos
+function validate_recourses($domain, $ram, $disk, $vcpu){
+	$limit_ram=db_fetch_row_prepared("SELECT limit_restriction FROM restriction_domain where domain='".$domain."' AND name_restriction='max_ram'");
+	$limit_disk=db_fetch_row_prepared("SELECT limit_restriction FROM restriction_domain where domain='".$domain."' AND name_restriction='max_disk'");
+	$limit_vcpu=db_fetch_row_prepared("SELECT limit_restriction FROM restriction_domain where domain='".$domain."' AND name_restriction='max_vcpu'");
+	if( $ram > $limit_ram){
+		$ret_ram='0';
+	}else{
+		$ret_ram='1';
+	}
+	if( $disk > $limit_disk){
+		$ret_disk='0';
+	}else{
+		$ret_disk='1';
+	}
+	if( $vcpu > $limit_vcpu){
+		$ret_vcpu='0';
+	}else{
+		$ret_vcpu='1';
+	}
+	return ($ret_ram.$ret_disk.$ret_vcpu);
+	
+}
