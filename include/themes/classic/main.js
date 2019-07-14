@@ -1095,6 +1095,7 @@ function addVmtoDomain(idDomain){
 
         },
         success: function(data) {
+            console.log(data);
             if(data == '0'){
                 alert("No puede agregar máquinas virtuales");
             }else{
@@ -1128,6 +1129,7 @@ function addVM(title, content) {
 
             },
             success: function(data) {
+                console.log(data);
                 if (data == '0') {
                     alertify.error('Error, Verifique los recursos máximos');
                 }else{

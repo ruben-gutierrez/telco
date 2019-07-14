@@ -83,7 +83,7 @@ if (!empty($_POST)) {
 				$agregar=db_execute($sql);
 
 				if ( $agregar == '1') {
-					add_restricctions($_POST['dominio_arq'],$_POST['max_vm_aditional'],$_POST['max_ram'],$_POST['max_disk'],$_POST['max_vcpu']);
+					add_restrictions($_POST['dominio_arq'],$_POST['max_vm_aditional'],$_POST['max_ram'],$_POST['max_disk'],$_POST['max_vcpu']);
 					// crea la red en openstack
 					$result_create_net=create_net($name_net, $description, $domain);
 					//crear maquina dependiento de el tipo de core
@@ -302,6 +302,7 @@ if (!empty($_POST)) {
 			$vcpu=$_POST['vcpuNewVm'];
 			$ram=$_POST['ramNewVm'];
 			$resp=validate_recourses($domain, $ram, $disk, $vcpu);
+			echo($resp);
 			if ( $resp == '111' ) {
 				$id_net=db_fetch_cell_prepared("SELECT n.id_net from network_openstack n INNER JOIN arqs_testbedims a ON a.dominio=n.domain where a.id='".$_POST['idDomain']."'");
 				$flavor=id_flavor( $_POST['ramNewVm'],$_POST['vcpuNewVm'],$_POST['diskNewVm']);

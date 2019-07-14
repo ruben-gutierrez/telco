@@ -5293,6 +5293,7 @@ function db_arq_testbed(){
 
 }
 
+
 function db_arq_byUser($email_user){
 	// $arqs=db_fetch_assoc("SELECT arquitectura, dominio from arqs_testbedims WHERE usuario=".$email_user);
 	$arqs=db_fetch_assoc_prepared("SELECT id, arquitectura, dominio from arqs_testbedims where usuario='".$email_user."'");
@@ -5749,6 +5750,15 @@ function add_restrictions($domain,$vm,$ram, $disk, $vcpu){
 	db_execute("INSERT INTO restriction_domain (name_restriction, limit_restriction, state_restriction, domain) VALUES ('max_vm','".$vm."','0','".$domain."')");
 
 }
+function consult_restrictions($domain){
+	$limits=array(
+		"ram"=>db_fetch_cell("SELECT limit_restriction FROM restriction_domain WHERE domain='".$domain."' AND name_restriction='".max_ram."'"),
+		"disk" => db_fetch_cell("SELECT limit_restriction FROM restriction_domain WHERE domain='".$domain."' AND name_restriction='".max_disk."'"),
+		"vcpu" => db_fetch_cell("SELECT limit_restriction FROM restriction_domain WHERE domain='".$domain."' AND name_restriction='".max_vcpu."'"),
+		"vm" => db_fetch_cell("SELECT limit_restriction FROM restriction_domain WHERE domain='".$domain."' AND name_restriction='".max_vm."'")
+	);
+	return $limits;
+}
 
 function update_restrictions($domain,$vm,$ram, $disk, $vcpu){
 	db_execute("UPDATE restriction_domain SET limit_restriction='".$ram."' WHERE domain='".$domain."' AND name_restriction='max_ram'");
@@ -5767,17 +5777,17 @@ function validate_recourses($domain, $ram, $disk, $vcpu){
 	$limit_ram=db_fetch_row_prepared("SELECT limit_restriction FROM restriction_domain where domain='".$domain."' AND name_restriction='max_ram'");
 	$limit_disk=db_fetch_row_prepared("SELECT limit_restriction FROM restriction_domain where domain='".$domain."' AND name_restriction='max_disk'");
 	$limit_vcpu=db_fetch_row_prepared("SELECT limit_restriction FROM restriction_domain where domain='".$domain."' AND name_restriction='max_vcpu'");
-	if( $ram > $limit_ram){
+	if( $ram < $limit_ram){
 		$ret_ram='0';
 	}else{
 		$ret_ram='1';
 	}
-	if( $disk > $limit_disk){
+	if( $disk < $limit_disk){
 		$ret_disk='0';
 	}else{
 		$ret_disk='1';
 	}
-	if( $vcpu > $limit_vcpu){
+	if( $vcpu < $limit_vcpu){
 		$ret_vcpu='0';
 	}else{
 		$ret_vcpu='1';
