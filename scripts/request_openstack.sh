@@ -1,6 +1,7 @@
 #!/bin/bash
 #DIRECCION IP DE OPENSTACK
-OS_IP_OPENSTACK=10.55.5.155
+# OS_IP_OPENSTACK=10.55.5.155
+OS_IP_OPENSTACK=10.55.2.24
 
 # Obtener el token
 token=$(./scripts/createToken.sh)

@@ -256,11 +256,7 @@ function add_arquitec() {
 
                 },
                 success: function(data) {
-                    // console.log(data);
-
-                    
-                
-                    
+                    console.log(data);
                     if (data == 'upload fallo' || data == '') {
                         mensaje('Error', 'Recuerde que el dominio es único.\nVerifique los datos e intentelo nuevamente');
                     } else {

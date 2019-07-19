@@ -6,7 +6,7 @@ global $config, $current_user;
 // include('./include/global.php');
 //agregar header y la barra lateral de navegación
  top_header();
-//  delete_info_openstack();
+ delete_info_openstack();
  ?>
 
 

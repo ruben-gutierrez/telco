@@ -81,7 +81,6 @@ if (!empty($_POST)) {
 				// inserta la informacion en la base de dataos
 				$sql = "INSERT INTO arqs_testbedims (arquitectura, dominio, activo, usuario, descripcion, imagen) VALUES ('".$_POST['name_arq']."','".$_POST['dominio_arq']."','V','libre', '".$_POST['desc_arq']."','".$new_name."')";
 				$agregar=db_execute($sql);
-
 				if ( $agregar == '1') {
 					add_restrictions($_POST['dominio_arq'],$_POST['max_vm_aditional'],$_POST['max_ram'],$_POST['max_disk'],$_POST['max_vcpu']);
 					// crea la red en openstack
