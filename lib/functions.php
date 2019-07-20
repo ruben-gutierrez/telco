@@ -5408,6 +5408,7 @@ function create_vm_to_core($domain,$typeDomain){
 					// #vefirigar que tipo de nucleo selecciono
 					switch ($typeDomain) {
 						case 'aio':
+						
 							// #crear solo 1 ubuntu 14
 							// #guardar solo bono
 							// create_vm( "aio", "a25c56b1-eb49-4cf6-bf09-eed2a417e703", "2", $id_net);
