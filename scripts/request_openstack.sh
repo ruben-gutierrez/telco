@@ -4,8 +4,8 @@
 OS_IP_OPENSTACK=10.55.2.24
 
 # Obtener el token
-token=$(./scripts/createToken.sh)
-# token=$(./createToken.sh)
+#token=$(./scripts/createToken.sh)
+token=$(./createToken.sh)
 # echo $token
 
 # request destination
@@ -88,15 +88,15 @@ case $1 in
           ;;
      create_router)
     #  openstack router create router3
-           curl -s -H POST http://$OS_IP_OPENSTACK:9696/v2.0/routers -H "Content-Type: application/json" -H "User-Agent: openstacksdk/0.31.0 keystoneauth1/3.14.0 python-requests/2.22.0 CPython/2.7.15+" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -d '{"router": {"name": "'$2'", "admin_state_up": true}}'
+           curl -s -H POST http://$OS_IP_OPENSTACK/v2.0/routers -H "Content-Type: application/json" -H "User-Agent: openstacksdk/0.31.0 keystoneauth1/3.14.0 python-requests/2.22.0 CPython/2.7.15+" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -d '{"router": {"name": "'$2'", "admin_state_up": true}}' | python -m json.tool
           ;;
      conect_router_netPublic)
             #  openstack router set --external-gateway public router3
-           curl -s -H PUT http://$OS_IP_OPENSTACK:9696/v2.0/routers/$2 -H "Content-Type: application/json" -H "User-Agent: openstacksdk/0.31.0 keystoneauth1/3.14.0 python-requests/2.22.0 CPython/2.7.15+" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -d '{"router": {"external_gateway_info": {"network_id": "'$3'"}}}'
+           curl -g -i -X PUT http://$OS_IP_OPENSTACK:9696/v2.0/routers/$2 -H "Content-Type: application/json" -H "User-Agent: openstacksdk/0.31.0 keystoneauth1/3.14.0 python-requests/2.22.0 CPython/2.7.15+" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -d '{"router": {"external_gateway_info": {"network_id": "'$3'"}}}'
           ;;
      conect_router_netPrivate)
             #  openstack  router add subnet router3 test2
-           curl -s -H PUT http://$OS_IP_OPENSTACK:9696/v2.0/routers/$2/add_router_interface -H "Content-Type: application/json" -H "User-Agent: openstacksdk/0.31.0 keystoneauth1/3.14.0 python-requests/2.22.0 CPython/2.7.15+" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -d '{"subnet_id": "'$3'"}'
+           curl -g -i -X PUT http://$OS_IP_OPENSTACK:9696/v2.0/routers/$2/add_router_interface -H "Content-Type: application/json" -H "User-Agent: openstacksdk/0.31.0 keystoneauth1/3.14.0 python-requests/2.22.0 CPython/2.7.15+" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -d '{"subnet_id": "'$3'"}'
           ;;
      add_ipFloat_server)
             #  openstack server add floating ip <id_server> <ipFloat>
