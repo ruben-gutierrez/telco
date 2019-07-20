@@ -11,6 +11,7 @@ include('./include/auth.php');
 $username=$current_user['username'];
 $from_email=$current_user['email_address'];
 
+
 ?>
 <div class="modal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
