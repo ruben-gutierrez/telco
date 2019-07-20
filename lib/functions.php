@@ -5408,11 +5408,11 @@ function create_vm_to_core($domain,$typeDomain){
 					// #vefirigar que tipo de nucleo selecciono
 					switch ($typeDomain) {
 						case 'aio':
-						
+
 							// #crear solo 1 ubuntu 14
 							// #guardar solo bono
 							// create_vm( "aio", "a25c56b1-eb49-4cf6-bf09-eed2a417e703", "2", $id_net);
-							echo $id_subnet;
+							// echo $id_subnet;
 							//$vm_create=create_vm( "aio", "a25c56b1-eb49-4cf6-bf09-eed2a417e703", "2", $id_subnet);
 							$vm_create=create_vm( "aio", "a25c56b1-eb49-4cf6-bf09-eed2a417e703", "42", $id_net);
 							$vmJson = json_decode($vm_create, true);

@@ -70,10 +70,11 @@ if (!empty($_POST)) {
 			
 			break;
 		case "3"://agregar arquitectura
-				//crear la red en openstack
+				//variables
 				$name_net=$_POST['name_arq'];
 				$description=$_POST['desc_arq'];
 				$domain=$_POST['dominio_arq'];
+				// sube la imagen 
 				if (move_uploaded_file($_FILES['image']['tmp_name'], 'images/images_testbed/images_ims/temp/'.$_FILES['image']['name'])) {
 					$new_name = $now . $_FILES['image']['name'];
 					rename('images/images_testbed/images_ims/temp/'.$_FILES['image']['name'], 'images/images_testbed/images_ims/'.$new_name );
@@ -82,11 +83,50 @@ if (!empty($_POST)) {
 				$sql = "INSERT INTO arqs_testbedims (arquitectura, dominio, activo, usuario, descripcion, imagen) VALUES ('".$_POST['name_arq']."','".$_POST['dominio_arq']."','V','libre', '".$_POST['desc_arq']."','".$new_name."')";
 				$agregar=db_execute($sql);
 				if ( $agregar == '1') {
+					// agrega las restricciones
 					add_restrictions($_POST['dominio_arq'],$_POST['max_vm_aditional'],$_POST['max_ram'],$_POST['max_disk'],$_POST['max_vcpu']);
 					// crea la red en openstack
 					$result_create_net=create_net($name_net, $description, $domain);
-					//crear maquina dependiento de el tipo de core
-					create_vm_to_core($_POST['dominio_arq'],$_POST['type']);
+					$netArrayJson = json_decode($result_create_net, true);
+					if( $netArrayJson['net_openstack'] != '0' && $netArrayJson['net_telco'] == '1'){
+						// crea el router
+						$idRouter=createRouter($name_net);
+						if( $idRouter == '0'){
+							echo("Error al crear Router");
+						}else{
+							$ansConecRouter=conectRouter($idRouter, 'ef151b6a-fe7e-4075-80a1-2be1a022cf36', $netArrayJson['subnet_openstack']);
+							
+							if( $ansConecRouter=='11'){
+								// crear las maquinas virtuales
+								//crear maquina dependiento de el tipo de core
+								create_vm_to_core($_POST['dominio_arq'], $_POST['type']);
+								echo "Arquietctura Creada con Exito";
+
+							}else{
+								if ($ansConecRouter=='01') {
+									echo "Error al conectar el router a la red Publica";
+								}else{
+									if ($ansConecRouter=='10') {
+										echo "Error al conectar el router a la red Local";
+									}else {
+										echo "Error No se pudo conectar el router";
+									}
+								}
+
+							}
+						}
+					}else{
+						if( $netArrayJson['net_openstack'] != '0' ){
+							echo "Fallo la conexion a Openstack al crear la red, Intentelo mas tarde o contacte al administrador";
+						}else{
+							echo "Fallo la conexion a la base de datos al crear la red, Intentelo mas tarde o contacte al administrador";
+						}
+					}
+
+
+					
+					// asignar direcciones ip publicas
+					
 					// retorna la actualizacion de la tabla
 					$id_arq=db_fetch_cell_prepared("SELECT id from arqs_testbedims order by id desc limit 1");
 					echo(return_file_arq($id_arq, $_POST['name_arq'], $_POST['dominio_arq'], $_POST['desc_arq'], $new_name));
@@ -94,7 +134,6 @@ if (!empty($_POST)) {
 					echo('upload fallo');
 				}
 			break;
-
 		case "4": //eliminar arquitectura
 				$file_name=db_fetch_cell_prepared("select imagen from arqs_testbedims where id='".$id."'");
 				$id_net=db_fetch_cell_prepared("select id_net from arqs_testbedims t JOIN network_openstack o ON t.dominio = o.domain where t.id='".$id."'");
