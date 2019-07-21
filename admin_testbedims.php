@@ -58,7 +58,7 @@ global $config, $current_user;
 								<label class="col-6" for="dominio_arq">Dominio de arquitectura</label>
 								<input class="col-6" type="text" name="dominio_arq" placeholder="Dirección de red" required>
 								<label class="col-6" for="type">Seleccione el tipo de arquitectura</label>
-								<select class="col-6" type="select" name="type"  >
+								<select class="col-6" type="select" name="type">
 									<option value="aio">Todo en uno</option>
 									<option value="dist">Distribuida</option>
 									<option value="dist_pstn">Distribuida + PSTN</option>

@@ -244,7 +244,7 @@ function add_arquitec() {
     }
     if (l == 0) {
         if (ValidateIPaddress($('#form_new_arq')[0][3].value)) {
-            // console.log("entro e la funcion");
+             console.log("entro e la funcion");
             var parametros = new FormData($('#form_new_arq')[0]);
             $.ajax({
                 url: 'solicitud_asignacion.php',

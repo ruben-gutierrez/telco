@@ -154,13 +154,15 @@ $now = date_create()->format('Y-m-d H:i:s');
 			
 			break;
 		case '10':
+			
 			$domain=domainOfid($_POST['id_domain']);
 			$vms=db_fetch_assoc("select * from vm_aditional_testbedims where dominio='".$domain."'");
 			$limits=consult_restrictions($domain);
-			print_r($limits);
+			//print_r($limits);
 			$restriction=db_fetch_cell_prepared("select limit_restriction from restriction_domain where domain='".$domain."' AND name_restriction='max_vm'");
 			if ($restriction > count($vms)) {
 				$images=images_openstack();
+				
 				$options='<option value="">Elegir...</option>';
 				//echo('<option value="">Elegir...</option>');
 				foreach($images as $image ){
@@ -169,14 +171,16 @@ $now = date_create()->format('Y-m-d H:i:s');
 				}
 				$op=array("options" => $options);
 				$limits += $op;
-				return $limits;
+				
 			}else{
 				//echo "0";
 				$op=array("options" => "0");
 				$limits += $op;
 
-				return $limits;
+				
 			}
+
+			print_r($limits);
 			
 			
 			break;

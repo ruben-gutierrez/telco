@@ -5328,24 +5328,30 @@ function create_net($name_net, $description, $domain){
 	$respuesta=shell_exec("./scripts/request_openstack.sh $action $name_net $description");
 	$arrayJson = json_decode($respuesta, true);
 	// print_r($arrayJson);
-
-	if(key($arrayJson) == "error"){
-		echo "fail openstack";
-	}else{
+	$ans_array=array();
+	if(key($arrayJson) == "network"){
 		$id_net=$arrayJson['network']['id'];
 		$name_net=$arrayJson['network']['name'];
 		$description_net=$arrayJson['network']['description'];
 		$status_net=$arrayJson['network']['status'];
+		$ans_array += array( 'net_openstack' => $id_net);
 		$result=db_execute("INSERT INTO network_openstack(id_net, name_net, description_net,domain, status) values ('$id_net','$name_net', '$description_net', '$domain','$status_net')");
 		
 		if( $result == '1'){
+			$ans_array += array( 'net_telco' => '1');
 			// #$1-> action: subnet, $2-> id_net:nombre de la red, $3-> domain:dominio de la red, $4 name_net:nombre de la subred
 			$action = "subnet";
-			$respuesta=shell_exec("./scripts/request_openstack.sh $action $id_net $domain $name_net");
+			$respuesta2=shell_exec("./scripts/request_openstack.sh $action $id_net $domain $name_net");
+			$arrayJson2 = json_decode($respuesta2, true);
+			$ans_array += array( 'subnet_openstack' => $arrayJson2['subnet']['id']);
 		}else{
-			// echo("fail");
+			$ans_array += array( 'net_telco' => '0');
 		}
+		
+	}else{
+		$ans_array += array( 'net_openstack' => '0');
 	}
+	return $ans_array;
 }
 
 function delete_net($id_net){
@@ -5395,36 +5401,36 @@ function create_vm_to_core($domain,$typeDomain){
 					'dime'=>'',
 					'asterisk'=>'',
 					'ibcf'=>''
-				);
-				$nodes_dist=array('bono'=>'',
-					'sprout'=>'',
-					'ellis'=>'',
-					'homer'=>'',
-					'vellum'=>'',
-					'dime'=>''
-				);
+	);
+	$nodes_dist=array('bono'=>'',
+		'sprout'=>'',
+		'ellis'=>'',
+		'homer'=>'',
+		'vellum'=>'',
+		'dime'=>''
+	);
 	$id_net=id_net_ofDomain($domain);
 					// #como no hay informacion entonces crear maquinas
 					// #vefirigar que tipo de nucleo selecciono
+					
 					switch ($typeDomain) {
 						case 'aio':
-
 							// #crear solo 1 ubuntu 14
 							// #guardar solo bono
 							// create_vm( "aio", "a25c56b1-eb49-4cf6-bf09-eed2a417e703", "2", $id_net);
-							// echo $id_subnet;
+							//echo $id_subnet;
 							//$vm_create=create_vm( "aio", "a25c56b1-eb49-4cf6-bf09-eed2a417e703", "2", $id_subnet);
-							$vm_create=create_vm( "aio", "a25c56b1-eb49-4cf6-bf09-eed2a417e703", "42", $id_net);
+							$vm_create=create_vm("allInOne", "c7616ef5-3d8c-4908-b0d9-9d8d0a82e414", "d2", $id_net);
 							$vmJson = json_decode($vm_create, true);
-							print_r($vmJson);
+							//print_r($vmJson);
 							$agregar=db_execute("INSERT INTO core_domain (id_server, domain, type_domain) values ( '".$vmJson['server']['id']."','".$domain."','".$typeDomain."')");
 
 							break;
 						case 'dist':
 							// crear 5 nodos mas dns
 							foreach ($nodes_dist as $nameVm=>$ipVm){
-									// create_vm( $nameVm, $id_image, "42", $id_net);
-									$vm_create=create_vm( $nameVm, "a25c56b1-eb49-4cf6-bf09-eed2a417e703", "42", $id_net);
+									// create_vm( $nameVm, $id_image, "d2", $id_net);
+									$vm_create=create_vm( $nameVm, "c7616ef5-3d8c-4908-b0d9-9d8d0a82e414", "d2", $id_net);
 									$vmJson = json_decode($vm_create, true);
 									$agregar=db_execute("INSERT INTO core_domain (id_server, domain, type_domain) values ( '".$vmJson['server']['id']."','".$domain."','".$typeDomain."')");
 							}
@@ -5432,8 +5438,8 @@ function create_vm_to_core($domain,$typeDomain){
 						case 'dist_pstn':
 							// crear 7 nodos mas dns
 							foreach ($nodes_dist_pstn as $nameVm=>$ipVm){
-									// create_vm( $nameVm, $id_image, "42", $id_subnet);
-									$vm_create=create_vm( $nameVm, "a25c56b1-eb49-4cf6-bf09-eed2a417e703", "42", $id_net);
+									// create_vm( $nameVm, $id_image, "d2", $id_subnet);
+									$vm_create=create_vm( $nameVm, "c7616ef5-3d8c-4908-b0d9-9d8d0a82e414", "d2", $id_net);
 									$vmJson = json_decode($vm_create, true);
 									$agregar=db_execute("INSERT INTO core_domain (id_server, domain, type_domain) values ( '".$vmJson['server']['id']."','".$domain."','".$typeDomain."')");
 							}
@@ -5664,34 +5670,19 @@ function createRouter($nameRouter){
 	$action='create_router';
 	$answer=shell_exec("./scripts/request_openstack.sh $action $nameRouter");
 	$ans = json_decode($answer, true);
-	print_r($ans);
-	// if(key($delVm) == "error"){
-	// 	return "0";
-	// }else{
-	// 	return "1";
-	// }
+	if(key($ans) == "router"){
+		return $ans['router']['id'];
+	}else{
+		return "0";
+	}
 }
 function conectRouterNetPublic($idRouter, $idNet){
 	$action='conect_router_netPublic';
 	$answer=shell_exec("./scripts/request_openstack.sh $action $idRouter $idNet");
-	$ans = json_decode($answer, true);
-	print_r($ans);
-	// if(key($delVm) == "error"){
-	// 	return "0";
-	// }else{
-	// 	return "1";
-	// }
 }
 function conectRouterNetPrivate($idRouter, $idNet){
 	$action='conect_router_netPrivate';
 	$answer=shell_exec("./scripts/request_openstack.sh $action $idRouter $idNet");
-	$ans = json_decode($answer, true);
-	print_r($ans);
-	// if(key($delVm) == "error"){
-	// 	return "0";
-	// }else{
-	// 	return "1";
-	// }
 }
 function addIpFloatServer($idRouter, $idSubNet){
 	$action='add_ipFloat_server';
@@ -5778,17 +5769,17 @@ function validate_recourses($domain, $ram, $disk, $vcpu){
 	$limit_ram=db_fetch_row_prepared("SELECT limit_restriction FROM restriction_domain where domain='".$domain."' AND name_restriction='max_ram'");
 	$limit_disk=db_fetch_row_prepared("SELECT limit_restriction FROM restriction_domain where domain='".$domain."' AND name_restriction='max_disk'");
 	$limit_vcpu=db_fetch_row_prepared("SELECT limit_restriction FROM restriction_domain where domain='".$domain."' AND name_restriction='max_vcpu'");
-	if( $ram < $limit_ram){
+	if( $ram > $limit_ram){
 		$ret_ram='0';
 	}else{
 		$ret_ram='1';
 	}
-	if( $disk < $limit_disk){
+	if( $disk > $limit_disk){
 		$ret_disk='0';
 	}else{
 		$ret_disk='1';
 	}
-	if( $vcpu < $limit_vcpu){
+	if( $vcpu > $limit_vcpu){
 		$ret_vcpu='0';
 	}else{
 		$ret_vcpu='1';
