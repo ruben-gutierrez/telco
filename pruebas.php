@@ -53,7 +53,7 @@ if (isset($_GET['arq'])) {
             se debe tener en cuenta que el orden de las variables se debe guardar de a cuerdo a la seccion de la definicion de las variables.
           </div>
           
-            <div class="container p-2 bg-light slide-test-bono">
+            <div class="container p-2 bg-dark slide-test-bono text-white">
             
               <?php 
               guide_test($explain_test_bono,'0');
@@ -114,7 +114,7 @@ if (isset($_GET['arq'])) {
                   <input type="file" name="file_test" required>
                   
                   <div>
-                  <input type="button" class="btn_form" id="btn_save_info" value="Siguiente" onclick="add_test()">
+                  <input type="button" class="btn_form" id="btn_save_info" value="Definir Opciones" onclick="add_test()">
                   <input type="button" class="btn_form" value="Cancelar" onclick="$('#content_add_test').hide();$('#btn_see_table5').show();$('#btn_notsee_table5').hide();$('#form_add_test')[0].reset();">
                   </div>
               </form>
