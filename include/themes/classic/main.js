@@ -98,8 +98,12 @@ $(document).on("click", ".btn_arq_action", function()﻿ {
             info_arq.forEach(function(value, index) {
                 $('#form_edit_arq')[0][index + 2].value = value;
             });
+
             // console.log(fila.cells[3].textContent);
-            $('#form_edit_arq')[0][4].files[0].name = fila.cells[3].textContent;
+            // $('#form_edit_arq')[0][4].files[0].name = fila.cells[3].textContent;
+            var domainform = $('#form_edit_arq')[0][3].value;
+            consult_restrictions(domainform);
+
 
             // }
 
@@ -139,7 +143,7 @@ $(document).on("click", ".btn_arq_action", function()﻿ {
             break;
 
         case 'eliminar':
-                console.log(id);
+            console.log(id);
             var elec2 = confirm("¿Desea eliminar la arquitectura?");
             if (elec2) {
                 var formData = new FormData();
@@ -197,37 +201,38 @@ function edit_arq() {
     // if (f == 0) {
     //     alert("no se han cambiado los valores");
     // } else {
-        var parametros = new FormData($('#form_edit_arq')[0]);
-        parametros.append('id', id);
-        $.ajax({
-            url: 'solicitud_asignacion.php',
-            type: 'POST',
-            contentType: false,
-            processData: false,
-            data: parametros,
-            beforesend: function() {
+    var parametros = new FormData($('#form_edit_arq')[0]);
+    // action=5
+    parametros.append('id', id);
+    $.ajax({
+        url: 'solicitud_asignacion.php',
+        type: 'POST',
+        contentType: false,
+        processData: false,
+        data: parametros,
+        beforesend: function() {
 
-            },
-            success: function(data) {
-                // console.log(data);
-                if ($.isNumeric(data)) {
-                    $('#mod_arq').hide(300);
-                    $('#table_arquitectura').show(500);
-                    alert("Ha ocurrido un problema, intentelo mas tarde o contacte al administrador");
-                    //log-reporting
-                } else {
-                    $('#line' + id).remove();
-                    $('#table_estado_arq').append(data);
-                    $('#mod_arq').hide(300);
-                    $('#table_arquitectura').show(500);
-                    $('#form_edit_arq')[0].reset();
-                    alert("se agrego la arquitectura satisfactoriamente");
-                    // log-reporting
-                }
-
+        },
+        success: function(data) {
+            // console.log(data);
+            if ($.isNumeric(data)) {
+                $('#mod_arq').hide(300);
+                $('#table_arquitectura').show(500);
+                alert("Ha ocurrido un problema, intentelo mas tarde o contacte al administrador");
+                //log-reporting
+            } else {
+                $('#line' + id).remove();
+                $('#table_estado_arq').append(data);
+                $('#mod_arq').hide(300);
+                $('#table_arquitectura').show(500);
+                $('#form_edit_arq')[0].reset();
+                alert("se agrego la arquitectura satisfactoriamente");
+                // log-reporting
             }
 
-        });
+        }
+
+    });
 
     // }
 }
@@ -244,7 +249,7 @@ function add_arquitec() {
     }
     if (l == 0) {
         if (ValidateIPaddress($('#form_new_arq')[0][3].value)) {
-             console.log("entro e la funcion");
+            console.log("entro e la funcion");
             var parametros = new FormData($('#form_new_arq')[0]);
             $.ajax({
                 url: 'solicitud_asignacion.php',
@@ -261,11 +266,11 @@ function add_arquitec() {
                         mensaje('Error', 'Recuerde que el dominio es único.\nVerifique los datos e intentelo nuevamente');
                     } else {
                         $('#table_estado_arq').append(data);
-                       
+
                         mensaje('Arquitectura', 'Creada con exito');
                         $('.ajs-footer').hide();
                         $('#form_new_arq')[0].reset();
-                        
+
                         // log-reporting se agrego una nueva arquitectura
                     }
 
@@ -285,22 +290,22 @@ function add_arquitec() {
 }
 
 function create_core() {
-        var parametros = new FormData($('#form_info_new_arq')[0]);
-        $.ajax({
-            // action=6
-            url: 'solicitud_asignacion.php',
-            type: 'POST',
-            contentType: false,
-            processData: false,
-            data: parametros,
-            beforesend: function(){
-                console.log("Procesando");
-            },
-            success: function(data) {
-                console.log(data);
-                
-            }
-        });
+    var parametros = new FormData($('#form_info_new_arq')[0]);
+    $.ajax({
+        // action=6
+        url: 'solicitud_asignacion.php',
+        type: 'POST',
+        contentType: false,
+        processData: false,
+        data: parametros,
+        beforesend: function() {
+            console.log("Procesando");
+        },
+        success: function(data) {
+            console.log(data);
+
+        }
+    });
 
 }
 
@@ -859,27 +864,27 @@ function searcWord(searcWord, element) {
     }
 }
 
-function show_hide_content_byClass(content,incator){
+function show_hide_content_byClass(content, incator) {
     // console.log($('.'+incator)[0].children);
-    if( incator == 'none'){
-         $('.'+content)[0].classList.toggle('oculto');
-         $('.'+content)[0].classList.toggle('muestra');
-    }else{
-        $('.'+incator)[0].children[0].classList.toggle('fa-eye');
-        $('.'+incator)[0].children[0].classList.toggle('fa-eye-slash');
-        if($('.'+content)[0].style.display == 'none'){
+    if (incator == 'none') {
+        $('.' + content)[0].classList.toggle('oculto');
+        $('.' + content)[0].classList.toggle('muestra');
+    } else {
+        $('.' + incator)[0].children[0].classList.toggle('fa-eye');
+        $('.' + incator)[0].children[0].classList.toggle('fa-eye-slash');
+        if ($('.' + content)[0].style.display == 'none') {
             // console.log("oculto");
-            $('.'+content)[0].style.display = 'block';
-        }else{
+            $('.' + content)[0].style.display = 'block';
+        } else {
             // console.log("visible");
-            $('.'+content)[0].style.display = 'none';
+            $('.' + content)[0].style.display = 'none';
         }
     }
-    
+
 }
 
-function showInfoDomain(IdDomain, core){
-    
+function showInfoDomain(IdDomain, core) {
+
 
 
     $.ajax({
@@ -889,97 +894,100 @@ function showInfoDomain(IdDomain, core){
         })
         .done(function(data) {
             // console.log(data);
-           
-            
-            
-                if(data.length > 0 ){
-                    var answer = JSON.parse(data);
-                    // console.log(answer);
+
+
+
+            if (data.length > 0) {
+                var answer = JSON.parse(data);
+                // console.log(answer);
                 //    console.log(core);
 
-                    data="<div class='container'>";
-                    data="<div class='row'>";
-                    data+='<table class="table" id="table_vms_domain">';
-                    data+='<thead class="thead-dark">';
-                    data+='<tr><th scope="col">Nombre</th><th scope="col">Direccioón IP</th><th scope="col">Caracteristicas</th><th scope="col">Terminal</th></tr></thead><tbody>';
-                    // var num=1;
-                    // var ips={ip_bono:answer[0].ip_bono,ip_sprout:answer[0].ip_sprout,ip_ellis:answer[0].ip_ellis,ip_homer:answer[0].ip_homer,ip_vellum:answer[0].ip_vellum,ip_dime:answer[0].ip_dime,ip_ibcf:answer[0].ip_ibcf};
-                    for (var x in answer) {
-                        // console.log(answer[x]['name_server']);
-                        status=answer[x]['status'];
-                        if(status == "SHUTOFF"){
-                            status="Apagada";
-                        }else{
-                            status="Encendida";
-                        }
-                        data += '<tr id="'+answer[x]['id_server']+'"> <th scope="row">'+answer[x]['name_server']+'<br> '+status+'<div id="prop_vm">ram:'+answer[x]['ram']+'<br>Disk: '+answer[x]['disk']+'<br> Vcpu: '+answer[x]['vcpus']+'</div></th><td>'+answer[x]['ip_local']+'</td>';
-                        data += '<td><form class="form" id="vertical_scalability">';
-                        data += '<div class="row"><input type="hidden" name="id_server" value="'+answer[x]['id_server']+'" placeholder="RAM">';
-                        data += '<input class="col-md-3" type="number" name="ram" placeholder="RAM">';
-                        data += '<input class="col-md-3" type="number" name="vcpu" placeholder="CPU">';
-                        data += '<input class="col-md-3" type="number" name="disk" placeholder="Disk">';
-                        data += '<input class="btn btn-outline-info btn-sm m-1" type="button" id="'+answer[x]['id_server']+'" value="Editar" onclick="reziseVM(`'+answer[x]['id_server']+'`)">  <div class="logo ml-2"><i class="fa fa-spinner fa-3x" id="'+answer[x]['id_server']+'" style="display:none"></i></div></form>';
-                        data += '<div class="row">';
-                        if( status == "Apagada"){
-                            data += '<button class="btn " id="'+answer[x]['id_server']+'" type="button" title="Encender" onclick="onVM(`'+answer[x]['id_server']+'`)"><i class="fa fa-power-off text-danger fa-2x"></i></button>';
-                        }else{
-                            data += '<button class="btn "  id="'+answer[x]['id_server']+'" type="button" title="Apagar. Tarda 1 min" onclick="offVM(`'+answer[x]['id_server']+'`)"><i class="fa fa-power-off text-success fa-2x"></i></button>';
-                        }
-                        
-                        data += '<input class="btn btn-outline-secondary btn-sm m-1" type="button" id="'+answer[x]['id_server']+'" value="Punto de control" onclick="takeSnaptVM(`'+answer[x]['id_server']+'`,`'+answer[x]['name_server']+'`)">';
-                        data += '<input class="btn btn-outline-secondary btn-sm m-1" type="button" id="'+answer[x]['id_server']+'" value="Reestablecer" onclick="returnSnaptVM(`'+answer[x]['id_server']+'`)">';
-                        data += '<button class="btn btn-outline-danger btn-sm m-1" type="button" onclick="eliminarVM(`'+answer[x]['id_server']+'`)">Eliminar</button></div>';
-                        data += '</td>';
-                        data += '<td><button class="btn btn-outline-success">Terminal</button></td></tr>';
-                        // num +=1;
+                data = "<div class='container'>";
+                data = "<div class='row'>";
+                data += '<table class="table" id="table_vms_domain">';
+                data += '<thead class="thead-dark">';
+                data += '<tr><th scope="col">Nombre</th><th scope="col">Direccioón IP</th><th scope="col">Caracteristicas</th><th scope="col">Terminal</th></tr></thead><tbody>';
+                // var num=1;
+                // var ips={ip_bono:answer[0].ip_bono,ip_sprout:answer[0].ip_sprout,ip_ellis:answer[0].ip_ellis,ip_homer:answer[0].ip_homer,ip_vellum:answer[0].ip_vellum,ip_dime:answer[0].ip_dime,ip_ibcf:answer[0].ip_ibcf};
+                for (var x in answer) {
+                    // console.log(answer[x]['name_server']);
+                    status = answer[x]['status'];
+                    if (status == "SHUTOFF") {
+                        status = "Apagada";
+                    } else {
+                        status = "Encendida";
                     }
-                    data+='</div></div>';
-                    
-                    mensaje("Maquinas VM de la Arquitectura", data);
-                    // mensaje("Maquinas VM de la Arquitectura", answer);
-                }else{
-                    
-                    mensaje("Maquinas VM de la Arquitectura", "Esta arquitectura no tiene Maquinas virtuales registradas.");
+                    data += '<tr id="' + answer[x]['id_server'] + '"> <th scope="row">' + answer[x]['name_server'] + '<br> ' + status + '<div id="prop_vm">ram:' + answer[x]['ram'] + '<br>Disk: ' + answer[x]['disk'] + '<br> Vcpu: ' + answer[x]['vcpus'] + '</div></th><td>' + answer[x]['ip_local'] + '</td>';
+                    data += '<td><form class="form" id="vertical_scalability">';
+                    data += '<div class="row"><input type="hidden" name="id_server" value="' + answer[x]['id_server'] + '" placeholder="RAM">';
+                    data += '<input class="col-md-3" type="number" name="ram" placeholder="RAM">';
+                    data += '<input class="col-md-3" type="number" name="vcpu" placeholder="CPU">';
+                    data += '<input class="col-md-3" type="number" name="disk" placeholder="Disk">';
+                    data += '<input class="btn btn-outline-info btn-sm m-1" type="button" id="' + answer[x]['id_server'] + '" value="Editar" onclick="reziseVM(`' + answer[x]['id_server'] + '`)">  <div class="logo ml-2"><i class="fa fa-spinner fa-3x" id="' + answer[x]['id_server'] + '" style="display:none"></i></div></form>';
+                    data += '<div class="row">';
+                    if (status == "Apagada") {
+                        data += '<button class="btn " id="' + answer[x]['id_server'] + '" type="button" title="Encender" onclick="onVM(`' + answer[x]['id_server'] + '`)"><i class="fa fa-power-off text-danger fa-2x"></i></button>';
+                    } else {
+                        data += '<button class="btn "  id="' + answer[x]['id_server'] + '" type="button" title="Apagar. Tarda 1 min" onclick="offVM(`' + answer[x]['id_server'] + '`)"><i class="fa fa-power-off text-success fa-2x"></i></button>';
+                    }
+
+                    data += '<input class="btn btn-outline-secondary btn-sm m-1" type="button" id="' + answer[x]['id_server'] + '" value="Punto de control" onclick="takeSnaptVM(`' + answer[x]['id_server'] + '`,`' + answer[x]['name_server'] + '`)">';
+                    data += '<input class="btn btn-outline-secondary btn-sm m-1" type="button" id="' + answer[x]['id_server'] + '" value="Reestablecer" onclick="returnSnaptVM(`' + answer[x]['id_server'] + '`)">';
+                    data += '<button class="btn btn-outline-danger btn-sm m-1" type="button" onclick="eliminarVM(`' + answer[x]['id_server'] + '`)">Eliminar</button></div>';
+                    data += '</td>';
+                    data += '<td><button class="btn btn-outline-success">Terminal</button></td></tr>';
+                    // num +=1;
                 }
-           
-            
-        });   
+                data += '</div></div>';
+
+                mensaje("Maquinas VM de la Arquitectura", data);
+                // mensaje("Maquinas VM de la Arquitectura", answer);
+            } else {
+
+                mensaje("Maquinas VM de la Arquitectura", "Esta arquitectura no tiene Maquinas virtuales registradas.");
+            }
+
+
+        });
 
 }
 
-function eliminarVM(idServer){
+function eliminarVM(idServer) {
     // console.log(idServer);
     $.ajax({
-        method: "POST",
-        url: "requestOpenstack.php",
-        data: { action: "1", idServer: idServer }
-    })
-    .done(function(data) {
-        // console.log(data);
-        if(data == "1"){
-            
-            alertify.success('VM Eliminada');
-            $('.alertify').remove();
+            method: "POST",
+            url: "requestOpenstack.php",
+            data: { action: "1", idServer: idServer }
+        })
+        .done(function(data) {
+            // console.log(data);
+            if (data == "1") {
 
-        }else{
-            alertify.error('Error al borrar VM, intentelo más tarde o contacta al administrador');
-        }
-        
-            
-    }); 
+                alertify.success('VM Eliminada');
+                $('.alertify').remove();
+
+            } else {
+                alertify.error('Error al borrar VM, intentelo más tarde o contacta al administrador');
+            }
+
+
+        });
 }
-function onVM(idServer){
+
+function onVM(idServer) {
     $('.alertify').remove();
-    var answer=openstackSendIdServer("2",idServer);
+    var answer = openstackSendIdServer("2", idServer);
     return answer;
 }
-function offVM(idServer){
+
+function offVM(idServer) {
     $('.alertify').remove();
-    var answer=openstackSendIdServer("3",idServer);
+    var answer = openstackSendIdServer("3", idServer);
     return answer;
 }
-function takeSnaptVM(idServer, nameServer){
-    var action='15';
+
+function takeSnaptVM(idServer, nameServer) {
+    var action = '15';
     var parametros = new FormData();
     parametros.append('action', action);
     parametros.append('id_server', idServer);
@@ -994,13 +1002,14 @@ function takeSnaptVM(idServer, nameServer){
 
         },
         success: function(data) {
-           console.log(data);
+            console.log(data);
         }
 
     });
 }
-function returnSnaptVM(idServer){
-    var action='16';
+
+function returnSnaptVM(idServer) {
+    var action = '16';
     var parametros = new FormData();
     parametros.append('action', action);
     parametros.append('id_server', idServer);
@@ -1014,25 +1023,25 @@ function returnSnaptVM(idServer){
 
         },
         success: function(data) {
-           console.log(data);
+            console.log(data);
         }
 
     });
 }
 
-function openstackSendIdServer(action, idServer){
+function openstackSendIdServer(action, idServer) {
     $.ajax({
-        method: "POST",
-        url: "requestOpenstack.php",
-        data: { action: action, idServer: idServer }
-    })
-    .done(function(data) {
-       return data;            
-    }); 
+            method: "POST",
+            url: "requestOpenstack.php",
+            data: { action: action, idServer: idServer }
+        })
+        .done(function(data) {
+            return data;
+        });
 }
 
-function reziseVM(idServer){
-    $('i#'+idServer+'.fa').show();
+function reziseVM(idServer) {
+    $('i#' + idServer + '.fa').show();
     var parametros = new FormData($('#vertical_scalability')[0]);
     parametros.append('action', '14');
 
@@ -1043,19 +1052,20 @@ function reziseVM(idServer){
         processData: false,
         data: parametros,
         beforesend: function() {
-           
+
         },
         success: function(data) {
-            $('i#'+idServer+'.fa').hide();
+            $('i#' + idServer + '.fa').hide();
             $('.alertify').remove();
             // console.log(data);
             alertify.success('VM Modificada');
         }
 
     });
-    
+
 }
-function sendIdServerToServer(action, id_server){
+
+function sendIdServerToServer(action, id_server) {
     var parametros = new FormData();
     parametros.append('action', action);
     parametros.append('id_server', id_server);
@@ -1069,14 +1079,14 @@ function sendIdServerToServer(action, id_server){
 
         },
         success: function(data) {
-           return data;
+            return data;
         }
 
     });
 
 }
 
-function addVmtoDomain(idDomain){
+function addVmtoDomain(idDomain) {
     // var content='<form>  <div class="form-row">    <div class="form-group col-md-6">     <div class="form-group col-md-6">      <label>Nombre</label>      <input type="text" class="form-control" name="nameNewVm" placeholder="Nombre">    </div>  </div>  <div class="form-group"> <input type="hidden" class="form-control" id="networkNewMv" value="">  </div>  <div class="form-group">    <label>Flavor</label>    <input type="text" class="form-control col-md-2" id="flavorNewVm" placeholder="RAM "> <input type="text" class="form-control col-md-2" id="flavorNewVm" placeholder="VCPU "> <input type="text" class="form-control col-md-2" id="flavorNewVm" placeholder="DISK "></div>    <div class="form-group col-md-4">      <label>Sistema Operativo</label>      <select id="imageNewVm" class="form-control">        <option selected>Choose...</option>        <option>Ubuntu14</option><option>Ubuntu16</option> <option>centos19</option><option>Lubuntu</option>     </select>    </div>    </div>  <div class="form-group">    <div class="form-check">      <input class="form-check-input" type="checkbox" id="gridCheck">      <label class="form-check-label" for="gridCheck">        Check me out      </label>    </div>  </div>  <button type="submit" class="btn btn-primary">Sign in</button></form>';
     var parametros = new FormData();
     parametros.append('action', '10');
@@ -1092,22 +1102,23 @@ function addVmtoDomain(idDomain){
         },
         success: function(data) {
             console.log(data);
-            if(data == '0'){
+            if (data == '0') {
                 alert("No puede agregar máquinas virtuales");
-            }else{
-                var content='<form id="add_vm_domain">  <input type="hidden" class="form-control" name="idDomain" value="'+idDomain+'"> <div class="form-row">    <div class="form-group col-md-6">     <div class="form-group col">      <label>Nombre</label>      <input type="text" class="form-control" name="nameNewVm" placeholder="Nombre"> </div> <div class="form-group col">      <label>Sistema Operativo</label>      <select name="imageNewVm" class="form-control">        '+data+' </select>    </div>  </div>    <div class="form-group ">    <label>Flavor</label>    <input type="number" class="form-control col-md-6" name="ramNewVm" placeholder="RAM "> <input type="number" class="form-control col-md-6" name="vcpuNewVm" placeholder="VCPU "> <input type="number" class="form-control col-md-6" name="diskNewVm" placeholder="DISK "></div>       </div>   </div></form>';
+            } else {
+                var content = '<form id="add_vm_domain">  <input type="hidden" class="form-control" name="idDomain" value="' + idDomain + '"> <div class="form-row">    <div class="form-group col-md-6">     <div class="form-group col">      <label>Nombre</label>      <input type="text" class="form-control" name="nameNewVm" placeholder="Nombre"> </div> <div class="form-group col">      <label>Sistema Operativo</label>      <select name="imageNewVm" class="form-control">        ' + data + ' </select>    </div>  </div>    <div class="form-group ">    <label>Flavor</label>    <input type="number" class="form-control col-md-6" name="ramNewVm" placeholder="RAM "> <input type="number" class="form-control col-md-6" name="vcpuNewVm" placeholder="VCPU "> <input type="number" class="form-control col-md-6" name="diskNewVm" placeholder="DISK "></div>       </div>   </div></form>';
                 // console.log(content);
                 addVM("Agregar Maquina Virtual", content);
             }
 
-            
+
         }
 
     });
-   
-    
-    
+
+
+
 }
+
 function addVM(title, content) {
     var confirm = alertify.confirm(title, content, null, null).set('labels', { ok: 'Confirmar', cancel: 'Cancelar' });
 
@@ -1128,7 +1139,7 @@ function addVM(title, content) {
                 console.log(data);
                 if (data == '0') {
                     alertify.error('Error, Verifique los recursos máximos');
-                }else{
+                } else {
                     // console.log(data);
                     alertify.success('VM agregada');
                 }
@@ -1143,50 +1154,50 @@ function addVM(title, content) {
 
 
 
-function freeDomain( id ){
+function freeDomain(id) {
     var elec = confirm("¿Desea liberar la arquitectura?");
 
-   
-   
-    
-            if (elec) {
-                var formData = new FormData();
-                formData.append('id', id);
-                //formData.append('emailUser', 'usuario');
 
-                formData.append('action', '2');
-                $.ajax({
-                    url: 'solicitud_asignacion.php',
-                    type: 'POST',
-                    contentType: false,
-                    processData: false,
-                    data: formData,
-                    beforesend: function() {
 
-                    },
-                    success: function(data) {
-                       // console.log(data);
-                        if (data == '1') {
-                            refreshTableArqByUser();
-                        } else {
-                             alert("Ha ocurrido un problema, intentelo mas tarde o contacte al administrador");
-                              //log-reporting
-                         }
 
-                     }
+    if (elec) {
+        var formData = new FormData();
+        formData.append('id', id);
+        //formData.append('emailUser', 'usuario');
 
-                 });
+        formData.append('action', '2');
+        $.ajax({
+            url: 'solicitud_asignacion.php',
+            type: 'POST',
+            contentType: false,
+            processData: false,
+            data: formData,
+            beforesend: function() {
 
-             }
+            },
+            success: function(data) {
+                // console.log(data);
+                if (data == '1') {
+                    refreshTableArqByUser();
+                } else {
+                    alert("Ha ocurrido un problema, intentelo mas tarde o contacte al administrador");
+                    //log-reporting
+                }
 
-                      
+            }
+
+        });
+
+    }
+
+
 
 
 }
 
-function refreshTableArqByUser(){
+function refreshTableArqByUser() {
     var formData = new FormData();
-    emailUser=$('.arqAsingUser')[0].id;
+    emailUser = $('.arqAsingUser')[0].id;
     formData.append('emailUser', emailUser);
     formData.append('action', '9');
     $.ajax({
@@ -1207,7 +1218,7 @@ function refreshTableArqByUser(){
     });
 }
 
-function test(){
+function test() {
     return 1;
 }
 
@@ -1219,7 +1230,7 @@ function test(){
 
 function confirmar(title, content, namefunction) {
     var confirm = alertify.confirm(title, content, null, null).set('labels', { ok: 'Confirmar', cancel: 'Cancelar' });
-    
+
     //callbak al pulsar botón positivo
     confirm.set('onok', function() {
         alertify.success('Has confirmado');
@@ -1228,7 +1239,7 @@ function confirmar(title, content, namefunction) {
     confirm.set('oncancel', function() {
         alertify.error('Has Cancelado el dialogo');
     })
-    
+
 }
 
 
@@ -1236,19 +1247,19 @@ function confirmar(title, content, namefunction) {
 
 
 function mensaje(title, msg, footer) {
-    if(footer==false){
-       
+    if (footer == false) {
+
         alertify.alert(title, msg);
         $('.ajs-footer').hide();
-    }else{
+    } else {
         alertify.alert(title, msg).set('label', 'Aceptar');
     }
-    
+
 }
 
 
 
-function queryOpenstack(name_net){
+function queryOpenstack(name_net) {
     var formData = new FormData();
     formData.append('action', '1');
     formData.append('name_net', name_net);
@@ -1258,15 +1269,62 @@ function queryOpenstack(name_net){
         contentType: false,
         processData: false,
         data: formData,
-        beforesend: function() {
-        },
+        beforesend: function() {},
         success: function(data) {
             // var answerOpenstack=JSON.parse(data);
             // console.log (answerOpenstack);
             console.log(data);
         }
 
-        
 
+
+    });
+}
+
+function consult_restrictions(domainform) {
+    var formData = new FormData();
+    formData.append('action', '11');
+    formData.append('domain', domainform);
+    $.ajax({
+        url: 'admin_info.php',
+        type: 'POST',
+        contentType: false,
+        processData: false,
+        data: formData,
+        beforesend: function() {},
+        success: function(data) {
+
+            var answer = JSON.parse(data);
+            console.log(answer);
+            $('#form_edit_arq')[0][6].value = answer[3]['limit_restriction'];
+            $('#form_edit_arq')[0][7].value = answer[0]['limit_restriction'];
+            $('#form_edit_arq')[0][8].value = answer[2]['limit_restriction'];
+            $('#form_edit_arq')[0][9].value = answer[1]['limit_restriction'];
+
+        }
+    });
+}
+
+function slidetest(index, test) {
+    var formData = new FormData();
+    formData.append('action', '12');
+    formData.append('index', index);
+    formData.append('test', test);
+    $.ajax({
+        url: 'admin_info.php',
+        type: 'POST',
+        contentType: false,
+        processData: false,
+        data: formData,
+        beforesend: function() {},
+        success: function(data) {
+            console.log(data);
+            if (data == '') {
+
+            } else {
+                $('.slide-test-bono').empty();
+                $('.slide-test-bono').html(data);
+            }
+        }
     });
 }

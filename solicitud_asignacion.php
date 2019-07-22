@@ -139,10 +139,7 @@ if (!empty($_POST)) {
 			$file_name=db_fetch_cell_prepared("select imagen from arqs_testbedims where id='".$id."'");
 			if ($_FILES['image']['name'] == '') {
 				$up=db_execute("UPDATE arqs_testbedims SET arquitectura = '" . $_POST['name_arq'] . "', dominio ='" . $_POST['dominio_arq'] . "', usuario ='libre', descripcion='".$_POST['desc_arq']."' WHERE id='" . $id . "'");
-				
-			}else{
-				
-				
+			}else{				
 				if (file_exists('images/images_testbed/images_ims/'.$_FILES['image']['name'])) {
 					if (move_uploaded_file($_FILES['image']['tmp_name'], 'images/images_testbed/images_ims/temp/'.$_FILES['image']['name'])) {
 						$new_name = $now . $_FILES['image']['name'];

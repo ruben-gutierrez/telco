@@ -2609,6 +2609,80 @@ function draw_table_testbed_pruebas($user){
 }
 
 
+function guide_test($explain_test_bono, $index){
+	// print_r($explain_test_bono[$index]);
+	if( $index < 0 || $index > count($explain_test_bono)-1){
+		return ;// cuando se retorna 1 el boton no realiza ninguna accion
+	}
+	?>
+			<div class="header text-center">
+                <button class="btn btn-outline-info" onclick="slidetest(<?php echo $index-1;?>,'test_bono')">Anterior</button>
+            </div>
+			<div class="container p-1" id="page1">
+				<div class="container animated fadeIn">
+					<div class="row">
+						<div class="col codexml bg-secondary p-2 m-2 ">
+							<pre class="text-light">
+								<?php 
+								foreach ($explain_test_bono[$index] as $code => $options){
+									echo $code;?>
+							</pre>
+						</div>
+						<div class="col explain p-2 m-2">
+							<?php 
+							
+							foreach ($options as $key => $explain){
+								if( $key == 'general'){
+									echo "<div class='text-center'><b>".$explain."</b></div><br>";
+								}else{
+									echo $key.": "; echo $explain; echo "<br>";
+								}
+								
+							}}
+							?>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="footer text-center">
+                <button class="btn btn-outline-success" onclick="slidetest(<?php echo $index+1;?>,'test_bono')">Siguiente</button>
+            </div>
+	<?php
+}
+
+function guide_test_bono_all($explain_test_bono){
+
+	foreach( $explain_test_bono as $element){
+		foreach( $element as $code => $options){
+	?>
+	
+			<div class="container p-1" id="page1">
+				<div class="container">
+					<div class="row">
+						<div class="col codexml bg-secondary p-2 m-2">
+							<pre class="text-light">
+								<?php echo $code;?>
+							</pre>
+						</div>
+						<div class="col explain p-2 m-2">
+							<?php foreach ($options as $key => $explain){
+								if( $key == 'general'){
+									echo "<div class='text-center'><b>".$explain."</b></div><br>";
+								}else{
+									echo $key.": "; echo $explain; echo "<br>";
+								}
+							}?>
+						</div>
+					</div>
+				</div>
+			</div>
+<?php
+		}				
+	}
+
+}
+
+
 
 
 function draw_table_testbed2($array_content){

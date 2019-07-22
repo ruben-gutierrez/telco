@@ -1,5 +1,5 @@
 <?php 
-global $current_user;
+global $current_user, $explain_test_bono;
 
 include('./include/global.php');
 // include('./include/auth.php');
@@ -182,6 +182,14 @@ $now = date_create()->format('Y-m-d H:i:s');
 
 			print_r($limits);
 			
+			
+			break;
+		case '11':
+			echo json_encode(db_fetch_assoc("select name_restriction, limit_restriction from restriction_domain where domain='".$_POST['domain']."'"));
+			
+			break;
+		case '12':
+			return guide_test($explain_test_bono,$_POST['index']);
 			
 			break;
 		default:

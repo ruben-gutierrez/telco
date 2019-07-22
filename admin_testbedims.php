@@ -125,22 +125,23 @@ global $config, $current_user;
 							</div>
 						 </div>
 						 <div class="col-4">
+							
 							<div class="col mt-3">
 								<label class="col-6" for="vm_aditional">Máx VM adicionales</label>
-								<input class="col" type="number" name="max_vm_aditional" placeholder="Número entero" value="1" required>
+								<input class="col" type="number" name="max_vm_aditional" placeholder="Número entero" id="restriction_mv" value="" required>
 							</div>
 							<div class="col mt-3">
 								<label class="col-6" for="vm_aditional">Máx RAM por vm</label>
-								<input class="col" type="number" name="max_ram" placeholder="Mb" value="512" required>
+								<input class="col" type="number" name="max_ram" placeholder="Mb" value="" id="restriction_ram" required>
 							</div>
 
 							<div class="col mt-3">
 								<label class="col-6" for="vm_aditional">Max vcpu por vm</label>
-								<input class="col" type="number" name="max_vcpu" placeholder="Ej: 1" value="1" required>
+								<input class="col" type="number" name="max_vcpu" placeholder="Ej: 1" id="restriction_vcpu" value="" required>
 							</div>
 							<div class="col mt-3">
 								<label class="col-6" for="vm_aditional">Máx disk por vm</label>
-								<input class="col" type="number" name="max_disk" placeholder="Gb" value="20" required>
+								<input class="col" type="number" name="max_disk" placeholder="Gb" id="restriction_disk" value="" required>
 							</div>
 						</div> 
 					</div>

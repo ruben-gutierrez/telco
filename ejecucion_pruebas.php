@@ -15,7 +15,7 @@ if (!empty($_POST)) {
 			$name_test=db_fetch_cell("select name_test from test_testbedims where id_test='".$_POST['id_test2']."'");
 			$options_test=db_fetch_assoc("SELECT options, value, description_option from option_test_testbedims where id_test='".$_POST['id_test2']."'");
 				?>
-				<div class="row ">
+				<div class="row animated fadeIn">
 				<div class="col center">
 				<div>
 					<h4>Prueba: <?php echo $name_test ;?>  </h4>

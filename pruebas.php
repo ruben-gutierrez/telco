@@ -1,6 +1,6 @@
 <?php 
 
- global $contenido_pruebas, $email_array,$current_user;
+ global $contenido_pruebas, $email_array,$current_user, $explain_test_bono;
  include('./include/auth.php');
  top_header();
  $user_email=$current_user['email_address'];
@@ -10,6 +10,7 @@ if (isset($_GET['arq'])) {
 	send_mail("rubengutierrez@unicauca.edu.co", "rubengutierrez@unicauca.edu.co" , "Solicitud arquitectura IMS" , "Se realiza la solicitud para la asignacion de la arquitectura ". $_GET['arq']. " para realizar, ya que tengo en conocimiento el reglamento ...., Solicitante ".$from_email);
 		header("location:pruebas.php");
 }
+
 ?>
 
 
@@ -23,13 +24,13 @@ if (isset($_GET['arq'])) {
       		<!-- descripcion de las pruebas-->
       		<div class="description_page_testbed">El ambiente de prueba Telco2.0 IMS permite a los usuarios evaluar el rendiemiento del nucleo IMS clearwater con dos tipos de pruebas Una de ellas consiste en emular el nodo Bono (Proxy) para enviar peticiones y solicitudes al nodo Sprout (Nucleo IMS) para verificar el rendieminto de este. Otra de las pruebas consiste en emular los usuarios que se registran para utilizar algun servicio IMS.
       		</div>
-          <div id="container table_desciption_test">
+          <div id="container table_desciption_test" class="animated fadeIn">
             <?php 
             draw_table_testbed_pruebas($user_email);
             ?>
             
           </div>
-          <div id="table_options_test">
+          <div id="table_options_test" class="animated fadeIn">
           
           </div>
       			
@@ -47,19 +48,26 @@ if (isset($_GET['arq'])) {
       	
       		<!-- descripcion de las pruebas-->
       		<div class="container description_page_testbed">
-            Guia para realizar prueba bono.
-      		</div>
-          <div id="table_desciption_test" class="container">
+            Esta guia contiene el paso a paso para contruir el escenario de prueba BONO el cual se encarga de emular usuarios conectados a la arquitectura Clearwater.<br>
+            El archivo se debe guardar con extension .xml y se debera subir a la plataforma mediante el formulario de la siguiente seccion.<br>
+            se debe tener en cuenta que el orden de las variables se debe guardar de a cuerdo a la seccion de la definicion de las variables.
+          </div>
+          
+            <div class="container p-2 bg-light slide-test-bono">
+            
+              <?php 
+              guide_test($explain_test_bono,'0');
+              ?>
+              
+            </div>
+            <button id="btnShow_bono_all" class="btn btn-outline-info" onclick="$('#test_bono_all').show(); $('#btnHide_bono_all').show(); $('#btnShow_bono_all').hide();"> Ver Archivo completo</button>
+            <button id="btnHide_bono_all" class="btn btn-outline-warning" onclick="$('#test_bono_all').hide(); $('#btnHide_bono_all').hide();$('#btnShow_bono_all').show();" style="display:none"> Ocultar Archivo completo</button>
+            <div id="test_bono_all" class="container  animated fadeIn" style="display:none">
             <?php 
-            guide_test_bono();
+            guide_test_bono_all($explain_test_bono);
             ?>
             
           </div>
-          <div id="table_options_test">
-          
-          </div>
-      			
-
   </div>
   
   <div>
