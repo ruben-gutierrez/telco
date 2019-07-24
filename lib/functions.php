@@ -5688,3 +5688,12 @@ function validate_recourses($domain, $ram, $disk, $vcpu){
 	return ($ret_ram.$ret_disk.$ret_vcpu);
 	
 }
+
+
+function server_ssh($ipServer, $comand){
+	$action="server_ssh";
+	//$answer=shell_exec("./scripts/request_openstack.sh $action $ipServer $comand");
+	//print_r(exec('ifconfig'));
+	print_r(exec("chmod 775 /var/www/html/telco/scripts/Testbed_vIMS.pem"));
+	print_r(exec("ssh -i /var/www/html/telco/scripts/Testbed_vIMS.pem ubuntu@192.168.40.247 ls" ));
+}

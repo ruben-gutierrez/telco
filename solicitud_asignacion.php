@@ -392,6 +392,19 @@ if (!empty($_POST)) {
 			// echo "test";
 
 			break;
+		case '17'://ssh de las maquinas
+			//$ssh=server_ssh($_POST['ip'], $_POST['comand']);
+			//print_r($ssh);
+			//print_r(shell_exec($_POST['comand']));
+			// shell_exec("chmod 775 ./scripts/Testbed_vIMS.pem");
+			print_r(shell_exec($_POST['comand']));
+			
+			// passthru("ssh -i ./scripts/Testbed_vIMS.pem ubuntu@192.168.40.247 ls", $output);
+			// 
+			// echo "---------------";
+			// print_r($output);
+			
+			break;
 		default:
 			echo ("sin funcion");
 			break;

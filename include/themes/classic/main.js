@@ -1328,3 +1328,23 @@ function slidetest(index, test) {
         }
     });
 }
+
+
+function ssh_execute(ip){
+    var formData = new FormData( $('#form_ssh')[0] );
+    formData.append('action', '17');
+    formData.append('ip', ip);
+    $.ajax({
+        url: 'solicitud_asignacion.php',
+        type: 'POST',
+        contentType: false,
+        processData: false,
+        data: formData,
+        beforesend: function() {},
+        success: function(data) {
+            console.log(data);
+            $('.ssh_answer').empty();
+            $('.ssh_answer').html(data);
+        }
+    });
+}

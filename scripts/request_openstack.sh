@@ -4,8 +4,8 @@
 OS_IP_OPENSTACK=10.55.2.24
 
 # Obtener el token
-#token=$(./scripts/createToken.sh)
-token=$(./createToken.sh)
+token=$(./scripts/createToken.sh)
+# token=$(./createToken.sh)
 # echo $token
 
 # request destination
@@ -63,7 +63,7 @@ case $1 in
         curl -g -i -X DELETE http://$OS_IP_OPENSTACK/compute/v2.1/servers/$2 -H "Accept: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token:  $(echo $token | tr -d '[[:space:]]')" -H "X-OpenStack-Nova-API-Version: 2.1"
           ;;
      create_flavor)
-           curl -g -i -X POST http://$OS_IP_OPENSTACK/compute/v2.1/flavors -H "Accept: application/json" -H "Content-Type: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H "X-OpenStack-Nova-API-Version: 2.1" -d '{"flavor": {"vcpus": "'$2'", "disk": "'$3'", "name": "'$4'", "os-flavor-access:is_public": true, "rxtx_factor": 1.0, "OS-FLV-EXT-DATA:ephemeral": 0, "ram": "'$5'", "id": null, "swap": 0}}'
+           curl  -s -H POST http://$OS_IP_OPENSTACK/compute/v2.1/flavors -H "Accept: application/json" -H "Content-Type: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H "X-OpenStack-Nova-API-Version: 2.1" -d '{"flavor": {"vcpus": "'$2'", "disk": "'$3'", "name": "'$4'", "os-flavor-access:is_public": true, "rxtx_factor": 1.0, "OS-FLV-EXT-DATA:ephemeral": 0, "ram": "'$5'", "id": null, "swap": 0}}'
           ;;
     rezise_server)
          curl -s -H POST http://$OS_IP_OPENSTACK/compute/v2.1/servers/$2/action -H "Accept: application/json" -H "Content-Type: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H "X-OpenStack-Nova-API-Version: 2.1" -d '{"resize": {"flavorRef": "'$3'"}}'
@@ -121,6 +121,9 @@ case $1 in
      rebuild_server_image)
             # openstack --debug image set --name inst_test2 --instance-id <id_server> <id_instance>
             curl -g -i -X POST http://$OS_IP_OPENSTACK/compute/v2.1/servers/$2/action -H "Accept: application/json" -H "Content-Type: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H "X-OpenStack-Nova-API-Version: 2.1" -d '{"rebuild": {"imageRef": "'$3'"}}'
+          ;;
+     server_ssh)
+            chmod 775 /var/www/html/telco/scripts/Testbed_vIMS.pem && ssh -i /var/www/html/telco/scripts/Testbed_vIMS.pem ubuntu@192.168.40.247 ls
           ;;
      *)
           echo "error"
