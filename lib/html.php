@@ -2357,7 +2357,6 @@ function draw_table_testbed_arquitectura($array_content){
 }
 
 function draw_table_domainsOfUser($emailUser){
-	$menu_options = $array_content;
 	$cont =0;
 	$arq_testbed=db_arq_byUser($emailUser);
 	// print_r($arq_testbed);
@@ -2479,9 +2478,9 @@ function consult_servers_openstack(){
 		$id_server=$data['id'];
 		$name_server=$data['name'];
 	  $id_image=$data['image']['id'];
-		$ip_local=$data['addresses']['private']['0']['addr'];
-		// $ip_public=$data['addresses'];
-		$ip_public="test";
+		
+		$ip_local=$data['addresses'][key($data['addresses'])][0]['addr'];
+		$ip_public=$data['addresses'][key($data['addresses'])][1]['addr'];
 		$id_flavor=$data['flavor']['id'];
 		$key_name=$data['key_name'];
 		$status=$data['status'];
@@ -2506,7 +2505,6 @@ function draw_table_subnets_openstack(){
 	// "description","network_id","gateway_ip","cidr","id","name"
 	// [{"service_types":[],"description":"","enable_dhcp":true,"tags":[],"network_id":"02795444-2d61-407e-bb78-6b6a7aea61b8","tenant_id":"0cd526329d2544eeb839299287e5620c","created_at":"2019-06-27T22:38:03Z","dns_nameservers":[],"updated_at":"2019-06-27T22:38:03Z","ipv6_ra_mode":null,"allocation_pools":[{"start":"10.10.10.2","end":"10.10.10.254"}],"gateway_ip":"10.10.10.1","revision_number":0,"ipv6_address_mode":null,"ip_version":4,"host_routes":[],"cidr":"10.10.10.0/24","project_id":"0cd526329d2544eeb839299287e5620c","id":"45b19847-4889-46ba-ab8b-0b6665273c1f","subnetpool_id":null,"name":"test1"},{"service_types":[],"description":"shared-subnet","enable_dhcp":true,"tags":[],"network_id":"4c07b58e-d7c1-4dda-a6af-b797321b0244","tenant_id":"b7bccd2331a84914ac2a746fcd6c01c7","created_at":"2019-06-12T00:26:28Z","dns_nameservers":[],"updated_at":"2019-06-12T00:26:28Z","ipv6_ra_mode":null,"allocation_pools":[{"start":"192.168.233.2","end":"192.168.233.254"}],"gateway_ip":"192.168.233.1","revision_number":0,"ipv6_address_mode":null,"ip_version":4,"host_routes":[],"cidr":"192.168.233.0/24","project_id":"b7bccd2331a84914ac2a746fcd6c01c7","id":"4f4edde8-008a-4736-83d6-b74ec807fc5b","subnetpool_id":null,"name":"shared-subnet"}
 }
-
 function consult_subnets_openstack(){
 	$subnets=shell_exec("./scripts/request_openstack.sh consult subnets");
 	$subnetsJson = json_decode($subnets, true);
@@ -2522,6 +2520,63 @@ function consult_subnets_openstack(){
 		db_execute("INSERT INTO subnet_openstack (id_subnet, name_subnet, description_subnet, id_net, cidr, gateway_ip_subnet) values ('$id_subnet','$name_subnet', '$description_subnet', '$id_net','$cidr_subnet','$gateway_ip_subnet')");
 	}
 }
+
+function draw_table_ports_openstack(){
+	consult_ports_openstack();
+	$ports_openstack=db_fetch_assoc("SELECT * from ports_openstack");
+	//print_r($subnets_openstack['0']);
+	foreach ($ports_openstack as $line) {
+		print"<tr id='".$line['id_port']."'>
+		<td>".$line['id_port']."</td>
+		<td>".$line['fixed_ip']."</td>
+		<td>".$line['id_subnet']."</td>
+		<td>".$line['status_port']."</td></tr>";
+	}
+}
+function consult_ports_openstack(){
+	$ports=shell_exec("./scripts/request_openstack.sh consult ports");
+	$portsJson = json_decode($ports, true);
+	//print_r($portsJson);
+	foreach( $portsJson['ports'] as $index=>$data){
+		$id_port=$data['id'];
+		$id_subnet=$data['fixed_ips'][0]['subnet_id'];
+		$ips=$data['fixed_ips'][0]['ip_address'];
+
+	  	$status_port=$data['status'];
+		db_execute("INSERT INTO ports_openstack (id_port, id_subnet, fixed_ip, status_port) values ('$id_port','$id_subnet','$ips', '$status_port')");
+	}
+}
+function draw_table_flotantIp_openstack(){
+	consult_flotantIp_openstack();
+	$flotantIp_openstack=db_fetch_assoc("SELECT * from flotantIp_openstack");
+	//print_r($subnets_openstack['0']);
+	foreach ($flotantIp_openstack as $line) {
+		print"<tr id='".$line['id_floatingip']."'>
+		<td>".$line['id_floatingip']."</td>
+		<td>".$line['ip_float']."</td>
+		<td>".$line['float_net']."</td>
+		<td>".$line['ip_local']."</td>
+		<td>".$line['id_port']."</td>
+		<td>".$line['float_status']."</td></tr>";
+	}
+}
+function consult_flotantIp_openstack(){
+	$ports=shell_exec("./scripts/request_openstack.sh consult flotantIp");
+	$flotantIpJson = json_decode($ports, true);
+	//print_r($portsJson);
+	foreach( $flotantIpJson['floatingips'] as $index=>$data){
+		$id_floatingip=$data['id'];
+		$float_net=$data['floating_network_id'];
+		$ip_local=$data['fixed_ip_address'];
+		$ip_float=$data['floating_ip_address'];
+		$id_port=$data['port_id'];
+		$float_status=$data['status'];
+
+		db_execute("INSERT INTO flotantIp_openstack (id_floatingip, ip_float, float_net, ip_local, id_port, float_status) values ('$id_floatingip', '$ip_float', '$float_net', '$ip_local', '$id_port', '$float_status')");
+	}
+}
+
+
 
 function draw_table_estate_arq(){
 	$inf_arq=info_arquitecturas();

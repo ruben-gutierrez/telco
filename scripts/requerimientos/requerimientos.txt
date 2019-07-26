@@ -1,0 +1,4 @@
+Requerimientos
+
+1- Debe haber en openstack pool de direcciones publicas
+2- Una clave shh (file.pem)

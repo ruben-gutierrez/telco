@@ -71,7 +71,7 @@ if (!empty($_POST)) {
 			break;
 		case "3"://agregar arquitectura
 				//variables
-				print_r($_POST);
+				// print_r($_POST);
 				$name_net=$_POST['name_arq'];
 				$description=$_POST['desc_arq'];
 				$domain=$_POST['dominio_arq'];
@@ -99,12 +99,13 @@ if (!empty($_POST)) {
 						}else{
 							conectRouterNetPublic($idRouter, 'ef151b6a-fe7e-4075-80a1-2be1a022cf36');
 							conectRouterNetPrivate($idRouter, $result_create_net['subnet_openstack']);
-							echo "Arquitectura Creada con exito";
+							// echo "Arquitectura Creada con exito";
 							//crear maquinas
-							echo $_POST['dominio_arq'];
-							echo $_POST['type'];
 							$createDomain=create_vm_to_core($_POST['dominio_arq'], $_POST['type']);
-							print_r($createDomain);
+							// print_r($createDomain);
+							// retorna la actualizacion de la tabla
+							$id_arq=db_fetch_cell_prepared("SELECT id from arqs_testbedims order by id desc limit 1");
+							echo(return_file_arq($id_arq, $_POST['name_arq'], $_POST['dominio_arq'], $_POST['desc_arq'], $new_name));
 						}
 					}else{
 						if( $netArrayJson['net_openstack'] != '0' ){
@@ -114,9 +115,7 @@ if (!empty($_POST)) {
 						}
 					}
 
-					// retorna la actualizacion de la tabla
-					$id_arq=db_fetch_cell_prepared("SELECT id from arqs_testbedims order by id desc limit 1");
-					echo(return_file_arq($id_arq, $_POST['name_arq'], $_POST['dominio_arq'], $_POST['desc_arq'], $new_name));
+					
 				}else{
 					echo('upload fallo');
 				}
@@ -208,8 +207,10 @@ if (!empty($_POST)) {
 							//$vm_create=create_vm( "aio", "a25c56b1-eb49-4cf6-bf09-eed2a417e703", "2", $id_subnet);
 							$vm_create=create_vm( "aio", "a25c56b1-eb49-4cf6-bf09-eed2a417e703", "42", $id_net);
 							$vmJson = json_decode($vm_create, true);
+							
 							print_r($vmJson);
 							$agregar=db_execute("INSERT INTO core_domain (id_server, domain, type_domain) values ( '".$vmJson['server']['id']."','".$_POST['dominio']."','".$_POST['type']."')");
+							
 							if( $agregar== 1){
 								echo "maquina agregada";
 							}else{
@@ -310,7 +311,7 @@ if (!empty($_POST)) {
 		case '12'://consultar maquinas virtuales por usuario
 			consult_servers_openstack();
 			$domain=db_fetch_cell_prepared("SELECT dominio from arqs_testbedims where id=".$_POST['domain']);
-			$ips_domain=db_fetch_assoc("SELECT s.id_server, s.name_server, s.ip_local, s.status from server_openstack s inner join core_domain c on c.id_server=s.id_server inner join  flavor_openstack f on f.id_flavor=s.id_flavor where c.domain='".$domain."'");
+			$ips_domain=db_fetch_assoc("SELECT s.id_server, s.name_server, s.ip_local, s.status, c.ram, c.vcpus, c.disk from server_openstack s inner join core_domain c on c.id_server = s.id_server inner join  flavor_openstack f on f.id_flavor=s.id_flavor where c.domain='".$domain."'");
 			$ips_aditionals=db_fetch_assoc("SELECT v.id_server,v.name_server, v.ip_local, s.status, f.ram, f.vcpus, f.disk from vm_aditional_testbedims v inner join server_openstack s on v.id_server=s.id_server inner join flavor_openstack f on f.id_flavor=s.id_flavor where v.dominio='".$domain."'");
 			if ($_POST['core']== "true") {
 				echo json_encode($ips_domain);
@@ -329,22 +330,22 @@ if (!empty($_POST)) {
 			if ( $resp == '111' ) {
 				$id_net=db_fetch_cell_prepared("SELECT n.id_net from network_openstack n INNER JOIN arqs_testbedims a ON a.dominio=n.domain where a.id='".$_POST['idDomain']."'");
 				$flavor=id_flavor( $_POST['ramNewVm'],$_POST['vcpuNewVm'],$_POST['diskNewVm']);
-				echo "-------------------------------";
-				echo $_POST['nameNewVm'];
-				echo $_POST['imageNewVm'];
-				echo $flavor;
-				echo $id_net;
+				
 				$vm=create_vm($_POST['nameNewVm'], $_POST['imageNewVm'],$flavor,$id_net);
 				consult_servers_openstack();
 				$vmJson = json_decode($vm, true);
-					print_r($vmJson);
+					// print_r($vmJson);
 				$id_dom=$_POST['idDomain'];
 				$domain=db_fetch_cell_prepared("select dominio from arqs_testbedims where id='".$id_dom."'");
 				$name=$_POST['nameNewVm'];
 				
 				$image=$_POST['imageNewVm'];
 				$id_server=$vmJson['server']['id'];
-				$agregate=db_execute("insert into vm_aditional_testbedims(id_server,dominio, name_server,RAM,disk,vcpu,id_flavor,image) values ('".$id_server."','".$domain."','".$name."','".$ram."','".$disk."','".$vcpu."','".$flavor."','".$image."')");
+				sleep(5);
+				$server1=show_server($id_server);
+				$server = json_decode($server1, true);
+				$ipLocal=$server['server']['addresses'][key($server['server']['addresses'])][0]['addr'];
+				$agregate=db_execute("INSERT INTO vm_aditional_testbedims(id_server,dominio, name_server,ip_local,RAM,disk,vcpu,id_flavor,image) values ('".$id_server."','".$domain."','".$name."','".$ipLocal."','".$ram."','".$disk."','".$vcpu."','".$flavor."','".$image."')");
 				if($agregate == 1){
 					$server=db_fetch_row_prepared("SELECT * from vm_aditional_testbedims WHERE id_server='".$id_server."'");
 					print_r($server);
@@ -393,18 +394,24 @@ if (!empty($_POST)) {
 
 			break;
 		case '17'://ssh de las maquinas
-			//$ssh=server_ssh($_POST['ip'], $_POST['comand']);
-			//print_r($ssh);
-			//print_r(shell_exec($_POST['comand']));
-			// shell_exec("chmod 775 ./scripts/Testbed_vIMS.pem");
-			print_r(shell_exec($_POST['comand']));
-			
-			// passthru("ssh -i ./scripts/Testbed_vIMS.pem ubuntu@192.168.40.247 ls", $output);
-			// 
-			// echo "---------------";
-			// print_r($output);
+		
+			$ipfloatTelco=ipFloatServer($_POST['id_server']);
+			if( $ipfloatTelco == ''){
+				// echo "no tiene ip publica";
+				$ipfloat=asingIpFloatServer($_POST['id_server']);
+				if( $ipfloat == '0'){
+					echo "0";
+				}else{
+					
+					echo $ipfloat;
+				}
+			}else{
+				
+				echo $ipfloatTelco;
+			}
 			
 			break;
+		
 		default:
 			echo ("sin funcion");
 			break;
@@ -419,22 +426,4 @@ if (!empty($_POST)) {
 	}	
 }
 
-
-function return_file_arq($id,$nombre,$dominio,$descipcion, $imagen){
-	$line="<tr id='line".$id."'><td>".$nombre."</td>
-				<td>".$dominio."</td>
-				<td class='edisplay'>".$descipcion."</td>
-				<td class='edisplay'>".$imagen."</td>
-				<td>libre</td>
-				<td><button class='btn_arq_action btn btn-outline-success btn-sm' id='btn_liberar".$id."' name='liberar' style='background:green;'> <i class='fa fa-unlink'> Liberar</i></button>
-				<button class='btn_arq_action btn btn-outline-warning btn-sm' id='btn_editar".$id."'name='editar' style='background:blue;'> <i class='fa fa-edit'> Editar</i></button>
-				<button class='btn_arq_action btn btn-outline-danger btn-sm' id='btn_eliminar".$id."' name='eliminar' style='background:red;'> <i class='fa fa-trash'> Eliminar</i></button></td></tr>";
-	return $line;
-}
-
-
-function arq_asignadas_to_user($user){
-	$ids_od_user=db_fetch_assoc("SELECT id from arqs_testbedims where usuario ='".$user."'");
-	return $ids_od_user;
-}
 

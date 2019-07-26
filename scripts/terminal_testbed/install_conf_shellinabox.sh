@@ -1,7 +1,7 @@
 #!/bin/bash
 sudo apt-get update
 sudo apt-get install openssl shellinabox
-sudo vim /etc/default/shellinabox
+
 rm /etc/default/shellinabox
 echo 'Should shellinaboxd start automatically
 SHELLINABOX_DAEMON_START=1                                                                                                                           
@@ -23,4 +23,3 @@ SHELLINABOX_PORT=7676
 SHELLINABOX_ARGS="--no-beep --disable-ssl"' > /etc/default/shellinabox
 
 sudo service shellinabox restart
-

@@ -201,32 +201,6 @@ global $config, $current_user;
  			</div>
  		</section>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		 
-
  		<section  id="info_arq" class="section_admin_arquitecuta" tabindex="0">
 		 	<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('type_arq', 'indicate_solicitedArquitecture')">
 					<a class="navbar-brand text-white"><b> Agregar Tipo de Arquitectura</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
@@ -244,231 +218,322 @@ global $config, $current_user;
 						</div>
 	 				</div>
  			</div>
- 		</section>
+		 </section>
+		 <section id="test_dom" class="section_admin_arquitecuta">
+					<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('add_test', 'indicate_solicitedArquitecture')">
+							<a class="navbar-brand text-white"><b> Agregar Prueba</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
+					</nav>
+					<div class="content_section">
+							<label>Agregar prueba a una arquitectura</label>
+							<div id="content_add_test" style="display: none;" class="add_test">
+								<div id='form_1'>
+									<form method="post" id="form_add_test" class="form_arq" enctype="multipart/form-data">
+										<input type="hidden" name="action" value="10">
+										<label>Seleccione la arquitectura a la cual se agregara una prueba</label>
+										<select name="dominio">
+											<option value="">Seleccionar</option>
+											<?php
+												$dominios=db_fetch_assoc("select dominio from arqs_testbedims");
 
- 		<section id="test_dom" class="section_admin_arquitecuta">
-		 	<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('add_test', 'indicate_solicitedArquitecture')">
-					<a class="navbar-brand text-white"><b> Agregar Prueba</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
+												foreach ($dominios as $key => $value) {
+													print("<option value='".$value['dominio']."'>".$value['dominio']."</option>");
+												}
+											?>	
+										</select>
+										<label>Nombre de la prueba</label>
+
+											
+										<input type="text" name="name_test" placeholder="Nombre de identificación de la prueba" required>
+											
+											
+											<!-- <input type="text" name="comand_test" placeholder="Comando de prueba"> -->
+											<!-- <input type="text" name="description_test" placeholder="Descripcion"> -->
+										<label>Descripción de la prueba</label>
+										<textarea name="description_test" placeholder="	Descripcion" required></textarea>
+										<label>Indique las restricciones de la prueba</label>
+										<input type="text" name="restriction_test" placeholder="Restricción" required>
+										<label><h3>Archivo XML </h3></label>
+										<input type="file" name="file_test" required>
+											
+										<div>
+											<input type="button" class="btn_form btn btn-primary btn-sm" id="btn_save_info" value="Agregar" onclick="add_test()">
+											<input type="button" class="btn_form btn btn-outline-danger btn-sm" value="Cancelar" onclick="$('#content_add_test').hide();$('#btn_see_table5').show();$('#btn_notsee_table5').hide();$('#form_add_test')[0].reset();">
+										</div>
+									</form>
+										
+								</div>
+								<div id='form_2'  style="display: none;">
+									<form method="post" id="form_info_test" class="form_arq">
+										<input type="hidden" name="action" value='11' required>
+										<input type="hidden" name="id_test" value=''>
+										<input type="text" name="options" placeholder="Opción de la prueba" required>
+										<input type="text" name="value" placeholder="Dato que se debe agregar" required>
+										<textarea name="description_option" placeholder="Descripcion" required></textarea>
+										
+										<div>
+										<input type="button" class="btn_form btn btn-primary" id="btn_save_info" value="Guardar" onclick="add_info_test();">
+										<input type="button" class="btn_form btn btn-outline-danger" value="Cancelar" onclick="$('#btn_see_table5').show();$('#btn_notsee_table5').hide();$('#form_add_test')[0].reset();$('#form_info_test')[0].reset();$('#form_1').show();$('#form_2').hide();$('#content_add_test').hide();">
+										</div>
+									</form>
+								</div>
+						
+						</div>
+					</div>
+				</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		 <section id="test_dom" class="section_admin_arquitecuta">
+		 	<nav class="navbar navbar-light bg-dark row mb-3" onclick="show_hide_content_byClass('info_openstack', 'indicate_solicitedArquitecture')">
+					<a class="navbar-brand text-white"><b> Información de openstack</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
 			</nav>
 			<div class="content_section">
-					<label>Agregar prueba a una arquitectura</label>
-					<div id="content_add_test" style="display: none;" class="add_test">
-						<div id='form_1'>
-							<form method="post" id="form_add_test" class="form_arq" enctype="multipart/form-data">
-								<input type="hidden" name="action" value="10">
-								<label>Seleccione la arquitectura a la cual se agregara una prueba</label>
-								<select name="dominio">
-									<option value="">Seleccionar</option>
-									<?php
-										$dominios=db_fetch_assoc("select dominio from arqs_testbedims");
+				<label>información de openstack</label>
+				<!-- <div class="info_openstack p-4" style="display: none;"> -->
+				<div class="info_openstack p-4">
+						
 
-										foreach ($dominios as $key => $value) {
-											print("<option value='".$value['dominio']."'>".$value['dominio']."</option>");
-										}
-									?>	
-				 				</select>
-				 				<label>Nombre de la prueba</label>
+					
+				<section class="section_arquitecture">
+					<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('networks_openstack', 'indicate_solicitedArquitecture')">
+							<a class="navbar-brand text-white"><b>Redes de Openstack</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
+					</nav>
 
-			 						
-		 						<input type="text" name="name_test" placeholder="Nombre de identificación de la prueba" required>
-			 						
-									
-			 						<!-- <input type="text" name="comand_test" placeholder="Comando de prueba"> -->
-			 						<!-- <input type="text" name="description_test" placeholder="Descripcion"> -->
-			 					<label>Descripción de la prueba</label>
-		 						<textarea name="description_test" placeholder="	Descripcion" required></textarea>
-								<label>Indique las restricciones de la prueba</label>
-		 						<input type="text" name="restriction_test" placeholder="Restricción" required>
-		 						<label><h3>Archivo XML </h3></label>
-		 						<input type="file" name="file_test" required>
-									
-		 						<div>
-			 						<input type="button" class="btn_form btn btn-primary btn-sm" id="btn_save_info" value="Agregar" onclick="add_test()">
-			 						<input type="button" class="btn_form btn btn-outline-danger btn-sm" value="Cancelar" onclick="$('#content_add_test').hide();$('#btn_see_table5').show();$('#btn_notsee_table5').hide();$('#form_add_test')[0].reset();">
-		 						</div>
-			 				</form>
-			 					
+					<div class="row networks_openstack" style="display: none;">
+						<div class="col-md">
+								<!-- <button class="btn btn-primary" onclick="">test</button> -->
+							<table class="table table-striped table_arq_byUser">
+							
+							<thead>
+								<tr>
+								<th scope="col">Id de Red</th>
+								<th scope="col">Nombre de Red</th>
+								<th scope="col">Descripcion</th>
+								<th scope="col">Dominio</th>
+								<th scope="col">Estado</th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php 
+								draw_table_nets_openstack();
+								?>
+							</tbody>
+							</table>
+
 						</div>
-						<div id='form_2'  style="display: none;">
-		 					<form method="post" id="form_info_test" class="form_arq">
-		 						<input type="hidden" name="action" value='11' required>
-								<input type="hidden" name="id_test" value=''>
-		 						<input type="text" name="options" placeholder="Opción de la prueba" required>
-		 						<input type="text" name="value" placeholder="Dato que se debe agregar" required>
-		 						<textarea name="description_option" placeholder="Descripcion" required></textarea>
-		 						
-		 						<div>
-		 						<input type="button" class="btn_form btn btn-primary" id="btn_save_info" value="Guardar" onclick="add_info_test();">
-		 						<input type="button" class="btn_form btn btn-outline-danger" value="Cancelar" onclick="$('#btn_see_table5').show();$('#btn_notsee_table5').hide();$('#form_add_test')[0].reset();$('#form_info_test')[0].reset();$('#form_1').show();$('#form_2').hide();$('#content_add_test').hide();">
-		 						</div>
-		 					</form>
+					</div>
+
+				</section>
+
+				<section class="section_arquitecture">
+					<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('flavors_openstack', 'indicate_solicitedArquitecture')">
+							<a class="navbar-brand text-white"><b>Flavors de Openstack</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
+					</nav>
+
+					<div class="row flavors_openstack" style="display: none;">
+						<div class="col-md">
+								<!-- <button class="btn btn-primary" onclick="">test</button> -->
+							<table class="table table-striped table_flavors_openstack">
+							
+							<thead>
+								<tr>
+								<th scope="col">Id Flavor</th>
+								<th scope="col">Nombre Flavor</th>
+								<th scope="col">RAM</th>
+								<th scope="col">Disco</th>
+								<th scope="col">Virtual CPU</th>
+								<th scope="col">Publico</th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php 
+								draw_table_flavors_openstack();
+								?>
+							</tbody>
+							</table>
+
 						</div>
-				
- 				</div>
-			</div>
-		</section>
+					</div>
 
-		
-	<section class="section_arquitecture">
-		<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('networks_openstack', 'indicate_solicitedArquitecture')">
-				<a class="navbar-brand text-white"><b>Arquitecturas de Openstack</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
-		</nav>
+				</section>
+				<section class="section_arquitecture">
+					<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('images_openstack', 'indicate_solicitedArquitecture')">
+							<a class="navbar-brand text-white"><b>Imagenes alojadas en Openstack</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
+					</nav>
 
-		<div class="row networks_openstack">
-			<div class="col-md">
-					<!-- <button class="btn btn-primary" onclick="">test</button> -->
-				<table class="table table-striped table_arq_byUser">
-				
-				  <thead>
-				    <tr>
-				      <th scope="col">Id de Red</th>
-				      <th scope="col">Nombre de Red</th>
-				      <th scope="col">Descripcion</th>
-				      <th scope="col">Dominio</th>
-				      <th scope="col">Estado</th>
-				    </tr>
-				  </thead>
-				  <tbody>
-					<?php 
-					draw_table_nets_openstack();
-					?>
-				  </tbody>
-				</table>
+					<div class="row images_openstack" style="display: none;">
+						<div class="col-md">
+								<!-- <button class="btn btn-primary" onclick="">test</button> -->
+							<table class="table table-striped table_images_openstack">
+							
+							<thead>
+								<tr>
+								<th scope="col">Id Imagen</th>
+								<th scope="col">Nombre Imagen</th>
+								<th scope="col">Estado</th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php 
+								draw_table_images_openstack();
+								?>
+							</tbody>
+							</table>
 
-			</div>
-		</div>
+						</div>
+					</div>
 
-	</section>
+				</section>
 
-	<section class="section_arquitecture">
-		<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('flavors_openstack', 'indicate_solicitedArquitecture')">
-				<a class="navbar-brand text-white"><b>Flavors de Openstack</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
-		</nav>
+				<section class="section_arquitecture">
+					<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('servers_openstack', 'indicate_solicitedArquitecture')">
+							<a class="navbar-brand text-white"><b>Instancias de Openstack</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
+					</nav>
 
-		<div class="row flavors_openstack">
-			<div class="col-md">
-					<!-- <button class="btn btn-primary" onclick="">test</button> -->
-				<table class="table table-striped table_flavors_openstack">
-				
-				  <thead>
-				    <tr>
-				      <th scope="col">Id Flavor</th>
-				      <th scope="col">Nombre Flavor</th>
-				      <th scope="col">RAM</th>
-				      <th scope="col">Disco</th>
-				      <th scope="col">Virtual CPU</th>
-				      <th scope="col">Publico</th>
-				    </tr>
-				  </thead>
-				  <tbody>
-					<?php 
-					draw_table_flavors_openstack();
-					?>
-				  </tbody>
-				</table>
+					<div class="row servers_openstack" style="display: none;">
+						<div class="col-md">
+								<!-- <button class="btn btn-primary" onclick="">test</button> -->
+							<table class="table table-striped table_servers_openstack">
+							
+							<thead>
+								<tr>
+								<th scope="col">Id server</th>
+								<th scope="col">Nombre Instancia</th>
+								<th scope="col">Id Imagen</th>
+								<th scope="col">IP Local</th>
+								<th scope="col">IP Public</th>
+								<th scope="col">Id Flavor</th>
+								<th scope="col">Key Name</th>
+								<th scope="col">Estado</th>
+								<th scope="col">Grupo de Seguridad</th>
+								<button onclick=""></button>
+								</tr>
+							</thead>
+							<tbody>
+								<?php 
+								draw_table_servers_openstack();
+								?>
+							</tbody>
+							</table>
 
-			</div>
-		</div>
+						</div>
+					</div>
 
-	</section>
-	<section class="section_arquitecture">
-		<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('images_openstack', 'indicate_solicitedArquitecture')">
-				<a class="navbar-brand text-white"><b>Imagenes alojadas en Openstack</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
-		</nav>
-
-		<div class="row images_openstack">
-			<div class="col-md">
-					<!-- <button class="btn btn-primary" onclick="">test</button> -->
-				<table class="table table-striped table_images_openstack">
-				
-				  <thead>
-				    <tr>
-				      <th scope="col">Id Imagen</th>
-				      <th scope="col">Nombre Imagen</th>
-				      <th scope="col">Estado</th>
-				    </tr>
-				  </thead>
-				  <tbody>
-					<?php 
-					draw_table_images_openstack();
-					?>
-				  </tbody>
-				</table>
-
-			</div>
-		</div>
-
-	</section>
-
-	<section class="section_arquitecture">
-		<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('servers_openstack', 'indicate_solicitedArquitecture')">
-				<a class="navbar-brand text-white"><b>Instancias de Openstack</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
-		</nav>
-
-		<div class="row servers_openstack">
-			<div class="col-md">
-					<!-- <button class="btn btn-primary" onclick="">test</button> -->
-				<table class="table table-striped table_servers_openstack">
-				
-				  <thead>
-				    <tr>
-				      <th scope="col">Id server</th>
-				      <th scope="col">Nombre Instancia</th>
-				      <th scope="col">Id Imagen</th>
-				      <th scope="col">IP Local</th>
-				      <th scope="col">IP Public</th>
-				      <th scope="col">Id Flavor</th>
-				      <th scope="col">Key Name</th>
-				      <th scope="col">Estado</th>
-					  <th scope="col">Grupo de Seguridad</th>
-					  <button onclick=""></button>
-				    </tr>
-				  </thead>
-				  <tbody>
-					<?php 
-					draw_table_servers_openstack();
-					?>
-				  </tbody>
-				</table>
-
-			</div>
-		</div>
-
-	</section>
+				</section>
 
 
-	<section class="section_arquitecture">
-		<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('subnets_openstack', 'indicate_solicitedArquitecture')">
-				<a class="navbar-brand text-white"><b>Subredes de Openstack</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
-		</nav>
+				<section class="section_arquitecture">
+					<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('subnets_openstack', 'indicate_solicitedArquitecture')">
+							<a class="navbar-brand text-white"><b>Subredes de Openstack</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
+					</nav>
 
-		<div class="row subnets_openstack">
-			<div class="col-md">
-					<!-- <button class="btn btn-primary" onclick="">test</button> -->
-				<table class="table table-striped table_servers_openstack">
-				
-				  <thead>
-				    <tr>
-				      <th scope="col">Id Subred</th>
-				      <th scope="col">Nombre Subred</th>
-				      <th scope="col">Descripción</th>
-				      <th scope="col">Id Red</th>
-				      <th scope="col">Ip Subred</th>
-				      <th scope="col">Gateway</th>
-				    </tr>
-				  </thead>
-				  <tbody>
-					<?php 
-					draw_table_subnets_openstack();
-					?>
-				  </tbody>
-				</table>
+					<div class="row subnets_openstack" style="display: none;">
+						<div class="col-md">
+								<!-- <button class="btn btn-primary" onclick="">test</button> -->
+							<table class="table table-striped table_servers_openstack">
+							
+							<thead>
+								<tr>
+								<th scope="col">Id Subred</th>
+								<th scope="col">Nombre Subred</th>
+								<th scope="col">Descripción</th>
+								<th scope="col">Id Red</th>
+								<th scope="col">Ip Subred</th>
+								<th scope="col">Gateway</th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php 
+								draw_table_subnets_openstack();
+								?>
+							</tbody>
+							</table>
 
-			</div>
-		</div>
+						</div>
+					</div>
 
-	</section>
-	<section class="section_admin_arquitecuta">
+				</section>
+				<section class="section_arquitecture">
+					<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('ports_openstack', 'indicate_solicitedArquitecture')">
+							<a class="navbar-brand text-white"><b>Puertos de Openstack</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
+					</nav>
+					<div class="row ports_openstack" style="display:none">
+						<div class="col-md">
+								<!-- <button class="btn btn-primary" onclick="">test</button> -->
+							<table class="table table-striped table_ports_openstack">
+							
+							<thead>
+								<tr>
+								<th scope="col">Id</th>
+								<th scope="col">Fixed IP Addresses</th>
+								<th scope="col">Id Subnet</th>
+								<th scope="col">Status</th>
+
+								</tr>
+							</thead>
+							<tbody>
+								<?php 
+								draw_table_ports_openstack();
+								?>
+							</tbody>
+							</table>
+
+						</div>
+					</div>
+				</section>
+				<section class="section_arquitecture">
+					<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('ipFlotan_openstack', 'indicate_solicitedArquitecture')">
+							<a class="navbar-brand text-white"><b>Ips Flotantes de Openstack</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
+					</nav>
+					<div class="row ipFlotan_openstack" style="display:none">
+						<div class="col-md">
+								<!-- <button class="btn btn-primary" onclick="">test</button> -->
+							<table class="table table-striped table_ipflotan_openstack">
+							
+							<thead>
+								<tr>
+								<th scope="col">Id</th>
+								<th scope="col">Ip Flotante</th>
+								<th scope="col">Id Network Float</th>
+								<th scope="col">Ip Local</th>
+								<th scope="col">Id Port</th>
+								<th scope="col">Status</th>
+
+								</tr>
+							</thead>
+							<tbody>
+								<?php 
+								draw_table_flotantIp_openstack();
+								?>
+							</tbody>
+							</table>
+
+						</div>
+					</div>
+				</section>
+				</div>
+											</div>
+		 </section>
+ 		
+	<section class="section_admin_arquitecuta mt-1">
 			<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('info_page', 'indicate_info_page')">
 					<a class="navbar-brand text-white"><b> Contenido Pagina Información</b></a><div class="float-right indicate_info_page"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
 			</nav>

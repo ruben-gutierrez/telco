@@ -5389,7 +5389,8 @@ function delete_info_openstack(){
 	db_execute("delete from server_openstack");
 	db_execute("delete from subnet_openstack");
 	db_execute("delete from image_openstack");
-
+	db_execute("delete from ports_openstack");
+	db_execute("delete from flotantIp_openstack");
 }
 
 function create_vm_to_core($domain,$typeDomain){
@@ -5417,14 +5418,18 @@ function create_vm_to_core($domain,$typeDomain){
 						case 'aio':
 							// #crear solo 1 ubuntu 14
 							// #guardar solo bono
-							// create_vm( "aio", "a25c56b1-eb49-4cf6-bf09-eed2a417e703", "2", $id_net);
-							//echo $id_subnet;
-							//$vm_create=create_vm( "aio", "a25c56b1-eb49-4cf6-bf09-eed2a417e703", "2", $id_subnet);
+							
 							$vm_create=create_vm("allInOne", "c7616ef5-3d8c-4908-b0d9-9d8d0a82e414", "d2", $id_net);
 							$vmJson = json_decode($vm_create, true);
-							//print_r($vmJson);
-							$agregar=db_execute("INSERT INTO core_domain (id_server, domain, type_domain) values ( '".$vmJson['server']['id']."','".$domain."','".$typeDomain."')");
-
+							// print_r($vm_create);
+							consult_flavors_openstack();
+							consult_servers_openstack();
+							$id_server=$vmJson['server']['id'];
+							$flavor=db_fetch_row_prepared("SELECT f.ram, f.vcpus, f.disk FROM flavor_openstack f INNER JOIN server_openstack s ON s.id_flavor=f.id_flavor where s.id_server='".$id_server."'");
+							$ram=$flavor['ram'];
+							$vcpus=$flavor['vcpus'];
+							$disk=$flavor['disk'];
+							$agregar=db_execute("INSERT INTO core_domain (id_server, domain, type_domain, ram, vcpus, disk) values ( '".$vmJson['server']['id']."','".$domain."','".$typeDomain."','".$ram."','".$vcpus."','".$disk."')");
 							break;
 						case 'dist':
 							// crear 5 nodos mas dns
@@ -5432,7 +5437,14 @@ function create_vm_to_core($domain,$typeDomain){
 									// create_vm( $nameVm, $id_image, "d2", $id_net);
 									$vm_create=create_vm( $nameVm, "c7616ef5-3d8c-4908-b0d9-9d8d0a82e414", "d2", $id_net);
 									$vmJson = json_decode($vm_create, true);
-									$agregar=db_execute("INSERT INTO core_domain (id_server, domain, type_domain) values ( '".$vmJson['server']['id']."','".$domain."','".$typeDomain."')");
+									consult_flavors_openstack();
+									consult_servers_openstack();
+									$id_server=$vmJson['server']['id'];
+									$flavor=db_fetch_row_prepared("SELECT f.ram, f.vcpus, f.disk FROM flavor_openstack f INNER JOIN server_openstack s ON s.id_flavor=f.id_flavor where s.id_server='".$id_server."'");
+									$ram=$flavor['ram'];
+									$vcpus=$flavor['vcpus'];
+									$disk=$flavor['disk'];
+									$agregar=db_execute("INSERT INTO core_domain (id_server, domain, type_domain, ram, vcpus, disk) values ( '".$vmJson['server']['id']."','".$domain."','".$typeDomain."','".$ram."','".$vcpus."','".$disk."')");
 							}
 							break;
 						case 'dist_pstn':
@@ -5441,7 +5453,14 @@ function create_vm_to_core($domain,$typeDomain){
 									// create_vm( $nameVm, $id_image, "d2", $id_subnet);
 									$vm_create=create_vm( $nameVm, "c7616ef5-3d8c-4908-b0d9-9d8d0a82e414", "d2", $id_net);
 									$vmJson = json_decode($vm_create, true);
-									$agregar=db_execute("INSERT INTO core_domain (id_server, domain, type_domain) values ( '".$vmJson['server']['id']."','".$domain."','".$typeDomain."')");
+									consult_flavors_openstack();
+									consult_servers_openstack();
+									$id_server=$vmJson['server']['id'];
+									$flavor=db_fetch_row_prepared("SELECT f.ram, f.vcpus, f.disk FROM flavor_openstack f INNER JOIN server_openstack s ON s.id_flavor=f.id_flavor where s.id_server='".$id_server."'");
+									$ram=$flavor['ram'];
+									$vcpus=$flavor['vcpus'];
+									$disk=$flavor['disk'];
+									$agregar=db_execute("INSERT INTO core_domain (id_server, domain, type_domain, ram, vcpus, disk) values ( '".$vmJson['server']['id']."','".$domain."','".$typeDomain."','".$ram."','".$vcpus."','".$disk."')");
 							}
 							break;
 						
@@ -5570,12 +5589,12 @@ function unpauseServer($idServer){
 function createRouter($nameRouter){
 	$action='create_router';
 	$answer=shell_exec("./scripts/request_openstack.sh $action $nameRouter");
-	$ans = json_decode($answer, true);
+	$ans = json_decode($answer, true);	
 	if(key($ans) == "router"){
 		return $ans['router']['id'];
 	}else{
-		return "0";
-	}
+		return "0";	
+	}	
 }
 function conectRouterNetPublic($idRouter, $idNet){
 	$action='conect_router_netPublic';
@@ -5690,10 +5709,61 @@ function validate_recourses($domain, $ram, $disk, $vcpu){
 }
 
 
-function server_ssh($ipServer, $comand){
-	$action="server_ssh";
-	//$answer=shell_exec("./scripts/request_openstack.sh $action $ipServer $comand");
-	//print_r(exec('ifconfig'));
-	print_r(exec("chmod 775 /var/www/html/telco/scripts/Testbed_vIMS.pem"));
-	print_r(exec("ssh -i /var/www/html/telco/scripts/Testbed_vIMS.pem ubuntu@192.168.40.247 ls" ));
+function asingIpFloatServer($idServer){
+	consult_servers_openstack();
+	consult_ports_openstack();
+	$port=db_fetch_cell("SELECT p.id_port from ports_openstack p inner JOIN server_openstack s ON p.fixed_ip = s.ip_local where s.id_server='".$idServer."'");
+	consult_flotantIp_openstack();
+	$idFloatIpFree=db_fetch_cell_prepared("SELECT id_floatingip FROM flotantIp_openstack where ip_local=''");
+	if($idFloatIpFree == ''){
+		$action="create_ipfloat_liked";
+		$id_network_float='ef151b6a-fe7e-4075-80a1-2be1a022cf36';
+		$answer=shell_exec("./scripts/request_openstack.sh $action $id_network_float $port");
+	}else{
+		$action="add_ipFloat_server";
+		$answer=shell_exec("./scripts/request_openstack.sh $action $idFloatIpFree $port");
+	}
+	//agregar datos a server_openstack
+	$ans = json_decode($answer, true);
+	$ipFlotante=$ans['floatingip']['floating_ip_address'];
+	$update_servers=db_execute("UPDATE server_openstack SET ip_public ='".$ipFlotante."' WHERE id_server='".$idServer."'");
+	//agregar datos a ipflotantes
+	$ipLocal=$ans['floatingip']['fixed_ip_address'];
+	$update_ipfloats=db_execute("UPDATE flotantIp_openstack SET ip_local ='".$ipLocal."', id_port='".$port."', float_status='ACTIVE' WHERE ip_float='".$ipFlotante."'");	
+	if( key($ans) == 'floatingip'){
+		return $ipFlotante;
+	}else{
+		return 0;
+	}
+}
+
+function return_file_arq($id,$nombre,$dominio,$descipcion, $imagen){
+	$line="<tr id='line".$id."'><td>".$nombre."</td>
+				<td>".$dominio."</td>
+				<td class='edisplay'>".$descipcion."</td>
+				<td class='edisplay'>".$imagen."</td>
+				<td>libre</td>
+				<td><button class='btn_arq_action btn btn-outline-success btn-sm' id='btn_liberar".$id."' name='liberar' style='background:green;'> <i class='fa fa-unlink'> Liberar</i></button>
+				<button class='btn_arq_action btn btn-outline-warning btn-sm' id='btn_editar".$id."'name='editar' style='background:blue;'> <i class='fa fa-edit'> Editar</i></button>
+				<button class='btn_arq_action btn btn-outline-danger btn-sm' id='btn_eliminar".$id."' name='eliminar' style='background:red;'> <i class='fa fa-trash'> Eliminar</i></button></td></tr>";
+	return $line;
+}
+
+
+function arq_asignadas_to_user($user){
+	$ids_od_user=db_fetch_assoc("SELECT id from arqs_testbedims where usuario ='".$user."'");
+	return $ids_od_user;
+}
+
+function ipFloatServer($idServer){
+	consult_servers_openstack();
+	return db_fetch_cell_prepared("SELECT ip_public FROM server_openstack where id_server='".$idServer."'");
+}
+
+function show_server($idServer){
+	$action="show_server";
+	$answer=shell_exec("./scripts/request_openstack.sh $action $idServer");
+	
+	return($answer);
+
 }

@@ -894,9 +894,6 @@ function showInfoDomain(IdDomain, core) {
         })
         .done(function(data) {
             // console.log(data);
-
-
-
             if (data.length > 0) {
                 var answer = JSON.parse(data);
                 // console.log(answer);
@@ -914,7 +911,7 @@ function showInfoDomain(IdDomain, core) {
                     status = answer[x]['status'];
                     if (status == "SHUTOFF") {
                         status = "Apagada";
-                    } else {
+                    }else {
                         status = "Encendida";
                     }
                     data += '<tr id="' + answer[x]['id_server'] + '"> <th scope="row">' + answer[x]['name_server'] + '<br> ' + status + '<div id="prop_vm">ram:' + answer[x]['ram'] + '<br>Disk: ' + answer[x]['disk'] + '<br> Vcpu: ' + answer[x]['vcpus'] + '</div></th><td>' + answer[x]['ip_local'] + '</td>';
@@ -930,12 +927,11 @@ function showInfoDomain(IdDomain, core) {
                     } else {
                         data += '<button class="btn "  id="' + answer[x]['id_server'] + '" type="button" title="Apagar. Tarda 1 min" onclick="offVM(`' + answer[x]['id_server'] + '`)"><i class="fa fa-power-off text-success fa-2x"></i></button>';
                     }
-
                     data += '<input class="btn btn-outline-secondary btn-sm m-1" type="button" id="' + answer[x]['id_server'] + '" value="Punto de control" onclick="takeSnaptVM(`' + answer[x]['id_server'] + '`,`' + answer[x]['name_server'] + '`)">';
                     data += '<input class="btn btn-outline-secondary btn-sm m-1" type="button" id="' + answer[x]['id_server'] + '" value="Reestablecer" onclick="returnSnaptVM(`' + answer[x]['id_server'] + '`)">';
                     data += '<button class="btn btn-outline-danger btn-sm m-1" type="button" onclick="eliminarVM(`' + answer[x]['id_server'] + '`)">Eliminar</button></div>';
                     data += '</td>';
-                    data += '<td><button class="btn btn-outline-success">Terminal</button></td></tr>';
+                    data += '<td><button class="btn btn-outline-success" onclick="terminal(`' + answer[x]['id_server'] + '`)">Terminal</button></td></tr>';
                     // num +=1;
                 }
                 data += '</div></div>';
@@ -952,6 +948,31 @@ function showInfoDomain(IdDomain, core) {
 
 }
 
+function terminal(idServer){
+    var parametros = new FormData();
+    parametros.append('action', '17');
+    parametros.append('id_server', idServer);
+    $.ajax({
+        url: 'solicitud_asignacion.php',
+        type: 'POST',
+        contentType: false,
+        processData: false,
+        data: parametros,
+        beforesend: function() {
+            console.log("antes de ");
+        },
+        success: function(data) {
+            // console.log(data);
+            if( data == 1){
+                console.log("error al desplegar Terminal");
+            }else{
+                window.open('http://'+data+':7676', '_blank');
+            }
+        }
+
+    });
+}
+ 
 function eliminarVM(idServer) {
     // console.log(idServer);
     $.ajax({

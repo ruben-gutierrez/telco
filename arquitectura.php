@@ -13,15 +13,6 @@ $from_email=$current_user['email_address'];
 
 
 ?>
-
-<div class="ssh_answer"></div>
-<div class="row butons" >
-	<form id="form_ssh">
-		<input type="text" name="comand">
-	</form>
-	<button class="btn btn-primary" onclick="ssh_execute('192.168.40.247')">Enviar</button>
-</div>
-
 <div class="margin_page">
 <div class="content"></div>
 	<section class="section_arquitecture">
