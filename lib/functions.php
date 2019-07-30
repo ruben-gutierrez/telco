@@ -5628,12 +5628,10 @@ function createIpfloat($idFloatNet){
 
 }
 function createInstantImage($name, $idServer){
-	$action="create_instant_image";
-	$answer=shell_exec("./scripts/request_openstack.sh $action $name");
+	$action="backup_server";
+	$answer=shell_exec("./scripts/request_openstack.sh $action $idServer $name");
 	$ans = json_decode($answer, true);
 	return($ans);
-	// $action="set_instant_image";
-	// print_r(shell_exec("./scripts/request_openstack.sh $action $idImage $idServer $name"));
 }
 function deleteInstantImage($idImage){
 	$action="delete_instant_image";

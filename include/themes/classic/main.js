@@ -898,9 +898,11 @@ function showInfoDomain(IdDomain, core) {
                 var answer = JSON.parse(data);
                 // console.log(answer);
                 //    console.log(core);
-
-                data = "<div class='container'>";
-                data = "<div class='row'>";
+                data = "<div class='container' id='status-loading'></div>";
+                data += "<div class='container'>";
+                
+                data += "<div class='row'>";
+                
                 data += '<table class="table" id="table_vms_domain">';
                 data += '<thead class="thead-dark">';
                 data += '<tr><th scope="col">Nombre</th><th scope="col">Direccioón IP</th><th scope="col">Caracteristicas</th><th scope="col">Terminal</th></tr></thead><tbody>';
@@ -927,7 +929,7 @@ function showInfoDomain(IdDomain, core) {
                     } else {
                         data += '<button class="btn "  id="' + answer[x]['id_server'] + '" type="button" title="Apagar. Tarda 1 min" onclick="offVM(`' + answer[x]['id_server'] + '`)"><i class="fa fa-power-off text-success fa-2x"></i></button>';
                     }
-                    data += '<input class="btn btn-outline-secondary btn-sm m-1" type="button" id="' + answer[x]['id_server'] + '" value="Punto de control" onclick="takeSnaptVM(`' + answer[x]['id_server'] + '`,`' + answer[x]['name_server'] + '`)">';
+                    data += '<input class="btn btn-outline-secondary btn-sm m-1 " type="button" id="takesnap' + answer[x]['id_server'] + '" value="Punto de control" onclick="takeSnaptVM(`' + answer[x]['id_server'] + '`,`' + answer[x]['name_server'] + '`)">';
                     data += '<input class="btn btn-outline-secondary btn-sm m-1" type="button" id="' + answer[x]['id_server'] + '" value="Reestablecer" onclick="returnSnaptVM(`' + answer[x]['id_server'] + '`)">';
                     data += '<button class="btn btn-outline-danger btn-sm m-1" type="button" onclick="eliminarVM(`' + answer[x]['id_server'] + '`)">Eliminar</button></div>';
                     data += '</td>';
@@ -1013,18 +1015,33 @@ function takeSnaptVM(idServer, nameServer) {
     parametros.append('action', action);
     parametros.append('id_server', idServer);
     parametros.append('name_server', nameServer);
+    
     $.ajax({
         url: 'solicitud_asignacion.php',
         type: 'POST',
         contentType: false,
         processData: false,
         data: parametros,
-        beforesend: function() {
+        
+        beforeSend: function() {
 
+            notifications("Instantanea", "Estableciendo Punto de control");
+           
         },
         success: function(data) {
             console.log(data);
-        }
+            // if( data == '1'){
+            //     alertify.success('Punto de control creado');
+            // }else{
+            //     alertify.error('Error al crear el punto de control');
+            // }
+
+        },
+        complete: function(){
+            deleteNotification("Instantanea");
+        },
+        
+        dataType: 'html'
 
     });
 }
@@ -1062,7 +1079,7 @@ function openstackSendIdServer(action, idServer) {
 }
 
 function reziseVM(idServer) {
-    $('i#' + idServer + '.fa').show();
+   
     var parametros = new FormData($('#vertical_scalability')[0]);
     parametros.append('action', '14');
 
@@ -1072,14 +1089,17 @@ function reziseVM(idServer) {
         contentType: false,
         processData: false,
         data: parametros,
-        beforesend: function() {
-
+        beforeSend: function() {
+            $('i#' + idServer + '.fa').show();
         },
         success: function(data) {
-            $('i#' + idServer + '.fa').hide();
-            $('.alertify').remove();
+            // $('i#' + idServer + '.fa').hide();
+            // $('.alertify').remove();
             // console.log(data);
             alertify.success('VM Modificada');
+        },
+        complete: function(){
+            $('i#' + idServer + '.fa').hide();
         }
 
     });
@@ -1368,4 +1388,16 @@ function ssh_execute(ip){
             $('.ssh_answer').html(data);
         }
     });
+}
+
+
+function notifications(idNotification,content){
+    var element='<div class="row bg-danger loader center my-1 '+idNotification+'" id="'+idNotification+'"><span class="spinner-border spinner-border-sm fa-3x" role="status" aria-hidden="true"></span>'+content+'</div>';
+    $('.ajs-modal').append( element );
+    $( "#status-loading" ).append( element );
+}
+
+function deleteNotification(idElement){
+    document.getElementById("status-loading").removeChild(document.getElementById(idElement));
+    $('#'+idElement).remove();
 }

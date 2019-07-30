@@ -119,18 +119,18 @@ case $1 in
             #  openstack --debug floating ip create ef151b6a-fe7e-4075-80a1-2be1a022cf36 --port 627f17bc-f2a0-415b-97f9-d983fa791545
            curl -s -H POST http://$OS_IP_OPENSTACK:9696/v2.0/floatingips -H "Content-Type: application/json" -H "User-Agent: openstacksdk/0.31.1 keystoneauth1/3.14.0 python-requests/2.22.0 CPython/2.7.15+" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -d '{"floatingip": {"floating_network_id": "'$2'", "port_id": "'$3'"}}' | python -m json.tool
           ;;
-     create_instant_image)
-            # openstack image create imagetest2
-           curl -s -H POST -H 'Accept-Encoding: gzip, deflate' -H 'Accept: */*' -H 'User-Agent: python-glanceclient' -H 'Connection: keep-alive' -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H 'Content-Type: application/json' -d '{"container_format": "bare", "disk_format": "qcow2", "name": "'$2'"}' http://$OS_IP_OPENSTACK/image/v2/images | python -m json.tool
+     backup_server)
+            # openstack --debug server backup create <id-server>
+           curl -g -i -X POST http://$OS_IP_OPENSTACK/compute/v2.1/servers/$2/action -H "Accept: application/json" -H "Content-Type: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H "X-OpenStack-Nova-API-Version: 2.1" -d '{"createBackup": {"backup_type": "", "rotation": 1, "name": "'$3'"}}' | python -m json.tool
           ;;
      delete_instant_image)
             # openstack image delete imagetest2
             curl -s -H DELETE -H 'Accept-Encoding: gzip, deflate' -H 'Accept: */*' -H 'User-Agent: python-glanceclient' -H 'Connection: keep-alive' -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H 'Content-Type: application/octet-stream' http://$OS_IP_OPENSTACK/image/v2/images/$2 | python -m json.tool
           ;;
-     set_instant_image)
+    #  set_instant_image)
             # openstack --debug image set --name inst_test2 --instance-id <id_server> <id_instance>
-            curl -g -i -X PATCH -H 'Accept-Encoding: gzip, deflate' -H 'Accept: */*' -H 'User-Agent: python-glanceclient' -H 'Connection: keep-alive' -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H 'Content-Type: application/openstack-images-v2.1-json-patch' -d '[{"path": "/instance_id", "value": "'$3'", "op": "add"}, {"path": "/name", "value": "'$4'", "op": "replace"}]' http://$OS_IP_OPENSTACK/image/v2/images/$2 
-          ;;
+            # curl -g -i -X PATCH -H 'Accept-Encoding: gzip, deflate' -H 'Accept: */*' -H 'User-Agent: python-glanceclient' -H 'Connection: keep-alive' -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H 'Content-Type: application/openstack-images-v2.1-json-patch' -d '[{"path": "/instance_id", "value": "'$3'", "op": "add"}, {"path": "/name", "value": "'$4'", "op": "replace"}]' http://$OS_IP_OPENSTACK/image/v2/images/$2 
+        #   ;;
      rebuild_server_image)
             # openstack --debug image set --name inst_test2 --instance-id <id_server> <id_instance>
             curl -g -i -X POST http://$OS_IP_OPENSTACK/compute/v2.1/servers/$2/action -H "Accept: application/json" -H "Content-Type: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H "X-OpenStack-Nova-API-Version: 2.1" -d '{"rebuild": {"imageRef": "'$3'"}}'
