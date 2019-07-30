@@ -361,39 +361,29 @@ if (!empty($_POST)) {
 			print_r(reziseServer($_POST['id_server'], $idflavor));
 
 			break;
-		case '15'://tomar snapthot o punto de control de una vm
+		case '15'://tomar snapshot o punto de control de una vm
 		
 			
 			$idInstant=db_fetch_cell_prepared("SELECT id_instant from instant_images_openstack WHERE id_server='".$_POST['id_server']."'");
 			print_r($idInstant);
 			if( empty($idInstant) ){
-				echo "No tiene instantanea";
+				// echo "No tiene instantanea";
 				$answer=createInstantImage( $_POST['name_server'], $_POST['id_server']);
 				print_r($answer);
-			// 	if ( !empty($answer['id'])) {
-			// 		$agregar=db_execute("INSERT INTO instant_images_openstack ( id_instant, name_instant, id_server, status_instant, disk_format,size) VALUES ('".$answer['id']."','".$answer['name']."','".$_POST['id_server']."','".$answer['status']."','".$answer['disk_format']."','".$answer['size']."')");
-			// 		if($agregar == '1'){
-			// 			print_r(setInstantImage($answer['id'], $_POST['id_server'], $answer['name']));
-			// 		}else{
-			// 			echo "fallo al guardar la imagen";
-			// 		}
-					
-			// 	}else{
-			// 		echo "Fallo crear la imagen";
-			// 	}
 			}else{
-				echo "tiene instantanea";
+				//eliminar la imagen del snapshot
+				delete_snapshot($_POST['id_server']);
+				//crear nuevamente la imagen
+				$answer=createInstantImage( $_POST['name_server'], $_POST['id_server']);
+				print_r($answer);
 			}
 			
 
 
 			break;
-		case '16'://consultar maquinas virtuales por usuario
+		case '16'://retornar a punto de control
 			$idInstant=db_fetch_cell_prepared("SELECT id_instant from instant_images_openstack WHERE id_server='".$_POST['id_server']."'");
 			print_r(rebuildServerImage($_POST['id_server'], $idInstant));
-			// print_r($answer['id']);
-			// print_r($answer);
-			// echo "test";
 
 			break;
 		case '17'://ssh de las maquinas

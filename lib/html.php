@@ -2373,7 +2373,7 @@ function draw_table_domainsOfUser($emailUser){
 						<button class='btn' id='".$elements['dominio']."' onclick='showInfoDomain(".$elements['id'].", `true`)' > <i class='fa fa-cogs bg-primary text-white p-2 rounded'> | Core IMS</i> </button>
 						<button class='btn' id='".$elements['dominio']."' onclick='showInfoDomain(".$elements['id'].", `false`)' > <i class='fa fa-cogs bg-primary text-white p-2 rounded'> | VM Adicionales</i> </button>
 						<button class='btn' id='".$elements['dominio']."' onclick='freeDomain(".$elements['id'].")' ><i class='fa fa-unlink bg-danger text-white p-2 rounded'> | Liberar</i> </button>
-						<button class='btn' id='".$elements['dominio']."' onclick='addVmtoDomain(".$elements['id'].",".$images.")' > <i class='fa fa-plus bg-warning text-white p-2 rounded'> | Agregar VM</i></button>
+						<button class='btn' id='".$elements['dominio']."' onclick='addVmtoDomain(".$elements['id'].")' > <i class='fa fa-plus bg-warning text-white p-2 rounded'> | Agregar VM</i></button>
 				</td>
 			</tr>"
 		);

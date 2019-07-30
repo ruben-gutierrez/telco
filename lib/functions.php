@@ -5631,7 +5631,13 @@ function createInstantImage($name, $idServer){
 	$action="backup_server";
 	$answer=shell_exec("./scripts/request_openstack.sh $action $idServer $name");
 	$ans = json_decode($answer, true);
-	return($ans);
+	if ( !empty($answer['id'])) {
+		$agregar=db_execute("INSERT INTO instant_images_openstack ( id_instant, name_instant, id_server, status_instant, disk_format,size) VALUES ('".$answer['id']."','".$answer['name']."','".$_POST['id_server']."','".$answer['status']."','".$answer['disk_format']."','".$answer['size']."')");
+		echo "Punto de control Creado con exito";
+	}else{
+		echo "Fallo crear la imagen";
+	}
+	
 }
 function deleteInstantImage($idImage){
 	$action="delete_instant_image";
@@ -5639,12 +5645,7 @@ function deleteInstantImage($idImage){
 	$ans = json_decode($answer, true);
 	return($ans);
 }
-function setInstantImage($idImage, $idServer, $name){
-	$action="set_instant_image";
-	$answer=shell_exec("./scripts/request_openstack.sh $action $idImage $idServer $name");
-	$ans = json_decode($answer, true);
-	return($ans);
-}
+
 function rebuildServerImage($idServer, $idImage){
 	$action="rebuild_server_image";
 	$answer=shell_exec("./scripts/request_openstack.sh $action $idServer $idImage");
@@ -5658,7 +5659,6 @@ function add_restrictions($domain,$vm,$ram, $disk, $vcpu){
 	db_execute("INSERT INTO restriction_domain (name_restriction, limit_restriction, state_restriction, domain) VALUES ('max_disk','".$disk."','0','".$domain."')");
 	db_execute("INSERT INTO restriction_domain (name_restriction, limit_restriction, state_restriction, domain) VALUES ('max_vcpu','".$vcpu."','0','".$domain."')");
 	db_execute("INSERT INTO restriction_domain (name_restriction, limit_restriction, state_restriction, domain) VALUES ('max_vm','".$vm."','0','".$domain."')");
-
 }
 function consult_restrictions($domain){
 	$limits=array(
@@ -5764,4 +5764,13 @@ function show_server($idServer){
 	
 	return($answer);
 
+}
+
+function delete_snapshot($idServer){
+	$idImage= db_fetch_cell_prepared("SELECT id_instant FROM instant_images_openstack where id_server='".$idServer."'");
+	$action="delete_image";
+	$answer=shell_exec("./scripts/request_openstack.sh $action $idImage");
+	db_execute("DELETE FROM instant_images_openstack where id_server='".$idServer."'");	
+	$ans = json_decode($answer, true);
+	return($ans);
 }

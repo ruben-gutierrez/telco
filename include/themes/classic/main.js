@@ -900,9 +900,9 @@ function showInfoDomain(IdDomain, core) {
                 //    console.log(core);
                 data = "<div class='container' id='status-loading'></div>";
                 data += "<div class='container'>";
-                
+
                 data += "<div class='row'>";
-                
+
                 data += '<table class="table" id="table_vms_domain">';
                 data += '<thead class="thead-dark">';
                 data += '<tr><th scope="col">Nombre</th><th scope="col">Direccioón IP</th><th scope="col">Caracteristicas</th><th scope="col">Terminal</th></tr></thead><tbody>';
@@ -913,7 +913,7 @@ function showInfoDomain(IdDomain, core) {
                     status = answer[x]['status'];
                     if (status == "SHUTOFF") {
                         status = "Apagada";
-                    }else {
+                    } else {
                         status = "Encendida";
                     }
                     data += '<tr id="' + answer[x]['id_server'] + '"> <th scope="row">' + answer[x]['name_server'] + '<br> ' + status + '<div id="prop_vm">ram:' + answer[x]['ram'] + '<br>Disk: ' + answer[x]['disk'] + '<br> Vcpu: ' + answer[x]['vcpus'] + '</div></th><td>' + answer[x]['ip_local'] + '</td>';
@@ -950,7 +950,7 @@ function showInfoDomain(IdDomain, core) {
 
 }
 
-function terminal(idServer){
+function terminal(idServer) {
     var parametros = new FormData();
     parametros.append('action', '17');
     parametros.append('id_server', idServer);
@@ -965,16 +965,16 @@ function terminal(idServer){
         },
         success: function(data) {
             // console.log(data);
-            if( data == 1){
+            if (data == 1) {
                 console.log("error al desplegar Terminal");
-            }else{
-                window.open('http://'+data+':7676', '_blank');
+            } else {
+                window.open('http://' + data + ':7676', '_blank');
             }
         }
 
     });
 }
- 
+
 function eliminarVM(idServer) {
     // console.log(idServer);
     $.ajax({
@@ -1015,32 +1015,25 @@ function takeSnaptVM(idServer, nameServer) {
     parametros.append('action', action);
     parametros.append('id_server', idServer);
     parametros.append('name_server', nameServer);
-    
+
     $.ajax({
         url: 'solicitud_asignacion.php',
         type: 'POST',
         contentType: false,
         processData: false,
         data: parametros,
-        
-        beforeSend: function() {
 
+        beforeSend: function() {
             notifications("Instantanea", "Estableciendo Punto de control");
-           
         },
         success: function(data) {
             console.log(data);
-            // if( data == '1'){
-            //     alertify.success('Punto de control creado');
-            // }else{
-            //     alertify.error('Error al crear el punto de control');
-            // }
 
         },
-        complete: function(){
+        complete: function() {
             deleteNotification("Instantanea");
         },
-        
+
         dataType: 'html'
 
     });
@@ -1057,13 +1050,16 @@ function returnSnaptVM(idServer) {
         contentType: false,
         processData: false,
         data: parametros,
-        beforesend: function() {
-
+        beforeSend: function() {
+            notifications("returnPointControl", "Retornando a punto de control");
         },
         success: function(data) {
             console.log(data);
-        }
-
+        },
+        complete: function() {
+            deleteNotification("returnPointControl");
+        },
+        dataType: 'html'
     });
 }
 
@@ -1079,7 +1075,7 @@ function openstackSendIdServer(action, idServer) {
 }
 
 function reziseVM(idServer) {
-   
+
     var parametros = new FormData($('#vertical_scalability')[0]);
     parametros.append('action', '14');
 
@@ -1098,7 +1094,7 @@ function reziseVM(idServer) {
             // console.log(data);
             alertify.success('VM Modificada');
         },
-        complete: function(){
+        complete: function() {
             $('i#' + idServer + '.fa').hide();
         }
 
@@ -1142,11 +1138,13 @@ function addVmtoDomain(idDomain) {
 
         },
         success: function(data) {
-            console.log(data);
+            // console.log(data['0']);
+            // var json = JSON.parse(data);
+            console.log(JSON.parse(data));
             if (data == '0') {
                 alert("No puede agregar máquinas virtuales");
             } else {
-                var content = '<form id="add_vm_domain">  <input type="hidden" class="form-control" name="idDomain" value="' + idDomain + '"> <div class="form-row">    <div class="form-group col-md-6">     <div class="form-group col">      <label>Nombre</label>      <input type="text" class="form-control" name="nameNewVm" placeholder="Nombre"> </div> <div class="form-group col">      <label>Sistema Operativo</label>      <select name="imageNewVm" class="form-control">        ' + data + ' </select>    </div>  </div>    <div class="form-group ">    <label>Flavor</label>    <input type="number" class="form-control col-md-6" name="ramNewVm" placeholder="RAM "> <input type="number" class="form-control col-md-6" name="vcpuNewVm" placeholder="VCPU "> <input type="number" class="form-control col-md-6" name="diskNewVm" placeholder="DISK "></div>       </div>   </div></form>';
+                var content = '<form id="add_vm_domain"> <input type="hidden" class="form-control" name="idDomain" value="' + idDomain + '"> <div class="form-row">    <div class="form-group col-md-6">     <div class="form-group col">      <label>Nombre</label>      <input type="text" class="form-control" name="nameNewVm" placeholder="Nombre"> </div> <div class="form-group col">      <label>Sistema Operativo</label>      <select name="imageNewVm" class="form-control">        ' + data + ' </select>    </div>  </div>    <div class="form-group ">    <label>Flavor</label>    <input type="number" class="form-control col-md-6" name="ramNewVm" placeholder="RAM "> <input type="number" class="form-control col-md-6" name="vcpuNewVm" placeholder="VCPU "> <input type="number" class="form-control col-md-6" name="diskNewVm" placeholder="DISK "></div>       </div>   </div></form>';
                 // console.log(content);
                 addVM("Agregar Maquina Virtual", content);
             }
@@ -1371,8 +1369,8 @@ function slidetest(index, test) {
 }
 
 
-function ssh_execute(ip){
-    var formData = new FormData( $('#form_ssh')[0] );
+function ssh_execute(ip) {
+    var formData = new FormData($('#form_ssh')[0]);
     formData.append('action', '17');
     formData.append('ip', ip);
     $.ajax({
@@ -1391,13 +1389,13 @@ function ssh_execute(ip){
 }
 
 
-function notifications(idNotification,content){
-    var element='<div class="row bg-danger loader center my-1 '+idNotification+'" id="'+idNotification+'"><span class="spinner-border spinner-border-sm fa-3x" role="status" aria-hidden="true"></span>'+content+'</div>';
-    $('.ajs-modal').append( element );
-    $( "#status-loading" ).append( element );
+function notifications(idNotification, content) {
+    var element = '<div class="row bg-danger loader center my-1 ' + idNotification + '" id="' + idNotification + '"><span class="spinner-border spinner-border-sm fa-3x" role="status" aria-hidden="true"></span>' + content + '</div>';
+    $('.ajs-modal').append(element);
+    $("#status-loading").append(element);
 }
 
-function deleteNotification(idElement){
+function deleteNotification(idElement) {
     document.getElementById("status-loading").removeChild(document.getElementById(idElement));
-    $('#'+idElement).remove();
+    $('#' + idElement).remove();
 }

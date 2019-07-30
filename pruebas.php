@@ -141,6 +141,10 @@ if (isset($_GET['arq'])) {
     
   </div>
 </div>
+
+
+
+
 <script type="text/javascript" >
 //enviar las pruebas seleccionada a ejecucion
 	function ejecutar_prueba(){
@@ -187,6 +191,8 @@ if (isset($_GET['arq'])) {
         // alert(variable[0].value);
       // }); 
     }
+
+
 
 <script>$(function () {
   $('[data-toggle="popover"]').popover()
