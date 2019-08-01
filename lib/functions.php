@@ -5630,9 +5630,11 @@ function createIpfloat($idFloatNet){
 function createInstantImage($name, $idServer){
 	$action="backup_server";
 	$answer=shell_exec("./scripts/request_openstack.sh $action $idServer $name");
-	$ans = json_decode($answer, true);
-	if ( !empty($answer['id'])) {
-		$agregar=db_execute("INSERT INTO instant_images_openstack ( id_instant, name_instant, id_server, status_instant, disk_format,size) VALUES ('".$answer['id']."','".$answer['name']."','".$_POST['id_server']."','".$answer['status']."','".$answer['disk_format']."','".$answer['size']."')");
+	$ans = explode('/', $answer);
+	$ans = substr($ans[9], 0, 36);
+	sleep(3);
+	if ( !empty($ans)) {
+		$agregar=db_execute("INSERT INTO instant_images_openstack ( id_instant, name_instant, id_server ) VALUES ('".$ans."','".$name."','".$_POST['id_server']."')");
 		echo "Punto de control Creado con exito";
 	}else{
 		echo "Fallo crear la imagen";
@@ -5652,7 +5654,6 @@ function rebuildServerImage($idServer, $idImage){
 	$ans = json_decode($answer, true);
 	return($ans);
 }
-
 
 function add_restrictions($domain,$vm,$ram, $disk, $vcpu){
 	db_execute("INSERT INTO restriction_domain (name_restriction, limit_restriction, state_restriction, domain) VALUES ('max_ram','".$ram."','0','".$domain."')");
@@ -5773,4 +5774,8 @@ function delete_snapshot($idServer){
 	db_execute("DELETE FROM instant_images_openstack where id_server='".$idServer."'");	
 	$ans = json_decode($answer, true);
 	return($ans);
+}
+
+function sshRemoveKeyOld($ip){
+
 }

@@ -151,10 +151,8 @@ $now = date_create()->format('Y-m-d H:i:s');
 			break;
 		case '9':
 			echo (draw_table_domainsOfUser($_POST['emailUser']));
-			
 			break;
 		case '10':
-			
 			$domain=domainOfid($_POST['id_domain']);
 			$vms=db_fetch_assoc("select * from vm_aditional_testbedims where dominio='".$domain."'");
 			$limits=consult_restrictions($domain);
@@ -162,7 +160,6 @@ $now = date_create()->format('Y-m-d H:i:s');
 			$restriction=db_fetch_cell_prepared("select limit_restriction from restriction_domain where domain='".$domain."' AND name_restriction='max_vm'");
 			if ($restriction > count($vms)) {
 				$images=images_openstack();
-				
 				$options='<option value="">Elegir...</option>';
 				//echo('<option value="">Elegir...</option>');
 				foreach($images as $image ){
@@ -171,22 +168,15 @@ $now = date_create()->format('Y-m-d H:i:s');
 				}
 				$op=array("options" => $options);
 				$limits += $op;
-				
 			}else{
 				//echo "0";
 				$op=array("options" => "0");
-				$limits += $op;
-
-				
+				$limits += $op;				
 			}
-
 			print_r($limits);
-			
-			
 			break;
 		case '11':
 			echo json_encode(db_fetch_assoc("select name_restriction, limit_restriction from restriction_domain where domain='".$_POST['domain']."'"));
-			
 			break;
 		case '12':
 			return guide_test($explain_test_bono,$_POST['index']);
@@ -197,7 +187,5 @@ $now = date_create()->format('Y-m-d H:i:s');
 			break;
 	}
 }else{
-	
-echo "No hay datos";
-	
+	echo "No hay datos";
 }

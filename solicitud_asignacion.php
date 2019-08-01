@@ -365,9 +365,9 @@ if (!empty($_POST)) {
 		
 			
 			$idInstant=db_fetch_cell_prepared("SELECT id_instant from instant_images_openstack WHERE id_server='".$_POST['id_server']."'");
-			print_r($idInstant);
+			// print_r($idInstant);
 			if( empty($idInstant) ){
-				// echo "No tiene instantanea";
+				echo "No tiene instantanea";
 				$answer=createInstantImage( $_POST['name_server'], $_POST['id_server']);
 				print_r($answer);
 			}else{
@@ -377,9 +377,7 @@ if (!empty($_POST)) {
 				$answer=createInstantImage( $_POST['name_server'], $_POST['id_server']);
 				print_r($answer);
 			}
-			
-
-
+		
 			break;
 		case '16'://retornar a punto de control
 			$idInstant=db_fetch_cell_prepared("SELECT id_instant from instant_images_openstack WHERE id_server='".$_POST['id_server']."'");
@@ -387,22 +385,37 @@ if (!empty($_POST)) {
 
 			break;
 		case '17'://ssh de las maquinas
-		
+			
+			
 			$ipfloatTelco=ipFloatServer($_POST['id_server']);
+			// echo $ipfloatTelco;
 			if( $ipfloatTelco == ''){
 				// echo "no tiene ip publica";
 				$ipfloat=asingIpFloatServer($_POST['id_server']);
+				
 				if( $ipfloat == '0'){
 					echo "0";
+					// echo "fallo al agregar ip flotante";
 				}else{
 					
+
+					shell_exec('sudo ssh-keygen -f "/root/.ssh/known_hosts" -R "'.$ipfloat.'"');
+
+					$transFile=shell_exec('sudo chmod 775 ./scripts/terminal_testbed/Testbed_vIMS.pem');
+					$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/Testbed_vIMS.pem ./scripts/terminal_testbed/install_conf_shellinabox.sh ubuntu@'.$ipfloat.':/home/ubuntu');
+					$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/Testbed_vIMS.pem ubuntu@'.$ipfloat.' "sudo ./install_conf_shellinabox.sh;"');
+					$exeInstallShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/Testbed_vIMS.pem ubuntu@'.$ipfloat.' "sudo service shellinabox start"');
 					echo $ipfloat;
 				}
 			}else{
-				
-				echo $ipfloatTelco;
-			}
+				shell_exec('sudo ssh-keygen -f "/root/.ssh/known_hosts" -R "'.$ipfloatTelco.'"');
 			
+				$transFile=shell_exec('sudo chmod 775 ./scripts/terminal_testbed/Testbed_vIMS.pem');
+				$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/Testbed_vIMS.pem ./scripts/terminal_testbed/install_conf_shellinabox.sh ubuntu@'.$ipfloatTelco.':/home/ubuntu');
+				$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/Testbed_vIMS.pem ubuntu@'.$ipfloatTelco.' "sudo ./install_conf_shellinabox.sh;"');
+				$exeInstallShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/Testbed_vIMS.pem ubuntu@'.$ipfloatTelco.' "sudo service shellinabox start"');
+				echo $ipfloatTelco;
+				}
 			break;
 		
 		default:

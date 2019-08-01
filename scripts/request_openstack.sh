@@ -4,8 +4,8 @@
 OS_IP_OPENSTACK=10.55.2.24
 
 # Obtener el token
-# token=$(./scripts/createToken.sh)
-token=$(./createToken.sh)
+token=$(./scripts/createToken.sh)
+# token=$(./createToken.sh)
 # echo $token
 
 # request destination
@@ -45,8 +45,7 @@ case $1 in
             *)
                 echo "error"
                 
-                # curl -g -i -X GET http://10.55.2.24:9696/v2.0/floatingips -H "Accept: application/json" -H "User-Agent: openstacksdk/0.31.1 keystoneauth1/3.14.0 python-requests/2.22.0 CPython/2.7.15+" -H "X-Auth-Token: {SHA256}0cf3d999d1694b8a4d80061086ef60d1d05b1a3d79e82f9fb4ef3f726025f765"
-                # curl -g -i -X GET http://10.55.5.155:9696/v2.0/floatingips -H "Accept: application/json" -H "User-Agent: openstacksdk/0.31.0 keystoneauth1/3.14.0 python-requests/2.22.0 CPython/2.7.15+" -H "X-Auth-Token: {SHA256}c2b35efb3df4d7f1d998f3f0b17473fed0282df89b758289b035fd3394602876"
+                
             ;;
         esac
             # curl -g -i -X GET http://10.55.5.155:9696/v2.0/subnets -H "Accept: application/json" -H "User-Agent: openstacksdk/0.31.0 keystoneauth1/3.14.0 python-requests/2.22.0 CPython/2.7.15+" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')"
@@ -60,7 +59,7 @@ case $1 in
           curl -g -i -X DELETE http://$OS_IP_OPENSTACK:9696/v2.0/networks/$2 -H "Accept: " -H "User-Agent: openstacksdk/0.31.0 keystoneauth1/3.14.0 python-requests/2.22.0 CPython/2.7.15+" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')"
           ;;
      subnet)
-          curl -s -H POST http://$OS_IP_OPENSTACK:9696/v2.0/subnets -H "Content-Type: application/json" -H "User-Agent: openstacksdk/0.31.0 keystoneauth1/3.14.0 python-requests/2.22.0 CPython/2.7.15+" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -d '{"subnet": {"ip_version": 4, "network_id": "'$2'", "cidr": "'$3'/24", "name": "'$4'"}}'
+          curl -s -H POST http://$OS_IP_OPENSTACK:9696/v2.0/subnets -H "Content-Type: application/json" -H "User-Agent: openstacksdk/0.31.0 keystoneauth1/3.14.0 python-requests/2.22.0 CPython/2.7.15+" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -d '{"subnet": {"ip_version": 4, "network_id": "'$2'","dns_nameservers": ["8.8.8.8", "8.8.4.4"], "cidr": "'$3'/24", "name": "'$4'"}}'
           ;; 
      create_vm)
         #   curl -s -H POST http://$OS_IP_OPENSTACK/compute/v2.1/servers -H "Accept: application/json" -H "Content-Type: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H "X-OpenStack-Nova-API-Version: 2.1" -d '{"server": {"name": "'$2'", "imageRef": "a25c56b1-eb49-4cf6-bf09-eed2a417e703", "key_name": "demo", "flavorRef": "42", "max_count": 1, "min_count": 1, "networks": [{"uuid": "5eae8c15-476a-4b53-9c6e-107fb1b35f8e"}]}}' | python -m json.tool
@@ -121,7 +120,8 @@ case $1 in
           ;;
      backup_server)
             # openstack --debug server backup create <id-server>
-           curl -g -i -X POST http://$OS_IP_OPENSTACK/compute/v2.1/servers/$2/action -H "Accept: application/json" -H "Content-Type: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H "X-OpenStack-Nova-API-Version: 2.1" -d '{"createBackup": {"backup_type": "", "rotation": 1, "name": "'$3'"}}' | python -m json.tool
+           curl -i POST http://$OS_IP_OPENSTACK/compute/v2.1/servers/$2/action -H "Accept: application/json" -H "Content-Type: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H "X-OpenStack-Nova-API-Version: 2.1" -d '{"createBackup": {"backup_type": "", "rotation": 1, "name": "'$3'"}}' 
+        #    curl -g -i -X GET -H 'Accept-Encoding: gzip, deflate' -H 'Accept: */*' -H 'User-Agent: python-glanceclient' -H 'Connection: keep-alive' -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H 'Content-Type: application/octet-stream' http://$OS_IP_OPENSTACK/image/v2/images/$3
           ;;
      delete_image)
             # openstack image delete imagetest2
@@ -134,7 +134,6 @@ case $1 in
     show_server)
             # openstack --debug image set --name inst_test2 --instance-id <id_server> <id_instance>
             curl -s -H GET http://$OS_IP_OPENSTACK/compute/v2.1/servers/$2 -H "Accept: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H "X-OpenStack-Nova-API-Version: 2.1" | python -m json.tool
-            
           ;;
      *)
           echo "error"

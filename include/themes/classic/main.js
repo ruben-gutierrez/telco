@@ -944,10 +944,7 @@ function showInfoDomain(IdDomain, core) {
 
                 mensaje("Maquinas VM de la Arquitectura", "Esta arquitectura no tiene Maquinas virtuales registradas.");
             }
-
-
         });
-
 }
 
 function terminal(idServer) {
@@ -960,20 +957,24 @@ function terminal(idServer) {
         contentType: false,
         processData: false,
         data: parametros,
-        beforesend: function() {
-            console.log("antes de ");
+        beforeSend: function() {
+            notifications("terminal", "Creando interfaz para terminal");
         },
         success: function(data) {
             // console.log(data);
-            if (data == 1) {
+            if (data == '0') {
                 console.log("error al desplegar Terminal");
             } else {
                 window.open('http://' + data + ':7676', '_blank');
             }
+        },
+        complete: function() {
+            deleteNotification("terminal");
         }
-
     });
+
 }
+
 
 function eliminarVM(idServer) {
     // console.log(idServer);
@@ -1134,13 +1135,13 @@ function addVmtoDomain(idDomain) {
         contentType: false,
         processData: false,
         data: parametros,
-        beforesend: function() {
+        beforeSend: function() {
 
         },
         success: function(data) {
-            // console.log(data['0']);
+            console.log(data);
             // var json = JSON.parse(data);
-            console.log(JSON.parse(data));
+            // console.log(JSON.parse(data));
             if (data == '0') {
                 alert("No puede agregar máquinas virtuales");
             } else {
@@ -1148,10 +1149,7 @@ function addVmtoDomain(idDomain) {
                 // console.log(content);
                 addVM("Agregar Maquina Virtual", content);
             }
-
-
         }
-
     });
 
 
@@ -1171,8 +1169,8 @@ function addVM(title, content) {
             contentType: false,
             processData: false,
             data: parametros,
-            beforesend: function() {
-
+            beforeSend: function() {
+                notifications("addvm", "Agregando maquina virtual");
             },
             success: function(data) {
                 console.log(data);
@@ -1182,6 +1180,9 @@ function addVM(title, content) {
                     // console.log(data);
                     alertify.success('VM agregada');
                 }
+            },
+            complete: function() {
+                deleteNotification("addvm");
             }
         });
     });
@@ -1396,6 +1397,7 @@ function notifications(idNotification, content) {
 }
 
 function deleteNotification(idElement) {
-    document.getElementById("status-loading").removeChild(document.getElementById(idElement));
+    // document.getElementById("status-loading").removeChild(document.getElementById(idElement));
     $('#' + idElement).remove();
+    $('.' + idElement).remove();
 }
