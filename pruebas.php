@@ -55,7 +55,8 @@ if (isset($_GET['arq'])) {
           
             <div class="container p-2 bg-dark slide-test-bono text-white">
             
-              <?php 
+              <?php
+              
               guide_test($explain_test_bono,'0');
               ?>
               
@@ -72,8 +73,11 @@ if (isset($_GET['arq'])) {
   
   <div>
 
-
-    <section id="test_dom" class="section_admin_arquitecuta" style="margin-top: 20px;">
+  <?php
+  $dom_user=db_fetch_assoc("SELECT arquitectura, dominio, descripcion  from arqs_testbedims where usuario ='".$user_email."'");
+      if( !empty($dom_user)){
+                ?>
+                      <section id="test_dom" class="section_admin_arquitecuta" style="margin-top: 20px;">
    <!--    <div class="name_section"> -->
         <nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('content_section', 'indicate_requestArquitecture')">
             <a class="navbar-brand text-white"><b>Crear Prueba</b></a><div class="float-right indicate_requestArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
@@ -85,6 +89,7 @@ if (isset($_GET['arq'])) {
           <button id="btn_notsee_table5" class="btn_see" onclick="$('#content_add_test').hide();$('#btn_see_table5').show();$('#btn_notsee_table5').hide();" style="display: none;"><i class="fa fa-angle-double-up fa-2x"></i></button>
       </div> -->
       <!-- </div> -->
+      
       <div class="content_section">
           <label>Seleccione la arquitectura y agregue la información de la prueba</label>
           <div id="content_add_test" style="display: block;">
@@ -95,7 +100,6 @@ if (isset($_GET['arq'])) {
                   <option value="">Seleccionar</option>
                   <?php
                     $dominios=db_fetch_assoc("select dominio from arqs_testbedims where usuario= '".$user_email."'");
-
                     foreach ($dominios as $key => $value) {
                       print("<option value='".$value['dominio']."'>".$value['dominio']."</option>");
                     }
@@ -114,8 +118,8 @@ if (isset($_GET['arq'])) {
                   <input type="file" name="file_test" required>
                   
                   <div>
-                  <input type="button" class="btn_form" id="btn_save_info" value="Definir Opciones" onclick="add_test()">
-                  <input type="button" class="btn_form" value="Cancelar" onclick="$('#content_add_test').hide();$('#btn_see_table5').show();$('#btn_notsee_table5').hide();$('#form_add_test')[0].reset();">
+                    <input type="button" class="btn_form" id="btn_save_info" value="Definir Opciones" onclick="add_test()">
+                    <input type="button" class="btn_form" value="Cancelar" onclick="$('#content_add_test').hide();$('#btn_see_table5').show();$('#btn_notsee_table5').hide();$('#form_add_test')[0].reset();">
                   </div>
               </form>
                 
@@ -138,12 +142,14 @@ if (isset($_GET['arq'])) {
         </div>
       </div>
     </section>
+
+  <?php      
+}
+?>
+
     
   </div>
 </div>
-
-
-
 
 <script type="text/javascript" >
 //enviar las pruebas seleccionada a ejecucion

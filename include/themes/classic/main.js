@@ -471,7 +471,9 @@ function add_test() {
 }
 
 function add_info_test() {
+    
     var parametros = new FormData($('#form_info_test')[0]);
+// accion
     $.ajax({
         url: 'solicitud_asignacion.php',
         type: 'POST',

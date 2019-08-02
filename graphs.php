@@ -1690,6 +1690,7 @@ function graph_management() {
 		$add_url = '';
 	}
 
+	
 	html_start_box(__('Graph Management'), '100%', '', '3', 'center', $add_url);
 
 	?>
@@ -1714,7 +1715,6 @@ function graph_management() {
 							} else {
 								$templates = get_allowed_graph_templates_normalized();
 							}
-
 							if (sizeof($templates) > 0) {
 								foreach ($templates as $template) {
 									print "<option value='" . $template['id'] . "'"; if (get_request_var('template_id') == $template['id']) { print ' selected'; } print '>' . title_trim(htmlspecialchars($template['name']), 40) . "</option>\n";

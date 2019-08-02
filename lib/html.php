@@ -2598,69 +2598,112 @@ function draw_table_estate_arq(){
 function draw_table_testbed_pruebas($user){
 	$dom_user=db_fetch_assoc("SELECT arquitectura, dominio, descripcion  from arqs_testbedims where usuario ='".$user."'");
 	// print_r($dom_user);
-	?>
-	<div id="cardsTest"> <?php
-	foreach ($dom_user as $key => $value) {
+	if( empty($dom_user)){
 		?>
-		<div class="row m-2">
-			<!-- <div class="col"> -->
-				<?php 
-				$test_info=db_fetch_assoc("SELECT id_test, name_test, description_test, restriction from test_testbedims where dominio ='".$value['dominio']."'");
-				foreach ($test_info as $key2 => $value2) {
-				?>
-				<div class="card m-2">
-				<div class="card-header">
-					<h5> <?php echo $value2['name_test']?></h5>
-				</div>
-				<div class="card-body">
-					Arquitectura: <?php echo $value['arquitectura']?> " <?php echo $value['dominio']?>"
-					
-					<p class="card-text"><?php echo $value2['description_test']?></p>
-					<button class="btn btn-outline-danger" id="<?php echo $value2['id_test']?>" onClick="">Eliminar</button>
-					<button class="btn btn-primary m-2" id="<?php echo $value2['id_test']?>" onClick="$('#cardsTest').hide();display_table_test(this.id)">Opciones</button>
-				</div>
-				</div>
-				<?php
-				}
-				?>
-			<!-- </div> -->
-			
-		</div>
-	<?php
-	}
+							<div class="card m-2">
+								<div class="card-header">
+									Lo sentimos no tienes reservada una arquitectura.<br>
+									<a href = "arquitectura.php">Solicitar arquitectura!</a>
+								</div>
+							
+							</div>
+							
+						<?php
+	}else{
 	?>
-	</div>
+				<div id="cardsTest"> <?php
+		foreach ($dom_user as $key => $value) {
+			?>
+			<div class="row m-2">
+				<!-- <div class="col"> -->
+					<?php 
+					$test_info=db_fetch_assoc("SELECT id_test, name_test, description_test, restriction from test_testbedims where dominio ='".$value['dominio']."'");
+					// print_r($test_info);
+					if ( empty($test_info) ) {
+						?>
+							<div class="card m-2">
+							<div class="card-header">
+							Arquitectura: <?php echo $value['arquitectura']?>
+							</div>
+								<div class="card-body">
+								<p class="card-text">No hay pruebas en esta arquitectura <br>
+								con el dominio " <?php echo $value['dominio']?>"</p>
+									
+									
 
-	<div id="tableTest" style="display:none">
-	<table class="table_estado_arq animated fadeIn fast">
-      <tr>
-        <th>Arquitectura</th>
-        <th>Prueba</th>
-        <th>Descripcion</th>
-        <th>Ver Más...</th>
-      </tr>  
-      <?php 
-	foreach ($dom_user as $key => $value) {
-		$test_info=db_fetch_assoc("SELECT id_test, name_test, description_test, restriction from test_testbedims where dominio ='".$value['dominio']."'");
-		// print_r($test_info);
-
-		
-		foreach ($test_info as $key2 => $value2) {
-			print("<tr>
-			<td> Arquitectura: ".$value['arquitectura']."<br> dominio:".$value['dominio']."</td>
-			<td>".$value2['name_test']."</td>
-			<td>".$value2['description_test']."\n Restricciones;\n".$value2['restriction']."</td>
-			<td><button class='btn btn-outline-secondary' id='".$value2['id_test']."' onClick='display_table_test(this.id)'> <i class='fa fa-list-alt'> Opciones</i></button>
-			<buton class='btn btn-outline-danger'><i class='fa fa-trash'> Eliminar</i></buton>
-			</td>
-			</tr>");
+									
+									
+								</div>
+								<div class="card-footer">
+									<a href = "#form_1">Agregar pruebas por favor !</a>
+								</div>
+							</div>
+							
+						<?php
+					}else{
+						foreach ($test_info as $key2 => $value2) {
+							?>
+							<div class="card m-2">
+								<div class="card-header">
+									<h5> <?php echo (ucwords ($value2['name_test']))?></h5>
+								</div>
+								<div class="card-body">
+									Arquitectura: <?php echo $value['arquitectura']?> <br>
+									" <?php echo $value['dominio']?>"
+									
+									<p class="card-text"><?php echo $value2['description_test']?></p>
+									
+								</div>
+								<div class="card-footer">
+									<button class="btn btn-outline-danger" id="<?php echo $value2['id_test']?>" onClick="">Eliminar</button>
+									<button class="btn btn-primary m-2" id="<?php echo $value2['id_test']?>" onClick="$('#cardsTest').hide();display_table_test(this.id)">Opciones</button>
+								</div>
+							</div>
+							<?php
+							}
+						
+					}
+						?>
+				<!-- </div> -->
+				
+			</div>
+		<?php
 		}
-		
-	}
-	?>
-	</table>
-</div>
+		?>
+		</div>
+
+		<div id="tableTest" style="display:none">
+		<table class="table_estado_arq animated fadeIn fast">
+		<tr>
+			<th>Arquitectura</th>
+			<th>Prueba</th>
+			<th>Descripcion</th>
+			<th>Ver Más...</th>
+		</tr>  
+		<?php 
+		foreach ($dom_user as $key => $value) {
+			$test_info=db_fetch_assoc("SELECT id_test, name_test, description_test, restriction from test_testbedims where dominio ='".$value['dominio']."'");
+			// print_r($test_info);
+
+			
+			foreach ($test_info as $key2 => $value2) {
+				print("<tr>
+				<td> Arquitectura: ".$value['arquitectura']."<br> dominio:".$value['dominio']."</td>
+				<td>".$value2['name_test']."</td>
+				<td>".$value2['description_test']."\n Restricciones;\n".$value2['restriction']."</td>
+				<td><button class='btn btn-outline-secondary' id='".$value2['id_test']."' onClick='display_table_test(this.id)'> <i class='fa fa-list-alt'> Opciones</i></button>
+				<buton class='btn btn-outline-danger'><i class='fa fa-trash'> Eliminar</i></buton>
+				</td>
+				</tr>");
+			}
+			
+		}
+		?>
+		</table>
+	</div>
 	<?php
+
+	}
 }
 
 

@@ -210,7 +210,6 @@ case 'get_node':
 			$tree_id = read_user_setting('default_tree_id');
 		} elseif (get_nfilter_request_var('tree_id') == 0 &&
 			substr_count(get_nfilter_request_var('id'), 'tree_anchor') > 0) {
-
 			$ndata = explode('-', get_nfilter_request_var('id'));
 			$tree_id = $ndata[1];
 			input_validate_input_number($tree_id);
