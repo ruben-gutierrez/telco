@@ -2,3 +2,29 @@ Requerimientos
 
 1- Debe haber en openstack pool de direcciones publicas
 2- Una clave shh (file.pem)
+
+
+-----------------------------------
+permisos para crear graficas
+1- chown -R www-data rra
+2- chown -R www-data log
+3- agregar www-data a sudoers
+
+
+
+
+
+----------------------------------------------
+en caso de modificar o reinstalar openstack
+1- editar los datos para obtener el token       scripts/createToken.sh
+
+    export OS_USERNAME=admin
+    export OS_PROJECT_NAME=Testbed_vIMS
+    export OS_PROJECT_DOMAIN_NAME=default
+    export OS_USER_DOMAIN_NAME=Default
+    export OS_PASSWORD=3rootbl
+    export OS_AUTH_URL=http://10.55.2.24/identity
+
+2- Editar la direccion ip openstack   scripts/request_openstack.sh
+
+    OS_IP_OPENSTACK=10.55.2.24

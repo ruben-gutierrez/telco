@@ -6,14 +6,6 @@ OS_IP_OPENSTACK=10.55.2.24
 # Obtener el token
 token=$(./scripts/createToken.sh)
 # token=$(./createToken.sh)
-# echo $token
-
-# request destination
-
-# 
-# especificRecuest=/compute/v2.1/flavors/detail
-# especificRecuest=/compute/v2.1/servers/detail
-# curl -s -H GET http://$OS_IP_OPENSTACK$especificRecuest -H  "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" | python -mjson.tool 
 
 case $1 in
      consult)
