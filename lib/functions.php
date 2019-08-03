@@ -5418,8 +5418,7 @@ function create_vm_to_core($domain,$typeDomain){
 						case 'aio':
 							// #crear solo 1 ubuntu 14
 							// #guardar solo bono
-							
-							$vm_create=create_vm("allInOne", "c7616ef5-3d8c-4908-b0d9-9d8d0a82e414", "d2", $id_net);
+							$vm_create=create_vm("allInOne", "ffd93b55-858c-4ca2-9f0b-0e7890966392", "d2", $id_net);
 							$vmJson = json_decode($vm_create, true);
 							// print_r($vm_create);
 							consult_flavors_openstack();
@@ -5435,7 +5434,7 @@ function create_vm_to_core($domain,$typeDomain){
 							// crear 5 nodos mas dns
 							foreach ($nodes_dist as $nameVm=>$ipVm){
 									// create_vm( $nameVm, $id_image, "d2", $id_net);
-									$vm_create=create_vm( $nameVm, "c7616ef5-3d8c-4908-b0d9-9d8d0a82e414", "d2", $id_net);
+									$vm_create=create_vm( $nameVm, "ffd93b55-858c-4ca2-9f0b-0e7890966392", "d2", $id_net);
 									$vmJson = json_decode($vm_create, true);
 									consult_flavors_openstack();
 									consult_servers_openstack();
@@ -5451,7 +5450,7 @@ function create_vm_to_core($domain,$typeDomain){
 							// crear 7 nodos mas dns
 							foreach ($nodes_dist_pstn as $nameVm=>$ipVm){
 									// create_vm( $nameVm, $id_image, "d2", $id_subnet);
-									$vm_create=create_vm( $nameVm, "c7616ef5-3d8c-4908-b0d9-9d8d0a82e414", "d2", $id_net);
+									$vm_create=create_vm( $nameVm, "ffd93b55-858c-4ca2-9f0b-0e7890966392", "d2", $id_net);
 									$vmJson = json_decode($vm_create, true);
 									consult_flavors_openstack();
 									consult_servers_openstack();
@@ -5480,6 +5479,7 @@ function id_flavor($ram,$vcpu,$disk){
 		// echo "crear flavor";
 		$name=$ram.$disk.$vcpu;
 		$flavor_create=create_flavor( $name, $disk, $ram, $vcpu);
+		// print_r($flavor_create);
 		$flavorJson = json_decode($flavor_create, true);
 		$id_flavor=$flavorJson['flavor']['id'];
 		$name_flavor=$flavorJson['flavor']['name'];
@@ -5716,7 +5716,7 @@ function asingIpFloatServer($idServer){
 	$idFloatIpFree=db_fetch_cell_prepared("SELECT id_floatingip FROM flotantIp_openstack where ip_local=''");
 	if($idFloatIpFree == ''){
 		$action="create_ipfloat_liked";
-		$id_network_float='ef151b6a-fe7e-4075-80a1-2be1a022cf36';
+		$id_network_float='08cac388-5c54-4718-8403-57334d5ec8bd';
 		$answer=shell_exec("./scripts/request_openstack.sh $action $id_network_float $port");
 	}else{
 		$action="add_ipFloat_server";

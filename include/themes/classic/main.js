@@ -920,8 +920,7 @@ function showInfoDomain(IdDomain, core) {
                     }
                     data += '<tr id="' + answer[x]['id_server'] + '"> <th scope="row">' + answer[x]['name_server'] + '<br> ' + status + '<div id="prop_vm">ram:' + answer[x]['ram'] + '<br>Disk: ' + answer[x]['disk'] + '<br> Vcpu: ' + answer[x]['vcpus'] + '</div></th><td>' + answer[x]['ip_local'] + '</td>';
                     data += '<td><form class="form" id="vertical_scalability">';
-                    data += '<div class="row"><input type="hidden" name="id_server" value="' + answer[x]['id_server'] + '" placeholder="RAM">';
-                    data += '<input class="col-md-3" type="number" name="ram" placeholder="RAM">';
+                    data += '<div class="row"><input class="col-md-3" type="number" name="ram" placeholder="RAM">';
                     data += '<input class="col-md-3" type="number" name="vcpu" placeholder="CPU">';
                     data += '<input class="col-md-3" type="number" name="disk" placeholder="Disk">';
                     data += '<input class="btn btn-outline-info btn-sm m-1" type="button" id="' + answer[x]['id_server'] + '" value="Editar" onclick="reziseVM(`' + answer[x]['id_server'] + '`)">  <div class="logo ml-2"><i class="fa fa-spinner fa-3x" id="' + answer[x]['id_server'] + '" style="display:none"></i></div></form>';
@@ -950,6 +949,7 @@ function showInfoDomain(IdDomain, core) {
 }
 
 function terminal(idServer) {
+
     var parametros = new FormData();
     parametros.append('action', '17');
     parametros.append('id_server', idServer);
@@ -974,7 +974,6 @@ function terminal(idServer) {
             deleteNotification("terminal");
         }
     });
-
 }
 
 
@@ -1081,6 +1080,7 @@ function reziseVM(idServer) {
 
     var parametros = new FormData($('#vertical_scalability')[0]);
     parametros.append('action', '14');
+    parametros.append('id_server', idServer);
 
     $.ajax({
         url: 'solicitud_asignacion.php',
@@ -1094,7 +1094,7 @@ function reziseVM(idServer) {
         success: function(data) {
             // $('i#' + idServer + '.fa').hide();
             // $('.alertify').remove();
-            // console.log(data);
+            console.log(data);
             alertify.success('VM Modificada');
         },
         complete: function() {

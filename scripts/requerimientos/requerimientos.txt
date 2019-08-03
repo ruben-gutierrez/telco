@@ -10,7 +10,7 @@ permisos para crear graficas
 2- chown -R www-data log
 3- agregar www-data a sudoers
 
-
+-------------------------
 
 
 
@@ -28,3 +28,14 @@ en caso de modificar o reinstalar openstack
 2- Editar la direccion ip openstack   scripts/request_openstack.sh
 
     OS_IP_OPENSTACK=10.55.2.24
+    verificar el case 
+        create_vm el valor de key_name que conincida con el nombre de clave ssh.
+3- functions.php 
+    linea 
+    function asingIpFloatServer($idServer)
+        editar la variable id_network_float
+
+4- copiar la clave ssh (.pem) a la ruta scripts/terminal_testbed
+
+5-para crear flavors hay que darle permisos a usuario en openstack
+    como admin  identity/proyectos -> miembros de proyecto en admin que esta como member se agrega admin

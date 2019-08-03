@@ -97,7 +97,7 @@ if (!empty($_POST)) {
 						if( $idRouter == '0'){
 							echo("Error al crear Router");
 						}else{
-							conectRouterNetPublic($idRouter, 'ef151b6a-fe7e-4075-80a1-2be1a022cf36');
+							conectRouterNetPublic($idRouter, '08cac388-5c54-4718-8403-57334d5ec8bd');
 							conectRouterNetPrivate($idRouter, $result_create_net['subnet_openstack']);
 							// echo "Arquitectura Creada con exito";
 							//crear maquinas
@@ -202,10 +202,10 @@ if (!empty($_POST)) {
 						case 'aio':
 							// #crear solo 1 ubuntu 14
 							// #guardar solo bono
-							// create_vm( "aio", "a25c56b1-eb49-4cf6-bf09-eed2a417e703", "2", $id_net);
-							echo $id_subnet;
-							//$vm_create=create_vm( "aio", "a25c56b1-eb49-4cf6-bf09-eed2a417e703", "2", $id_subnet);
-							$vm_create=create_vm( "aio", "a25c56b1-eb49-4cf6-bf09-eed2a417e703", "42", $id_net);
+							// create_vm( "aio", "ffd93b55-858c-4ca2-9f0b-0e7890966392", "2", $id_net);
+							// echo $id_subnet;
+							
+							$vm_create=create_vm( "aio", "ffd93b55-858c-4ca2-9f0b-0e7890966392", "d2", $id_net);
 							$vmJson = json_decode($vm_create, true);
 							
 							print_r($vmJson);
@@ -220,8 +220,8 @@ if (!empty($_POST)) {
 						case 'dist':
 							// crear 5 nodos mas dns
 							foreach ($nodes_dist as $nameVm=>$ipVm){
-									// create_vm( $nameVm, $id_image, "42", $id_net);
-									$vm_create=create_vm( $nameVm, "a25c56b1-eb49-4cf6-bf09-eed2a417e703", "42", $id_net);
+									// create_vm( $nameVm, $id_image, "d2", $id_net);
+									$vm_create=create_vm( $nameVm, "ffd93b55-858c-4ca2-9f0b-0e7890966392", "d2", $id_net);
 									$vmJson = json_decode($vm_create, true);
 									$agregar=db_execute("INSERT INTO core_domain (id_server, domain, type_domain) values ( '".$vmJson['server']['id']."','".$_POST['dominio']."','".$_POST['type']."')");
 									if( $agregar== 1){
@@ -234,8 +234,8 @@ if (!empty($_POST)) {
 						case 'dist_pstn':
 							// crear 7 nodos mas dns
 							foreach ($nodes_dist_pstn as $nameVm=>$ipVm){
-									// create_vm( $nameVm, $id_image, "42", $id_subnet);
-									$vm_create=create_vm( $nameVm, "a25c56b1-eb49-4cf6-bf09-eed2a417e703", "42", $id_net);
+									// create_vm( $nameVm, $id_image, "d2", $id_subnet);
+									$vm_create=create_vm( $nameVm, "ffd93b55-858c-4ca2-9f0b-0e7890966392", "d2", $id_net);
 									$vmJson = json_decode($vm_create, true);
 									$agregar=db_execute("INSERT INTO core_domain (id_server, domain, type_domain) values ( '".$vmJson['server']['id']."','".$_POST['dominio']."','".$_POST['type']."')");
 									if( $agregar== 1){
@@ -355,9 +355,9 @@ if (!empty($_POST)) {
 			}
 			break;
 		case '14'://consultar maquinas virtuales por usuario
-
+			// print_r($_POST);
 			$idflavor=id_flavor( $_POST['ram'],$_POST['vcpu'],$_POST['disk']);
-			// echo $idflavor;
+			echo $idflavor;
 			print_r(reziseServer($_POST['id_server'], $idflavor));
 
 			break;
@@ -399,21 +399,23 @@ if (!empty($_POST)) {
 				}else{
 					
 
-					shell_exec('sudo ssh-keygen -f "/root/.ssh/known_hosts" -R "'.$ipfloat.'"');
+					shell_exec('ssh-keygen -f "/root/.ssh/known_hosts" -R "'.$ipfloat.'"');
 
-					$transFile=shell_exec('sudo chmod 775 ./scripts/terminal_testbed/Testbed_vIMS.pem');
-					$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/Testbed_vIMS.pem ./scripts/terminal_testbed/install_conf_shellinabox.sh ubuntu@'.$ipfloat.':/home/ubuntu');
-					$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/Testbed_vIMS.pem ubuntu@'.$ipfloat.' "sudo ./install_conf_shellinabox.sh;"');
-					$exeInstallShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/Testbed_vIMS.pem ubuntu@'.$ipfloat.' "sudo service shellinabox start"');
+					// $transFile=shell_exec('sudo chmod 775 ./scripts/terminal_testbed/Testbed_vIMS.pem');
+					$transFile=shell_exec('sudo chmod 775 ./scripts/terminal_testbed/key.pem');
+					$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ./scripts/terminal_testbed/install_conf_shellinabox.sh ubuntu@'.$ipfloat.':/home/ubuntu');
+					$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipfloat.' "sudo ./install_conf_shellinabox.sh;"');
+					$exeInstallShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipfloat.' "sudo service shellinabox start"');
 					echo $ipfloat;
 				}
 			}else{
 				shell_exec('sudo ssh-keygen -f "/root/.ssh/known_hosts" -R "'.$ipfloatTelco.'"');
 			
-				$transFile=shell_exec('sudo chmod 775 ./scripts/terminal_testbed/Testbed_vIMS.pem');
-				$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/Testbed_vIMS.pem ./scripts/terminal_testbed/install_conf_shellinabox.sh ubuntu@'.$ipfloatTelco.':/home/ubuntu');
-				$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/Testbed_vIMS.pem ubuntu@'.$ipfloatTelco.' "sudo ./install_conf_shellinabox.sh;"');
-				$exeInstallShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/Testbed_vIMS.pem ubuntu@'.$ipfloatTelco.' "sudo service shellinabox start"');
+				// $transFile=shell_exec('sudo chmod 775 ./scripts/terminal_testbed/key.pem');
+				$transFile=shell_exec('sudo chmod 775 ./scripts/terminal_testbed/key.pem');
+				$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ./scripts/terminal_testbed/install_conf_shellinabox.sh ubuntu@'.$ipfloatTelco.':/home/ubuntu');
+				$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipfloatTelco.' "sudo ./install_conf_shellinabox.sh;"');
+				$exeInstallShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipfloatTelco.' "sudo service shellinabox start"');
 				echo $ipfloatTelco;
 				}
 			break;
