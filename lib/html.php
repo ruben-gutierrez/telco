@@ -2260,7 +2260,7 @@ function graficar_menu_vertical_testbed($pagina, $array_info, $array_arquitectur
         $array_graficar = $array_pruebas;
         break;
     case 'admin_testbedims.php':
-    	$array_graficar = array("Contenido",);
+    	$array_graficar = array("Contenido");
     	break;
 	}
 
@@ -3014,7 +3014,7 @@ function content_graph($user){
 			<div class="row">
 				<label class="my-1 mr-2" for="arq_new_graph">Seleccione la arquitectura que contiene la VM</label>
 					
-				<select name="dominio_test" id="domain_test" >
+				<select name="dominio_test" id="domain_test" onChange="">
                   <option value="">Seleccionar</option>
                   <?php
                     $dominios=db_fetch_assoc("select dominio from arqs_testbedims where usuario= '".$user['email_address']."'");
