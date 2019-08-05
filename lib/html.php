@@ -2189,7 +2189,7 @@ function html_common_header($title, $selectedTheme = '') {
 	<meta http-equiv='Content-Type' content='text/html;charset=utf-8'>
 	<script type='text/javascript'>var theme='<?php print $selectedTheme;?>';</script>
 	<script src='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/alertifyJS/alertify.min.js'></script>
-	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<link href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/images/telco_icon.ico' rel='shortcut icon'>
 	<link href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/images/telco_logo2.png' rel='icon' sizes='96x96'>
 	<link rel="stylesheet" href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/alertifyJS/css/alertify.min.css'/>
@@ -2994,4 +2994,71 @@ function type_coreIMS(){
 						 </form>
 						 
 	<?php 
+}
+
+function content_graph($user){
+	
+	?>
+	<section class="section_add_monitoring">
+ 	
+	 <nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('section_monitoring_vm', 'indicate_solicitedArquitecture')">
+		 <a class="navbar-brand text-white"><b> Monitorear Vm</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
+	 </nav>
+	 
+	  <div class="content_section"><p>En esta sección puedes agregar una gráfica de una VM</p></div> 
+
+	  <section id="table_arquitectura" class="section_monitoring_vm" >
+	 	<div class="container">
+		<form class="form-inline">
+			<div class="container">
+			<div class="row">
+				<label class="my-1 mr-2" for="arq_new_graph">Seleccione la arquitectura que contiene la VM</label>
+					
+				<select name="dominio_test" id="domain_test" >
+                  <option value="">Seleccionar</option>
+                  <?php
+                    $dominios=db_fetch_assoc("select dominio from arqs_testbedims where usuario= '".$user['email_address']."'");
+                    foreach ($dominios as $key => $value) {
+                      print("<option value='".$value['dominio']."'>".$value['dominio']."</option>");
+                    }
+                  ?>  
+                </select>
+				<label class="my-1 mr-2" for="vm_new_graph">Seleccione la VM</label>
+				<select class="custom-select my-1 mr-sm-2" id="arq_new_graph">
+					<option selected>Elegir...</option>
+					<option value="1">One</option>
+					<option value="2">Two</option>
+					<option value="3">Three</option>
+				</select>
+			
+			</div>
+			<div class="row">
+			<label class="my-1 mr-2" for="vm_new_graph">Seleccionar la gráfica a desplegar</label>
+				<select class="custom-select my-1 mr-sm-2" id="arq_new_graph">
+					<option selected>Elegir...</option>
+					<option value="1">One</option>
+					<option value="2">Two</option>
+					<option value="3">Three</option>
+				</select>
+			</div>
+			
+			
+			</div>
+			<div id="buttons_add center">
+								<input type="button" class="btn_form btn btn-outline-danger mb-3" value="Cancelar" onclick="$('#content_infor_arq').hide();$('#btn_see_table4').show();$('#btn_notsee_table4').hide();$('.ajs-button.ajs-ok').trigger('click');">
+	 							<input type="button" class="btn_form btn btn-primary mb-3 " id="btn_save_info" value="Guardar" onclick="create_core();">
+	 						</div>
+		</form>
+		
+		 </div>
+	  </section>
+
+
+  </section>
+  <script>
+//   function update_vm_arq(this){
+//    console.log(this)
+// }
+  </script>
+	<?php
 }

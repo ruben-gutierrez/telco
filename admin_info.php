@@ -182,6 +182,10 @@ $now = date_create()->format('Y-m-d H:i:s');
 			return guide_test($explain_test_bono,$_POST['index']);
 			
 			break;
+		case '13':
+			return vmOfDomain($_POST['index']);
+			
+			break;
 		default:
 			echo ("sin funcion");
 			break;

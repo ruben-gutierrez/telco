@@ -3536,7 +3536,7 @@ function set_page_refresh($refresh) {
 
 function bottom_footer() {
 	global $config, $no_session_write;
-
+	
 	include($config['base_path'] . '/include/global_session.php');
 
 	if (!isset_request_var('header') || get_nfilter_request_var('header') == 'true') {
@@ -5189,9 +5189,28 @@ function agregar_solicitud($to_email,$from_email,$arquitectura,$username,$now){
 		//db_execute retorna 1 si es exitosa la peticion y cero si falla
 }
 
+//remueve permisos de acceso a graficas
+//user es el correo del usuario
+function remove_perms($user, $dominio_arq){
+	$id_user= db_fetch_cell_prepared("SELECT id FROM user_auth WHERE email_address='" . $user . "'");
+	$id_tree= db_fetch_cell_prepared("SELECT id_tree FROM arqs_testbedims WHERE dominio='" . $dominio_arq . "'");
+
+		shell_exec('php -q /var/www/html/telco/cli/remove_perms.php --user-id='.$id_user.' --item-type=tree --item-id='.$id_tree);
+
+}
+
 
 //asigna la arquitectura 
 function asignar_arquitectura($id_solicitud, $dominio_arq, $user){
+	//add perms to tree
+	$id_user= db_fetch_cell_prepared("SELECT id FROM user_auth WHERE email_address='" . $user . "'");
+	$id_tree= db_fetch_cell_prepared("SELECT id_tree FROM arqs_testbedims WHERE dominio='" . $dominio_arq . "'");
+
+		shell_exec('php -q /var/www/html/telco/cli/add_perms.php --user-id='.$id_user.' --item-type=tree --item-id='.$id_tree);
+	
+	
+
+	//asing arq
 	$days=db_fetch_cell_prepared("select value_info from data_testbedims where id_data='2'");
 	$actual_datetime=date_create()->format('Y-m-d H:i:s');
 	$final_datetime=date('Y-m-d H:i:s',strtotime($actual_datetime."+ ".$days." days")); 
@@ -5238,6 +5257,7 @@ function validar_asignacion($dom,$user){
 		echo "la asignacion de la arquitectura ".$arquitectura_libre ." con dominio ".$dom." sigue activa\n";
 	}
 }
+
 
 function liberar_arqs($dom){
 	if (is_array($dom)) {

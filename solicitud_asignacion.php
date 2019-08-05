@@ -50,6 +50,9 @@ if (!empty($_POST)) {
 					// echo $num_arq_to_user;
 					// echo $arq_permit;
 					if ($num_arq_to_user < $arq_permit) {
+						
+						
+
 						asignar_arquitectura($id_solicitud_pendiente['id'] , $dominio_libre['dominio'], $_POST['post_from_email']);
 						// asignar la arqutiectura al usuario en la plataforma
 						echo "Se ha asignado la arquitectura ". $_POST['post_arquitectura'] . "durante ".$days." dias.";
@@ -66,6 +69,8 @@ if (!empty($_POST)) {
 			$dom_asig = db_fetch_cell_prepared("SELECT dominio from arqs_testbedims  WHERE id ='" . $id . "'");
 			$arq_libre=db_execute("UPDATE arqs_testbedims SET  usuario='libre' WHERE id='" . $id . "'");
 			$mod_table_solicitud=db_execute("UPDATE solicitud_arq SET fecha_fin_asignacion =NOW() WHERE dominio='" . $dom_asig . "' ORDER BY id DESC LIMIT 1");
+			//delete perm to tree
+			remove_perms($email_user, $dom_asig);
 				echo($arq_libre);
 			
 			break;
@@ -80,9 +85,12 @@ if (!empty($_POST)) {
 					$new_name = $now . $_FILES['image']['name'];
 					rename('images/images_testbed/images_ims/temp/'.$_FILES['image']['name'], 'images/images_testbed/images_ims/'.$new_name );
 				}
-				
+				//create tree for cacti
+				$resp_tree=shell_exec('php -q cli/add_tree.php --type=tree --name="'.$_POST['dominio_arq'].'" --sort-method=manual');
+				$array_tree=explode ( ' ' , $resp_tree );
+				$id_tree = preg_replace('/\([^)]\)|[()]/', '', $array_tree[4]);
 				// inserta la informacion en la base de dataos
-				$sql = "INSERT INTO arqs_testbedims (arquitectura, dominio, activo, usuario, descripcion, imagen) VALUES ('".$_POST['name_arq']."','".$_POST['dominio_arq']."','V','libre', '".$_POST['desc_arq']."','".$new_name."')";
+				$sql = "INSERT INTO arqs_testbedims (arquitectura, dominio, activo, usuario, descripcion, imagen, id_tree) VALUES ('".$_POST['name_arq']."','".$_POST['dominio_arq']."','V','libre', '".$_POST['desc_arq']."','".$new_name."','".$id_tree."')";
 				$agregar=db_execute($sql);
 				if ( $agregar == '1') {
 					// agrega las restricciones
@@ -106,6 +114,7 @@ if (!empty($_POST)) {
 							// retorna la actualizacion de la tabla
 							$id_arq=db_fetch_cell_prepared("SELECT id from arqs_testbedims order by id desc limit 1");
 							echo(return_file_arq($id_arq, $_POST['name_arq'], $_POST['dominio_arq'], $_POST['desc_arq'], $new_name));
+							
 						}
 					}else{
 						if( $netArrayJson['net_openstack'] != '0' ){

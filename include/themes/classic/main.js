@@ -1403,3 +1403,7 @@ function deleteNotification(idElement) {
     $('#' + idElement).remove();
     $('.' + idElement).remove();
 }
+
+// function update_vm_arq(this){
+//    console.log(this)
+// }
