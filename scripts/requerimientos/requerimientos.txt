@@ -39,3 +39,50 @@ en caso de modificar o reinstalar openstack
 
 5-para crear flavors hay que darle permisos a usuario en openstack
     como admin  identity/proyectos -> miembros de proyecto en admin que esta como member se agrega admin
+
+
+
+
+    _______________________________--
+    errror de date.time en mysql y php
+    modificar los archivos 
+                /etc/php/<version>/cli/php.ini
+                /etc/php/<version>/apache2/php.ini
+
+                y para mysql
+
+                SET GLOBAL time_zone='America/Bogota';
+                SET time_zone='America/Bogota';
+
+Directory Permission Checks
+
+Please ensure the directory permissions below are correct before proceeding. During the install, these directories need to be owned by the Web Server user. These permission changes are required to allow the Installer to install Device Template packages which include XML and script files that will be placed in these directories. If you choose not to install the packages, there is an 'install_package.php' cli script that can be used from the command line after the install is complete.
+
+These directories will be required to stay read writable after the install so that the Cacti remote synchronization process can update them as the Main Cacti Web Site changes
+
+NOTE:If you are installing packages, once the packages are installed, you should change the scripts directory back to read only as this presents some exposure to the web site.
+Potential permission issues
+
+All folders are writable
+Required Writable at Install Time Only
+/usr/share/cacti/site/resource/snmp_queries/
+Writable
+/usr/share/cacti/site/resource/script_server/
+Writable
+/usr/share/cacti/site/resource/script_queries/
+Writable
+/usr/share/cacti/site/scripts/
+Writable
+Required Writable after Install Complete
+/tmp/
+Writable
+/usr/share/cacti/site/log/
+Writable
+/usr/share/cacti/site/cache/boost/
+Writable
+/usr/share/cacti/site/cache/mibcache/
+Writable
+/usr/share/cacti/site/cache/realtime/
+Writable
+/usr/share/cacti/site/cache/spikekill/
+-----------------------------------
