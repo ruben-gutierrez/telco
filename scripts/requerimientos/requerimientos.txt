@@ -86,3 +86,24 @@ Writable
 Writable
 /usr/share/cacti/site/cache/spikekill/
 -----------------------------------
+
+
+apuntes
+
+intro bien
+contribuciones: especificar las contribuciones a la investigacion especificar el nuevo conocimiento, mencionar lo que nos diferencia.
+        evaluacion: ventajas , la mayoria de los testbed no realizan tal cosa( basado en la usabilidad).
+        lo de contribuir es carreta
+
+marco teorico
+    recomendacion, poner mas arriba sip 
+    centrarce en lo novedoso,
+
+
+texto marco teorico 
+nuestra trabajo se ecentra en .--- ofreciendo  tal cosa --- usando tal cosa----
+
+
+diseño 
+proceso mediante el cual se obtienen los casos sde uso
+

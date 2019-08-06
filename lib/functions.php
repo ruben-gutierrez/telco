@@ -5796,6 +5796,21 @@ function delete_snapshot($idServer){
 	return($ans);
 }
 
-function sshRemoveKeyOld($ip){
+function vmOfDomain($domain){
+	// echo "fdafsd";
+	
+	$coreVm=db_fetch_assoc("SELECT s.id_server, s.name_server FROM 
+		core_domain c INNER JOIN server_openstack s ON c.id_server =s.id_server 
+					WHERE c.domain='".$domain."'");
+	$aditionalVm=db_fetch_assoc("SELECT s.id_server, s.name_server FROM 
+		vm_aditional_testbedims v INNER JOIN server_openstack s ON v.id_server =s.id_server 
+					WHERE v.dominio='".$domain."'");
+
+	$totalVm=array(
+		'core' => $coreVm,
+		'aditional' => $aditionalVm
+	);
+	
+	return $totalVm;
 
 }

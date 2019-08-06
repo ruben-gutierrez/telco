@@ -1347,6 +1347,7 @@ function consult_restrictions(domainform) {
     });
 }
 
+
 function slidetest(index, test) {
     var formData = new FormData();
     formData.append('action', '12');
@@ -1393,7 +1394,7 @@ function ssh_execute(ip) {
 
 
 function notifications(idNotification, content) {
-    var element = '<div class="row bg-danger loader center my-1 ' + idNotification + '" id="' + idNotification + '"><span class="spinner-border spinner-border-sm fa-3x" role="status" aria-hidden="true"></span>' + content + '</div>';
+    var element = '<div class="alert text-white  row bg-danger loader center mr-1 ' + idNotification + '" id="' + idNotification + '"><span class="spinner-border spinner-border-sm fa-2x" role="status" aria-hidden="true"></span>' + content + '</div>';
     $('.ajs-modal').append(element);
     $("#status-loading").append(element);
 }
@@ -1404,6 +1405,51 @@ function deleteNotification(idElement) {
     $('.' + idElement).remove();
 }
 
-// function update_vm_arq(this){
-//    console.log(this)
-// }
+function update_vm_arq(domain){
+    var formData = new FormData();
+    formData.append('action', '13');
+    formData.append('domain', domain);
+    $.ajax({
+        url: 'admin_info.php',
+        type: 'POST',
+        contentType: false,
+        processData: false,
+        data: formData,
+        beforeSend: function() {
+            notifications("searchVm", "Buscando Maquinas virtuales");
+        },
+        success: function(data) {
+            console.log(data);
+            $('#vm_new_graph').empty();
+            $('#vm_new_graph').html(data);
+        },
+        complete: function(){
+            deleteNotification("searchVm");
+        }
+    });
+ }
+
+ function create_grafic(){
+    //  console.log("ok");
+    var formData = new FormData($('#new_graph')[0]);
+    formData.append('action', '18');
+    
+    $.ajax({
+        url: 'solicitud_asignacion.php',
+        type: 'POST',
+        contentType: false,
+        processData: false,
+        data: formData,
+        beforeSend: function() {
+            notifications("CreateGrafic", "Creando Grafica");
+        },
+        success: function(data) {
+            console.log(data);
+            // $('#vm_new_graph').empty();
+            // $('#vm_new_graph').html(data);
+        },
+        complete: function(){
+            deleteNotification("CreateGrafic");
+        }
+    });
+ }

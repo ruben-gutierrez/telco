@@ -2213,7 +2213,7 @@ function html_common_header($title, $selectedTheme = '') {
 	print get_md5_include_css('include/themes/' . $selectedTheme .'/main.css');
 	// print get_md5_include_css('include/themes/' . $selectedTheme .'/bootstrap.css');
 	print get_md5_include_js('include/themes/' . $selectedTheme . '/bootstrap.js');
-	// print get_md5_include_js('include/themes/' . $selectedTheme . '/jquery-2.1.1.min.js');
+	print get_md5_include_js('include/themes/' . $selectedTheme . '/jquery-2.1.1.min.js');
 	print get_md5_include_js('include/js/screenfull.js');
 	print get_md5_include_js('include/js/jquery.js');
 	print get_md5_include_js('include/js/jquery-migrate.js');
@@ -3007,58 +3007,49 @@ function content_graph($user){
 	 
 	  <div class="content_section"><p>En esta sección puedes agregar una gráfica de una VM</p></div> 
 
-	  <section id="table_arquitectura" class="section_monitoring_vm" >
-	 	<div class="container">
-		<form class="form-inline">
+		<section id="table_arquitectura" class="section_monitoring_vm" >
 			<div class="container">
-			<div class="row">
-				<label class="my-1 mr-2" for="arq_new_graph">Seleccione la arquitectura que contiene la VM</label>
-					
-				<select name="dominio_test" id="domain_test" onChange="">
-                  <option value="">Seleccionar</option>
-                  <?php
-                    $dominios=db_fetch_assoc("select dominio from arqs_testbedims where usuario= '".$user['email_address']."'");
-                    foreach ($dominios as $key => $value) {
-                      print("<option value='".$value['dominio']."'>".$value['dominio']."</option>");
-                    }
-                  ?>  
-                </select>
-				<label class="my-1 mr-2" for="vm_new_graph">Seleccione la VM</label>
-				<select class="custom-select my-1 mr-sm-2" id="arq_new_graph">
-					<option selected>Elegir...</option>
-					<option value="1">One</option>
-					<option value="2">Two</option>
-					<option value="3">Three</option>
-				</select>
+				<form class="form-inline" id="new_graph">
+					<div class="container">
+						<div class="row">
+							<label class="my-1 mr-2" for="arq_new_graph">Seleccione la arquitectura que contiene la VM</label>
+								
+							<select name="dominio_test" id="domain_test" onchange="update_vm_arq(this.value)"> 
+							<option value="">Seleccionar</option>
+							<?php
+								$dominios=db_fetch_assoc("select dominio from arqs_testbedims where usuario= '".$user['email_address']."'");
+								foreach ($dominios as $key => $value) {
+								print("<option value='".$value['dominio']."'>".$value['dominio']."</option>");
+								}
+							?>  
+							</select> 
+							<label class="my-1 mr-2" for="id_Server">Seleccione la VM</label>
+							<select class="custom-select my-1 mr-sm-2" name="id_server" id="vm_new_graph">
+								
+							</select>
+						
+						</div>
+						<div class="row">
+							<label class="my-1 mr-2" for="vm_new_graph">Seleccionar la gráfica a desplegar</label>
+							<select class="custom-select my-1 mr-sm-2" id="arq_new_graph">
+								<option selected>Elegir...</option>
+								<option value="1">One</option>
+								<option value="2">Two</option>
+								<option value="3">Three</option>
+							</select>
+						</div>
+						<div id="buttons_add center">
+							<input type="button" class="btn_form btn btn-outline-danger mb-3" value="Cancelar" onclick="$('#content_infor_arq').hide();$('#btn_see_table4').show();$('#btn_notsee_table4').hide();$('.ajs-button.ajs-ok').trigger('click');"> 
+							<input type="button" class="btn_form btn btn-primary mb-3 " id="btn_save_info" value="Crear" onclick="create_grafic()">
+						</div>
+					</div>
+				</form>
 			
-			</div>
-			<div class="row">
-			<label class="my-1 mr-2" for="vm_new_graph">Seleccionar la gráfica a desplegar</label>
-				<select class="custom-select my-1 mr-sm-2" id="arq_new_graph">
-					<option selected>Elegir...</option>
-					<option value="1">One</option>
-					<option value="2">Two</option>
-					<option value="3">Three</option>
-				</select>
-			</div>
-			
-			
-			</div>
-			<div id="buttons_add center">
-								<input type="button" class="btn_form btn btn-outline-danger mb-3" value="Cancelar" onclick="$('#content_infor_arq').hide();$('#btn_see_table4').show();$('#btn_notsee_table4').hide();$('.ajs-button.ajs-ok').trigger('click');">
-	 							<input type="button" class="btn_form btn btn-primary mb-3 " id="btn_save_info" value="Guardar" onclick="create_core();">
-	 						</div>
-		</form>
-		
-		 </div>
-	  </section>
+			</div> 
+		</section>
 
 
   </section>
-  <script>
-//   function update_vm_arq(this){
-//    console.log(this)
-// }
-  </script>
+
 	<?php
 }

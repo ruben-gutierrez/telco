@@ -125,8 +125,8 @@ $now = date_create()->format('Y-m-d H:i:s');
 			// el id que voy a mover lo ponto de ultimo
 			$update=db_execute("UPDATE content_info_page SET id_content = '".$id_max."'+1 WHERE id_content = '".$_POST['id_content']."'");
 			if ($_POST['direc']=='up') {
-				// el elemento de arriba lo bajo una casilla
-				$id_dest=db_fetch_cell("SELECT id_content from content_info_page where id_content=(select max(id_content) from content_info_page where id_content<'".$_POST['id_content']."' AND id_title='".$_POST['id_title']."')");
+				// el elemento de arriba lo bajo una casilladomain
+				$id_dest=db_fetch_cell("SELECT id_content frdomainfo_page where id_content=(select max(id_content) from content_info_page where id_content<'".$_POST['id_content']."' AND id_title='".$_POST['id_title']."')");
 				
 			}else{
 			// 	// el elemento de arriba lo subo una casilla
@@ -182,8 +182,15 @@ $now = date_create()->format('Y-m-d H:i:s');
 			return guide_test($explain_test_bono,$_POST['index']);
 			
 			break;
-		case '13':
-			return vmOfDomain($_POST['index']);
+		case '13'://buscar las maquinas virtuales de un dominio
+			// echo "ok";
+			$vms=vmOfDomain($_POST['domain']);
+			foreach( $vms as $key=>$arrayKey){
+				foreach( $arrayKey as $element){
+					echo '<option value="'.$element['id_server'].'">'.$element['name_server'].'</option>';
+				}
+			}
+			
 			
 			break;
 		default:

@@ -81,16 +81,16 @@ if (!empty($_POST)) {
 				$description=$_POST['desc_arq'];
 				$domain=$_POST['dominio_arq'];
 				// sube la imagen 
-				if (move_uploaded_file($_FILES['image']['tmp_name'], 'images/images_testbed/images_ims/temp/'.$_FILES['image']['name'])) {
-					$new_name = $now . $_FILES['image']['name'];
-					rename('images/images_testbed/images_ims/temp/'.$_FILES['image']['name'], 'images/images_testbed/images_ims/'.$new_name );
-				}
+				// if (move_uploaded_file($_FILES['image']['tmp_name'], 'images/images_testbed/images_ims/temp/'.$_FILES['image']['name'])) {
+				// 	$new_name = $now . $_FILES['image']['name'];
+				// 	rename('images/images_testbed/images_ims/temp/'.$_FILES['image']['name'], 'images/images_testbed/images_ims/'.$new_name );
+				// }
 				//create tree for cacti
 				$resp_tree=shell_exec('php -q cli/add_tree.php --type=tree --name="'.$_POST['dominio_arq'].'" --sort-method=manual');
 				$array_tree=explode ( ' ' , $resp_tree );
 				$id_tree = preg_replace('/\([^)]\)|[()]/', '', $array_tree[4]);
 				// inserta la informacion en la base de dataos
-				$sql = "INSERT INTO arqs_testbedims (arquitectura, dominio, activo, usuario, descripcion, imagen, id_tree) VALUES ('".$_POST['name_arq']."','".$_POST['dominio_arq']."','V','libre', '".$_POST['desc_arq']."','".$new_name."','".$id_tree."')";
+				$sql = "INSERT INTO arqs_testbedims (arquitectura, dominio, activo, usuario, descripcion,  id_tree) VALUES ('".$_POST['name_arq']."','".$_POST['dominio_arq']."','V','libre', '".$_POST['desc_arq']."','".$id_tree."')";
 				$agregar=db_execute($sql);
 				if ( $agregar == '1') {
 					// agrega las restricciones
@@ -428,7 +428,28 @@ if (!empty($_POST)) {
 				echo $ipfloatTelco;
 				}
 			break;
-		
+		case '18'://Agregar grafica por usuario
+				// print_r($_POST);
+				$ipPublic=ipFloatServer($_POST['id_server']);
+				if( $ipPublic == ''){
+					// echo "no tiene ip publica";
+					$ipPublic=asingIpFloatServer($_POST['id_server']);
+				}
+				$id_device=shell_exec('php -q cli/add_device.php --description="'.$ipPublic.'" --ip="'.$ipPublic.'" --template=1 --community="public"');
+				$array_device=explode ( ' ' , $id_device );
+				// print_r($array_device);
+				$id_device = preg_replace('/\([^)]\)|[()]/', '', $array_device[16]);
+				echo $id_device;
+				for ($i=1; $i < 7; $i++) { 
+					$id_device=shell_exec('php -q cli/add_data_query.php --host-id="'.$id_device.'" --data-query-id='.$i.' --reindex-method=fields');
+				}
+				for ($i=1; $i < 33; $i++) { 
+					$id_device=shell_exec('php -q cli/add_graph_template.php --host-id="'.$id_device.'" --graph-template-id='.$i.'');
+				}
+				
+				// $id_device=shell_exec('php -q add_graphs.php --host-id=11 --graph-type=ds --graph-template-id=2 --snmp-query-id=1 --snmp-query-type-id=13 --snmp-field=ifOperStatus --snmp-value=Up');
+				
+				break;
 		default:
 			echo ("sin funcion");
 			break;
