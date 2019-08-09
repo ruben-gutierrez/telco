@@ -1420,8 +1420,8 @@ function update_vm_arq(domain){
         },
         success: function(data) {
             console.log(data);
-            $('#vm_new_graph').empty();
-            $('#vm_new_graph').html(data);
+            // $('#vm_new_graph').empty();
+            $('#vm_new_graph').append(data);
         },
         complete: function(){
             deleteNotification("searchVm");
@@ -1452,4 +1452,61 @@ function update_vm_arq(domain){
             deleteNotification("CreateGrafic");
         }
     });
+ }
+
+ function listOptionsNewGraph(idVn){
+    var formData = new FormData();
+    formData.append('action', '14');
+    formData.append('idVm', idVn);
+    $.ajax({
+        url: 'admin_info.php',
+        type: 'POST',
+        contentType: false,
+        processData: false,
+        data: formData,
+        beforeSend: function() {
+            notifications("graphOfDevice", "Buscando Gráficas del dispositivo");
+        },
+        success: function(data) {
+            // console.log(data);
+            var options = JSON.parse(data);
+            $('#templateGraph').empty();
+            
+            for (var i = 0; i < options.dataTemplate.length; i++) {
+                $('#templateGraph').append(options.dataTemplate[i]);
+              } 
+           
+        },
+        complete: function(){
+            deleteNotification("graphOfDevice");
+        }
+    }), "json";
+ }
+
+
+ function delete_graph(idGraph){
+    console.log(idGraph);
+    
+    var formData = new FormData();
+    formData.append('action', '19');
+    formData.append('idGraph', idGraph);
+    $.ajax({
+        url: 'solicitud_asignacion.php',
+        type: 'POST',
+        contentType: false,
+        processData: false,
+        data: formData,
+        beforeSend: function() {
+            notifications("deleteGraph", "Eliminando gráfica");
+        },
+        success: function(data) {
+            console.log(data);
+            $('#dd'+idGraph).hide();
+            $('#wrapper_'+idGraph).hide()
+           
+        },
+        complete: function(){
+            deleteNotification("deleteGraph");
+        }
+    }), "json";
  }

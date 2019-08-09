@@ -350,10 +350,11 @@ function graph_drilldown_icons($local_graph_id, $type = 'graph_buttons') {
 
 	$aggregate_url = aggregate_build_children_url($local_graph_id);
 
-	print "<div class='iconWrapper'>\n";
+	print "<div class='iconWrapper' id='" . $local_graph_id . "'>\n";
 	print "<a class='iconLink utils' href='#' role='link' id='graph_" . $local_graph_id . "_util'><img class='drillDown' src='" . $config['url_path'] . "images/cog.png' alt='' title='" . __esc('Graph Details, Zooming and Debugging Utilities') . "'></a><br>\n";
 	print "<a class='iconLink csvexport' href='#' role='link' id='graph_" . $local_graph_id . "_csv'><img class='drillDown' src='" . $config['url_path'] . "images/table_go.png' alt='' title='" . __esc('CSV Export of Graph Data'). "'></a><br>\n";
 	print "<a class='iconLink mrgt' href='#' role='link' id='graph_" . $local_graph_id . "_mrtg'><img class='drillDown' src='" . $config['url_path'] . "images/timeview.png' alt='' title='" . __esc('Time Graph View'). "'></a><br>\n";
+	
 
 	if (read_config_option('realtime_enabled') == 'on' && is_realm_allowed(25)) {
 		if (read_user_setting('realtime_mode') == '' || read_user_setting('realtime_mode') == '1') {
@@ -367,7 +368,7 @@ function graph_drilldown_icons($local_graph_id, $type = 'graph_buttons') {
 		print "<span class='iconLink spikekill' data-graph='" . $local_graph_id . "' id='graph_" . $local_graph_id . "_sk'><img id='sk" . $local_graph_id . "' class='drillDown' src='" . $config['url_path'] . "images/spikekill.gif' title='" . __esc('Kill Spikes in Graphs') . "'></span>";
 		print '<br/>';
 	}
-
+	print "<a class='iconLink mrgt' href='#' role='link' onclick='delete_graph(" . $local_graph_id . ")'><i class='fa fa-trash fa-2x' style='color: red'></i></a><br>\n";
 	if ($aggregate_url != '') {
 		print $aggregate_url;
 	}
@@ -2996,9 +2997,11 @@ function type_coreIMS(){
 	<?php 
 }
 
+
 function content_graph($user){
 	
 	?>
+	<div class="container" id="status-loading"></div>
 	<section class="section_add_monitoring">
  	
 	 <nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('section_monitoring_vm', 'indicate_solicitedArquitecture')">
@@ -3010,8 +3013,8 @@ function content_graph($user){
 		<section id="table_arquitectura" class="section_monitoring_vm" >
 			<div class="container">
 				<form class="form-inline" id="new_graph">
-					<div class="container">
-						<div class="row">
+					<div class="container text-center">
+						<div class="row center" >
 							<label class="my-1 mr-2" for="arq_new_graph">Seleccione la arquitectura que contiene la VM</label>
 								
 							<select name="dominio_test" id="domain_test" onchange="update_vm_arq(this.value)"> 
@@ -3023,21 +3026,26 @@ function content_graph($user){
 								}
 							?>  
 							</select> 
+						</div>
+						<div class="row center" >
 							<label class="my-1 mr-2" for="id_Server">Seleccione la VM</label>
-							<select class="custom-select my-1 mr-sm-2" name="id_server" id="vm_new_graph">
-								
+							<select class="custom-select my-1 mr-sm-2" name="id_server" id="vm_new_graph" onchange="listOptionsNewGraph(this.value)">
+								<option value="127.0.0.1">1</option>
+								<option value="127.0.0.1">2</option>
+								<option value="127.0.0.3">3</option>
+								<option value="127.0.0.4">4</option>
 							</select>
+						</div>
+
+
+						<div class="row center" >
+							<label class="my-1 mr-2" for="kindElement">Gráfica</label>
+							<select class="custom-select my-1 mr-sm-2" name="templateGraph" id="templateGraph" >
+								<option value="">Elegir Opcion</option>
+							</select>
+						</div>
+
 						
-						</div>
-						<div class="row">
-							<label class="my-1 mr-2" for="vm_new_graph">Seleccionar la gráfica a desplegar</label>
-							<select class="custom-select my-1 mr-sm-2" id="arq_new_graph">
-								<option selected>Elegir...</option>
-								<option value="1">One</option>
-								<option value="2">Two</option>
-								<option value="3">Three</option>
-							</select>
-						</div>
 						<div id="buttons_add center">
 							<input type="button" class="btn_form btn btn-outline-danger mb-3" value="Cancelar" onclick="$('#content_infor_arq').hide();$('#btn_see_table4').show();$('#btn_notsee_table4').hide();$('.ajs-button.ajs-ok').trigger('click');"> 
 							<input type="button" class="btn_form btn btn-primary mb-3 " id="btn_save_info" value="Crear" onclick="create_grafic()">

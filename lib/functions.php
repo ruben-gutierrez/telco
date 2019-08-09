@@ -5814,3 +5814,54 @@ function vmOfDomain($domain){
 	return $totalVm;
 
 }
+
+//input: id servidor openstack-> consulta la ip flotante si no la tiene la asigna luego 
+//crea el host en cacti y agrega los dataQueries y los templates
+//retorna el id del host en cacti
+function deviceId($idServer){
+
+	$ipPublic=$idServer;
+	// // $ipPublic=ipFloatServer($idServer);
+	// // if( $ipPublic == ''){
+	// // 	// echo "no tiene ip publica";
+	// // 	$ipPublic=asingIpFloatServer($idServer);
+	// // }
+	$id_device=shell_exec('php -q cli/add_device.php --description="'.$ipPublic.'" --ip="'.$ipPublic.'" --template=3 --version=2 --community="public"');
+	$array_device=explode ( ' ' , $id_device );
+	
+	if( $array_device['3'] == "exists"){
+		$id_device = preg_replace('/\([^)]\)|[()]/', '', $array_device[9]);
+		
+	}else{
+		$id_device = preg_replace('/\([^)]\)|[()]/', '', $array_device[16]);
+	}
+	$id_device=trim($id_device);
+
+	
+	
+
+	return $id_device;
+	
+}
+
+function addTemplateAndQueryToDevice($id_device){
+	//agregando los dataQueries
+	$separador='"|"';
+	$listQuery=shell_exec("php -q cli/add_data_query.php --list-data-queries | awk '{ print $1$separador}' | tail -n +2");
+	$listQuery= explode('|', $listQuery);
+	for ($i=0; $i < count($listQuery) - 1; $i++) { 
+		shell_exec("php -q cli/add_data_query.php --host-id='".$id_device."' --data-query-id='".$listQuery[$i]."' --reindex-method='Uptime'");
+	}
+	//agregando los template
+	$listTemplate=shell_exec("php -q cli/add_graph_template.php --list-graph-templates | awk '{ print $1$separador}' | tail -n +2");
+	
+	$listTemplate= explode('|', $listTemplate);
+	for ($i=0; $i < count($listTemplate) - 1; $i++) { 
+		// echo $listTemplate[$i];
+		shell_exec("php -q cli/add_graph_template.php --host-id='".$id_device."' --graph-template-id='".$listTemplate[$i]."'");
+	}
+}
+
+
+
+

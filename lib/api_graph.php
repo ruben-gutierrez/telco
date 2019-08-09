@@ -26,6 +26,7 @@ function api_graph_remove($local_graph_id) {
 	if (empty($local_graph_id)) {
 		return;
 	}
+	// db_execute_prepared('DELETE FROM graph_local WHERE id = ?', $local_graph_id);
 
 	db_execute_prepared('DELETE FROM graph_templates_graph WHERE local_graph_id = ?', array($local_graph_id));
 	db_execute_prepared('DELETE FROM graph_templates_item WHERE local_graph_id = ?', array($local_graph_id));

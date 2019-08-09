@@ -193,6 +193,28 @@ $now = date_create()->format('Y-m-d H:i:s');
 			
 			
 			break;
+		case '14'://Crea el host y agrega los dataQueries y templates disponibles. luego regresa la informacion requerida para crear la grafica
+			//crea el host
+			$host_id=deviceId($_POST['idVm']);	
+			
+
+			$separador2='"|"';
+			$separador1='":"';
+			$optionsNewGraph=array(
+				"dataTemplate"=>array()
+			);
+			$listTemplate=shell_exec("php -q cli/add_graphs.php --list-graph-templates | awk '{ print $1$separador1$2 $3 $4 $5 $6 $7 $8 $9$separador2}' | tail -n +2");
+			$listTemplate= explode('|', $listTemplate);
+			array_push($optionsNewGraph['dataTemplate'], '<option value="">Elegir...</option>');	
+			for ($i=0; $i < count($listTemplate) - 2; $i++) { 
+				$template= explode(':', $listTemplate[$i]);
+				array_push($optionsNewGraph['dataTemplate'],'<option value="'.ltrim($template['0']).'">'.$template['1'].'</option>');	
+			}
+			print_r(json_encode($optionsNewGraph));
+			
+			break;
+
+
 		default:
 			echo ("sin funcion");
 			break;

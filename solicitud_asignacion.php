@@ -2,7 +2,7 @@
 global $current_user;
 
 include('./include/global.php');
-
+include_once('./lib/api_graph.php');
 
 
 // saber si post tiene valor
@@ -430,27 +430,31 @@ if (!empty($_POST)) {
 			break;
 		case '18'://Agregar grafica por usuario
 				// print_r($_POST);
-				$ipPublic=ipFloatServer($_POST['id_server']);
-				if( $ipPublic == ''){
-					// echo "no tiene ip publica";
-					$ipPublic=asingIpFloatServer($_POST['id_server']);
-				}
-				$id_device=shell_exec('php -q cli/add_device.php --description="'.$ipPublic.'" --ip="'.$ipPublic.'" --template=1 --community="public"');
-				$array_device=explode ( ' ' , $id_device );
-				// print_r($array_device);
-				$id_device = preg_replace('/\([^)]\)|[()]/', '', $array_device[16]);
-				echo $id_device;
-				for ($i=1; $i < 7; $i++) { 
-					$id_device=shell_exec('php -q cli/add_data_query.php --host-id="'.$id_device.'" --data-query-id='.$i.' --reindex-method=fields');
-				}
-				for ($i=1; $i < 33; $i++) { 
-					$id_device=shell_exec('php -q cli/add_graph_template.php --host-id="'.$id_device.'" --graph-template-id='.$i.'');
-				}
 				
-				// $id_device=shell_exec('php -q add_graphs.php --host-id=11 --graph-type=ds --graph-template-id=2 --snmp-query-id=1 --snmp-query-type-id=13 --snmp-field=ifOperStatus --snmp-value=Up');
-				
+				$host_id=deviceId($_POST['id_server']);
+				addTemplateAndQueryToDevice($host_id);
+				$esp='""';
+				$id_graph=trim(shell_exec("php -q cli/add_graphs.php --host-id=".$host_id." --graph-type=cg --graph-template-id='".$_POST['templateGraph']."' | awk '{ gsub(/\(|\)/, $esp) ;print$5 }' "));
+				if ( $id_graph == "-") {
+					echo "la grafica ya esta creada";
+				}else{
+					//busca el tree por medio de la direccion de red
+					$dom='"'.$_POST['dominio_test'].'"';
+					// echo $dom;
+					$id_tree=trim(shell_exec("php -q cli/add_tree.php --list-trees | awk ' $6 == $dom { print $1 }'"));
+					//agrega del host al tree
+					shell_exec("php -q cli/add_tree.php --type=node --node-type=host --tree-id='".$id_tree."' --host-id='".$host_id."'");
+					//agrega la grafica al arbol
+					shell_exec("php -q cli/add_tree.php --type=node --node-type=graph --tree-id='".$id_tree."' --graph-id='".$id_graph."'");
+				}
 				break;
+			case '19':
+				// db_execute_prepared('DELETE FROM graph_local WHERE id = ?', $_POST['idGraph']);
+				api_graph_remove($_POST['idGraph']);
+				break;
+
 		default:
+
 			echo ("sin funcion");
 			break;
 	}

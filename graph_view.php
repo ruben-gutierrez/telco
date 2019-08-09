@@ -29,6 +29,7 @@ include('./include/auth.php');
 include_once('./lib/html_tree.php');
 include_once('./lib/html_graph.php');
 include_once('./lib/api_tree.php');
+include_once('./lib/api_graph.php');
 include_once('./lib/timespan_settings.php');
 
 
