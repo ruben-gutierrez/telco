@@ -429,12 +429,14 @@ if (!empty($_POST)) {
 				}
 			break;
 		case '18'://Agregar grafica por usuario
-				// print_r($_POST);
+				print_r($_POST);
 				
 				$host_id=deviceId($_POST['id_server']);
+
 				addTemplateAndQueryToDevice($host_id);
 				$esp='""';
 				$id_graph=trim(shell_exec("php -q cli/add_graphs.php --host-id=".$host_id." --graph-type=cg --graph-template-id='".$_POST['templateGraph']."' | awk '{ gsub(/\(|\)/, $esp) ;print$5 }' "));
+				
 				if ( $id_graph == "-") {
 					echo "la grafica ya esta creada";
 				}else{
@@ -442,6 +444,7 @@ if (!empty($_POST)) {
 					$dom='"'.$_POST['dominio_test'].'"';
 					// echo $dom;
 					$id_tree=trim(shell_exec("php -q cli/add_tree.php --list-trees | awk ' $6 == $dom { print $1 }'"));
+					echo $id_tree;
 					//agrega del host al tree
 					shell_exec("php -q cli/add_tree.php --type=node --node-type=host --tree-id='".$id_tree."' --host-id='".$host_id."'");
 					//agrega la grafica al arbol

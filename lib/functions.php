@@ -5821,26 +5821,30 @@ function vmOfDomain($domain){
 function deviceId($idServer){
 
 	$ipPublic=$idServer;
-	// // $ipPublic=ipFloatServer($idServer);
-	// // if( $ipPublic == ''){
-	// // 	// echo "no tiene ip publica";
-	// // 	$ipPublic=asingIpFloatServer($idServer);
-	// // }
-	$id_device=shell_exec('php -q cli/add_device.php --description="'.$ipPublic.'" --ip="'.$ipPublic.'" --template=3 --version=2 --community="public"');
-	$array_device=explode ( ' ' , $id_device );
-	
-	if( $array_device['3'] == "exists"){
-		$id_device = preg_replace('/\([^)]\)|[()]/', '', $array_device[9]);
-		
-	}else{
-		$id_device = preg_replace('/\([^)]\)|[()]/', '', $array_device[16]);
+	$ipPublic=ipFloatServer($idServer);
+	if( $ipPublic == ''){
+		// echo "no tiene ip publica";
+		$ipPublic=asingIpFloatServer($idServer);
 	}
-	$id_device=trim($id_device);
+	$id_device=shell_exec('php -q cli/add_device.php --description="'.$ipPublic.'" --ip="'.$ipPublic.'" --template=3 --version=2 --community="public"');
+	
+	$id_device=explode ( ' ' , $id_device );
 
+
+
+
+	if( $id_device['3'] == "exists"){
+		preg_match('#\((.*?)\)#', $id_device['9'], $id_device);
+	}else{
+		preg_match('#\((.*?)\)#', $id_device['16'], $id_device);
+	}
+	
+
+	return $id_device[1];
 	
 	
 
-	return $id_device;
+	
 	
 }
 
