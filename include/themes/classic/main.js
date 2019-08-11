@@ -1420,8 +1420,8 @@ function update_vm_arq(domain){
         },
         success: function(data) {
             console.log(data);
-            // $('#vm_new_graph').empty();
-            $('#vm_new_graph').append(data);
+            $('#vm_new_graph').empty();
+            $('#vm_new_graph').html(data);
         },
         complete: function(){
             deleteNotification("searchVm");
@@ -1471,7 +1471,6 @@ function update_vm_arq(domain){
             // console.log(data);
             var options = JSON.parse(data);
             $('#templateGraph').empty();
-            
             for (var i = 0; i < options.dataTemplate.length; i++) {
                 $('#templateGraph').append(options.dataTemplate[i]);
               } 

@@ -196,8 +196,6 @@ $now = date_create()->format('Y-m-d H:i:s');
 		case '14'://Crea el host y agrega los dataQueries y templates disponibles. luego regresa la informacion requerida para crear la grafica
 			//crea el host
 			$host_id=deviceId($_POST['idVm']);	
-			
-
 			$separador2='"|"';
 			$separador1='":"';
 			$optionsNewGraph=array(
