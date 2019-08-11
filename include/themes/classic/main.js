@@ -1141,13 +1141,13 @@ function addVmtoDomain(idDomain) {
 
         },
         success: function(data) {
+            // console.log(data)
+            data = JSON.parse(data);
             console.log(data);
-            // var json = JSON.parse(data);
-            // console.log(JSON.parse(data));
-            if (data == '0') {
+            if (data.options == '0') {
                 alert("No puede agregar máquinas virtuales");
             } else {
-                var content = '<form id="add_vm_domain"> <input type="hidden" class="form-control" name="idDomain" value="' + idDomain + '"> <div class="form-row">    <div class="form-group col-md-6">     <div class="form-group col">      <label>Nombre</label>      <input type="text" class="form-control" name="nameNewVm" placeholder="Nombre"> </div> <div class="form-group col">      <label>Sistema Operativo</label>      <select name="imageNewVm" class="form-control">        ' + data + ' </select>    </div>  </div>    <div class="form-group ">    <label>Flavor</label>    <input type="number" class="form-control col-md-6" name="ramNewVm" placeholder="RAM "> <input type="number" class="form-control col-md-6" name="vcpuNewVm" placeholder="VCPU "> <input type="number" class="form-control col-md-6" name="diskNewVm" placeholder="DISK "></div>       </div>   </div></form>';
+                var content = '<form id="add_vm_domain"> <input type="hidden" class="form-control" id="idDomain" name="idDomain" placeholder="action" value="' + idDomain + '"> <div class="form-row">    <div class="form-group col-md-6">     <div class="form-group col">      <label>Nombre</label>      <input type="text" class="form-control " name="nameNewVm" id="nameNewVm" placeholder="Nombre" required > </div> <div class="form-group col">      <label>Sistema Operativo</label>      <select name="imageNewVm" id="imageNewVm" class="form-control" placeholder="Sistema Operativo" required>        ' + data.options + ' </select>    </div>  </div>    <div class="form-group ">    <label>Flavor</label>    <input type="number" class="form-control col-md-6" id="ramNewVm" name="ramNewVm" min="1" max="'+data.ram+'"placeholder="RAM "> <input type="number" class="form-control col-md-6" id="vcpuNewVm" name="vcpuNewVm" min="1" max="'+data.vcpu+'" placeholder="VCPU "> <input type="number" class="form-control col-md-6" id="diskNewVm" name="diskNewVm" min="1" max="'+data.disk+'" placeholder="DISK "></div>       </div>   </div></form>';
                 // console.log(content);
                 addVM("Agregar Maquina Virtual", content);
             }
@@ -1159,34 +1159,36 @@ function addVmtoDomain(idDomain) {
 }
 
 function addVM(title, content) {
-    var confirm = alertify.confirm(title, content, null, null).set('labels', { ok: 'Confirmar', cancel: 'Cancelar' });
+    var confirm = alertify.confirm(title, content, null, null);
 
     //callbak al pulsar botón positivo
     confirm.set('onok', function() {
-        var parametros = new FormData($('#add_vm_domain')[0]);
-        parametros.append('action', '13');
-        $.ajax({
-            url: 'solicitud_asignacion.php',
-            type: 'POST',
-            contentType: false,
-            processData: false,
-            data: parametros,
-            beforeSend: function() {
-                notifications("addvm", "Agregando maquina virtual");
-            },
-            success: function(data) {
-                console.log(data);
-                if (data == '0') {
-                    alertify.error('Error, Verifique los recursos máximos');
-                } else {
-                    // console.log(data);
-                    alertify.success('VM agregada');
-                }
-            },
-            complete: function() {
-                deleteNotification("addvm");
-            }
-        });
+        verifiyFieldsBlank('add_vm_domain');
+        // var parametros = new FormData($('#add_vm_domain')[0]);
+        // parametros.append('action', '13');
+        // $.ajax({
+        //     url: 'solicitud_asignacion.php',
+        //     type: 'POST',
+        //     contentType: false,
+        //     processData: false,
+        //     data: parametros,
+        //     beforeSend: function() {
+        //         notifications("addvm", "Agregando maquina virtual");
+                
+        //     },
+        //     success: function(data) {
+        //         console.log(data);
+        //         if (data == '0') {
+        //             alertify.error('Error, Verifique los recursos máximos');
+        //         } else {
+        //             // console.log(data);
+        //             alertify.success('VM agregada');
+        //         }
+        //     },
+        //     complete: function() {
+        //         deleteNotification("addvm");
+        //     }
+        // });
     });
     //callbak al pulsar botón negativo
     confirm.set('oncancel', function() {
@@ -1194,6 +1196,13 @@ function addVM(title, content) {
     })
 }
 
+function verifiyFieldsBlank(idForm){
+    var form=$('#'+idForm)[0];
+   for (let index = 0; index <  form.length; index++) {
+        //console.log(form[index].id);
+      document.getElementById(form[index].id).classList.toggle("is-invalid");
+     }
+}
 
 
 function freeDomain(id) {
