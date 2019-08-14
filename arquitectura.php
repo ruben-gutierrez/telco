@@ -14,10 +14,36 @@ $from_email=$current_user['email_address'];
 
 
 ?>
+
+
+
+<!-- Modal -->
+<div class="modal fade " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Agregar Máquina virtual</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Fin modal -->
 <div class="container" id="status-loading"></div>
+
+
+
 <div class="margin_page">
 	<div class="content"></div>
-		<section class="section_arquitecture">
+		<section class="section_arquitecture ancla" id="request_arquitecture">
 			<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('request_arquitecture', 'indicate_requestArquitecture')">
 				<a class="navbar-brand text-white"><b>Solicitar Arquitectura</b></a><div class="float-right indicate_requestArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
 			</nav>
@@ -56,12 +82,12 @@ $from_email=$current_user['email_address'];
 			</div>
 		</section>
 		
-		<section class="section_arquitecture">
+		<section class="section_arquitecture ancla" id="solicited_arquitecture">
 			<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('solicited_arquitecture', 'indicate_solicitedArquitecture')">
 				<a class="navbar-brand text-white"><b>Arquitecturas Reservadas</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
 			</nav>
 
-			<div class="row solicited_arquitecture">
+			<div class="row solicited_arquitecture" >
 			
 				<!-- <h1 class="titulo_arquitectura">Lista de Arquitecturas</h1> -->
 				<div class="description_page_testbed">Arquitectuas asignadas, en esta sección puedes verificar las arquitecturas asignadas a tu cuenta de usuario para luego modificar la escalabilidad vertical de ellas teniendo la capacidad de moficicar la capacidad de la memoria RAM, disco duro y capacidad e procesador.</div>
@@ -75,7 +101,7 @@ $from_email=$current_user['email_address'];
 						<th scope="col">#</th>
 						<th scope="col">Arquitectura</th>
 						<th scope="col">Dominio</th>
-						<th scope="col">Ver</th>
+						<th scope="col">Opciones</th>
 						</tr>
 					</thead>
 					<?php 

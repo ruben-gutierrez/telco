@@ -15,43 +15,45 @@ global $config, $current_user;
 
 
  	<div class="admin_ims">
- 		<section class="section_admin_arquitecuta">
+ 		<section class="section_admin_arquitecuta ancla" id="arqs_testbed">
  	
 			<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('section_admin_arquitectura', 'indicate_solicitedArquitecture')">
 				<a class="navbar-brand text-white"><b> Arquitecturas en testbed IMS</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
 			</nav>
 			
- 			<div class="content_section"><p>En esta sección se puede agregar, modificar eliminar y ilberar las arquitecturas disponibles en el testbed</p></div> 
-	 		<section id="table_arquitectura" class="section_admin_arquitectura" >
+			 <div class="content_section"><p>En esta sección se puede agregar, modificar eliminar y ilberar las arquitecturas disponibles en el testbed</p></div> 
+			 
+			 
+			<section id="table_arquitectura" class="section_admin_arquitectura" >
 			
 				<div class="content_section">
 					
-		 			<table id="table_estado_arq" class="table table-striped ">
-		 				<thead>
-		 					<tr>
-		 						<th scope="col">Arquitectura</th>
-		 						<th scope="col">Dominio</th>
-		 						<th scope="col" class='edisplay'>descripcion</th>
-		 						<th scope="col" class='edisplay'>Imagen</th>
-		 						<th scope="col">Usuario</th>
-		 						<th scope="col">Acción</th>
-		 					</tr>
-		 				</thead>
-		 				<tbody id="contenido_arq_state">
-		 				<?php 
-		 				draw_table_estate_arq(); ?>
-		 				</tbody>
-		 			</table>
-		 			<button class="btn btn-primary text-center" id="display_add" onclick="$('#add_arq').show(500); $('#table_arquitectura').hide(500);$('#btn_notsee_table').hide();$('#btn_see_table').show(); $('section.section_admin_arquitectura').focus();"><i class="fa fa-sitemap"> | Nuevo</i></button>
-		 		</div>	
-	 		</section>
+					<table id="table_estado_arq" class="table table-striped ">
+						<thead>
+							<tr>
+								<th scope="col">Arquitectura</th>
+								<th scope="col">Dominio</th>
+								<th scope="col" class='edisplay'>descripcion</th>
+								<th scope="col" class='edisplay'>Imagen</th>
+								<th scope="col">Usuario</th>
+								<th scope="col">Acción</th>
+							</tr>
+						</thead>
+						<tbody id="contenido_arq_state">
+						<?php 
+						draw_table_estate_arq(); ?>
+						</tbody>
+					</table>
+					<button class="btn btn-primary text-center" id="display_add" onclick="$('#add_arq').show(500); $('#table_arquitectura').hide(500);$('#btn_notsee_table').hide();$('#btn_see_table').show(); $('section.section_admin_arquitectura').focus();"><i class="fa fa-sitemap"> | Nuevo</i></button>
+				</div>	
+			</section>
 
-	 		<section id="add_arq" class="section_admin_arquitectura" tabindex='0' style="display: none;">
-	 			<div class="name_section bg-dark">Agregar arquitectura</div>
-	 			<div class="content_section container-6 ">
-	 				<form method="post" id="form_new_arq" class="form_arq" enctype="multipart/form-data">
-	 					<input type="hidden" name="action" value="3">
-						 <div class="row">
+			<section id="add_arq" class="section_admin_arquitectura" tabindex='0' style="display: none;">
+				<div class="name_section bg-dark">Agregar arquitectura</div>
+				<div class="content_section container-6 ">
+					<form method="post" id="form_new_arq" class="form_arq" enctype="multipart/form-data">
+						<input type="hidden" name="action" value="3">
+							<div class="row">
 							<div class="col">
 								<label class="col-6" for="name_arq">Nombre de arquitectura</label>
 								<input class="col-6" type="text" name="name_arq" placeholder="Nombre" autofocus required>
@@ -95,17 +97,18 @@ global $config, $current_user;
 							<input  id="btn_cancelar" class="btn_form btn btn-outline-danger" type="button" value="Cancelar" onclick="$('#table_arquitectura').show(500);$('#add_arq').hide(600);$('#btn_notsee_table').show();$('#btn_see_table').hide();">
 						</div>
 					
-		 				
-		 			</form>
-	 			</div>
-	 		</section>
-	 		<section id="mod_arq" class="section_admin_arquitectura" style="display: none;">
-	 			<div class="name_section">Editar arquitectura</div>
-	 			<div class="content_section container">
+						
+					</form>
+				</div>
+			</section>
 
-					 <form method="post" id="form_edit_arq" class="form_arq" enctype="multipart/form-data">
-					 <div class="row">
-					 	<div class="col-8">
+			<section id="mod_arq" class="section_admin_arquitectura" style="display: none;">
+				<div class="name_section">Editar arquitectura</div>
+				<div class="content_section container">
+
+						<form method="post" id="form_edit_arq" class="form_arq" enctype="multipart/form-data">
+						<div class="row">
+						<div class="col-8">
 							<input type="hidden" name="action" value="5">
 							<div class="col mt-3">
 								<label class="col-6" for="name_arq">Nombre de arquitectura</label>
@@ -123,8 +126,8 @@ global $config, $current_user;
 								<label class="col-6" for="image"> Imagen de arquitectura</label>
 								<input class="col" type="file" name="image" accept=".jpg, .jpeg, .png">
 							</div>
-						 </div>
-						 <div class="col-4">
+							</div>
+							<div class="col-4">
 							
 							<div class="col mt-3">
 								<label class="col-6" for="vm_aditional">Máx VM adicionales</label>
@@ -145,31 +148,28 @@ global $config, $current_user;
 							</div>
 						</div> 
 					</div>
-						 <div class="col center">
-		 					<!-- <input type="hidden" name="action" value="7"> -->
-		 					<input id="btn_edit_arq" class="btn_form btn btn-primary" type="button" value="Guardar" onclick="edit_arq()">
-		 					<input  id="btn_cancelar" class="btn_form btn btn-outline-danger" type="button" value="Cancelar" onclick="$('#table_arquitectura').show(500);$('#mod_arq').hide(600);">
-		 				</div>
-		 				
-		 				
-		 			</form>
-	 			</div>
-	 		</section>
+							<div class="col center">
+							<!-- <input type="hidden" name="action" value="7"> -->
+							<input id="btn_edit_arq" class="btn_form btn btn-primary" type="button" value="Guardar" onclick="edit_arq()">
+							<input  id="btn_cancelar" class="btn_form btn btn-outline-danger" type="button" value="Cancelar" onclick="$('#table_arquitectura').show(500);$('#mod_arq').hide(600);">
+						</div>
+						
+						
+					</form>
+				</div>
+			</section>
  		</section>
- 		<section class="section_admin_arquitecuta">
+ 		<section class="section_admin_arquitecuta ancla" id="content_restrictions">
 			<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('content_restrictions', 'indicate_solicitedArquitecture')">
 					<a class="navbar-brand text-white"><b> Restricciones</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
 			</nav>	 
 			 
  			<div class="content_section container">
 			 	<label>Restricciones del testbed IMS</label>
-				<div class="content_restrictions" style="display:none">
+				<div class="content_restrictions" >
 					<div class="row">
-							
-
-					
 						<div id="content_arqByUsuary" class="col content_arqByUsuary">
-						<label>Arquitecturas a reservar:<label id="number_actual"><?php echo(db_fetch_cell_prepared("select value_info from data_testbedims where id_data='1'")); ?></label></label>
+							<label>Arquitecturas a reservar:<label id="number_actual"><?php echo(db_fetch_cell_prepared("select value_info from data_testbedims where id_data='1'")); ?></label></label>
 
 							<form class="form_arq" method="post" id="form_arq_by_user">
 								<input type="hidden" name="action" value="7">
@@ -177,8 +177,6 @@ global $config, $current_user;
 								<input class="btn btn-outline-warning" type="button" name="btn_set" value="Cambiar" onclick="change_arqs_by_user()">
 							</form>
 						</div>
-				
-						
 						<div id="content_day_asig" class="col day_asig">
 							<label>Dias de asignación:<label id="number_day_actual"><?php echo(db_fetch_cell_prepared("select value_info from data_testbedims where id_data='2'")); ?></label></label>
 							<form class="form_arq" method="post" id="form_day_asig">
@@ -187,21 +185,12 @@ global $config, $current_user;
 								<input class="btn btn-outline-warning" type="button" name="btn_set" value="Cambiar" onclick="change_day_asig()">
 							</form>
 						</div>
-						
-
-
 					</div>
-						
-					
-
-
-
-					
 				</div>
  			</div>
  		</section>
 
- 		<section  id="info_arq" class="section_admin_arquitecuta" tabindex="0">
+ 		<!-- <section  id="info_arq" class="section_admin_arquitecuta" tabindex="0">
 		 	<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('type_arq', 'indicate_solicitedArquitecture')">
 					<a class="navbar-brand text-white"><b> Agregar Tipo de Arquitectura</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
 			</nav>	
@@ -218,14 +207,14 @@ global $config, $current_user;
 						</div>
 	 				</div>
  			</div>
-		 </section>
-		 <section id="test_dom" class="section_admin_arquitecuta">
+		 </section> -->
+		<section id="test_dom" class="section_admin_arquitecuta ancla">
 					<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('add_test', 'indicate_solicitedArquitecture')">
 							<a class="navbar-brand text-white"><b> Agregar Prueba</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
 					</nav>
 					<div class="content_section">
 							<label>Agregar prueba a una arquitectura</label>
-							<div id="content_add_test" style="display: none;" class="add_test">
+							<div id="content_add_test"  class="add_test">
 								<div id='form_1'>
 									<form method="post" id="form_add_test" class="form_arq" enctype="multipart/form-data">
 										<input type="hidden" name="action" value="10">
@@ -279,29 +268,9 @@ global $config, $current_user;
 						
 						</div>
 					</div>
-				</section>
+		</section>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		 <section id="test_dom" class="section_admin_arquitecuta">
+		 <section id="info_openstack" class="section_admin_arquitecuta ancla">
 		 	<nav class="navbar navbar-light bg-dark row mb-3" onclick="show_hide_content_byClass('info_openstack', 'indicate_solicitedArquitecture')">
 					<a class="navbar-brand text-white"><b> Información de openstack</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
 			</nav>
@@ -533,13 +502,13 @@ global $config, $current_user;
 											</div>
 		 </section>
  		
-	<section class="section_admin_arquitecuta mt-1">
+		<section id="info_page" class="section_admin_arquitecuta my-1 ancla" >
 			<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('info_page', 'indicate_info_page')">
 					<a class="navbar-brand text-white"><b> Contenido Pagina Información</b></a><div class="float-right indicate_info_page"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
 			</nav>
  			<div class="content_section">
  					<label>Cambiar informacion de la pagina principal</label>
- 					<div id='content_info_page' style="display: none;" class="info_page">
+ 					<div id='content_info_page' class="info_page">
 					<?php  
 						admin_info_page();
 					?>
@@ -548,7 +517,7 @@ global $config, $current_user;
 	 				</div>
  					
  			</div>
-		 </section>
+		</section>
  	</div>
 
 

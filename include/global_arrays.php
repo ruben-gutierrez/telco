@@ -1675,37 +1675,67 @@ api_plugin_hook('config_arrays');
 
 // Contenido testbed ims
 
-$menu_vertical_info = array (
-	"Arquitectura" => array ("fa fa-sitemap fa-fw",
-		"Arquitctura distribuida",
-		"Arquitectura Todo en Uno",
-		"Distribuida + PSTN"
+$content_menu_vertical = array (
+	"arquitectura" => array (
+		array( 		"icon" => "fa fa-sitemap fa-fw",
+					"id"	=> "request_arquitecture",
+					"content" 	=> "Arquitecturas disponibles",
+					"equals"	=> ""),
+		array( 		"icon" => "fa fa-sitemap fa-fw",
+					"id"	=> "solicited_arquitecture",
+					"content" 	=> "Arquitecturas reservadas",
+					"equals"	=> "roto")
 	),
-	"Pruebas" => array (
-		"fa fa-wrench fa-fw",
-		"Prueba de Proxy",
-		"Prueba de CSCF",
-		"Prueba de conjunto",
-		"Crear pruebas personalizadas"
+	"pruebas" => array (
+		array( 		"icon" => "fa fa-sitemap fa-fw",
+					"id"	=> "tests",
+					"content" 	=> "Pruebas disponibles",
+					"equals"	=> ""),
+		array( 		"icon" => "fa fa-sitemap fa-fw",
+					"id"	=> "test_bono",
+					"content" 	=> "Guia Prueba Bono",
+					"equals"	=> ""),
+		array( 		"icon" => "fa fa-sitemap fa-fw",
+					"id"	=> "test_dom",
+					"content" 	=> "Crear Prueba",
+					"equals"	=> "todo menos")
 	),
-	"Gráficas" => array (
-		"fa fa-bar-chart-o fa-fw",
-		"Gráficas de rendimiento",
-		"Gráficas de Calidad"
+	"info" => array (
+		array( 		"icon" => "fa fa-sitemap fa-fw",
+					"id"	=> "request_arquitecture",
+					"content" 	=> "Testbed",
+					"equals"	=> ""),
+		array( 		"icon" => "fa fa-sitemap fa-fw",
+					"id"	=> "request_arquitecture",
+					"content" 	=> "Solicitar Arquitectura",
+					"equals"	=> ""),
+		array( 		"icon" => "fa fa-sitemap fa-fw",
+					"id"	=> "request_arquitecture",
+					"content" 	=> "Solicitar Arquitectura",
+					"equals"	=> "" )
+	),
+	"admin_testbedims" => array (
+		array( 		"icon" => "fa fa-sitemap fa-fw",
+					"id"	=> "arqs_testbed",
+					"content" 	=> "Arquitecturas en testbed IMS",
+					"equals"	=> ""),
+		array( 		"icon" => "fa fa-sitemap fa-fw",
+					"id"	=> "content_restrictions",
+					"content" 	=> "Restricciones",
+					"equals"	=> ""),
+		array( 		"icon" => "fa fa-sitemap fa-fw",
+					"id"	=> "test_dom",
+					"content" 	=> "Agregar Prueba",
+					"equals"	=> ""),
+		array( 		"icon" => "fa fa-sitemap fa-fw",
+					"id"	=> "info_openstack",
+					"content" 	=> "Información de openstack",
+					"equals"	=> ""),
+		array( 		"icon" => "fa fa-sitemap fa-fw",
+					"id"	=> "info_page",
+					"content" 	=> "Contenido Pagina Información",
+					"equals"	=> "")
 	)
-
-);
-$menu_vertical_arquitectura = array (
-	"Arquitectura distribuida",
-	"Arquitectura Todo en Uno",
-	"Distribuida + PSTN"
-
-);
-$menu_vertical_pruebas = array (
-	"Prueba de Proxy",
-	"Prueba de CSCF",
-	"Prueba de conjunto",
-	"Crear pruebas personalizadas"
 );
 
 $paginas_testbed = array (

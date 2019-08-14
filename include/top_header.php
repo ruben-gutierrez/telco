@@ -22,7 +22,7 @@
  +-------------------------------------------------------------------------+
 */
 
-global $config, $menu, $paginas_testbed, $menu_vertical_info, $menu_vertical_arquitectura, $menu_vertical_pruebas;
+global $config, $menu, $paginas_testbed, $content_menu_vertical , $menu_vertical_arquitectura, $menu_vertical_pruebas;
 
 $oper_mode = api_plugin_hook_function('top_header', OPER_MODE_NATIVE);
 if ($oper_mode == OPER_MODE_RESKIN) {
@@ -39,10 +39,10 @@ $using_guest_account = false;
 	<?php html_common_header($page_title);?>
 </head>
 <body>
-<div id='cactiPageHead' class='cactiPageHead' role='banner'>
+<div id='cactiPageHead' class='cactiPageHead' role='banner' style="position: fixed">
 	<?php if ($oper_mode == OPER_MODE_NATIVE) { ;?>
 	<!-- <nav id='tabs' class="navbar navbar-expand-lg navbar-dark bg-dark"> -->
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark"  >
 		
 		<!-- pestañas de navegacióonn -->
 		<?php html_show_tabs_left();?>
@@ -50,9 +50,10 @@ $using_guest_account = false;
 		<!-- barra de busqueda -->
 		<div class="search oculto">
 			<form class="form-inline">
-	    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-	    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-	  </form></div>
+				<input class="form-control mr-sm-2" id="wordSearch" type="search" placeholder="Buscar ..." aria-label="Search" onfocus="callArraySearch()" onkeyup="search(this.value)">
+				<button class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="search($('#wordSearch')[0].value)">Buscar</button>
+			</form>
+		</div>
 		<div class="mr-2 ml-3"><i class="fa fa-search fa-2x rounded-circle text-white" onclick="show_hide_content_byClass('search','none')"></i></div>
 		<!-- menu de login -->
 		<div><?php echo draw_login_status($using_guest_account);?> </div>
@@ -92,7 +93,7 @@ $using_guest_account = false;
 				            <?php 
 		        }else{
                 	//se grafica contenido del testbed
-	                graficar_menu_vertical_testbed( $pagina, $menu_vertical_info,$menu_vertical_arquitectura,$menu_vertical_pruebas);                
+	                graficar_menu_vertical_testbed( $pagina, $content_menu_vertical);                
 	            } ?>
 			</div>
 			

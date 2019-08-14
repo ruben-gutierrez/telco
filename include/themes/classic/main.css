@@ -6,6 +6,7 @@ body {
     width: 100%;
     margin: 0px;
     overflow: auto;
+    
 }
 
 body,
@@ -304,7 +305,7 @@ label {
 }
 
 .moveArrow {
-    color: #00438C !important;
+    color: #343a40 !important;
     height: 14px !important;
     font-size: 14px !important;
     vertical-align: middle;
@@ -640,7 +641,7 @@ li#user_display {
 }
 
 .graphItemAdd {
-    background-color: #00438C;
+    background-color: #343a40;
 }
 
 .graphItemDel {
@@ -667,9 +668,11 @@ li#user_display {
 
 .cactiPageHead {
     background: #1c3589;
-    border-bottom: 1px solid #00438C;
+    border-bottom: 1px solid #343a40;
     /*height: 80px;*/
     width: 100%;
+    z-index: 100;
+    position: fixed;
 }
 
 .cactiGraphPageHeadBackdrop {
@@ -686,7 +689,7 @@ li#user_display {
     padding-bottom: 0px;
     float: right;
     width: 0px;
-    height: 36px;
+    /* height: 36px; */
     z-index: -1;
 }
 
@@ -743,6 +746,7 @@ ul#breadcrumbs {
     height: 100%;
     vertical-align: top;
     display: inline-table;
+    margin-top: 60px;
 }
 
 .cactiTreeNavigationArea {
@@ -768,7 +772,7 @@ ul#breadcrumbs {
 
 .cactiConsoleNavigationArea {
     display: table-cell;
-    background: #dedede66;
+    /* background: #b3b3b366; */
     border-right: #AAAAAA 1px solid;
     padding-left: 0px;
     padding-right: 0px;
@@ -777,9 +781,10 @@ ul#breadcrumbs {
     float: left;
     width: 230px;
     height: 100%;
-    //	overflow-y:auto !important;
-    //	overflow-x:auto;
+    overflow-y:auto !important;
+    overflow-x:auto;
 }
+
 
 .cactiConsoleNavigationArea table {
     width: 100%;
@@ -1131,7 +1136,7 @@ legend {
 .cactiTable {
     width: 100%;
     border-width: 0px;
-    border-color: #00438C;
+    border-color: #343a40;
     border-style: solid;
     margin-left: auto;
     margin-right: auto;
@@ -1146,7 +1151,7 @@ legend {
     text-align: left;
     display: table-column;
     width: 70%;
-    background-color: #00438C;
+    background-color: #343a40;
     font-size: 12px;
 }
 
@@ -1156,7 +1161,7 @@ legend {
     text-align: right;
     height: 22px;
     width: 30%;
-    background-color: #00438C;
+    background-color: #343a40;
     white-space: nowrap;
 }
 
@@ -1394,11 +1399,11 @@ legend {
 }
 
 .cactiNavBarTop {
-    background-color: #00438C;
+    background-color: #343a40;
 }
 
 .cactiNavBarBottom {
-    background-color: #00438C;
+    background-color: #343a40;
 }
 
 .tableHeader {
@@ -1480,7 +1485,7 @@ legend {
     margin-left: auto;
     margin-right: auto;
     line-height: 20px;
-    background-color: #00438D;
+    background-color: #343a40;
     font-size: 12px;
 }
 
@@ -2124,7 +2129,7 @@ ul.nav_sub {
 
 .tabla_contenido tr:nth-child(1) td {
     font-size: 20px;
-    background-color: #00438C;
+    background-color: #343a40;
     border-collapse: collapse;
     border: solid 0.5px;
 }
@@ -2383,4 +2388,12 @@ textarea {
     max-width: 50%;
     min-width: 50%;
     width: 50%;
+}
+
+.ancla:before {
+    display: block;
+    content: " ";
+    margin-top: -120px;
+    height: 120px;
+    visibility: hidden;
 }

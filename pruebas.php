@@ -14,9 +14,9 @@ if (isset($_GET['arq'])) {
 ?>
 
 
-<div class="margin_page">
+<div class="margin_page ancla" id="tests">
   <nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('tests', 'indicate_requestArquitecture')">
-      <a class="navbar-brand text-white"><b>Pruebas</b></a><div class="float-right indicate_requestArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
+      <a class="navbar-brand text-white"><b>Pruebas Disponibles para ejecutar</b></a><div class="float-right indicate_requestArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
     </nav>
     <div class="tests">
       	 <!-- <h1 class="titulo_arquitectura">Servicios Ambiente de Prueba IMS</h1> -->
@@ -37,10 +37,8 @@ if (isset($_GET['arq'])) {
 
   </div>
   
-  <div>
-
-
-  <nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('test_bono', 'indicate_requestArquitecture')">
+  <div id="test_bono" class="ancla">
+    <nav class="navbar navbar-light bg-dark row"  onclick="show_hide_content_byClass('test_bono', 'indicate_requestArquitecture')">
       <a class="navbar-brand text-white"><b>Guia Prueba Bono</b></a><div class="float-right indicate_requestArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
     </nav>
     <div class="test_bono">
@@ -77,7 +75,7 @@ if (isset($_GET['arq'])) {
   $dom_user=db_fetch_assoc("SELECT arquitectura, dominio, descripcion  from arqs_testbedims where usuario ='".$user_email."'");
       if( !empty($dom_user)){
                 ?>
-                      <section id="test_dom" class="section_admin_arquitecuta" style="margin-top: 20px;">
+      <section id="test_dom ancla" class="section_admin_arquitecuta" style="margin-top: 20px;">
    <!--    <div class="name_section"> -->
         <nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('content_section', 'indicate_requestArquitecture')">
             <a class="navbar-brand text-white"><b>Crear Prueba</b></a><div class="float-right indicate_requestArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
@@ -200,9 +198,10 @@ if (isset($_GET['arq'])) {
 
 
 
-<script>$(function () {
-  $('[data-toggle="popover"]').popover()
-})</script>
-
-
+// <script>$(function () {
+//   $('[data-toggle="popover"]').popover()
+// })
 </script>
+
+
+<!-- </script> -->

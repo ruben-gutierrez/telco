@@ -959,6 +959,7 @@ function terminal(idServer) {
         contentType: false,
         processData: false,
         data: parametros,
+        timeout: 10000,
         beforeSend: function() {
             notifications("terminal", "Creando interfaz para terminal");
         },
@@ -972,6 +973,9 @@ function terminal(idServer) {
         },
         complete: function() {
             deleteNotification("terminal");
+        },
+        error: function(){
+            alert("Intelo Nuevamente");
         }
     });
 }
@@ -1147,9 +1151,11 @@ function addVmtoDomain(idDomain) {
             if (data.options == '0') {
                 alert("No puede agregar máquinas virtuales");
             } else {
-                var content = '<form id="add_vm_domain"> <input type="hidden" class="form-control" id="idDomain" name="idDomain" placeholder="action" value="' + idDomain + '"> <div class="form-row">    <div class="form-group col-md-6">     <div class="form-group col">      <label>Nombre</label>      <input type="text" class="form-control " name="nameNewVm" id="nameNewVm" placeholder="Nombre" required > </div> <div class="form-group col">      <label>Sistema Operativo</label>      <select name="imageNewVm" id="imageNewVm" class="form-control" placeholder="Sistema Operativo" required>        ' + data.options + ' </select>    </div>  </div>    <div class="form-group ">    <label>Flavor</label>    <input type="number" class="form-control col-md-6" id="ramNewVm" name="ramNewVm" min="1" max="'+data.ram+'"placeholder="RAM "> <input type="number" class="form-control col-md-6" id="vcpuNewVm" name="vcpuNewVm" min="1" max="'+data.vcpu+'" placeholder="VCPU "> <input type="number" class="form-control col-md-6" id="diskNewVm" name="diskNewVm" min="1" max="'+data.disk+'" placeholder="DISK "></div>       </div>   </div></form>';
-                // console.log(content);
-                addVM("Agregar Maquina Virtual", content);
+                var content = '<form id="add_vm_domain"> <input type="hidden" class="form-control" id="idDomain" name="idDomain" placeholder="action" value="' + idDomain + '"> <div class="form-row">    <div class="form-group col-md-6">     <div class="form-group col">      <label>Nombre</label>      <input type="text" class="form-control " name="nameNewVm" id="nameNewVm" placeholder="Nombre" title="Nombre de la maquina virtual" required autofocus> </div> <div class="form-group col">      <label>Sistema Operativo</label>      <select name="imageNewVm" id="imageNewVm" class="form-control" title="Imagen del sistema operativo que tendra la Máquina virtual" placeholder="Sistema Operativo" required>        ' + data.options + ' </select>    </div>  </div>    <div class="form-group ">    <label for="ramNewVm">Memoria RAM</label>   <input type="number" class="form-control col-md-6" id="ramNewVm" name="ramNewVm" min="1" max="'+data.ram+'"placeholder="MB"  title="Memoria Ram de la nueva máquina virtual" required>  <label for="vcpuNewVm">Número de procesadores</lavel><input type="number" class="form-control col-md-6" id="vcpuNewVm" name="vcpuNewVm" min="1" max="'+data.vcpu+'" placeholder="Número" title="Número de procesadores de la Nueva máquina virtual" required> <label for="diskNewVm">Espacio de almacenamiento</label> <input type="number" class="form-control col-md-6" id="diskNewVm" name="diskNewVm" min="1" max="'+data.disk+'" placeholder="GB" title="Tamaño de disco duro en GB" required></div>       </div>   </div></form>';
+                var btns = '<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button><button type="button" class="btn btn-primary" onclick="addVM()">Crear</button>';
+                $('.modal-body').html(content);
+                $('.modal-footer').html(btns);
+               
             }
         }
     });
@@ -1158,50 +1164,51 @@ function addVmtoDomain(idDomain) {
 
 }
 
-function addVM(title, content) {
-    var confirm = alertify.confirm(title, content, null, null);
+function addVM() {
+        if(verifiyFieldsBlank('add_vm_domain') == 0){
+            var parametros = new FormData($('#add_vm_domain')[0]);
+            parametros.append('action', '13');
+            $.ajax({
+                url: 'solicitud_asignacion.php',
+                type: 'POST',
+                contentType: false,
+                processData: false,
+                data: parametros,
+                beforeSend: function() {
+                    notifications("addvm", "Agregando maquina virtual");
+                    
+                },
+                success: function(data) {
+                    console.log(data);
+                    if (data == '0') {
+                        alertify.error('Error, Verifique los recursos máximos');
+                    } else {
+                        // console.log(data);
+                        alertify.success('VM agregada');
+                    }
+                },
+                complete: function() {
+                    deleteNotification("addvm");
+                }
+            });
 
-    //callbak al pulsar botón positivo
-    confirm.set('onok', function() {
-        verifiyFieldsBlank('add_vm_domain');
-        // var parametros = new FormData($('#add_vm_domain')[0]);
-        // parametros.append('action', '13');
-        // $.ajax({
-        //     url: 'solicitud_asignacion.php',
-        //     type: 'POST',
-        //     contentType: false,
-        //     processData: false,
-        //     data: parametros,
-        //     beforeSend: function() {
-        //         notifications("addvm", "Agregando maquina virtual");
-                
-        //     },
-        //     success: function(data) {
-        //         console.log(data);
-        //         if (data == '0') {
-        //             alertify.error('Error, Verifique los recursos máximos');
-        //         } else {
-        //             // console.log(data);
-        //             alertify.success('VM agregada');
-        //         }
-        //     },
-        //     complete: function() {
-        //         deleteNotification("addvm");
-        //     }
-        // });
-    });
-    //callbak al pulsar botón negativo
-    confirm.set('oncancel', function() {
-        alertify.error('Cancelado');
-    })
+        }
 }
 
 function verifiyFieldsBlank(idForm){
     var form=$('#'+idForm)[0];
+    var cont=0;
    for (let index = 0; index <  form.length; index++) {
-        //console.log(form[index].id);
-      document.getElementById(form[index].id).classList.toggle("is-invalid");
+        console.log(form[index].validity.valid);
+        if(form[index].validity.valid == false){
+            document.getElementById(form[index].id).classList.toggle("is-invalid");
+            cont = 1;
+        }else{
+            document.getElementById(form[index].id).classList.remove("is-invalid");
+        }
+      
      }
+    return cont;
 }
 
 
@@ -1508,7 +1515,7 @@ function update_vm_arq(domain){
             notifications("deleteGraph", "Eliminando gráfica");
         },
         success: function(data) {
-            console.log(data);
+            // console.log(data);
             $('#dd'+idGraph).hide();
             $('#wrapper_'+idGraph).hide()
            
@@ -1517,4 +1524,72 @@ function update_vm_arq(domain){
             deleteNotification("deleteGraph");
         }
     }), "json";
+ }
+
+
+
+ var arraySearch=[];
+ function callArraySearch(){
+    var formData = new FormData();
+    formData.append('action', '15');
+    
+    $.ajax({
+        url: 'admin_info.php',
+        type: 'POST',
+        contentType: false,
+        processData: false,
+        timeout: 10000,
+        data: formData,
+
+        success: function(data) {
+            var options = JSON.parse(data);
+            arraySearch=options;
+        }
+    }), "json";
+ }
+
+ function search(wordSearch){
+     let flat=0;
+    wordSearch=wordSearch.toLowerCase()
+    //  console.log(arraySearch)
+    for (let element in arraySearch) {
+        for (let text of arraySearch[element]){
+            let textLower = text.equals.toLowerCase()
+            if(textLower.includes(wordSearch)){
+                console.log("encontrado");
+            }else{
+                console.log("no encontrado");
+            }
+        }
+    }
+    
+ }
+ function test(){
+     console.log("------");
+     console.log(arraySearch);
+     
+    // var formData = new FormData();
+    // formData.append('action', '20');
+    
+    // $.ajax({
+    //     url: 'solicitud_asignacion.php',
+    //     type: 'POST',
+    //     contentType: false,
+    //     processData: false,
+    //     timeout: 10000,
+    //     data: formData,
+    //     beforeSend: function() {
+    //         console.log("enviado")
+    //     },
+    //     success: function(data) {
+    //         console.log(data);
+           
+    //     },
+    //     complete: function(){
+    //         console.log("terminado")
+    //     },
+    //     error: function(){
+    //         console.log("error");
+    //     }
+    // }), "json";
  }

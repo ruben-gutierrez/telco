@@ -2191,16 +2191,25 @@ function html_common_header($title, $selectedTheme = '') {
 	<script type='text/javascript'>var theme='<?php print $selectedTheme;?>';</script>
 	<script src='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/alertifyJS/alertify.min.js'></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	
+
 	<link href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/images/telco_icon.ico' rel='shortcut icon'>
 	<link href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/images/telco_logo2.png' rel='icon' sizes='96x96'>
 	<link rel="stylesheet" href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/alertifyJS/css/alertify.min.css'/>
 	<link rel="stylesheet" href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/alertifyJS/css/themes/semantic.min.css'/>
 	<link rel="stylesheet" href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/bootstrap/dist/css/bootstrap.min.css'/>
-	<link rel="stylesheet" href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/bootstrap/dist/js/bootstrap.min.js'/>
+	<!-- <link rel="stylesheet" href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/bootstrap/dist/js/bootstrap.min.js'/> -->
+	
 	<link rel="stylesheet" href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/bootstrap/dist/js/bootstrap.js'/>
 	<link rel="stylesheet" href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/bootstrap/dist/css/bootstrap.css'/>
 
 
+	<link href="/your-path-to-fontawesome/css/fontawesome.css" rel="stylesheet">
+	<link href="/your-path-to-fontawesome/css/brands.css" rel="stylesheet">
+	<link href="/your-path-to-fontawesome/css/solid.css" rel="stylesheet">
+
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	
 	<?php
 	print get_md5_include_css('include/themes/' . $selectedTheme .'/jquery.zoom.css');
 	print get_md5_include_css('include/themes/' . $selectedTheme .'/jquery-ui.css');
@@ -2211,6 +2220,8 @@ function html_common_header($title, $selectedTheme = '') {
 	print get_md5_include_css('include/themes/' . $selectedTheme .'/c3.css');
 	print get_md5_include_css('include/themes/' . $selectedTheme .'/pace.css');
 	print get_md5_include_css('include/fa/css/font-awesome.css');
+	print get_md5_include_css('include/fa5/css/all.css');
+	print get_md5_include_css('include/fa5/js/all.js');
 	print get_md5_include_css('include/themes/' . $selectedTheme .'/main.css');
 	// print get_md5_include_css('include/themes/' . $selectedTheme .'/bootstrap.css');
 	print get_md5_include_js('include/themes/' . $selectedTheme . '/bootstrap.js');
@@ -2244,68 +2255,39 @@ function html_common_header($title, $selectedTheme = '') {
 	print get_md5_include_js('include/layout.js');
 	print get_md5_include_js('include/themes/' . $selectedTheme .'/main.js');
 	api_plugin_hook('page_head');
+	
 }
 
 // contenido testbed ims
 // 
-function graficar_menu_vertical_testbed($pagina, $array_info, $array_arquitectura, $array_pruebas){
+function graficar_menu_vertical_testbed($pagina, $content_vertical){
 	
 	switch ($pagina) {
     case "info.php":
-        $array_graficar = $array_info;
+        $array_graficar = $content_vertical['info'];
         break;
     case "arquitectura.php":
-        $array_graficar = $array_arquitectura;
+        $array_graficar = $content_vertical['arquitectura'];
         break;
     case "pruebas.php":
-        $array_graficar = $array_pruebas;
+        $array_graficar = $content_vertical['pruebas'];
         break;
     case 'admin_testbedims.php':
-    	$array_graficar = array("Contenido");
+    	$array_graficar = $content_vertical['admin_testbedims'];
     	break;
 	}
-
-	?>
 	
-	<ul class="nav flex-column" id="side-menu">
-		<!-- <li class="sidebar-search">
-			<div class="flexsearch">
-					
-			</div>
-            <div class="inner-addon left-addon">
-        	  <i class="fa fa-search"></i>
-        	  <input type="text" class="form-control" placeholder="Buscar..." />
-        	</div>
-        	
-        </li> -->
+	?>
 
+	<nav class="nav flex-column" style="position: fixed">
 	<?php
-	foreach ($array_graficar as $key => $value) {
-		if ( !is_array($value)) {
-			for ($n = 1; $n <= sizeof($value); $n++) {
-               ?>        <li class="nav-item">
-                            <a class="nav-link" href=<?php $value.php;?>><?php echo $value; ?></a>
-                        </li>
-				<?php }
-		}else{
+	foreach ($array_graficar as $link) {
 		?>
-			<li class="nav-item">
-
-			<a href=''><i class='<?php echo $value[0] ?>'></i><?php echo $key; ?><span class='fa arrow'></span></a>
-				<?php for ($i = 1; $i < sizeof($value); $i++) {?>
-					<ul class="nav_sub">
-                        <li class="nav-item">
-                            <a class="nav-link" href="panels-wells.html"><?php echo $value[$i] ?></a>
-                        </li>
-					</ul>
-				<?php }
-				?>
-			</li>			
-		<?php  		
-		}
+			<a class="nav-link mt-1" href="#<?php echo $link['id'];?>"><i class="<?php echo $link['icon'];?>"></i>    <?php print_r($link['content']);?></a>
+		<?php
 	}
 	?>
-    </ul>
+    </nav>
     <?php 
 }
 function displayCardsArq($array_content, $user ){
@@ -2371,10 +2353,10 @@ function draw_table_domainsOfUser($emailUser){
 			    <td>".$elements['arquitectura']."</td>
 			    <td>".$elements['dominio']."</td>
 			    <td> 
-						<button class='btn' id='".$elements['dominio']."' onclick='showInfoDomain(".$elements['id'].", `true`)' > <i class='fa fa-cogs bg-primary text-white p-2 rounded'> | Core IMS</i> </button>
-						<button class='btn' id='".$elements['dominio']."' onclick='showInfoDomain(".$elements['id'].", `false`)' > <i class='fa fa-cogs bg-primary text-white p-2 rounded'> | VM Adicionales</i> </button>
+						<button class='btn' id='".$elements['dominio']."' onclick='showInfoDomain(".$elements['id'].", `true`)' > <i class='fas fa-project-diagram bg-primary text-white p-2 rounded'> | Core IMS</i> </button>
+						<button class='btn' id='".$elements['dominio']."' onclick='showInfoDomain(".$elements['id'].", `false`)' > <i class='fa fa-laptop-medical bg-primary text-white p-2 rounded'> | VM Adicionales</i> </button>
 						<button class='btn' id='".$elements['dominio']."' onclick='freeDomain(".$elements['id'].")' ><i class='fa fa-unlink bg-danger text-white p-2 rounded'> | Liberar</i> </button>
-						<button class='btn' id='".$elements['dominio']."' onclick='addVmtoDomain(".$elements['id'].")' > <i class='fa fa-plus bg-warning text-white p-2 rounded'> | Agregar VM</i></button>
+						<button class='btn' id='".$elements['dominio']."' onclick='addVmtoDomain(".$elements['id'].")' data-toggle='modal' data-target='#exampleModal'><i class='fa fa-plus bg-warning text-white p-2 rounded'> | Agregar VM</i></button>
 				</td>
 			</tr>"
 		);

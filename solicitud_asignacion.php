@@ -456,6 +456,11 @@ if (!empty($_POST)) {
 				api_graph_remove($_POST['idGraph']);
 				break;
 
+			case '20':
+				echo "test";
+				sleep(10);
+				break;
+
 		default:
 
 			echo ("sin funcion");

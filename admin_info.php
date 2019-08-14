@@ -1,5 +1,5 @@
 <?php 
-global $current_user, $explain_test_bono;
+global $current_user, $explain_test_bono, $content_menu_vertical;
 
 include('./include/global.php');
 // include('./include/auth.php');
@@ -209,6 +209,11 @@ $now = date_create()->format('Y-m-d H:i:s');
 				array_push($optionsNewGraph['dataTemplate'],'<option value="'.ltrim($template['0']).'">'.$template['1'].'</option>');	
 			}
 			print_r(json_encode($optionsNewGraph));
+			
+			break;
+		case '15'://consulta el array de busqueda
+			
+			print_r(json_encode($content_menu_vertical));
 			
 			break;
 
