@@ -1548,26 +1548,23 @@ function update_vm_arq(domain){
     }), "json";
  }
 
- function search(wordSearch){
-     let flat=0;
-    wordSearch=wordSearch.toLowerCase()
-    //  console.log(arraySearch)
-    for (let element in arraySearch) {
-        for (let text of arraySearch[element]){
-            let textLower = text.equals.toLowerCase()
-            if(textLower.includes(wordSearch)){
-                console.log("encontrado");
-            }else{
-                console.log("no encontrado");
+function search(wordSearch){
+    $('#listAllowed').empty();
+    if( wordSearch != '' ){
+        let flat=0;
+        wordSearch=wordSearch.toLowerCase();
+        for (let element in arraySearch) {
+            for (let text of arraySearch[element]){
+                let textLower = text.equals.toLowerCase()
+                if(textLower.includes(wordSearch)){
+                    $('#listAllowed').append('<li class="nav-item d-block"><a class="nav-link" href="'+element+'.php#'+text.id+'">'+text.content+'</a></li>');
+                }
             }
         }
     }
-    
- }
- function test(){
-     console.log("------");
-     console.log(arraySearch);
-     
+}
+
+function test(){
     // var formData = new FormData();
     // formData.append('action', '20');
     
@@ -1592,4 +1589,4 @@ function update_vm_arq(domain){
     //         console.log("error");
     //     }
     // }), "json";
- }
+}

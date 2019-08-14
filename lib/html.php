@@ -2281,11 +2281,12 @@ function graficar_menu_vertical_testbed($pagina, $content_vertical){
 
 	<nav class="nav flex-column" style="position: fixed">
 	<?php
-	foreach ($array_graficar as $link) {
-		?>
-			<a class="nav-link mt-1" href="#<?php echo $link['id'];?>"><i class="<?php echo $link['icon'];?>"></i>    <?php print_r($link['content']);?></a>
-		<?php
-	}
+		foreach ($array_graficar as $link) {
+			?>	<li>
+					<a class="nav-link mt-1 " href="#<?php echo $link['id'];?>"><i class="<?php echo $link['icon'];?>"></i>    <?php print_r($link['content']);?></a>
+				</li>
+			<?php
+		}
 	?>
     </nav>
     <?php 

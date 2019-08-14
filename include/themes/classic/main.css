@@ -76,7 +76,7 @@ fieldset {
 a,
 a:active,
 a:visited {
-    color: blue;
+    color: 343a40;
     text-decoration: none;
 }
 
@@ -218,7 +218,7 @@ label {
 }
 
 .newObject {
-    color: blue;
+    color: 343a40;
 }
 
 .updateObject {
@@ -488,28 +488,30 @@ label {
     border-width: 0px 1px 1px 1px;
     z-index: 2;
     display: block;
-    float: right;
+    /* float: right; */
     position: absolute;
     right: 12px;
-    top: 80px;
+    top: 60px;
     list-style: none;
     text-align: right;
-    margin: 0px;
-    padding: 10px;
+    /* margin: 0px; */
+    margin-right:10px;
+    padding: 35px;
     font-size: 15px;
 }
 
 .menuoptions li a {
     border-top: 1px solid #CCC;
     display: block;
-    height: 14px;
+    height: 25px;
+    margin-top: 5px;
     padding: 4px;
 }
 
 li#user_display {
     border-top: 1px solid #CCC;
-    padding: 0px 10%;
-    font-size: 40px;
+    padding: 10px 20px 0px 10px;
+    font-size: 20px;
 }
 
 .menuoptions li a:hover {
@@ -667,7 +669,7 @@ li#user_display {
 }
 
 .cactiPageHead {
-    background: #1c3589;
+    background: #343a40;
     border-bottom: 1px solid #343a40;
     /*height: 80px;*/
     width: 100%;
@@ -736,7 +738,7 @@ ul#breadcrumbs {
     padding-right: 5px;
     float: left;
     text-decoration: none;
-    color: blue;
+    color: 343a40;
     position: relative;
 }
 
@@ -751,7 +753,8 @@ ul#breadcrumbs {
 
 .cactiTreeNavigationArea {
     display: table-cell;
-    background: #EFEFEF url('./../../../images/shadow_gray.gif') repeat-x center top;
+    /* background: #EFEFEF url('./../../../images/shadow_gray.gif') repeat-x center top; */
+    background: #EEE;
     border-right: #AAAAAA 1px solid;
     padding-left: 5px;
     padding-right: 5px;
@@ -772,7 +775,7 @@ ul#breadcrumbs {
 
 .cactiConsoleNavigationArea {
     display: table-cell;
-    /* background: #b3b3b366; */
+    background: #EEE;
     border-right: #AAAAAA 1px solid;
     padding-left: 0px;
     padding-right: 0px;
@@ -975,7 +978,7 @@ legend {
 .hyperLink,
 .hyperLink:hover,
 .hyperLink:visited {
-    color: blue !important;
+    color: 343a40 !important;
     font-size: 1.1em;
     padding: 3px;
     cursor: pointer;
@@ -992,7 +995,7 @@ legend {
 }
 
 .noLinkEditMain {
-    color: blue;
+    color: 343a40;
     text-decoration: none;
     font-weight: bold;
     padding: 3px;
@@ -1002,7 +1005,7 @@ legend {
 .linkEditMain,
 .linkEditMain:visited,
 .linkEditMain:active {
-    color: blue;
+    color: 343a40;
     text-decoration: none;
     font-weight: normal;
     padding: 0px;
@@ -1011,7 +1014,7 @@ legend {
 }
 
 .linkEditMain:hover {
-    color: blue;
+    color: 343a40;
     text-decoration: underline;
     font-weight: normal;
 }
@@ -1766,7 +1769,7 @@ div#gtabs {
     border-bottom: 1px solid #666;
     border-top: 1px solid #eee;
     text-decoration: none;
-    color: blue;
+    color: 343a40;
 }
 
 #nav li a.active {
@@ -1847,7 +1850,7 @@ ul#nav {
 }
 
 .ui-tooltip-content div.header {
-    color: blue;
+    color: 343a40;
 }
 
 .ui-tooltip-content {
@@ -2045,7 +2048,7 @@ tr#realtime td:first-child {
 
 ul.nav_sub {
     display: none;
-    /*background-color: blue;*/
+    /*background-color: 343a40;*/
 }
 
 .sidebar-search {
@@ -2248,7 +2251,7 @@ ul.nav_sub {
 
 .name_section {
     padding: 10px 20px;
-    background: #1c3589;
+    background: #343a40;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     font-size: 16px;
@@ -2260,7 +2263,7 @@ ul.nav_sub {
 }
 
 .table_estado_arq thead {
-    background: #1c3589;
+    background: #343a40;
     height: 40px;
 }
 

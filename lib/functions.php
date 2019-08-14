@@ -1962,8 +1962,8 @@ function draw_login_status($using_guest_account = false) {
 	} elseif (isset($_SESSION['sess_user_id']) && $using_guest_account == false) {
 		$user = db_fetch_row_prepared('SELECT username, password_change, realm FROM user_auth WHERE id = ?', array($_SESSION['sess_user_id']));
 		api_plugin_hook('nav_login_before');
-		print " <span id='user' class='user usermenuup'>" ."<i class='fa fa-user fa-2x'></i>" . 
-			"</span></div><div><ul class='menuoptions' style='display:none;'>" .
+		print " <span id='user' class='user usermenuup'>" ."<i class='fa fa-user fa-2x'></i>" ."</span>".
+			"</div><div><ul class='menuoptions' style='display:none;'>" .
 				(is_realm_allowed(20) ? "<li><a href='" . $config['url_path'] . "auth_profile.php?action=edit'>" . __('Edit Profile') . "</a></li>":"") .
 				($user['password_change'] == 'on' && $user['realm'] == 0 ? "<li><a href='" . $config['url_path'] . "auth_changepassword.php'>" . __('Change Password') . "</a></li>":'') .
 				($auth_method > 0 ? "<li><a href='" . $config['url_path'] . "logout.php'>" . __('Logout') . "</a></li>":'') .

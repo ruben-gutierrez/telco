@@ -75,7 +75,23 @@ load_current_session_value('action', 'sess_cacti_graph_action', $graph_views['2'
 <div id='cactiPageHead' class='cactiPageHead' role='banner'>
 	<?php if ($oper_mode == OPER_MODE_NATIVE) { ;?>
 
-		<nav class="navbar navbar-expand-lg navbar-dark bg-dark"><?php html_show_tabs_left();?><?php
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark"><?php html_show_tabs_left();?>
+		<!-- barra de busqueda -->
+		<div class="search oculto" style="position: relative">
+			<form class="form-inline">
+				<input class="form-control mr-sm-2" id="wordSearch" type="search" placeholder="Buscar ..." aria-label="Search" onfocus="callArraySearch()" onkeyup="search(this.value)" >
+				<!-- <button class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="search($('#wordSearch')[0].value)">Buscar</button> -->
+			</form>
+			<div class="container bg-light mt-2" style="position: absolute">
+				<ul class="nav flex-column-lg container" id="listAllowed">
+					
+				</ul>
+			</div>
+		</div>
+		<div class="mr-2 ml-3"><i class="fa fa-search fa-2x rounded-circle text-white" id="iconSearch" onclick="show_hide_content_byClass('search','none');document.getElementById('iconSearch').classList.toggle('fa-search');document.getElementById('iconSearch').classList.toggle('fa-times');"></i></div>
+		<!-- menu de login -->
+		
+		<?php
 	echo draw_login_status($using_guest_account);?></nav>
 	<div class='cactiGraphHeaderBackground' style="display: none;"><div id='gtabs'><?php print html_graph_tabs_right($current_user);?></div>
 <?php if (read_config_option('auth_method') != 0) {?><div class='infoBar'><?php echo draw_login_status($using_guest_account);?></div><?php }?></div>
