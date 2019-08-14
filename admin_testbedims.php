@@ -14,7 +14,7 @@ global $config, $current_user;
  <!-- contenido admin -->
  	<!-- // arquitecturas -->
 
-
+	 <div class="container" id="status-loading"></div>
  	<div class="admin_ims">
  		<section class="section_admin_arquitecuta ancla" id="arqs_testbed">
  	

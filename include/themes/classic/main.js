@@ -128,8 +128,8 @@ $(document).on("click", ".btn_arq_action", function()﻿ {
                     contentType: false,
                     processData: false,
                     data: formData,
-                    beforesend: function() {
-
+                    beforeSend: function() {
+                        notifications("freeArqq", "Liberando arqutiectura");
                     },
                     success: function(data) {
                         // console.log(data);
@@ -140,7 +140,10 @@ $(document).on("click", ".btn_arq_action", function()﻿ {
                             alert("Ha ocurrido un problema, intentelo mas tarde o contacte al administrador");
                             // log-reporting
                         }
-
+                        
+                    },
+                    complete: function(){
+                        deleteNotification("freeArqq");
                     }
 
                 });
@@ -163,8 +166,8 @@ $(document).on("click", ".btn_arq_action", function()﻿ {
                     contentType: false,
                     processData: false,
                     data: formData,
-                    beforesend: function() {
-
+                    beforeSend: function() {
+                        notifications("DeleteArqq", "Eliminando arquitectura");
                     },
                     success: function(data) {
                         console.log(data);
@@ -175,6 +178,10 @@ $(document).on("click", ".btn_arq_action", function()﻿ {
                             alert("Ha ocurrido un problema, intentelo mas tarde o contacte al administrador");
                             // log-reporting
                         }
+                        
+                    },
+                    complete: function(){
+                        deleteNotification("DeleteArqq");
 
                     }
 
@@ -219,8 +226,8 @@ function edit_arq() {
         contentType: false,
         processData: false,
         data: parametros,
-        beforesend: function() {
-
+        beforeSend: function() {
+            notifications("EditArqq", "Editantando las arqutiecturas");
         },
         success: function(data) {
             // console.log(data);
@@ -238,7 +245,10 @@ function edit_arq() {
                 alert("se agrego la arquitectura satisfactoriamente");
                 // log-reporting
             }
-
+            
+        },
+        complete: function(){
+            deleteNotification("EditArqq");
         }
 
     });
@@ -267,8 +277,9 @@ function add_arquitec() {
                 contentType: false,
                 processData: false,
                 data: parametros,
-                beforesend: function() {
-
+                beforeSend: function() {
+                    notifications("addArqq", "Creando arquitectura");
+                    console.log("antes de enviar");
                 },
                 success: function(data) {
                     console.log(data);
@@ -283,7 +294,10 @@ function add_arquitec() {
 
                         // log-reporting se agrego una nueva arquitectura
                     }
-
+                    
+                },
+                complete: function(){
+                    deleteNotification("addArqq");
                 }
 
             });
@@ -309,11 +323,14 @@ function create_core() {
         processData: false,
         data: parametros,
         beforesend: function() {
-            console.log("Procesando");
+            notifications("CreateCore", "Creando arquitectura");
         },
         success: function(data) {
             console.log(data);
-
+            
+        },
+        complete: function(){
+            deleteNotification("CreateCore");
         }
     });
 
@@ -331,7 +348,7 @@ function change_arqs_by_user() {
         processData: false,
         data: parametros,
         beforesend: function() {
-            console.log("antes de entrar");
+            notifications("changeNumberArq", "Actualizando el número de arquitecturas por usuario");
         },
         success: function(data) {
             console.log(data);
@@ -341,6 +358,9 @@ function change_arqs_by_user() {
             // $('#content_arqByUsuary').hide();
             // $('#btn_see_table2').show();
             // $('#btn_notsee_table2').hide();
+        },
+        complete: function(){
+            deleteNotification("changeNumberArq");
         }
     });
 }
@@ -355,8 +375,8 @@ function change_day_asig() {
         contentType: false,
         processData: false,
         data: parametros,
-        beforesend: function() {
-
+        beforeSend: function() {
+            notifications("changDay", "Modificando los dias de asignacion");
         },
         success: function(data) {
             console.log(data);
@@ -366,6 +386,9 @@ function change_day_asig() {
             // $('#content_day_asig').hide();
             // $('#btn_see_table3').show();
             // $('#btn_notsee_table3').hide();
+        },
+        complete: function(){
+            deleteNotification("changDay");
         }
     });
 
@@ -466,7 +489,9 @@ function add_test() {
             contentType: false,
             processData: false,
             data: parametro,
-            beforesend: function() {},
+            beforeSend: function() {
+                notifications("addTestt", "Agregando Prueba");
+            },
             success: function(date) {
                 // console.log(date);
                 if (date != '') {
@@ -477,6 +502,9 @@ function add_test() {
                 $('#form_add_test')[0].reset();
                 $('#form_1').hide();
                 $('#form_2').show();
+            },
+            complete: function(){
+                deleteNotification("addTestt");
             }
         });
     } else {
@@ -495,13 +523,16 @@ function add_info_test() {
         contentType: false,
         processData: false,
         data: parametros,
-        beforesend: function() {
-
+        beforeSend: function() {
+            notifications("addOptionn", "Agregando opción de la prueba");
         },
         success: function(data) {
             // console.log(data);
             alert(data);
-
+            
+        },
+        complete: function (){
+            deleteNotification("addOptionn");
         }
     });
 }
@@ -879,7 +910,7 @@ function ValidateIPaddress(ipaddress) {
 function searcWord(searcWord, element) {
     var re = new RegExp(searcWord);
     if (re.test(element)) {
-        return true;
+    return true;
     } else {
         return false;
     }
@@ -1100,7 +1131,6 @@ function openstackSendIdServer(action, idServer) {
 }
 
 function reziseVM(idServer) {
-
     var parametros = new FormData($('#vertical_scalability')[0]);
     parametros.append('action', '14');
     parametros.append('id_server', idServer);
@@ -1113,6 +1143,7 @@ function reziseVM(idServer) {
         data: parametros,
         beforeSend: function() {
             $('i#' + idServer + '.fa').show();
+            notifications("recise_vmm", "Redimencionando Máquina virtual");
         },
         success: function(data) {
             // $('i#' + idServer + '.fa').hide();
@@ -1121,6 +1152,7 @@ function reziseVM(idServer) {
             alertify.success('VM Modificada');
         },
         complete: function() {
+            deleteNotification("recise_vmm");
             $('i#' + idServer + '.fa').hide();
         }
 
@@ -1230,10 +1262,6 @@ function verifiyFieldsBlank(idForm){
 
 function freeDomain(id) {
     var elec = confirm("¿Desea liberar la arquitectura?");
-
-
-
-
     if (elec) {
         var formData = new FormData();
         formData.append('id', id);
@@ -1247,8 +1275,8 @@ function freeDomain(id) {
             contentType: false,
             processData: false,
             data: formData,
-            beforesend: function() {
-
+            beforeSend: function() {
+                notifications("free_domainn", "Liberando Dominio");
             },
             success: function(data) {
                 // console.log(data);
@@ -1258,7 +1286,10 @@ function freeDomain(id) {
                     alert("Ha ocurrido un problema, intentelo mas tarde o contacte al administrador");
                     //log-reporting
                 }
-
+                
+            },
+            complete: function(){
+                deleteNotification("free_domainn");
             }
 
         });
@@ -1366,7 +1397,9 @@ function consult_restrictions(domainform) {
         contentType: false,
         processData: false,
         data: formData,
-        beforesend: function() {},
+        beforeSend: function() {
+            notifications("constult_restrictionss", "Consultando Las restricciones");
+        },
         success: function(data) {
 
             var answer = JSON.parse(data);
@@ -1375,7 +1408,9 @@ function consult_restrictions(domainform) {
             $('#form_edit_arq')[0][7].value = answer[0]['limit_restriction'];
             $('#form_edit_arq')[0][8].value = answer[2]['limit_restriction'];
             $('#form_edit_arq')[0][9].value = answer[1]['limit_restriction'];
-
+        },
+        complete: function(){
+            deleteNotification("constult_restrictionss");
         }
     });
 }
@@ -1416,7 +1451,7 @@ function ssh_execute(ip) {
         contentType: false,
         processData: false,
         data: formData,
-        beforesend: function() {},
+        beforeSend: function() {},
         success: function(data) {
             console.log(data);
             $('.ssh_answer').empty();
@@ -1428,8 +1463,8 @@ function ssh_execute(ip) {
 
 function notifications(idNotification, content) {
     var element = '<div class="alert text-white  row bg-danger loader center mr-1 ' + idNotification + '" id="' + idNotification + '"><span class="spinner-border spinner-border-sm fa-2x" role="status" aria-hidden="true"></span>' + content + '</div>';
-    $('.ajs-modal').append(element);
     $("#status-loading").append(element);
+    $('.ajs-modal').append(element);
 }
 
 function deleteNotification(idElement) {

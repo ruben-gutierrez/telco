@@ -13,7 +13,7 @@ if (isset($_GET['arq'])) {
 
 ?>
 
-
+<div class="container" id="status-loading"></div>
 <div class="margin_page ancla" id="tests">
   <nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('tests', 'indicate_requestArquitecture')">
       <a class="navbar-brand text-white"><b>Pruebas Disponibles para ejecutar</b></a><div class="float-right indicate_requestArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
