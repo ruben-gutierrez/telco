@@ -1,6 +1,10 @@
 // Host Autocomplete Magic
 var pageName = basename($(location).attr('pathname'));
-
+var idUser=0;
+function identifiUser(userId){
+    idUser = userId;
+    // console.log(userId);
+}
 function themeReady() {
     height = get_height();
     $('#navigation, .cactiConsoleNavigationArea').css('height', height);
@@ -55,6 +59,8 @@ function guardar_arq() {
 //eventos a los botones de la tabla y llenar informacion en el formulario
 //de editar
 $(document).on("click", ".btn_arq_action", function()﻿ {
+    console.log(idUser);
+    console.log("fffffffffff");
     var btn = $(this)[0].name;
     var fila = $(this).parents('tr')[0];
     // console.log("mensaje fila");
@@ -114,6 +120,7 @@ $(document).on("click", ".btn_arq_action", function()﻿ {
             if (elec) {
                 var formData = new FormData();
                 formData.append('id', id);
+                formData.append('idUser', idUser);
                 formData.append('action', '2');
                 $.ajax({
                     url: 'solicitud_asignacion.php',
@@ -148,6 +155,7 @@ $(document).on("click", ".btn_arq_action", function()﻿ {
             if (elec2) {
                 var formData = new FormData();
                 formData.append('id', id);
+                formData.append('idUser', idUser);
                 formData.append('action', '4');
                 $.ajax({
                     url: 'solicitud_asignacion.php',
@@ -180,7 +188,7 @@ $(document).on("click", ".btn_arq_action", function()﻿ {
 
 });
 
-//funcion guardar de formulario editar
+//funcion editar arquitectura 
 function edit_arq() {
     var id = $('#btn_edit_arq')[0].name;
     var fila = $('#line' + id)[0];
@@ -204,8 +212,9 @@ function edit_arq() {
     var parametros = new FormData($('#form_edit_arq')[0]);
     // action=5
     parametros.append('id', id);
+    parametros.append('idUser', idUser);
     $.ajax({
-        url: 'solicitud_asignacion.php',
+        url: 'solicitud_asignacion.php', //action 5
         type: 'POST',
         contentType: false,
         processData: false,
@@ -249,10 +258,11 @@ function add_arquitec() {
     }
     if (l == 0) {
         if (ValidateIPaddress($('#form_new_arq')[0][3].value)) {
-            console.log("entro e la funcion");
+            // console.log("entro e la funcion");
             var parametros = new FormData($('#form_new_arq')[0]);
+            parametros.append('idUser', idUser);
             $.ajax({
-                url: 'solicitud_asignacion.php',
+                url: 'solicitud_asignacion.php',//action 3
                 type: 'POST',
                 contentType: false,
                 processData: false,
@@ -312,9 +322,10 @@ function create_core() {
 function change_arqs_by_user() {
     console.log("Punto de Control");
     var parametros = new FormData($('#form_arq_by_user')[0]);
+    parametros.append('idUser', idUser);
     console.log(parametros);
     $.ajax({
-        url: 'solicitud_asignacion.php',
+        url: 'solicitud_asignacion.php', //action 7
         type: 'POST',
         contentType: false,
         processData: false,
@@ -323,7 +334,7 @@ function change_arqs_by_user() {
             console.log("antes de entrar");
         },
         success: function(data) {
-            // console.log(data);
+            console.log(data);
             if (data != '') {
                 $('#number_actual')[0].innerHTML = data;
             }
@@ -337,6 +348,7 @@ function change_arqs_by_user() {
 
 function change_day_asig() {
     var parametros = new FormData($('#form_day_asig')[0]);
+    parametros.append('idUser', idUser);
     $.ajax({
         url: 'solicitud_asignacion.php',
         type: 'POST',
@@ -347,6 +359,7 @@ function change_day_asig() {
 
         },
         success: function(data) {
+            console.log(data);
             if (data != '') {
                 $('#number_day_actual')[0].innerHTML = data;
             }
@@ -443,11 +456,12 @@ function add_test() {
 
         }
     }
-    console.log(cont);
+    // console.log(cont);
     if (cont == 0) {
         var parametro = new FormData($('#form_add_test')[0]);
+        parametro.append('idUser', idUser);
         $.ajax({
-            url: 'solicitud_asignacion.php',
+            url: 'solicitud_asignacion.php', //action 10
             type: 'POST',
             contentType: false,
             processData: false,
@@ -473,6 +487,7 @@ function add_test() {
 function add_info_test() {
     
     var parametros = new FormData($('#form_info_test')[0]);
+    parametros.append('idUser', idUser);
 // accion
     $.ajax({
         url: 'solicitud_asignacion.php',
@@ -615,7 +630,7 @@ function del_info(table, id) {
     $.ajax({
             method: "POST",
             url: "admin_info.php",
-            data: { action: "1", table: table, id: id }
+            data: { action: "1", table: table, id: id, idUser: idUser }
         })
         .done(function(msg) {
             // console.log(msg);
@@ -635,6 +650,7 @@ function del_info(table, id) {
 function add_title(id) {
     var parametros = new FormData($('#add_title')[0]);
     parametros.append('id', id);
+    parametros.append('idUser', idUser);
     parametros.append('action', '2');
     $.ajax({
         url: 'admin_info.php',
@@ -656,6 +672,7 @@ function add_title(id) {
 function add_content(id_content, id_title) {
     var parametros = new FormData($('#add_content')[0]);
     parametros.append('id_content', id_content);
+    parametros.append('idUser', idUser);
     parametros.append('id_title', id_title);
     parametros.append('action', '3');
     $.ajax({
@@ -678,6 +695,7 @@ function add_content(id_content, id_title) {
 function edit_title(id) {
     var parametros = new FormData($('#edit_title')[0]);
     parametros.append('id', id);
+    parametros.append('idUser', idUser);
     parametros.append('action', '4');
     $.ajax({
         url: 'admin_info.php',
@@ -703,6 +721,7 @@ function edit_content(id_content, id_title) {
     var parametros = new FormData($('#edit_content')[0]);
     parametros.append('id_content', id_content);
     parametros.append('id_title', id_title);
+    parametros.append('idUser', idUser);
     parametros.append('action', '5');
     $.ajax({
         url: 'admin_info.php',
@@ -727,7 +746,7 @@ function move_title(id_title, direc) {
     $.ajax({
             method: "POST",
             url: "admin_info.php",
-            data: { action: "6", id_title: id_title, direc: direc }
+            data: { action: "6", id_title: id_title, direc: direc, idUser: idUser}
         })
         .done(function(data) {
             // console.log(data);  
@@ -741,7 +760,7 @@ function move_content(id_title, id_content, direc) {
     $.ajax({
             method: "POST",
             url: "admin_info.php",
-            data: { action: "7", id_title: id_title, direc: direc, id_content: id_content }
+            data: { action: "7", id_title: id_title, direc: direc, id_content: id_content,idUser: idUser }
         })
         .done(function(data) {
             // console.log(data);  
@@ -1159,15 +1178,13 @@ function addVmtoDomain(idDomain) {
             }
         }
     });
-
-
-
 }
 
 function addVM() {
         if(verifiyFieldsBlank('add_vm_domain') == 0){
             var parametros = new FormData($('#add_vm_domain')[0]);
             parametros.append('action', '13');
+            parametros.append('idUser', idUser);
             $.ajax({
                 url: 'solicitud_asignacion.php',
                 type: 'POST',
@@ -1176,7 +1193,6 @@ function addVM() {
                 data: parametros,
                 beforeSend: function() {
                     notifications("addvm", "Agregando maquina virtual");
-                    
                 },
                 success: function(data) {
                     console.log(data);
@@ -1221,6 +1237,7 @@ function freeDomain(id) {
     if (elec) {
         var formData = new FormData();
         formData.append('id', id);
+        formData.append('idUser', idUser);
         //formData.append('emailUser', 'usuario');
 
         formData.append('action', '2');
@@ -1449,6 +1466,7 @@ function update_vm_arq(domain){
     //  console.log("ok");
     var formData = new FormData($('#new_graph')[0]);
     formData.append('action', '18');
+    formData.append('idUser', idUser);
     
     $.ajax({
         url: 'solicitud_asignacion.php',
@@ -1504,6 +1522,7 @@ function update_vm_arq(domain){
     
     var formData = new FormData();
     formData.append('action', '19');
+    formData.append('idUser', idUser);
     formData.append('idGraph', idGraph);
     $.ajax({
         url: 'solicitud_asignacion.php',

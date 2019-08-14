@@ -28,6 +28,7 @@ if (!empty($_POST)) {
 		case "1"://guardar solicitud y asignarla si hay arq disponible
 			// echo "ingreso a la funcion2";
 			// print_r($_POST);
+			$idUser= db_fetch_cell_prepared("SELECT id from user_auth  WHERE email_address ='" . $_POST['post_from_email'] . "'");
 			$num_arq_to_user=sizeof(arq_asignadas_to_user($_POST['post_from_email']));
 			$arq_permit=db_fetch_cell_prepared("select value_info from data_testbedims where id_data='1'");
 			
@@ -39,6 +40,8 @@ if (!empty($_POST)) {
 
 			if ($dominio_libre['id']=='') {
 				echo "Lo sentimos, en este momento no hay arquitecturas disponibles. Se ha almacenado su solicitud pronto nos contataremos via e-mail.\n Gracias";
+				//report
+				addActionToReport($idUser, "Se agrego una solicitud de espera de la arquitectura ".$_POST['post_arquitectura']."");
 			}else{
 				// Consulta si hay solicitud pendiente
 				// echo "hay arquitectecturas disponibles";
@@ -46,16 +49,12 @@ if (!empty($_POST)) {
 				if ($id_solicitud_pendiente['id'] == '') {
 					echo "no hay solicitudes pendientes para la arquitectura " . $_POST['post_arquitectura'];
 				}else{
-					// echo "hay solicitudes pendientes";
-					// echo $num_arq_to_user;
-					// echo $arq_permit;
 					if ($num_arq_to_user < $arq_permit) {
-						
-						
-
 						asignar_arquitectura($id_solicitud_pendiente['id'] , $dominio_libre['dominio'], $_POST['post_from_email']);
 						// asignar la arqutiectura al usuario en la plataforma
 						echo "Se ha asignado la arquitectura ". $_POST['post_arquitectura'] . "durante ".$days." dias.";
+						//report
+						addActionToReport($idUser, "Reservó la arquitectura  ".$_POST['post_arquitectura']." durante ".$days." dias");
 					}else{
 						echo ("Puede reservar maximo ". $arq_permit ."arquitecturas en el testbed IMS");
 					}
@@ -66,13 +65,20 @@ if (!empty($_POST)) {
 
 		case "2"://liberar arquitectura
 			$email_user = db_fetch_cell_prepared("SELECT usuario from arqs_testbedims  WHERE id ='" . $id . "'");
-			$dom_asig = db_fetch_cell_prepared("SELECT dominio from arqs_testbedims  WHERE id ='" . $id . "'");
-			$arq_libre=db_execute("UPDATE arqs_testbedims SET  usuario='libre' WHERE id='" . $id . "'");
-			$mod_table_solicitud=db_execute("UPDATE solicitud_arq SET fecha_fin_asignacion =NOW() WHERE dominio='" . $dom_asig . "' ORDER BY id DESC LIMIT 1");
-			//delete perm to tree
-			remove_perms($email_user, $dom_asig);
-				echo($arq_libre);
+			if ($email_user != "libre"){
+				$dom_asig = db_fetch_cell_prepared("SELECT dominio from arqs_testbedims  WHERE id ='" . $id . "'");
+				$arq_libre=db_execute("UPDATE arqs_testbedims SET  usuario='libre' WHERE id='" . $id . "'");
+				$mod_table_solicitud=db_execute("UPDATE solicitud_arq SET fecha_fin_asignacion =NOW() WHERE dominio='" . $dom_asig . "' ORDER BY id DESC LIMIT 1");
+				//delete perm to tree
+				remove_perms($email_user, $dom_asig);
+					echo($arq_libre);
+
+				//report
+				addActionToReport($_POST['idUser'], "Liberar la arquitectura ".$dom_asig." del usuario ".$email_user."");
 			
+			}else{
+				echo "1";
+			}
 			break;
 		case "3"://agregar arquitectura
 				//variables
@@ -108,6 +114,8 @@ if (!empty($_POST)) {
 							conectRouterNetPublic($idRouter, '08cac388-5c54-4718-8403-57334d5ec8bd');
 							conectRouterNetPrivate($idRouter, $result_create_net['subnet_openstack']);
 							// echo "Arquitectura Creada con exito";
+							//report
+							addActionToReport($_POST['idUser'], "Agregó la arquitectura ".$domain."");
 							//crear maquinas
 							$createDomain=create_vm_to_core($_POST['dominio_arq'], $_POST['type']);
 							// print_r($createDomain);
@@ -130,6 +138,7 @@ if (!empty($_POST)) {
 				}
 			break;
 		case "4": //eliminar arquitectura
+				$dom= db_fetch_cell_prepared("SELECT dominio from arqs_testbedims  WHERE id ='" . $id . "'");
 				$file_name=db_fetch_cell_prepared("select imagen from arqs_testbedims where id='".$id."'");
 				$id_net=db_fetch_cell_prepared("select id_net from arqs_testbedims t JOIN network_openstack o ON t.dominio = o.domain where t.id='".$id."'");
 				$eliminar=db_execute("DELETE FROM arqs_testbedims WHERE id='".$id."'");
@@ -138,12 +147,16 @@ if (!empty($_POST)) {
 				}
 				// echo($id_net);
 				delete_net($id_net);
+				//report
+				addActionToReport($_POST['idUser'], "Elimino la arquitectura ".$dom."");
 				echo($eliminar);
 			break;
 
 		case "5": //modificar arqutiectura
 			$error=0;
 			update_restrictions($_POST['dominio_arq'],$_POST['max_vm_aditional'],$_POST['max_ram'],$_POST['max_disk'],$_POST['max_vcpu']);
+			//report
+			addActionToReport($_POST['idUser'], "Actualizar las restricciones del dominio ".$_POST['dominio_arq']." por  Maximas maquinas adicionales: ".$_POST['max_vm_aditional']." Ram: ".$_POST['max_ram']." almacenamiento: ".$_POST['max_disk']." Procesadores: ".$_POST['max_vcpu']."");
 			$file_name=db_fetch_cell_prepared("select imagen from arqs_testbedims where id='".$id."'");
 			if ($_FILES['image']['name'] == '') {
 				$up=db_execute("UPDATE arqs_testbedims SET arquitectura = '" . $_POST['name_arq'] . "', dominio ='" . $_POST['dominio_arq'] . "', usuario ='libre', descripcion='".$_POST['desc_arq']."' WHERE id='" . $id . "'");
@@ -153,12 +166,16 @@ if (!empty($_POST)) {
 						$new_name = $now . $_FILES['image']['name'];
 						rename('images/images_testbed/images_ims/temp/'.$_FILES['image']['name'], 'images/images_testbed/images_ims/'.$new_name );
 						$up=db_execute("UPDATE arqs_testbedims SET arquitectura = '" . $_POST['name_arq'] . "', dominio ='" . $_POST['dominio_arq'] . "', usuario ='libre', descripcion='".$_POST['desc_arq']."', imagen='".$new_name."' WHERE id='" . $id . "'");
+						//report
+						addActionToReport($_POST['idUser'], "Actualizo imagen de la arquitectura ".$_POST['dominio_arq']."");
 					}
 				
 				}else{
 					$up=db_execute("UPDATE arqs_testbedims SET arquitectura = '" . $_POST['name_arq'] . "', dominio ='" . $_POST['dominio_arq'] . "', usuario ='libre', descripcion='".$_POST['desc_arq']."', imagen='".$_FILES['image']['name']."' WHERE id='" . $id . "'");
 					if (move_uploaded_file($_FILES['image']['tmp_name'], 'images/images_testbed/images_ims/'.$_FILES['image']['name'])) {
 							$up2=db_execute("UPDATE arqs_testbedims SET imagen='".$_FILES['image']['name']."' WHERE id='" . $id . "'");
+							//report
+							addActionToReport($_POST['idUser'], "Actualizo datos de la arquitectura ".$_POST['dominio_arq']."");
 						}else{
 							echo($error++);
 						}
@@ -269,7 +286,10 @@ if (!empty($_POST)) {
 			// echo "entro a la funcion";
 			$sql=db_execute("UPDATE data_testbedims set value_info='".$_POST['numero']."' where id_data='1'");
 			if ($sql == '1') {
+
 				echo ($_POST['numero']);
+				//report
+				addActionToReport($_POST['idUser'], "Modificó el número de arquitecturas por usuario a  ".$_POST['numero']."");
 			}
 			break;
 
@@ -277,6 +297,8 @@ if (!empty($_POST)) {
 			$sql=db_execute("UPDATE data_testbedims set value_info='".$_POST['numero']."' where id_data='2'");
 			
 			if ($sql == '1') {
+				//report
+				addActionToReport($_POST['idUser'], "Modificó el número de dias de asignacion de las arquitecturas a   ".$_POST['numero']."");
 				echo ($_POST['numero']);
 			}
 			break;
@@ -303,14 +325,19 @@ if (!empty($_POST)) {
 			if ($agregar == 1 ) {
 				$id_test=db_fetch_cell_prepared("select id_test from test_testbedims ORDER BY id_test DESC");
 				echo $id_test;
+				//report
+				addActionToReport($_POST['idUser'], "Agregó la prueba ".$id_test." a la arqutiectura ".$_POST['dominio']."");
 			}else{
 				echo ("");
 			}
 			break;
 		case '11'://agregar opciones de test
+
 			$agregar=db_execute("INSERT INTO option_test_testbedims ( id_test, options, value, description_option) VALUES ('".$_POST['id_test']."','".$_POST['options']."','".$_POST['value']."','".$_POST['description_option']."')");
 
 			if ($agregar == 1 ) {
+				//report
+				addActionToReport($_POST['idUser'], "Agregó la opcion ".$_POST['options']." a la prueba ".$_POST['id_test']." ");
 				echo("info agregada correctamente");
 			}else{
 				echo ("no se pudo agregar la informacion intentelo nuevamente");
@@ -356,6 +383,8 @@ if (!empty($_POST)) {
 				$ipLocal=$server['server']['addresses'][key($server['server']['addresses'])][0]['addr'];
 				$agregate=db_execute("INSERT INTO vm_aditional_testbedims(id_server,dominio, name_server,ip_local,RAM,disk,vcpu,id_flavor,image) values ('".$id_server."','".$domain."','".$name."','".$ipLocal."','".$ram."','".$disk."','".$vcpu."','".$flavor."','".$image."')");
 				if($agregate == 1){
+					//report
+					addActionToReport($_POST['idUser'], "Creó una máquina virtual con los siguientes recursos RAM: ".$_POST['ramNewVm']." , Procesadores: ".$_POST['vcpuNewVm'].", Almacenamiento: ".$_POST['diskNewVm']." en la arquitectura ".$domain."");
 					$server=db_fetch_row_prepared("SELECT * from vm_aditional_testbedims WHERE id_server='".$id_server."'");
 					print_r($server);
 				}
@@ -429,7 +458,7 @@ if (!empty($_POST)) {
 				}
 			break;
 		case '18'://Agregar grafica por usuario
-				print_r($_POST);
+				// print_r($_POST);
 				
 				$host_id=deviceId($_POST['id_server']);
 
@@ -449,11 +478,15 @@ if (!empty($_POST)) {
 					shell_exec("php -q cli/add_tree.php --type=node --node-type=host --tree-id='".$id_tree."' --host-id='".$host_id."'");
 					//agrega la grafica al arbol
 					shell_exec("php -q cli/add_tree.php --type=node --node-type=graph --tree-id='".$id_tree."' --graph-id='".$id_graph."'");
+					//report
+					addActionToReport($_POST['idUser'], "Agregó la gráfica ".$id_graph." al dominio : ".$dom." ");
 				}
 				break;
 			case '19':
 				// db_execute_prepared('DELETE FROM graph_local WHERE id = ?', $_POST['idGraph']);
 				api_graph_remove($_POST['idGraph']);
+				//report
+				addActionToReport($_POST['idUser'], "Borró la gráfica ".$_POST['idGraph']." ");
 				break;
 
 			case '20':

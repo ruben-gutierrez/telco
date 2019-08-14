@@ -5867,5 +5867,8 @@ function addTemplateAndQueryToDevice($id_device){
 }
 
 
+function addActionToReport($idUser, $action){
+	db_execute("INSERT INTO user_action (id_user, action) VALUES ('".$idUser."', '".$action."')");
+}
 
 

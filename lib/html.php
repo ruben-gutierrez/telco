@@ -2380,6 +2380,16 @@ function draw_table_nets_openstack(){
 	}
 	
 }
+function draw_table_reports(){
+	$actions=db_fetch_assoc("SELECT * from user_action");
+	// print_r($actions);
+	foreach ($actions as $key => $line) {
+		$user=db_fetch_cell_prepared("SELECT email_address FROM user_auth WHERE id='".$line['id_user']."'");
+		echo "<tr><td>".$user."</td><td>".$line['action']."</td><td>".$line['date']."</td></tr>";
+		
+	}
+	
+}
 function draw_table_flavors_openstack(){
 	consult_flavors_openstack();
 	$flavors_openstack=db_fetch_assoc("SELECT * from flavor_openstack");

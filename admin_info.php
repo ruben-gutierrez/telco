@@ -29,6 +29,8 @@ $now = date_create()->format('Y-m-d H:i:s');
 			if ($number_content>1) {
 				$del=db_execute("delete from ".$_POST['table']." where ".$name_column."='".$_POST['id']."'");
 				echo $del;
+				//report
+				addActionToReport($_POST['idUser'], "Elimino Contenido de la seccion de información");
 			}else{
 				echo 0;
 			}
@@ -40,6 +42,8 @@ $now = date_create()->format('Y-m-d H:i:s');
 			$add=db_execute("insert into title_info_page (id_title,main_title) values ('".$_POST['id']."'+1, '".$_POST['main_title']."')");
 			if ($add==1) {
 				admin_info_page();
+				//report
+				addActionToReport($_POST['idUser'], "Agrego título a la seccion de información");
 			}
 				// $add=db_execute("insert into ".$_POST['table']." (id_tite, type, content,".$name_column.",main_title) values ('".$id_add."', '".$_POST['main_title']."')");
 			break;
@@ -76,6 +80,8 @@ $now = date_create()->format('Y-m-d H:i:s');
 
 			}
 			if ($add==1) {
+				//report
+				addActionToReport($_POST['idUser'], "Agregó Contenido de la seccion de información");
 				admin_info_page();
 			}else{
 				echo $update;
@@ -85,6 +91,8 @@ $now = date_create()->format('Y-m-d H:i:s');
 		case "4": //editar titulo
 			$update=db_execute("UPDATE title_info_page SET main_title = '".$_POST['main_title']."' WHERE id_title = '".$_POST['id']."'");
 			if ($update==1) {
+				//report
+				addActionToReport($_POST['idUser'], "Edito un Titulo de la seccion de información");
 				admin_info_page();
 			}
 			break;
@@ -92,6 +100,8 @@ $now = date_create()->format('Y-m-d H:i:s');
 			$content = str_replace("'", "`", $_POST['content']);
 			$update=db_execute("UPDATE content_info_page SET type = '".$_POST['type']."', content = '".$content."' WHERE id_title = '".$_POST['id_title']."' and id_content='".$_POST['id_content']."'");
 			if ($update==1) {
+				//report
+				addActionToReport($_POST['idUser'], "Editó Contenido de la seccion de información");
 				admin_info_page();
 			}
 			break;
@@ -116,6 +126,8 @@ $now = date_create()->format('Y-m-d H:i:s');
 				$update=db_execute("UPDATE title_info_page SET id_title = '".$id_dest."' WHERE id_title = '".$id_max."'+1");
 			// $update2=db_execute("UPDATE title_info_page SET id_title = '".$_POST['id_title']."'+1 WHERE id_title = '".$_POST['id_title']."' and id_content='".$_POST['id_content']."'");
 			if ($update==1) {
+				//report
+				addActionToReport($_POST['idUser'], "Alteró el orden en el Contenido de la seccion de información");
 				admin_info_page();
 			}
 			break;
@@ -140,6 +152,8 @@ $now = date_create()->format('Y-m-d H:i:s');
 			$update=db_execute("UPDATE content_info_page SET id_content = '".$id_dest."' WHERE id_content = '".$id_max."'+1");
 			
 			if ($update==1) {
+				//report
+				addActionToReport($_POST['idUser'], "Alteró el orden en los títulos de la seccion de información");
 				admin_info_page();
 			}
 			break;

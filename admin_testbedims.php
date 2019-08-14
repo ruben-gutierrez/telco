@@ -7,6 +7,7 @@ global $config, $current_user;
 //agregar header y la barra lateral de navegación
  top_header();
  delete_info_openstack();
+//  print_r($current_user['id']);
  ?>
 
 
@@ -158,7 +159,8 @@ global $config, $current_user;
 					</form>
 				</div>
 			</section>
- 		</section>
+		 </section>
+		 
  		<section class="section_admin_arquitecuta ancla" id="content_restrictions">
 			<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('content_restrictions', 'indicate_solicitedArquitecture')">
 					<a class="navbar-brand text-white"><b> Restricciones</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
@@ -269,6 +271,45 @@ global $config, $current_user;
 						</div>
 					</div>
 		</section>
+		
+		<section id="report_action" class="section_admin_arquitecuta ancla">
+		 	<nav class="navbar navbar-light bg-dark row mb-3" onclick="show_hide_content_byClass('reports', 'indicate_solicitedArquitecture')">
+					<a class="navbar-brand text-white"><b> Registro actividad de los usuarios </b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
+			</nav>
+			<div class="content_section">
+				<label>Reporte accion de usuarios</label>
+				<!-- <div class="reports p-4" style="display: none;"> -->
+				<div class="reports p-4">
+					
+						
+
+						<div class="row action_users">
+							<div class="col-md">
+									<!-- <button class="btn btn-primary" onclick="">test</button> -->
+								<table class="table table-striped table_arq_byUser">
+								
+								<thead>
+									<tr>
+									<th scope="col">Usuario</th>
+									<th scope="col">Acción</th>
+									<th scope="col">Fecha</th>
+									</tr>
+								</thead>
+								<tbody>
+									<?php 
+										draw_table_reports();
+									?>
+								</tbody>
+								</table>
+
+							</div>
+						</div>
+
+				
+				</div>
+			</div>
+		 </section>
+
 
 		 <section id="info_openstack" class="section_admin_arquitecuta ancla">
 		 	<nav class="navbar navbar-light bg-dark row mb-3" onclick="show_hide_content_byClass('info_openstack', 'indicate_solicitedArquitecture')">

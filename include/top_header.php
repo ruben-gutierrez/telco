@@ -22,7 +22,7 @@
  +-------------------------------------------------------------------------+
 */
 
-global $config, $menu, $paginas_testbed, $content_menu_vertical , $menu_vertical_arquitectura, $menu_vertical_pruebas;
+global $config, $menu, $paginas_testbed, $content_menu_vertical , $menu_vertical_arquitectura, $menu_vertical_pruebas, $current_user;
 
 $oper_mode = api_plugin_hook_function('top_header', OPER_MODE_NATIVE);
 if ($oper_mode == OPER_MODE_RESKIN) {
@@ -38,7 +38,10 @@ $using_guest_account = false;
 <head>
 	<?php html_common_header($page_title);?>
 </head>
-<body>
+<body onload="identifiUser(<?php echo $current_user['id']?>)">
+	<?php
+	// print_r($current_user);
+	?>
 <div id='cactiPageHead' class='cactiPageHead' role='banner' style="position: fixed">
 	<?php if ($oper_mode == OPER_MODE_NATIVE) { ;?>
 	<!-- <nav id='tabs' class="navbar navbar-expand-lg navbar-dark bg-dark"> -->
