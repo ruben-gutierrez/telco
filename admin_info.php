@@ -230,6 +230,30 @@ $now = date_create()->format('Y-m-d H:i:s');
 			print_r(json_encode($content_menu_vertical));
 			
 			break;
+		case '16':
+			consult_flavors_openstack();
+			print_r(draw_table_flavors_openstack());
+			break;
+		case '17':
+			consult_images_openstack();
+			print_r(draw_table_images_openstack());
+			break;
+		case '18':
+			consult_servers_openstack();
+			print_r(draw_table_servers_openstack());
+			break;
+		case '19':
+			consult_subnets_openstack();
+			print_r(draw_table_subnets_openstack());
+			break;
+		case '20':
+			consult_ports_openstack();
+			print_r(draw_table_ports_openstack());
+			break;
+		case '21':
+			consult_flotantIp_openstack();
+			print_r(draw_table_flotantIp_openstack());
+			break;
 
 
 		default:

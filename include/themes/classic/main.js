@@ -153,7 +153,7 @@ $(document).on("click", ".btn_arq_action", function()﻿ {
             break;
 
         case 'eliminar':
-            console.log(id);
+            // console.log(id);
             var elec2 = confirm("¿Desea eliminar la arquitectura?");
             if (elec2) {
                 var formData = new FormData();
@@ -267,7 +267,7 @@ function add_arquitec() {
 
     }
     if (l == 0) {
-        if (ValidateIPaddress($('#form_new_arq')[0][3].value)) {
+        if (ValidateIPaddressNet($('#form_new_arq')[0][3].value)) {
             // console.log("entro e la funcion");
             var parametros = new FormData($('#form_new_arq')[0]);
             parametros.append('idUser', idUser);
@@ -279,7 +279,6 @@ function add_arquitec() {
                 data: parametros,
                 beforeSend: function() {
                     notifications("addArqq", "Creando arquitectura");
-                    console.log("antes de enviar");
                 },
                 success: function(data) {
                     console.log(data);
@@ -904,6 +903,13 @@ function ValidateIPaddress(ipaddress) {
     }
 }
 
+function ValidateIPaddressNet(ipaddress) {
+    if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(0?)$/.test(ipaddress)) {
+        return (true);
+    } else {
+        return (false);
+    }
+}
 
 
 
@@ -1618,6 +1624,41 @@ function search(wordSearch){
     }
 }
 
+function loadInfoOpenstack(){
+    // console.log("ok");
+    consultOpenstack('16', 'admin_info.php','class', 'flavors_openstack_table');
+    consultOpenstack('17', 'admin_info.php','class', 'images_openstack_table');
+    consultOpenstack('18', 'admin_info.php','class', 'servers_openstack_table');
+    consultOpenstack('19', 'admin_info.php','class', 'subnets_openstack_table');
+    consultOpenstack('20', 'admin_info.php','class', 'ports_openstack_table');
+    consultOpenstack('21', 'admin_info.php','class', 'floatIp_openstack_table');
+}
+function consultOpenstack(action,file,idOrClass, nameElementHtml){
+    var formData = new FormData();
+    formData.append('action', action);
+    $.ajax({
+        url: file,
+        type: 'POST',
+        contentType: false,
+        processData: false,
+        timeout: 10000,
+        data: formData,
+        success: function(data) {
+            // console.log(data);
+            if (data) {
+                if (idOrClass == 'id') {
+                    $('#'+nameElementHtml+'').empty();
+                    $('#'+nameElementHtml+'').html(data);
+                }else{
+                    $('.'+nameElementHtml+'').empty();
+                    $('.'+nameElementHtml+'').html(data);
+                }
+            }else{
+                console.log("no hay info");
+            }
+        }
+    }), "html";
+}
 function test(){
     // var formData = new FormData();
     // formData.append('action', '20');

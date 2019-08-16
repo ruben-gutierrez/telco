@@ -5612,6 +5612,7 @@ function createRouter($nameRouter){
 	$ans = json_decode($answer, true);	
 	if(key($ans) == "router"){
 		return $ans['router']['id'];
+
 	}else{
 		return "0";	
 	}	
@@ -5872,3 +5873,21 @@ function addActionToReport($idUser, $action){
 }
 
 
+function delete_router($idRouter){
+	$action="show_ports_device";
+	$ports=shell_exec("./scripts/request_openstack.sh $action $idRouter");
+	$ports = json_decode($ports, true);
+	if( key($ports) == "ports"){
+		foreach( $ports[key($ports)] as $port){
+			print_r(deleteRouterPort($idRouter, $port['id']));
+		}
+	}
+	$action="delete_router";
+	$ports=shell_exec("./scripts/request_openstack.sh $action $idRouter");
+}
+
+function deleteRouterPort($idrouter, $idport){
+	$action="delete_router_port";
+	$ports=shell_exec("./scripts/request_openstack.sh $action $idrouter $idport");
+	
+}

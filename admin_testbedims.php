@@ -6,7 +6,7 @@ global $config, $current_user;
 // include('./include/global.php');
 //agregar header y la barra lateral de navegación
  top_header();
- delete_info_openstack();
+//  delete_info_openstack();
 //  print_r($current_user['id']);
  ?>
 
@@ -71,25 +71,25 @@ global $config, $current_user;
 							</div>
 							<div class="col">
 
-								<div class="col">
+								<div class="col mt-4">
 									<label class="col-6" for="vm_aditional">Máx VM adicionales</label>
 									<input class="col-6" type="number" name="max_vm_aditional" placeholder="Número entero" required>
 								</div>
-								<div class="col">
+								<div class="col mt-4">
 									<label class="col-6" for="vm_aditional">Máx RAM por vm</label>
 									<input class="col-6" type="number" name="max_ram" placeholder="Mb" required>
 								</div>
 								
-								<div class="col">
+								<div class="col mt-4">
 									<label class="col-6" for="vm_aditional">Max vcpu por vm</label>
 									<input class="col-6" type="number" name="max_vcpu" placeholder="Ej: 1" required>
 								</div>
-								<div class="col">
+								<div class="col mt-4">
 									<label class="col-6" for="vm_aditional">Máx disk por vm</label>
 									<input class="col-6" type="number" name="max_disk" placeholder="Gb" required>
 								</div>
-								<label for="image"><h3>Imagen de arquitectura</h3></label>
-								<input type="file" name="image" accept=".jpg, .jpeg, .png" required>
+								<!-- <label for="image"><h3>Imagen de arquitectura</h3></label>
+								<input type="file" name="image" accept=".jpg, .jpeg, .png" required> -->
 							</div>
 						</div>
 						<div class="row center mt-3">
@@ -159,7 +159,7 @@ global $config, $current_user;
 					</form>
 				</div>
 			</section>
-		 </section>
+		</section>
 		 
  		<section class="section_admin_arquitecuta ancla" id="content_restrictions">
 			<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('content_restrictions', 'indicate_solicitedArquitecture')">
@@ -190,9 +190,10 @@ global $config, $current_user;
 					</div>
 				</div>
  			</div>
- 		</section>
-
- 		<!-- <section  id="info_arq" class="section_admin_arquitecuta" tabindex="0">
+		</section>
+		 
+		 
+		<!-- <section  id="info_arq" class="section_admin_arquitecuta" tabindex="0">
 		 	<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('type_arq', 'indicate_solicitedArquitecture')">
 					<a class="navbar-brand text-white"><b> Agregar Tipo de Arquitectura</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
 			</nav>	
@@ -311,7 +312,8 @@ global $config, $current_user;
 		 </section>
 
 
-		 <section id="info_openstack" class="section_admin_arquitecuta ancla">
+		
+		<section id="info_openstack" class="section_admin_arquitecuta ancla" onload="loadInfoOpenstack()">
 		 	<nav class="navbar navbar-light bg-dark row mb-3" onclick="show_hide_content_byClass('info_openstack', 'indicate_solicitedArquitecture')">
 					<a class="navbar-brand text-white"><b> Información de openstack</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
 			</nav>
@@ -343,7 +345,7 @@ global $config, $current_user;
 							</thead>
 							<tbody>
 								<?php 
-								draw_table_nets_openstack();
+									draw_table_nets_openstack();
 								?>
 							</tbody>
 							</table>
@@ -373,7 +375,7 @@ global $config, $current_user;
 								<th scope="col">Publico</th>
 								</tr>
 							</thead>
-							<tbody>
+							<tbody class="flavors_openstack_table">
 								<?php 
 								draw_table_flavors_openstack();
 								?>
@@ -401,7 +403,7 @@ global $config, $current_user;
 								<th scope="col">Estado</th>
 								</tr>
 							</thead>
-							<tbody>
+							<tbody class="images_openstack_table">
 								<?php 
 								draw_table_images_openstack();
 								?>
@@ -437,7 +439,7 @@ global $config, $current_user;
 								<button onclick=""></button>
 								</tr>
 							</thead>
-							<tbody>
+							<tbody class="servers_openstack_table">
 								<?php 
 								draw_table_servers_openstack();
 								?>
@@ -470,7 +472,7 @@ global $config, $current_user;
 								<th scope="col">Gateway</th>
 								</tr>
 							</thead>
-							<tbody>
+							<tbody class="subnets_openstack_table">
 								<?php 
 								draw_table_subnets_openstack();
 								?>
@@ -499,7 +501,7 @@ global $config, $current_user;
 
 								</tr>
 							</thead>
-							<tbody>
+							<tbody class="ports_openstack_table">
 								<?php 
 								draw_table_ports_openstack();
 								?>
@@ -518,7 +520,7 @@ global $config, $current_user;
 								<!-- <button class="btn btn-primary" onclick="">test</button> -->
 							<table class="table table-striped table_ipflotan_openstack">
 							
-							<thead>
+							<thead class="floatIp_openstack_table">
 								<tr>
 								<th scope="col">Id</th>
 								<th scope="col">Ip Flotante</th>
@@ -543,6 +545,7 @@ global $config, $current_user;
 											</div>
 		 </section>
  		
+		
 		<section id="info_page" class="section_admin_arquitecuta my-1 ancla" >
 			<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('info_page', 'indicate_info_page')">
 					<a class="navbar-brand text-white"><b> Contenido Pagina Información</b></a><div class="float-right indicate_info_page"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
