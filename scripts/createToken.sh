@@ -1,5 +1,6 @@
 #!/bin/sh
 
+
 export OS_USERNAME=admin
 export OS_PROJECT_NAME=Testbed_vIMS
 export OS_PROJECT_DOMAIN_NAME=default
@@ -42,14 +43,17 @@ chmod 755 ${PYTHONSCRIPT}
 
 cat > ${PYTHONSCRIPT} << EOF
 #!/usr/bin/env python
-import sys, json, re
+import sys
+import json
+import re
 list=json.load(sys.stdin)["token"]["catalog"]
 for i in list:
-    if i["type"]=="object-store" and re.search('swift',i["name"])!=None:
-        for j in i["endpoints"]:
-            if j["interface"]=="public":
-                print "export OS_STORAGE_URL="+j["url"]
+   if i["type"] == "object-store" and re.search('swift',i["name"])!=None:
+      for j in i["endpoints"]:
+         if j["interface"]=="public":
+            print "export OS_STORAGE_URL="+j["url"]
 EOF
+
 
 curl -si  \
   -H "Content-Type: application/json" \
