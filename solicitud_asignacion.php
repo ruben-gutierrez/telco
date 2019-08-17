@@ -115,7 +115,7 @@ if (!empty($_POST)) {
 						}else{
 							conectRouterNetPublic($idRouter, '08cac388-5c54-4718-8403-57334d5ec8bd');
 							conectRouterNetPrivate($idRouter, $result_create_net['subnet_openstack']);
-							db_execute("INSERT INTO router_openstack (id_router, name_router, domain, sub_net) values ( '".$idRouter."','".$name_net."','".$domain."','".$result_create_net['subnet_openstack']."')");
+							db_execute("INSERT INTO router_openstack (id_router, name_router, domain) values ( '".$idRouter."','".$name_net."','".$domain."')");
 							// echo "Arquitectura Creada con exito";
 							//report
 							addActionToReport($_POST['idUser'], "Agregó la arquitectura ".$domain."");
@@ -158,7 +158,7 @@ if (!empty($_POST)) {
 				foreach( $ips_aditionals as $serverId){
 					deleteVm($serverId['id_server']);
 				}
-				$idRouter= db_fetch_row_prepared("SELECT r.id_router, r.sub_net from arqs_testbedims a INNER JOIN router_openstack r ON a.dominio = r.domain WHERE a.id ='" . $id . "'");
+				$idRouter= db_fetch_row_prepared("SELECT r.id_router from arqs_testbedims a INNER JOIN router_openstack r ON a.dominio = r.domain WHERE a.id ='" . $id . "'");
 				// print_r($idRouter);
 				print_r(delete_router($idRouter['id_router']));
 				delete_net($id_net);

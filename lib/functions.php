@@ -5891,3 +5891,4 @@ function deleteRouterPort($idrouter, $idport){
 	$ports=shell_exec("./scripts/request_openstack.sh $action $idrouter $idport");
 	
 }
+
