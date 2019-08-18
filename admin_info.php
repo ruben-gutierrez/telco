@@ -230,6 +230,30 @@ $now = date_create()->format('Y-m-d H:i:s');
 			print_r(json_encode($content_menu_vertical));
 			
 			break;
+		case '16':
+			consult_flavors_openstack();
+			print_r(draw_table_flavors_openstack());
+			break;
+		case '17':
+			consult_images_openstack();
+			print_r(draw_table_images_openstack());
+			break;
+		case '18':
+			consult_servers_openstack();
+			print_r(draw_table_servers_openstack());
+			break;
+		case '19':
+			consult_subnets_openstack();
+			print_r(draw_table_subnets_openstack());
+			break;
+		case '20':
+			consult_ports_openstack();
+			print_r(draw_table_ports_openstack());
+			break;
+		case '21':
+			consult_flotantIp_openstack();
+			print_r(draw_table_flotantIp_openstack());
+			break;
 
 
 		default:
@@ -237,5 +261,23 @@ $now = date_create()->format('Y-m-d H:i:s');
 			break;
 	}
 }else{
-	echo "No hay datos";
+	db_execute("delete from flavor_openstack");
+	consult_flavors_openstack();
+	echo "terminado";
+	db_execute("delete from server_openstack");
+	consult_servers_openstack();
+	echo "terminado1";
+	db_execute("delete from subnet_openstack");
+	consult_subnets_openstack();
+	echo "terminado2";
+	db_execute("delete from image_openstack");
+	consult_images_openstack();
+	echo "terminado3";
+	db_execute("delete from ports_openstack");
+	consult_ports_openstack();
+	echo "terminado4";
+	db_execute("delete from flotantIp_openstack");
+	consult_flotantIp_openstack();
+	echo "terminado6";
 }
+

@@ -2300,8 +2300,11 @@ function displayCardsArq($array_content, $user ){
 	foreach ($arq_testbed as $item => $elements) {
 		?>
 		
-		  <div class="card">
-		    <img src="images/images_testbed/images_ims/<?php echo($elements['Max(imagen)']) ?>" class="card-img-top" alt="...">
+		  <div class="card center container">
+			  <!-- <div class="row center"> -->
+			 	 <img src="images/images_testbed/images_ims/<?php echo($elements['Max(imagen)']) ?>" class="col-sm-6 mt-5" alt="...">
+			  <!-- </div> -->
+		    
 		    <div class="card-body">
 		      <h5 class="card-title">Arquitectura <br><?php echo($elements['arquitectura']); ?></h5>
 		      <p class="card-text"><?php echo($elements['Max(descripcion)']); ?></p>
@@ -2391,7 +2394,7 @@ function draw_table_reports(){
 	
 }
 function draw_table_flavors_openstack(){
-	consult_flavors_openstack();
+	// consult_flavors_openstack();
 	$flavors_openstack=db_fetch_assoc("SELECT * from flavor_openstack");
 	// print_r($flavors_openstack);
 	foreach ($flavors_openstack as $key => $line) {
@@ -2423,7 +2426,7 @@ function consult_flavors_openstack(){
 }
 
 function draw_table_images_openstack(){
-	consult_images_openstack();
+	// consult_images_openstack();
 	$images_openstack=db_fetch_assoc("SELECT * from image_openstack");
 	// print_r($flavors_openstack);
 	foreach ($images_openstack as $key => $line) {
@@ -2446,7 +2449,7 @@ function consult_images_openstack(){
 }
 
 function draw_table_servers_openstack(){
-	consult_servers_openstack();
+	// consult_servers_openstack();
 	$servers_openstack=db_fetch_assoc("SELECT * from server_openstack");
 	// print_r($servers_openstack);
 	foreach ($servers_openstack as $key => $line) {
@@ -2484,7 +2487,7 @@ function consult_servers_openstack(){
 }
 
 function draw_table_subnets_openstack(){
-	consult_subnets_openstack();
+	// consult_subnets_openstack();
 	$subnets_openstack=db_fetch_assoc("SELECT * from subnet_openstack");
 	//print_r($subnets_openstack['0']);
 	foreach ($subnets_openstack as $line) {
@@ -2516,7 +2519,7 @@ function consult_subnets_openstack(){
 }
 
 function draw_table_ports_openstack(){
-	consult_ports_openstack();
+	// consult_ports_openstack();
 	$ports_openstack=db_fetch_assoc("SELECT * from ports_openstack");
 	//print_r($subnets_openstack['0']);
 	foreach ($ports_openstack as $line) {
@@ -2541,7 +2544,7 @@ function consult_ports_openstack(){
 	}
 }
 function draw_table_flotantIp_openstack(){
-	consult_flotantIp_openstack();
+	// consult_flotantIp_openstack();
 	$flotantIp_openstack=db_fetch_assoc("SELECT * from flotantIp_openstack");
 	//print_r($subnets_openstack['0']);
 	foreach ($flotantIp_openstack as $line) {
@@ -2857,11 +2860,11 @@ function admin_info_page(){
 							print $value2['content'];
 						}
 						print"<div class='panel_btn_content' style='display: none;' >";
-							print"<button class='btn_action_info btn btn-info ml-1' type='button' id='".$value2['id_content']."' name='add'>Agregar contenido</button>";
-							print"<button class='btn_action_info btn btn-danger ml-1' type='button' id='".$value2['id_content']."' name='del'>Eliminar</button>";
-							print"<button class='btn_action_info btn btn-warning ml-1' type='button' id='".$value2['id_content']."' name='edit'>Editar</button>";
-							print"<button class='btn_action_info btn btn-success ml-1' type='button' id='".$value2['id_content']."' name='up'><i class='fa fa-angle-up'></i></button>";
-							print"<button class='btn_action_info btn btn-success ml-1' type='button' id='".$value2['id_content']."' name='down'><i class='fa fa-angle-down'></i></button>";
+							print"<button class='btn_action_info btn btn-info ml-1 animated' type='button' id='".$value2['id_content']."' name='add'>Agregar contenido</button>";
+							print"<button class='btn_action_info btn btn-danger ml-1 animated' type='button' id='".$value2['id_content']."' name='del'>Eliminar</button>";
+							print"<button class='btn_action_info btn btn-warning ml-1 animated' type='button' id='".$value2['id_content']."' name='edit'>Editar</button>";
+							print"<button class='btn_action_info btn btn-success ml-1 animated' type='button' id='".$value2['id_content']."' name='up'><i class='fa fa-angle-up'></i></button>";
+							print"<button class='btn_action_info btn btn-success ml-1 animated' type='button' id='".$value2['id_content']."' name='down'><i class='fa fa-angle-down'></i></button>";
 						print"</div>";
 					print"</div>";				 							
 				}
@@ -2870,11 +2873,11 @@ function admin_info_page(){
 
 				<?php
 				print"<div class='panel_btn_title' style='display: none;'>";
-				print"<button class='btn_action_info btn btn-primary ml-2' type='button' id='".$value['id_title']."' name='add'>Agregar titulo</button>";
-				print"<button class='btn_action_info btn btn-danger ml-2' type='button' id='".$value['id_title']."' name='del'>Eliminar</button>";
-				print"<button class='btn_action_info btn btn-warning ml-2' type='button' id='".$value['id_title']."' name='edit'>Editar</button>";
-				print"<button class='btn_action_info btn btn-success ml-2' type='button' id='".$value['id_title']."' name='up'><i class='fa fa-angle-up'></i></button>";
-				print"<button class='btn_action_info btn btn-success ml-2' type='button' id='".$value['id_title']."' name='down'><i class='fa fa-angle-down'></i></button>";
+				print"<button class='btn_action_info btn btn-primary ml-2 animated' type='button' id='".$value['id_title']."' name='add'>Agregar titulo</button>";
+				print"<button class='btn_action_info btn btn-danger ml-2 animated' type='button' id='".$value['id_title']."' name='del'>Eliminar</button>";
+				print"<button class='btn_action_info btn btn-warning ml-2 animated' type='button' id='".$value['id_title']."' name='edit'>Editar</button>";
+				print"<button class='btn_action_info btn btn-success ml-2 animated' type='button' id='".$value['id_title']."' name='up'><i class='fa fa-angle-up'></i></button>";
+				print"<button class='btn_action_info btn btn-success ml-2 animated' type='button' id='".$value['id_title']."' name='down'><i class='fa fa-angle-down'></i></button>";
 				print"</div>";
 			print"</div>";
 			

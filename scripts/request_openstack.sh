@@ -125,6 +125,17 @@ case $1 in
             # openstack --debug image set --name inst_test2 --instance-id <id_server> <id_instance>
             curl -s -H GET http://$OS_IP_OPENSTACK/compute/v2.1/servers/$2 -H "Accept: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H "X-OpenStack-Nova-API-Version: 2.1" | python -m json.tool
           ;;
+    show_ports_device)
+            curl -s -H GET "http://$OS_IP_OPENSTACK:9696/v2.0/ports?device_id=$2" -H "Accept: application/json" -H "User-Agent: openstacksdk/0.32.0 keystoneauth1/3.15.0 python-requests/2.22.0 CPython/2.7.15+" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')"
+          ;;
+    delete_router)
+            curl -g -i -X DELETE http://$OS_IP_OPENSTACK:9696/v2.0/routers/$2 -H "Accept: " -H "User-Agent: openstacksdk/0.32.0 keystoneauth1/3.15.0 python-requests/2.22.0 CPython/2.7.15+" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')"
+          ;;
+    delete_router_port)
+            # router,port
+            # openstack --debug router remove port 039ce27c-bfa7-465f-9dfa-a33fbdeac9f1 187fc695-788c-4ee8-9fb6-11c1a5ef364e
+            curl -g -X PUT http://$OS_IP_OPENSTACK:9696/v2.0/routers/$2/remove_router_interface -H "Content-Type: application/json" -H "User-Agent: openstacksdk/0.32.0 keystoneauth1/3.15.0 python-requests/2.22.0 CPython/2.7.15+" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -d '{"port_id": "'$3'"}'
+          ;;
      *)
           echo "error"
           ;;

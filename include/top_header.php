@@ -38,7 +38,7 @@ $using_guest_account = false;
 <head>
 	<?php html_common_header($page_title);?>
 </head>
-<body onload="identifiUser(<?php echo $current_user['id']?>)">
+<body onload="identifiUser(<?php echo $current_user['id']?>);loadInfoOpenstack()">
 	<?php
 	// print_r($current_user);
 	?>

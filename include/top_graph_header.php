@@ -71,7 +71,7 @@ load_current_session_value('action', 'sess_cacti_graph_action', $graph_views['2'
 <head>
 	<?php html_common_header($page_title);?>
 </head>
-<body onload="identifiUser(<?php echo $current_user['id']?>)">
+<body onload="identifiUser(<?php echo $current_user['id']?>);loadInfoOpenstack()">
 <div id='cactiPageHead' class='cactiPageHead' role='banner'>
 	<?php if ($oper_mode == OPER_MODE_NATIVE) { ;?>
 

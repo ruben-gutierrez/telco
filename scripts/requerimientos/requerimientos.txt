@@ -40,7 +40,7 @@ en caso de modificar o reinstalar openstack
 5-para crear flavors hay que darle permisos a usuario en openstack
     como admin  identity/proyectos -> miembros de proyecto en admin que esta como member se agrega admin
 
-
+6-instalar cacti, curl , php y python
 
 
     _______________________________--

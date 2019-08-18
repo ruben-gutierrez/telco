@@ -86,17 +86,19 @@ if (!empty($_POST)) {
 				$name_net=$_POST['name_arq'];
 				$description=$_POST['desc_arq'];
 				$domain=$_POST['dominio_arq'];
-				// sube la imagen 
-				// if (move_uploaded_file($_FILES['image']['tmp_name'], 'images/images_testbed/images_ims/temp/'.$_FILES['image']['name'])) {
-				// 	$new_name = $now . $_FILES['image']['name'];
-				// 	rename('images/images_testbed/images_ims/temp/'.$_FILES['image']['name'], 'images/images_testbed/images_ims/'.$new_name );
-				// }
+				if ( $_POST['type'] == "aio") {
+					$routeImage="aio.png";
+				} elseif ( $_POST['type'] == "dist" ){
+					$routeImage="dist.png";
+				}else{
+					$routeImage="dist_pstn.png";
+				}
 				//create tree for cacti
 				$resp_tree=shell_exec('php -q cli/add_tree.php --type=tree --name="'.$_POST['dominio_arq'].'" --sort-method=manual');
 				$array_tree=explode ( ' ' , $resp_tree );
 				$id_tree = preg_replace('/\([^)]\)|[()]/', '', $array_tree[4]);
 				// inserta la informacion en la base de dataos
-				$sql = "INSERT INTO arqs_testbedims (arquitectura, dominio, activo, usuario, descripcion,  id_tree) VALUES ('".$_POST['name_arq']."','".$_POST['dominio_arq']."','V','libre', '".$_POST['desc_arq']."','".$id_tree."')";
+				$sql = "INSERT INTO arqs_testbedims (arquitectura, dominio, activo, usuario, descripcion, imagen, id_tree) VALUES ('".$_POST['name_arq']."','".$_POST['dominio_arq']."','V','libre', '".$_POST['desc_arq']."','".$routeImage."','".$id_tree."')";
 				$agregar=db_execute($sql);
 				if ( $agregar == '1') {
 					// agrega las restricciones
@@ -113,6 +115,7 @@ if (!empty($_POST)) {
 						}else{
 							conectRouterNetPublic($idRouter, '08cac388-5c54-4718-8403-57334d5ec8bd');
 							conectRouterNetPrivate($idRouter, $result_create_net['subnet_openstack']);
+							db_execute("INSERT INTO router_openstack (id_router, name_router, domain) values ( '".$idRouter."','".$name_net."','".$domain."')");
 							// echo "Arquitectura Creada con exito";
 							//report
 							addActionToReport($_POST['idUser'], "Agregó la arquitectura ".$domain."");
@@ -121,7 +124,7 @@ if (!empty($_POST)) {
 							// print_r($createDomain);
 							// retorna la actualizacion de la tabla
 							$id_arq=db_fetch_cell_prepared("SELECT id from arqs_testbedims order by id desc limit 1");
-							echo(return_file_arq($id_arq, $_POST['name_arq'], $_POST['dominio_arq'], $_POST['desc_arq'], $new_name));
+							echo(return_file_arq($id_arq, $_POST['name_arq'], $_POST['dominio_arq'], $_POST['desc_arq'], $routeImage));
 							
 						}
 					}else{
@@ -138,17 +141,30 @@ if (!empty($_POST)) {
 				}
 			break;
 		case "4": //eliminar arquitectura
-				$dom= db_fetch_cell_prepared("SELECT dominio from arqs_testbedims  WHERE id ='" . $id . "'");
+				$dom= db_fetch_row_prepared("SELECT * from arqs_testbedims  WHERE id ='" . $id . "'");
 				$file_name=db_fetch_cell_prepared("select imagen from arqs_testbedims where id='".$id."'");
 				$id_net=db_fetch_cell_prepared("select id_net from arqs_testbedims t JOIN network_openstack o ON t.dominio = o.domain where t.id='".$id."'");
-				$eliminar=db_execute("DELETE FROM arqs_testbedims WHERE id='".$id."'");
-				if ( $eliminar == '1') {				
-					unlink('images/images_testbed/images_ims/'.$file_name);
+				// if ( $eliminar == '1') {				
+					// 	unlink('images/images_testbed/images_ims/'.$file_name);
+					// }
+					// echo($id_net);
+					
+				$ips_domain=db_fetch_assoc("SELECT s.id_server from server_openstack s inner join core_domain c on c.id_server = s.id_server inner join  flavor_openstack f on f.id_flavor=s.id_flavor where c.domain='".$dom['dominio']."'");
+				foreach( $ips_domain as $serverId){
+					deleteVm($serverId['id_server']);
 				}
-				// echo($id_net);
+				$ips_aditionals=db_fetch_assoc("SELECT v.id_server from vm_aditional_testbedims v inner join server_openstack s on v.id_server=s.id_server inner join flavor_openstack f on f.id_flavor=s.id_flavor where v.dominio='".$dom['dominio']."'");
+				
+				foreach( $ips_aditionals as $serverId){
+					deleteVm($serverId['id_server']);
+				}
+				$idRouter= db_fetch_row_prepared("SELECT r.id_router from arqs_testbedims a INNER JOIN router_openstack r ON a.dominio = r.domain WHERE a.id ='" . $id . "'");
+				// print_r($idRouter);
+				print_r(delete_router($idRouter['id_router']));
 				delete_net($id_net);
+				$eliminar=db_execute("DELETE FROM arqs_testbedims WHERE id='".$id."'");
 				//report
-				addActionToReport($_POST['idUser'], "Elimino la arquitectura ".$dom."");
+				addActionToReport($_POST['idUser'], "Elimino la arquitectura ".$dom['dominio']."");
 				echo($eliminar);
 			break;
 
@@ -345,7 +361,7 @@ if (!empty($_POST)) {
 			break;
 			
 		case '12'://consultar maquinas virtuales por usuario
-			consult_servers_openstack();
+			// consult_servers_openstack();
 			$domain=db_fetch_cell_prepared("SELECT dominio from arqs_testbedims where id=".$_POST['domain']);
 			$ips_domain=db_fetch_assoc("SELECT s.id_server, s.name_server, s.ip_local, s.status, c.ram, c.vcpus, c.disk from server_openstack s inner join core_domain c on c.id_server = s.id_server inner join  flavor_openstack f on f.id_flavor=s.id_flavor where c.domain='".$domain."'");
 			$ips_aditionals=db_fetch_assoc("SELECT v.id_server,v.name_server, v.ip_local, s.status, f.ram, f.vcpus, f.disk from vm_aditional_testbedims v inner join server_openstack s on v.id_server=s.id_server inner join flavor_openstack f on f.id_flavor=s.id_flavor where v.dominio='".$domain."'");
