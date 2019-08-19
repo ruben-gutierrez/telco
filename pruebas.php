@@ -101,10 +101,8 @@ if (isset($_GET['arq'])) {
                     foreach ($dominios as $key => $value) {
                       print("<option value='".$value['dominio']."'>".$value['dominio']."</option>");
                     }
-                  ?>  
+                  ?> 
                 </select>
-
-                  
                   <input type="text" name="name_test" placeholder="Nombre de prueba" required>
                   
                   

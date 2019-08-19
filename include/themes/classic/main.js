@@ -59,8 +59,8 @@ function guardar_arq() {
 //eventos a los botones de la tabla y llenar informacion en el formulario
 //de editar
 $(document).on("click", ".btn_arq_action", function()﻿ {
-    console.log(idUser);
-    console.log("fffffffffff");
+    // console.log(idUser);
+    // console.log("fffffffffff");
     var btn = $(this)[0].name;
     var fila = $(this).parents('tr')[0];
     // console.log("mensaje fila");
@@ -72,6 +72,7 @@ $(document).on("click", ".btn_arq_action", function()﻿ {
     var id_dec = $(this)[0].id.substr(-2, 1);
     var id_cen = $(this)[0].id.substr(-3, 1);
     var id_mil = $(this)[0].id.substr(-4, 1);
+    var id_dmil = $(this)[0].id.substr(-5, 1);
     // extraer el id la tabla de mysql
     if ($.isNumeric(id_dec)) {
         id = id_dec + id;
@@ -81,7 +82,10 @@ $(document).on("click", ".btn_arq_action", function()﻿ {
             // console.log(id);
             if ($.isNumeric(id_mil)) {
                 id = id_mil + id;
-                console.log(id);
+                if ($.isNumeric(id_dmil)) {
+                    id = id_dmil + id;
+                    // console.log(id);
+                }
             }
         }
     }
@@ -91,8 +95,9 @@ $(document).on("click", ".btn_arq_action", function()﻿ {
     for (var i = 0; i <= 2; i++) {
 
         info_arq.push(fila.cells[i].textContent);
+        // console.log(fila.cells[i].textContent);
     }
-
+    // console.log(info_arq);
     //boton editar, llena el formulario con los valores actuales
     switch (btn) {
         case 'editar':
@@ -103,11 +108,13 @@ $(document).on("click", ".btn_arq_action", function()﻿ {
             // llenar informacion en el formulario
             info_arq.forEach(function(value, index) {
                 $('#form_edit_arq')[0][index + 2].value = value;
+                // console.log($('#form_edit_arq')[0][index + 2].id);
             });
 
             // console.log(fila.cells[3].textContent);
             // $('#form_edit_arq')[0][4].files[0].name = fila.cells[3].textContent;
             var domainform = $('#form_edit_arq')[0][3].value;
+            console.log(domainform);
             consult_restrictions(domainform);
 
 
@@ -496,7 +503,13 @@ function add_test() {
             success: function(date) {
                 // console.log(date);
                 if (date != '') {
-                    alert("se agrego la prueba correctamente, ahora ingrese las opciones de l aprueba");
+                    if(date != 'errorIdserver'){
+                        alert("se agrego la prueba correctamente, ahora ingrese las opciones de l aprueba");
+                    }else{
+                        alert("Error al buscar la máquina virtual SIPP, verifique el estado de esta");
+                    }
+                }else{
+                    alert("Error al subir el archivo, Verifique los datos o contacte al administrador");
                 }
                 // console.log(date);
                 $('#form_info_test')[0][2].value = date;
@@ -555,21 +568,26 @@ function display_table_test(id_test) {
 }
 
 
-function exe_test() {
+function exe_test(idServer) {
     // console.log($('#form_execute_test').serialize());
     var parametros = new FormData($('#form_execute_test')[0]);
+    parametros.append('idServer', idServer);
     $.ajax({
-        url: 'ejecucion_pruebas.php',
+        url: 'ejecucion_pruebas.php',//action 2
         type: 'POST',
         contentType: false,
         processData: false,
         data: parametros,
-        beforesend: function() {
-
+        beforeSend: function() {
+            console.log(parametros)
+            notifications('executing_test', 'Ejecutando prueba');
         },
         success: function(data) {
-            alert("Comando a ejecutar en servidor SIPP \n" + data);
+            // alert("Comando a ejecutar en servidor SIPP \n" + data);
             console.log(data);
+        },
+        complete: function (){
+            deleteNotification("executing_test");
         }
     });
 }
@@ -1412,10 +1430,10 @@ function consult_restrictions(domainform) {
 
             var answer = JSON.parse(data);
             console.log(answer);
-            $('#form_edit_arq')[0][6].value = answer[3]['limit_restriction'];
-            $('#form_edit_arq')[0][7].value = answer[0]['limit_restriction'];
-            $('#form_edit_arq')[0][8].value = answer[2]['limit_restriction'];
-            $('#form_edit_arq')[0][9].value = answer[1]['limit_restriction'];
+            $('#form_edit_arq')[0][5].value = answer[3]['limit_restriction'];
+            $('#form_edit_arq')[0][6].value = answer[0]['limit_restriction'];
+            $('#form_edit_arq')[0][7].value = answer[2]['limit_restriction'];
+            $('#form_edit_arq')[0][8].value = answer[1]['limit_restriction'];
         },
         complete: function(){
             deleteNotification("constult_restrictionss");

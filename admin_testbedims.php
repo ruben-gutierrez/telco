@@ -123,10 +123,10 @@ global $config, $current_user;
 								<label class="col-6" for="desc_arq">Descripcion de arquitectura</label>
 								<textarea class="col" name="desc_arq" id="desc_arq" placeholder="Max 50 caracteres"></textarea>
 							</div>
-							<div class="col mt-3">
+							<!-- <div class="col mt-3">
 								<label class="col-6" for="image"> Imagen de arquitectura</label>
 								<input class="col" type="file" name="image" accept=".jpg, .jpeg, .png">
-							</div>
+							</div> -->
 							</div>
 							<div class="col-4">
 							

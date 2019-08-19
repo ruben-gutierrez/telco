@@ -12,13 +12,14 @@ if (!empty($_POST)) {
 	
 	switch ($accion) { 
 		case '1'://desplegar tabla de las pruebas de un dominio
-			$name_test=db_fetch_cell("select name_test from test_testbedims where id_test='".$_POST['id_test2']."'");
+			$name_test=db_fetch_row_prepared("select * from test_testbedims where id_test='".$_POST['id_test2']."'");
 			$options_test=db_fetch_assoc("SELECT options, value, description_option from option_test_testbedims where id_test='".$_POST['id_test2']."'");
+			$idServer=;
 				?>
 				<div class="row animated fadeIn">
 				<div class="col center">
 				<div>
-					<h4>Prueba: <?php echo $name_test ;?>  </h4>
+					<h4>Prueba: <?php echo $name_test['name_test'] ;?>  </h4>
 				</div>
 
 				<div id="optionsTestFrom" class="row" >
@@ -37,7 +38,7 @@ if (!empty($_POST)) {
 						
 						?>
 						<div class="colmd-4">
-							<input type="button" class="btn btn-primary pull-right m-2" id="btn_exe_test" value="Ejecutar" onclick="exe_test()">
+							<input type="button" class="btn btn-primary pull-right m-2" id="btn_exe_test" value="Ejecutar" onclick="exe_test($idServer)">
 							<input type="button" class="btn btn-outline-secondary pull-right m-2" id="btn_exe_test" value="Atras" onclick="$('#cardsTest').show();$('#table_options_test').empty()">
 						</div>
 					</form>
@@ -87,9 +88,11 @@ if (!empty($_POST)) {
 
 			// print_r($options);
 			// se crea el archivo con el comando para enviar a otro pc
-			$nombre_archivo = "content_test.sh"; 
-			$mensaje = "sipp -s 600 -sn uac -d 1000 -m 3000 -timeout 60 -r 10 -i 192.168.0.20 192.168.0.20".$options." -trace_screen";
-			echo $mensaje;
+			$nombre_archivo = "content_test.sh";
+			$comandTest = "sudo /usr/share/clearwater/infrastructure/scripts/sip-stress ".$options."";
+			$ipVmSipp=ipFloat($_POST['idServer']);
+			$executeTest=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipVmSipp.' "'.$comandTest.'"');
+			$executeTest=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipVmSipp.' "sudo service clearwater-sip-stress restart"');
 			break;
 		default:
 			echo ("sin funcion");

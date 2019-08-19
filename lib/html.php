@@ -2711,13 +2711,14 @@ function guide_test($explain_test_bono, $index){
 	}
 	?>
 			<div class="header text-center">
-                <button class="btn btn-outline-info" onclick="slidetest(<?php echo $index-1;?>,'test_bono')">Anterior</button>
+				<button class="btn btn-outline-info" onclick="slidetest(<?php echo $index-1;?>,'test_bono')">Anterior</button>
+				<button class="btn btn-outline-success" onclick="slidetest(<?php echo $index+1;?>,'test_bono')">Siguiente</button>
             </div>
 			<div class="container p-1" id="page1">
 				<div class="container animated fadeIn">
 					<div class="row">
 						<div class="col codexml bg-secondary p-2 m-2 ">
-							<pre class="text-light">
+							<pre class="text-light" style="height:300px">
 								<?php 
 								foreach ($explain_test_bono[$index] as $code => $options){
 									echo $code;?>
@@ -2732,7 +2733,6 @@ function guide_test($explain_test_bono, $index){
 								}else{
 									echo $key.": "; echo $explain; echo "<br>";
 								}
-								
 							}}
 							?>
 						</div>
@@ -2740,7 +2740,9 @@ function guide_test($explain_test_bono, $index){
 				</div>
 			</div>
 			<div class="footer text-center">
-                <button class="btn btn-outline-success" onclick="slidetest(<?php echo $index+1;?>,'test_bono')">Siguiente</button>
+				<button class="btn btn-outline-info" onclick="slidetest(<?php echo $index-1;?>,'test_bono')">Anterior</button>	
+				<button class="btn btn-outline-success" onclick="slidetest(<?php echo $index+1;?>,'test_bono')">Siguiente</button>
+					
             </div>
 	<?php
 }

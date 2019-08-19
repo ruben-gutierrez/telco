@@ -5383,6 +5383,8 @@ function create_vm($name_server, $id_image, $flavor_ref, $id_net){
 	$action='create_vm';
 	// #$1-> action, $2-> name_server, $3->id_image, $4->flavor_ref, $5->id_net
 	$vm_created=shell_exec("./scripts/request_openstack.sh $action $name_server $id_image $flavor_ref $id_net");
+	sleep(10);
+	asingIpFloatServer($vm_created);
 	return $vm_created;
 }
 function rezise_vm($id_server, $idFlavor){
@@ -5421,14 +5423,22 @@ function create_vm_to_core($domain,$typeDomain){
 					'vellum'=>'',
 					'dime'=>'',
 					'asterisk'=>'',
-					'ibcf'=>''
+					'ibcf'=>'',
+					'sipp' =>'',
+					'dns' =>''
+
 	);
 	$nodes_dist=array('bono'=>'',
 		'sprout'=>'',
 		'ellis'=>'',
 		'homer'=>'',
 		'vellum'=>'',
-		'dime'=>''
+		'dime'=>'',
+		'sipp' =>'',
+		'dns' =>''
+	);
+	$nodes_allinone=array('allInOne'=>'',
+		'sipp' =>''
 	);
 	$id_net=id_net_ofDomain($domain);
 					// #como no hay informacion entonces crear maquinas
@@ -5438,49 +5448,22 @@ function create_vm_to_core($domain,$typeDomain){
 						case 'aio':
 							// #crear solo 1 ubuntu 14
 							// #guardar solo bono
-							$vm_create=create_vm("allInOne", "ffd93b55-858c-4ca2-9f0b-0e7890966392", "d2", $id_net);
-							$vmJson = json_decode($vm_create, true);
-							// print_r($vm_create);
-							consult_flavors_openstack();
-							consult_servers_openstack();
-							$id_server=$vmJson['server']['id'];
-							$flavor=db_fetch_row_prepared("SELECT f.ram, f.vcpus, f.disk FROM flavor_openstack f INNER JOIN server_openstack s ON s.id_flavor=f.id_flavor where s.id_server='".$id_server."'");
-							$ram=$flavor['ram'];
-							$vcpus=$flavor['vcpus'];
-							$disk=$flavor['disk'];
-							$agregar=db_execute("INSERT INTO core_domain (id_server, domain, type_domain, ram, vcpus, disk) values ( '".$vmJson['server']['id']."','".$domain."','".$typeDomain."','".$ram."','".$vcpus."','".$disk."')");
+							create_core_ims($nodes_allinone,$id_net,$domain,$typeDomain);
+							
+							
 							break;
+							
+
+
 						case 'dist':
 							// crear 5 nodos mas dns
-							foreach ($nodes_dist as $nameVm=>$ipVm){
-									// create_vm( $nameVm, $id_image, "d2", $id_net);
-									$vm_create=create_vm( $nameVm, "ffd93b55-858c-4ca2-9f0b-0e7890966392", "d2", $id_net);
-									$vmJson = json_decode($vm_create, true);
-									consult_flavors_openstack();
-									consult_servers_openstack();
-									$id_server=$vmJson['server']['id'];
-									$flavor=db_fetch_row_prepared("SELECT f.ram, f.vcpus, f.disk FROM flavor_openstack f INNER JOIN server_openstack s ON s.id_flavor=f.id_flavor where s.id_server='".$id_server."'");
-									$ram=$flavor['ram'];
-									$vcpus=$flavor['vcpus'];
-									$disk=$flavor['disk'];
-									$agregar=db_execute("INSERT INTO core_domain (id_server, domain, type_domain, ram, vcpus, disk) values ( '".$vmJson['server']['id']."','".$domain."','".$typeDomain."','".$ram."','".$vcpus."','".$disk."')");
-							}
+							create_core_ims($nodes_dist, $id_net,$domain,$typeDomain);
+							
 							break;
 						case 'dist_pstn':
 							// crear 7 nodos mas dns
-							foreach ($nodes_dist_pstn as $nameVm=>$ipVm){
-									// create_vm( $nameVm, $id_image, "d2", $id_subnet);
-									$vm_create=create_vm( $nameVm, "ffd93b55-858c-4ca2-9f0b-0e7890966392", "d2", $id_net);
-									$vmJson = json_decode($vm_create, true);
-									consult_flavors_openstack();
-									consult_servers_openstack();
-									$id_server=$vmJson['server']['id'];
-									$flavor=db_fetch_row_prepared("SELECT f.ram, f.vcpus, f.disk FROM flavor_openstack f INNER JOIN server_openstack s ON s.id_flavor=f.id_flavor where s.id_server='".$id_server."'");
-									$ram=$flavor['ram'];
-									$vcpus=$flavor['vcpus'];
-									$disk=$flavor['disk'];
-									$agregar=db_execute("INSERT INTO core_domain (id_server, domain, type_domain, ram, vcpus, disk) values ( '".$vmJson['server']['id']."','".$domain."','".$typeDomain."','".$ram."','".$vcpus."','".$disk."')");
-							}
+							create_core_ims($nodes_dist_pstn, $id_net,$domain,$typeDomain);
+							
 							break;
 						
 						default:
@@ -5891,4 +5874,33 @@ function deleteRouterPort($idrouter, $idport){
 	$ports=shell_exec("./scripts/request_openstack.sh $action $idrouter $idport");
 	
 }
+//consult ipFloar of server or asing new ipfloat
+//return ipFloat of vm
+//in variable idServer
+function ipFloat($idServer){
+	consult_servers_openstack();
+	consult_flotantIp_openstack();
+	$ipfloatTelco=ipFloatServer($idServer);
+	// echo $ipfloatTelco;
+	if( $ipfloatTelco == ''){
+		$ipfloat=asingIpFloatServer($idServer);
+	}
+	return $ipfloat;
+}
 
+
+function create_core_ims($names,$id_net,$domain,$typeDomain){
+	foreach ($names as $nameVm=>$ipVm){
+		// create_vm( $nameVm, $id_image, "d2", $id_net);
+		$vm_create=create_vm( $nameVm, "ffd93b55-858c-4ca2-9f0b-0e7890966392", "d2", $id_net);
+		$vmJson = json_decode($vm_create, true);
+		consult_flavors_openstack();
+		consult_servers_openstack();
+		$id_server=$vmJson['server']['id'];
+		$flavor=db_fetch_row_prepared("SELECT f.ram, f.vcpus, f.disk FROM flavor_openstack f INNER JOIN server_openstack s ON s.id_flavor=f.id_flavor where s.id_server='".$id_server."'");
+		$ram=$flavor['ram'];
+		$vcpus=$flavor['vcpus'];
+		$disk=$flavor['disk'];
+		$agregar=db_execute("INSERT INTO core_domain (id_server, domain, type_domain, ram, vcpus, disk) values ( '".$vmJson['server']['id']."','".$domain."','".$typeDomain."','".$ram."','".$vcpus."','".$disk."')");
+	}
+}

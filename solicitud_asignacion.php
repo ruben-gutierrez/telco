@@ -327,25 +327,34 @@ if (!empty($_POST)) {
 			}
 			break;
 		case '10'://agregar test
-			$agregar=db_execute("INSERT INTO test_testbedims (dominio, name_test, comand, description_test, restriction) VALUES ('".$_POST['dominio']."','".$_POST['name_test']."','".$_POST['comand_test']."','".$_POST['description_test']."','".$_POST['restriction_test']."')");
 			// subir archivo 
-			if ( file_exists('files_XML/'.$_FILES['file_test']['name']) ) {
-				if (move_uploaded_file($_FILES['file_test']['tmp_name'], 'files_XML/temp/'.$_FILES['file_test']['name'])) {
-					$new_name = $now . $_FILES['file_test']['name'];
-					rename('files_XML/temp/'.$_FILES['file_test']['name'], 'files_XML/'.$new_name );
-				}
-			}else{
-				move_uploaded_file($_FILES['file_test']['tmp_name'], 'files_XML/'.$_FILES['file_test']['name']);
-				// print_r($_FILES);
+		
+			if (move_uploaded_file($_FILES['file_test']['tmp_name'], 'files_XML/temp/'.$_FILES['file_test']['name'])) {
+				$new_name = $now . $_FILES['file_test']['name'];
+				rename('files_XML/temp/'.$_FILES['file_test']['name'], 'files_XML/'.$new_name );
 			}
+			$agregar=db_execute("INSERT INTO test_testbedims (dominio, name_test, comand, description_test, restriction,file_test) VALUES ('".$_POST['dominio']."','".$_POST['name_test']."','".$_POST['comand_test']."','".$_POST['description_test']."','".$_POST['restriction_test']."','".$new_name."')");
 			if ($agregar == 1 ) {
-				$id_test=db_fetch_cell_prepared("select id_test from test_testbedims ORDER BY id_test DESC");
-				echo $id_test;
-				//report
-				addActionToReport($_POST['idUser'], "Agregó la prueba ".$id_test." a la arqutiectura ".$_POST['dominio']."");
+				$idServer=db_fetch_cell_prepared("SELECT s.id_server FROM server_openstack s INNER JOIN core_domain c ON c.id_server=s.id_server WHERE s.name_server='sipp' AND c.domain='".$_POST['dominio']."'");
+				if ( $idServer == '') {
+					# code...
+					$id_test=db_fetch_cell_prepared("select id_test from test_testbedims ORDER BY id_test DESC");
+					echo $id_test;
+					//enviar archivo por scp a la maquina virtual sipp del dominio
+					$ipfloat=ipFloat($idServer);
+					$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ./files_XML/"'.$new_name.'" ubuntu@'.$ipfloat.':/usr/share/clearwater/sip-stress/');
+					//crear ambiente de la prueba
+						//crear el ejecutador
+						$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipfloat.' "sudo cp /usr/share/clearwater/infrastructure/scripts/sip-stress /usr/share/clearwater/infrastructure/scripts/'.$new_name.'"');
+					//report
+					addActionToReport($_POST['idUser'], "Agregó la prueba ".$id_test." a la arqutiectura ".$_POST['dominio']."");
+				}else{
+					echo "errorIdserver";
+				}
 			}else{
 				echo ("");
 			}
+			
 			break;
 		case '11'://agregar opciones de test
 
