@@ -346,10 +346,13 @@ if (!empty($_POST)) {
 					//enviar archivo por scp a la maquina virtual sipp del dominio
 					$ipfloat=ipFloat($idServer);
 					$transFile=shell_exec('sudo chmod 775 ./scripts/terminal_testbed/key.pem');
-					shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem /var/www/html/telco/files_XML/"'.$new_name.'" ubuntu@'.$ipfloat.':/home/ubuntu');
-					//crear ambiente de la prueba
-						//crear el ejecutador
-						$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipfloat.' "sudo cp /usr/share/clearwater/infrastructure/scripts/sip-stress /usr/share/clearwater/infrastructure/scripts/'.$new_name.'"');
+					//copia la prueba
+					shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem /var/www/html/telco/files_XML/"'.$new_name.'" ubuntu@'.$ipfloat.':/usr/share/clearwater/bin/');
+					//copia el ejecutador
+					shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem /var/www/html/telco/scripts/sipp/ejecute_test.sh ubuntu@'.$ipfloat.':/home/ubuntu');
+					//ejecuta el intalador
+					$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipfloat.' "chmod 775 ./ejecute_test.sh');
+					$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipfloat.' "sudo ./ejecute_test.sh');
 					//report
 					addActionToReport($_POST['idUser'], "Agregó la prueba ".$id_test." a la arqutiectura ".$_POST['dominio']."");
 				}else{
