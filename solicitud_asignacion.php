@@ -18,7 +18,7 @@ if (!empty($_POST)) {
 	$accion= $_POST['action'];	
 	$id= $_POST['id'];
 
-	$now = date_create()->format('Y-m-d H:i:s');
+	$now = date_create()->format('Y-m-dH:i:s');
 	$days=db_fetch_cell_prepared("select value_info from data_testbedims where id_data='2'");
 	// Explain table testbed
 	// id  |  arquitectura | dominio | activo | usuario descripcion | imagen
@@ -328,21 +328,25 @@ if (!empty($_POST)) {
 			break;
 		case '10'://agregar test
 			// subir archivo 
-		
+			
 			if (move_uploaded_file($_FILES['file_test']['tmp_name'], 'files_XML/temp/'.$_FILES['file_test']['name'])) {
-				$new_name = $now . $_FILES['file_test']['name'];
+				$now = date_create()->format('H-i-s');
+				$new_name = trim($now).trim($_FILES['file_test']['name']);
+				// echo $new_name;
 				rename('files_XML/temp/'.$_FILES['file_test']['name'], 'files_XML/'.$new_name );
 			}
 			$agregar=db_execute("INSERT INTO test_testbedims (dominio, name_test, comand, description_test, restriction,file_test) VALUES ('".$_POST['dominio']."','".$_POST['name_test']."','".$_POST['comand_test']."','".$_POST['description_test']."','".$_POST['restriction_test']."','".$new_name."')");
-			if ($agregar == 1 ) {
+			if ( $agregar == 1 ) {
 				$idServer=db_fetch_cell_prepared("SELECT s.id_server FROM server_openstack s INNER JOIN core_domain c ON c.id_server=s.id_server WHERE s.name_server='sipp' AND c.domain='".$_POST['dominio']."'");
-				if ( $idServer == '') {
-					# code...
+				// echo $idServer;
+				if ( $idServer != '') {
+				
 					$id_test=db_fetch_cell_prepared("select id_test from test_testbedims ORDER BY id_test DESC");
 					echo $id_test;
 					//enviar archivo por scp a la maquina virtual sipp del dominio
 					$ipfloat=ipFloat($idServer);
-					$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ./files_XML/"'.$new_name.'" ubuntu@'.$ipfloat.':/usr/share/clearwater/sip-stress/');
+					$transFile=shell_exec('sudo chmod 775 ./scripts/terminal_testbed/key.pem');
+					shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem /var/www/html/telco/files_XML/"'.$new_name.'" ubuntu@'.$ipfloat.':/home/ubuntu');
 					//crear ambiente de la prueba
 						//crear el ejecutador
 						$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipfloat.' "sudo cp /usr/share/clearwater/infrastructure/scripts/sip-stress /usr/share/clearwater/infrastructure/scripts/'.$new_name.'"');
@@ -354,7 +358,6 @@ if (!empty($_POST)) {
 			}else{
 				echo ("");
 			}
-			
 			break;
 		case '11'://agregar opciones de test
 
@@ -467,13 +470,12 @@ if (!empty($_POST)) {
 					// $transFile=shell_exec('sudo chmod 775 ./scripts/terminal_testbed/Testbed_vIMS.pem');
 					$transFile=shell_exec('sudo chmod 775 ./scripts/terminal_testbed/key.pem');
 					$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ./scripts/terminal_testbed/install_conf_shellinabox.sh ubuntu@'.$ipfloat.':/home/ubuntu');
-					$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipfloat.' "sudo ./install_conf_shellinabox.sh;"');
-					$exeInstallShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipfloat.' "sudo service shellinabox start"');
+					$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipfloat.' "sudo ./install_conf_shellinabox.sh"');
+					$exeInstallShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipfloat.' "sudo service shellinabox restart"');
 					echo $ipfloat;
 				}
 			}else{
 				shell_exec('sudo ssh-keygen -f "/root/.ssh/known_hosts" -R "'.$ipfloatTelco.'"');
-			
 				// $transFile=shell_exec('sudo chmod 775 ./scripts/terminal_testbed/key.pem');
 				$transFile=shell_exec('sudo chmod 775 ./scripts/terminal_testbed/key.pem');
 				$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ./scripts/terminal_testbed/install_conf_shellinabox.sh ubuntu@'.$ipfloatTelco.':/home/ubuntu');

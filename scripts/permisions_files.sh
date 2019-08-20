@@ -3,10 +3,9 @@ chown www-data Testbed_vIMS.pem
 #permiso para editar archivos del testbed
 chown ruben -R /var/www/html/telco
 #Permiso para que se srvidor pueda subir archivos
-chown www-data -R /var/www/html/telco/rra
-chown www-data -R /var/www/html/telco/log
-chown www-data -R /var/www/html/telco/images
-chown www-data -R /var/www/html/telco/files_XML
+
+chown -R www-data rra/ log/ files_XML/ images/
+chmod 777 -R rra/ log/ files_XML/ images/
 
 #permiso para que el servidor pueda remover las claves ssh
 # sudo chown www-data /home/ruben/.ssh/known_hosts

@@ -5,12 +5,16 @@ Requerimientos
 
 
 -----------------------------------
-permisos para crear graficas
-1- chown -R www-data rra
-2- chown -R www-data log
-3- agregar www-data a sudoers
+permisos 
+1- chown -R www-data rra/ log/ files_XML/
+2- chmod -R 777 rra/ log/ files_XML/
+3- agregar www-data a sudoers-->www-data ALL=(ALL:ALL) NOPASSWD: ALL
 
 -------------------------
+agregar funciones al crontab
+    1- poller.php
+    2- solicitud_asignacion.php
+    3- admin_info.php
 
 
 

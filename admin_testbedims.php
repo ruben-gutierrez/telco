@@ -102,7 +102,6 @@ global $config, $current_user;
 					</form>
 				</div>
 			</section>
-
 			<section id="mod_arq" class="section_admin_arquitectura" style="display: none;">
 				<div class="name_section">Editar arquitectura</div>
 				<div class="content_section container">
