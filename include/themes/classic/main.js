@@ -568,10 +568,12 @@ function display_table_test(id_test) {
 }
 
 
-function exe_test(idServer) {
+function exe_test(idServer,nameScript) {
+    // console.log(idServer)
     // console.log($('#form_execute_test').serialize());
     var parametros = new FormData($('#form_execute_test')[0]);
     parametros.append('idServer', idServer);
+    parametros.append('nameScript', nameScript);
     $.ajax({
         url: 'ejecucion_pruebas.php',//action 2
         type: 'POST',

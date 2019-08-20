@@ -12,9 +12,10 @@ if (!empty($_POST)) {
 	
 	switch ($accion) { 
 		case '1'://desplegar tabla de las pruebas de un dominio
-			$name_test=db_fetch_row_prepared("select * from test_testbedims where id_test='".$_POST['id_test2']."'");
+			$test=db_fetch_row_prepared("select * from test_testbedims where id_test='".$_POST['id_test2']."'");
 			$options_test=db_fetch_assoc("SELECT options, value, description_option from option_test_testbedims where id_test='".$_POST['id_test2']."'");
-			$idServer=;
+			
+			$idServer=db_fetch_cell("SELECT s.id_server FROM server_openstack s INNER JOIN core_domain c ON s.id_server = c.id_server WHERE c.domain = '".$test['dominio']."' AND s.name_server='sipp'");
 				?>
 				<div class="row animated fadeIn">
 				<div class="col center">
@@ -25,7 +26,7 @@ if (!empty($_POST)) {
 				<div id="optionsTestFrom" class="row" >
 					<form method="post" id="form_execute_test" class="center" enctype="multipart/form-data">
 						<input type="hidden" name="action" value="2">
-						<?php 
+						<?php
 						foreach ($options_test as $key => $value) {
 							?>
 							<div class="form-group text-left" title="<?php echo $value['description_option']?>">
@@ -38,7 +39,7 @@ if (!empty($_POST)) {
 						
 						?>
 						<div class="colmd-4">
-							<input type="button" class="btn btn-primary pull-right m-2" id="btn_exe_test" value="Ejecutar" onclick="exe_test($idServer)">
+							<input type="button" class="btn btn-primary pull-right m-2" id="btn_exe_test" value="Ejecutar" onclick="exe_test('<?php echo $idServer?>','<?php echo $test['file_test']?>')">
 							<input type="button" class="btn btn-outline-secondary pull-right m-2" id="btn_exe_test" value="Atras" onclick="$('#cardsTest').show();$('#table_options_test').empty()">
 						</div>
 					</form>
@@ -82,15 +83,19 @@ if (!empty($_POST)) {
 		case '2': //crear archivo, eviarlo por scp y ejecutarlo
 			// print_r($_POST);
 			// opciones de la pruebas
+
 			foreach ($_POST as $key => $value) {
-				$options .= " ".$value;
+				if ($key != 'action' && $key != 'idServer' && $key != 'nameScript') {
+					$options .= " ".$value;
+				}
 			}
 
 			// print_r($options);
 			// se crea el archivo con el comando para enviar a otro pc
 			$nombre_archivo = "content_test.sh";
 			$comandTest = "sudo /usr/share/clearwater/infrastructure/scripts/sip-stress ".$options."";
-			$ipVmSipp=ipFloat($_POST['idServer']);
+			echo $comandTest;
+			// $ipVmSipp=ipFloat($_POST['idServer']);
 			$executeTest=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipVmSipp.' "'.$comandTest.'"');
 			$executeTest=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipVmSipp.' "sudo service clearwater-sip-stress restart"');
 			break;
