@@ -5382,9 +5382,17 @@ function delete_net($id_net){
 function create_vm($name_server, $id_image, $flavor_ref, $id_net){
 	$action='create_vm';
 	// #$1-> action, $2-> name_server, $3->id_image, $4->flavor_ref, $5->id_net
+
 	$vm_created=shell_exec("./scripts/request_openstack.sh $action $name_server $id_image $flavor_ref $id_net");
+	$vm = json_decode($vm_created, true);
 	sleep(10);
-	asingIpFloatServer($vm_created);
+	$ipFloat=asingIpFloatServer($vm['server']['id']);
+	//eliminar pub key ssh
+	shell_exec('ssh-keygen -f "/root/.ssh/known_hosts" -R "'.$ipFloat.'"');
+	//instalar shell in a box
+	$transFile=shell_exec('sudo chmod 775 ./scripts/terminal_testbed/key.pem');
+	$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ./scripts/terminal_testbed/install_conf_shellinabox.sh ubuntu@'.$ipFloat.':/home/ubuntu');
+	// $installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo ./install_conf_shellinabox.sh"');
 	return $vm_created;
 }
 function rezise_vm($id_server, $idFlavor){
@@ -5878,11 +5886,11 @@ function deleteRouterPort($idrouter, $idport){
 //return ipFloat of vm
 //in variable idServer
 function ipFloat($idServer){
-	consult_servers_openstack();
-	consult_flotantIp_openstack();
-	$ipfloatTelco=ipFloatServer($idServer);
+	// consult_servers_openstack();
+	// consult_flotantIp_openstack();
+	$ipfloat=ipFloatServer($idServer);
 	// echo $ipfloatTelco;
-	if( $ipfloatTelco == ''){
+	if( $ipfloat == ''){
 		$ipfloat=asingIpFloatServer($idServer);
 	}
 	return $ipfloat;
@@ -5892,7 +5900,15 @@ function ipFloat($idServer){
 function create_core_ims($names,$id_net,$domain,$typeDomain){
 	foreach ($names as $nameVm=>$ipVm){
 		// create_vm( $nameVm, $id_image, "d2", $id_net);
-		$vm_create=create_vm( $nameVm, "ffd93b55-858c-4ca2-9f0b-0e7890966392", "d2", $id_net);
+		if( $nameVm == 'sipp'){
+			$vm_create=create_vm( "sipp", "ffd93b55-858c-4ca2-9f0b-0e7890966392", "d2", $id_net);
+		}else{
+			if( $nameVm == 'bono'){
+				$vm_create=create_vm( "bono", "ffd93b55-858c-4ca2-9f0b-0e7890966392", "d2", $id_net);
+			}else{
+				$vm_create=create_vm( $nameVm, "ffd93b55-858c-4ca2-9f0b-0e7890966392", "d2", $id_net);
+			}
+		}
 		$vmJson = json_decode($vm_create, true);
 		consult_flavors_openstack();
 		consult_servers_openstack();
@@ -5902,5 +5918,18 @@ function create_core_ims($names,$id_net,$domain,$typeDomain){
 		$vcpus=$flavor['vcpus'];
 		$disk=$flavor['disk'];
 		$agregar=db_execute("INSERT INTO core_domain (id_server, domain, type_domain, ram, vcpus, disk) values ( '".$vmJson['server']['id']."','".$domain."','".$typeDomain."','".$ram."','".$vcpus."','".$disk."')");
+		//si es un sipp instalar el sipp
+		if( $typeDomain == "aio" ){
+			$ipBono=db_fetch_cell_prepared("SELECT s.ip_local FROM server_openstack s INNER JOIN core_domain c ON c.id_server=s.id_server WHERE s.name_server='allInOne' AND c.domain='".$domain."'");
+		}else{
+			$ipBono=db_fetch_cell_prepared("SELECT s.ip_local FROM server_openstack s INNER JOIN core_domain c ON c.id_server=s.id_server WHERE s.name_server='bono' AND c.domain='".$domain."'");
+		}
+		$ipFloat=ipFloatServer($id_server);
+		if( $nameVm == 'sipp'){
+			shell_exec('sudo ssh-keygen -f "/root/.ssh/known_hosts" -R "'.$ipFloat.'"');
+			$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ./scripts/sipp/install_sipp.sh ubuntu@'.$ipFloat.':/home/ubuntu');
+			$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "chmod 775 ./install_sipp.sh"');
+			$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo ./install_sipp.sh '.$ipBono.'"');
+		}
 	}
 }

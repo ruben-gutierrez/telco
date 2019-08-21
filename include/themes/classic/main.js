@@ -502,14 +502,14 @@ function add_test() {
             },
             success: function(date) {
                 // console.log(date);
-                if (date != '') {
-                    if(date != 'errorIdserver'){
-                        alert("se agrego la prueba correctamente, ahora ingrese las opciones de l aprueba");
-                    }else{
-                        alert("Error al buscar la máquina virtual SIPP, verifique el estado de esta");
-                    }
-                }else{
+                if (date == '') {
                     alert("Error al subir el archivo, Verifique los datos o contacte al administrador");
+                }else{
+                    if(date == 'errorIdserver'){
+                        alert("Error al buscar la máquina virtual SIPP, verifique el estado de esta");
+                    }else{
+                        alert("se agrego la prueba correctamente, ahora ingrese las opciones de l aprueba");
+                    }
                 }
                 // console.log(date);
                 $('#form_info_test')[0][2].value = date;
@@ -1234,7 +1234,6 @@ function addVmtoDomain(idDomain) {
                 var btns = '<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button><button type="button" class="btn btn-primary" onclick="addVM()">Crear</button>';
                 $('.modal-body').html(content);
                 $('.modal-footer').html(btns);
-               
             }
         }
     });
