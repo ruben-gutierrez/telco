@@ -220,17 +220,17 @@ if (!empty($_POST)) {
 				'sprout'=>'',
 				'ellis'=>'',
 				'homer'=>'',
-				'vellum'=>'',
 				'dime'=>'',
 				'asterisk'=>'',
-				'ibcf'=>''
+				'ibcf'=>'',
+				'vellum'=>''
 			);
 			$nodes_dist=array('bono'=>'',
 				'sprout'=>'',
 				'ellis'=>'',
 				'homer'=>'',
-				'vellum'=>'',
-				'dime'=>''
+				'dime'=>'',
+				'vellum'=>''
 			);
 				$idmod=db_fetch_cell_prepared("SELECT id_server FROM core_domain WHERE domain='".$_POST['dominio']."'");
 				//$idmod=db_fetch_cell_prepared("SELECT s.id_subnet FROM arqs_testbedims a inner JOIN network_openstack n ON a.dominio = n.domain  inner JOIN subnet_openstack s ON n.id_net = s.id_net where a.dominio='10.10.10.0'");

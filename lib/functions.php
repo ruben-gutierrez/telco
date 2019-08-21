@@ -5428,22 +5428,22 @@ function create_vm_to_core($domain,$typeDomain){
 					'sprout'=>'',
 					'ellis'=>'',
 					'homer'=>'',
-					'vellum'=>'',
 					'dime'=>'',
 					'asterisk'=>'',
 					'ibcf'=>'',
 					'sipp' =>'',
-					'dns' =>''
+					'dns' =>'',
+					'vellum'=>''
 
 	);
 	$nodes_dist=array('bono'=>'',
 		'sprout'=>'',
 		'ellis'=>'',
 		'homer'=>'',
-		'vellum'=>'',
 		'dime'=>'',
 		'sipp' =>'',
-		'dns' =>''
+		'dns' =>'',
+		'vellum'=>''
 	);
 	$nodes_allinone=array('allInOne'=>'',
 		'sipp' =>''
@@ -5770,6 +5770,10 @@ function ipFloatServer($idServer){
 	consult_servers_openstack();
 	return db_fetch_cell_prepared("SELECT ip_public FROM server_openstack where id_server='".$idServer."'");
 }
+function ipLocalServer($idServer){
+	consult_servers_openstack();
+	return db_fetch_cell_prepared("SELECT ip_local FROM server_openstack where id_server='".$idServer."'");
+}
 
 function show_server($idServer){
 	$action="show_server";
@@ -5898,6 +5902,7 @@ function ipFloat($idServer){
 
 
 function create_core_ims($names,$id_net,$domain,$typeDomain){
+	$coreIp=array();
 	foreach ($names as $nameVm=>$ipVm){
 		// create_vm( $nameVm, $id_image, "d2", $id_net);
 		if( $nameVm == 'sipp'){
@@ -5918,18 +5923,104 @@ function create_core_ims($names,$id_net,$domain,$typeDomain){
 		$vcpus=$flavor['vcpus'];
 		$disk=$flavor['disk'];
 		$agregar=db_execute("INSERT INTO core_domain (id_server, domain, type_domain, ram, vcpus, disk) values ( '".$vmJson['server']['id']."','".$domain."','".$typeDomain."','".$ram."','".$vcpus."','".$disk."')");
+		$ipFloat=ipFloatServer($id_server);
+		$ipLocal=ipLocalServer($id_server);
 		//si es un sipp instalar el sipp
 		if( $typeDomain == "aio" ){
 			$ipBono=db_fetch_cell_prepared("SELECT s.ip_local FROM server_openstack s INNER JOIN core_domain c ON c.id_server=s.id_server WHERE s.name_server='allInOne' AND c.domain='".$domain."'");
+			// crear core AIO
+			shell_exec('sudo ssh-keygen -f "/root/.ssh/known_hosts" -R "'.$ipFloat.'"');
+			$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ./scripts/coreIMS/aio.sh ubuntu@'.$ipFloat.':/home/ubuntu');
+			$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "chmod 775 ./install_sipp.sh"');
+			$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo ./install_sipp.sh '.$ipBono.'"');
 		}else{
 			$ipBono=db_fetch_cell_prepared("SELECT s.ip_local FROM server_openstack s INNER JOIN core_domain c ON c.id_server=s.id_server WHERE s.name_server='bono' AND c.domain='".$domain."'");
+			if( $nameVm == 'bono'){
+				$coreIp.= array("bono" => array("float"=>$ipLocal,
+												"local"=>$ipFloat ));
+				shell_exec('sudo ssh-keygen -f "/root/.ssh/known_hosts" -R "'.$ipFloat.'"');
+				$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ./scripts/coreIMS/bono.sh ubuntu@'.$ipFloat.':/home/ubuntu');
+				$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "chmod 775 ./bono.sh"');
+				// $installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo ./install_sipp.sh '.$ipBono.'"');
+			}
+			if( $nameVm == 'sprout'){
+				$coreIp.= array("sprout" => array("float"=>$ipLocal,
+													"local"=>$ipFloat ));
+				shell_exec('sudo ssh-keygen -f "/root/.ssh/known_hosts" -R "'.$ipFloat.'"');
+				$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ./scripts/coreIMS/sprout.sh ubuntu@'.$ipFloat.':/home/ubuntu');
+				$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "chmod 775 ./sprout.sh"');
+				// $installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo ./install_sipp.sh '.$ipBono.'"');
+			}
+			if( $nameVm == 'ellis'){
+				$coreIp.= array("ellis" => array("float"=>$ipLocal,
+													"local"=>$ipFloat ));
+				shell_exec('sudo ssh-keygen -f "/root/.ssh/known_hosts" -R "'.$ipFloat.'"');
+				$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ./scripts/coreIMS/ellis.sh ubuntu@'.$ipFloat.':/home/ubuntu');
+				$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "chmod 775 ./ellis.sh"');
+				// $installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo ./install_sipp.sh '.$ipBono.'"');
+			}
+			if( $nameVm == 'homer'){
+				$coreIp.= array("homer" => array("float"=>$ipLocal,
+												"local"=>$ipFloat ));
+				shell_exec('sudo ssh-keygen -f "/root/.ssh/known_hosts" -R "'.$ipFloat.'"');
+				$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ./scripts/coreIMS/homer.sh ubuntu@'.$ipFloat.':/home/ubuntu');
+				$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "chmod 775 ./homer.sh"');
+				// $installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo ./install_sipp.sh '.$ipBono.'"');
+			}
+			if( $nameVm == 'vellum'){
+				$coreIp.= array("vellum" => array("float"=>$ipLocal,
+													"local"=>$ipFloat ));
+				shell_exec('sudo ssh-keygen -f "/root/.ssh/known_hosts" -R "'.$ipFloat.'"');
+				$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ./scripts/coreIMS/vellum.sh ubuntu@'.$ipFloat.':/home/ubuntu');
+				$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "chmod 775 ./vellum.sh"');
+				// $installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo ./install_sipp.sh '.$ipBono.'"');
+			}
+			if( $nameVm == 'dime'){
+				$coreIp.= array("dime" => array("float"=>$ipLocal,
+												"local"=>$ipFloat ));
+				shell_exec('sudo ssh-keygen -f "/root/.ssh/known_hosts" -R "'.$ipFloat.'"');
+				$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ./scripts/coreIMS/dime.sh ubuntu@'.$ipFloat.':/home/ubuntu');
+				$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "chmod 775 ./dime.sh"');
+				// $installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo ./install_sipp.sh '.$ipBono.'"');
+			}
+			if( $nameVm == 'dns'){
+				$coreIp.= array("dns"=> array("float"=>$ipLocal,
+												"local"=>$ipFloat ));
+				shell_exec('sudo ssh-keygen -f "/root/.ssh/known_hosts" -R "'.$ipFloat.'"');
+				$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ./scripts/coreIMS/dns.sh ubuntu@'.$ipFloat.':/home/ubuntu');
+				$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "chmod 775 ./dns.sh"');
+				// $installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo ./install_sipp.sh '.$ipBono.'"');
+			}
+			if( $typeDomain == "dist_pstn"){
+				if( $nameVm == 'ibcf'){
+					$coreIp.= array("ibcf" => array("float"=>$ipLocal,
+													"local"=>$ipFloat ));
+					shell_exec('sudo ssh-keygen -f "/root/.ssh/known_hosts" -R "'.$ipFloat.'"');
+					$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ./scripts/coreIMS/ibcf.sh ubuntu@'.$ipFloat.':/home/ubuntu');
+					$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "chmod 775 ./ibcf.sh"');
+					// $installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo ./install_sipp.sh '.$ipBono.'"');
+				}
+				if( $nameVm == 'asterisk'){
+					// $coreIp.= array("asterisk" => $ipLocal);
+					shell_exec('sudo ssh-keygen -f "/root/.ssh/known_hosts" -R "'.$ipFloat.'"');
+					$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ./scripts/coreIMS/asterisk.sh ubuntu@'.$ipFloat.':/home/ubuntu');
+					$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "chmod 775 ./asterisk.sh"');
+					// $installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo ./install_sipp.sh '.$ipBono.'"');
+				}
+			}
 		}
-		$ipFloat=ipFloatServer($id_server);
 		if( $nameVm == 'sipp'){
 			shell_exec('sudo ssh-keygen -f "/root/.ssh/known_hosts" -R "'.$ipFloat.'"');
 			$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ./scripts/sipp/install_sipp.sh ubuntu@'.$ipFloat.':/home/ubuntu');
 			$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "chmod 775 ./install_sipp.sh"');
 			$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo ./install_sipp.sh '.$ipBono.'"');
+		}
+	}
+	foreach ($coreIp as $nameVm=>$ipsVm){
+		if( $nameVm == 'dns'){
+			$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipsVm['float'].' "sudo ./'.$nameVm.'.sh"');
+		}else{
+			$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipsVm['float'].' "sudo ./'.$nameVm.'.sh '.$coreIp['dns']['local'].' '.$coreIp['bono']['local'].' '.$coreIp['sprout']['local'].' '.$coreIp['ellis']['local'].' '.$coreIp['homer']['local'].' '.$coreIp['vellum']['local'].' '.$coreIp['dime']['local'].' '.$coreIp['ibcf']['local'].' "');
 		}
 	}
 }
