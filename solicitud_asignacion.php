@@ -1,5 +1,5 @@
 <?php 
-global $current_user;
+global $current_user,$options_test_sprout;
 
 include('./include/global.php');
 include_once('./lib/api_graph.php');
@@ -120,7 +120,7 @@ if (!empty($_POST)) {
 							//report
 							addActionToReport($_POST['idUser'], "Agregó la arquitectura ".$domain."");
 							//crear maquinas
-							$createDomain=create_vm_to_core($_POST['dominio_arq'], $_POST['type']);
+							$createDomain=create_vm_to_core($_POST['dominio_arq'], $_POST['type'],$options_test_sprout);
 							// print_r($createDomain);
 							// retorna la actualizacion de la tabla
 							$id_arq=db_fetch_cell_prepared("SELECT id from arqs_testbedims order by id desc limit 1");
@@ -216,21 +216,23 @@ if (!empty($_POST)) {
 			break;
 
 		case '6'://subir informacioon de arquitectura
-			$nodes_dist_pstn=array('bono'=>'',
+			$nodes_dist_pstn=array(
 				'sprout'=>'',
 				'ellis'=>'',
 				'homer'=>'',
+				'vellum'=>'',
 				'dime'=>'',
 				'asterisk'=>'',
 				'ibcf'=>'',
-				'vellum'=>''
+				'bono'=>''
 			);
-			$nodes_dist=array('bono'=>'',
+			$nodes_dist=array(
 				'sprout'=>'',
 				'ellis'=>'',
 				'homer'=>'',
 				'dime'=>'',
-				'vellum'=>''
+				'vellum'=>'',
+				'bono'=>''
 			);
 				$idmod=db_fetch_cell_prepared("SELECT id_server FROM core_domain WHERE domain='".$_POST['dominio']."'");
 				//$idmod=db_fetch_cell_prepared("SELECT s.id_subnet FROM arqs_testbedims a inner JOIN network_openstack n ON a.dominio = n.domain  inner JOIN subnet_openstack s ON n.id_net = s.id_net where a.dominio='10.10.10.0'");
@@ -431,8 +433,6 @@ if (!empty($_POST)) {
 
 			break;
 		case '15'://tomar snapshot o punto de control de una vm
-		
-			
 			$idInstant=db_fetch_cell_prepared("SELECT id_instant from instant_images_openstack WHERE id_server='".$_POST['id_server']."'");
 			// print_r($idInstant);
 			if( empty($idInstant) ){
@@ -453,23 +453,17 @@ if (!empty($_POST)) {
 			print_r(rebuildServerImage($_POST['id_server'], $idInstant));
 
 			break;
-		case '17'://ssh de las maquinas
-			
-			
+		case '17'://ssh de las maquinas	
 			$ipfloatTelco=ipFloatServer($_POST['id_server']);
 			// echo $ipfloatTelco;
 			if( $ipfloatTelco == ''){
 				// echo "no tiene ip publica";
 				$ipfloat=asingIpFloatServer($_POST['id_server']);
-				
 				if( $ipfloat == '0'){
 					echo "0";
 					// echo "fallo al agregar ip flotante";
 				}else{
-					
-
 					shell_exec('ssh-keygen -f "/root/.ssh/known_hosts" -R "'.$ipfloat.'"');
-
 					// $transFile=shell_exec('sudo chmod 775 ./scripts/terminal_testbed/Testbed_vIMS.pem');
 					$transFile=shell_exec('sudo chmod 775 ./scripts/terminal_testbed/key.pem');
 					$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ./scripts/terminal_testbed/install_conf_shellinabox.sh ubuntu@'.$ipfloat.':/home/ubuntu');

@@ -31,10 +31,7 @@ if (isset($_GET['arq'])) {
             
           </div>
           <div id="table_options_test" class="animated fadeIn">
-          
           </div>
-      			
-
   </div>
   
   <div id="test_bono" class="ancla">

@@ -22,7 +22,7 @@
  +-------------------------------------------------------------------------+
 */
 
-global $paginas_testbed, $explain_test_bono;
+global $options_test_sprout;
 /* title_trim - takes a string of text, truncates it to $max_length and appends
      three periods onto the end
    @arg $text - the string to evaluate
@@ -5392,7 +5392,8 @@ function create_vm($name_server, $id_image, $flavor_ref, $id_net){
 	//instalar shell in a box
 	$transFile=shell_exec('sudo chmod 775 ./scripts/terminal_testbed/key.pem');
 	$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ./scripts/terminal_testbed/install_conf_shellinabox.sh ubuntu@'.$ipFloat.':/home/ubuntu');
-	// $installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo ./install_conf_shellinabox.sh"');
+	$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "chmod 775 ./install_conf_shellinabox.sh"');
+	$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo ./install_conf_shellinabox.sh"');
 	return $vm_created;
 }
 function rezise_vm($id_server, $idFlavor){
@@ -5423,27 +5424,29 @@ function delete_info_openstack(){
 	db_execute("delete from flotantIp_openstack");
 }
 
-function create_vm_to_core($domain,$typeDomain){
-	$nodes_dist_pstn=array('bono'=>'',
-					'sprout'=>'',
-					'ellis'=>'',
-					'homer'=>'',
-					'dime'=>'',
-					'asterisk'=>'',
-					'ibcf'=>'',
-					'sipp' =>'',
-					'dns' =>'',
-					'vellum'=>''
+function create_vm_to_core($domain,$typeDomain,$options_test_sprout){
+	$nodes_dist_pstn=array(
+		'sprout'=>'',
+		'ellis'=>'',
+		'homer'=>'',
+		'dime'=>'',
+		'asterisk'=>'',
+		'ibcf'=>'',
+		'sipp' =>'',
+		'dns' =>'',
+		'vellum'=>'',
+		'bono'=>''
 
 	);
-	$nodes_dist=array('bono'=>'',
+	$nodes_dist=array(
 		'sprout'=>'',
 		'ellis'=>'',
 		'homer'=>'',
 		'dime'=>'',
 		'sipp' =>'',
 		'dns' =>'',
-		'vellum'=>''
+		'vellum'=>'',
+		'bono'=>''
 	);
 	$nodes_allinone=array('allInOne'=>'',
 		'sipp' =>''
@@ -5456,7 +5459,7 @@ function create_vm_to_core($domain,$typeDomain){
 						case 'aio':
 							// #crear solo 1 ubuntu 14
 							// #guardar solo bono
-							create_core_ims($nodes_allinone,$id_net,$domain,$typeDomain);
+							create_core_ims($nodes_allinone,$id_net,$domain,$typeDomain,$options_test_sprout);
 							
 							
 							break;
@@ -5465,12 +5468,12 @@ function create_vm_to_core($domain,$typeDomain){
 
 						case 'dist':
 							// crear 5 nodos mas dns
-							create_core_ims($nodes_dist, $id_net,$domain,$typeDomain);
+							create_core_ims($nodes_dist, $id_net,$domain,$typeDomain, $options_test_sprout);
 							
 							break;
 						case 'dist_pstn':
 							// crear 7 nodos mas dns
-							create_core_ims($nodes_dist_pstn, $id_net,$domain,$typeDomain);
+							create_core_ims($nodes_dist_pstn, $id_net,$domain,$typeDomain, $options_test_sprout);
 							
 							break;
 						
@@ -5901,7 +5904,7 @@ function ipFloat($idServer){
 }
 
 
-function create_core_ims($names,$id_net,$domain,$typeDomain){
+function create_core_ims($names,$id_net,$domain,$typeDomain,$options_test_sprout){
 	$coreIp=array();
 	foreach ($names as $nameVm=>$ipVm){
 		// create_vm( $nameVm, $id_image, "d2", $id_net);
@@ -5933,6 +5936,7 @@ function create_core_ims($names,$id_net,$domain,$typeDomain){
 			$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ./scripts/coreIMS/aio.sh ubuntu@'.$ipFloat.':/home/ubuntu');
 			$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "chmod 775 ./install_sipp.sh"');
 			$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo ./install_sipp.sh '.$ipBono.'"');
+
 		}else{
 			$ipBono=db_fetch_cell_prepared("SELECT s.ip_local FROM server_openstack s INNER JOIN core_domain c ON c.id_server=s.id_server WHERE s.name_server='bono' AND c.domain='".$domain."'");
 			if( $nameVm == 'bono'){
@@ -6008,6 +6012,7 @@ function create_core_ims($names,$id_net,$domain,$typeDomain){
 					// $installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo ./install_sipp.sh '.$ipBono.'"');
 				}
 			}
+			
 		}
 		if( $nameVm == 'sipp'){
 			shell_exec('sudo ssh-keygen -f "/root/.ssh/known_hosts" -R "'.$ipFloat.'"');
@@ -6016,11 +6021,25 @@ function create_core_ims($names,$id_net,$domain,$typeDomain){
 			$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo ./install_sipp.sh '.$ipBono.'"');
 		}
 	}
+	if( $typeDomain == "aio" ){
+		//agregar prueba bono
+		db_execute("INSERT INTO test_testbedims ( dominio, name_test, comand, description_test, file_test) VALUES ('".$domain."','Prueba Bono','comando','En esta prueba se emulan usuarios conectados al nùcleo IMS Todo en Uno.','sip-stress.xml')");
+	}else{
+		//agregar prueba bono
+		db_execute("INSERT INTO test_testbedims ( dominio, name_test, comand, description_test, file_test) VALUES ('".$domain."','Prueba Bono','comando','En esta prueba se emulan usuarios conectados al nùcleo IMS Todo en Uno.','sip-stress.xml')");
+		//agregar prueba Sprout
+		db_execute("INSERT INTO test_testbedims ( dominio, name_test, comand, description_test, file_test) VALUES ('".$domain."','Prueba Sprout','comando','En esta prueba se un emula un nodo BONO con el fin de generar flujo de informaciòn desde el nodo BONO al nodo SPROUT y verificar el rendimiento del nucleo ante diferentes requierimientos de usuarios','sip-stress.xml')");
+		$idTest=db_fetch_cell_prepared("SELECT id_test FROM test_testbedims WHERE dominio='".$domain."' AND name_test='Prueba Sprout'");
+		//agregar opciones de prueba sprout
+		foreach( $options_test_sprout as $option){
+			db_execute("INSERT INTO option_test_testbedims ( id_test, options, value, description_option,argument) VALUES ( '".$idTest."' , '".$option['name']."' , '".$option['value']."' , '".$option['description']."' , '".$option['argument']."')");
+		}
+	}
 	foreach ($coreIp as $nameVm=>$ipsVm){
 		if( $nameVm == 'dns'){
 			$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipsVm['float'].' "sudo ./'.$nameVm.'.sh"');
 		}else{
-			$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipsVm['float'].' "sudo ./'.$nameVm.'.sh '.$coreIp['dns']['local'].' '.$coreIp['bono']['local'].' '.$coreIp['sprout']['local'].' '.$coreIp['ellis']['local'].' '.$coreIp['homer']['local'].' '.$coreIp['vellum']['local'].' '.$coreIp['dime']['local'].' '.$coreIp['ibcf']['local'].' "');
+			$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipsVm['float'].' "sudo ./'.$nameVm.'.sh testbed.edu '.$coreIp['dns']['local'].' '.$coreIp['bono']['local'].' '.$coreIp['sprout']['local'].' '.$coreIp['ellis']['local'].' '.$coreIp['homer']['local'].' '.$coreIp['vellum']['local'].' '.$coreIp['dime']['local'].' '.$coreIp['ibcf']['local'].' "');
 		}
 	}
 }

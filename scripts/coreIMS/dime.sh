@@ -3,22 +3,21 @@
 #EDITAR ARCHIVOS_RESOLV.CONF 
 
 #VARIABLES IP
-
-DNS_IP=$1
-bono=$2
-sprout=$3
-ellis=$4
-homer=$5
-vellum=$6
-dime=$7
-ibcf=$8
+DNS_IP=192.168.1.52
+bono=192.168.1.11
+sprout=192.168.1.12
+ellis=192.168.1.13
+homer=192.168.1.14
+vellum=192.168.1.15
+dime=192.168.1.16
+ibcf=192.168.1.17
 
 echo "Configurar DNS"
 cd /etc/
-echo -e "nameserver $DNS_IP \nnameserver 8.8.8.8 \nnameserver 8.8.4.4" >> resolv.conf
+echo -e "nameserver $DNS_IP \nnameserver 8.8.8.8 \nnameserver 8.8.4.4" > resolv.conf
 cd ..
 cd /etc/resolvconf/resolv.conf.d/
-echo -e "nameserver $DNS_IP \nnameserver 8.8.8.8 \nnameserver 8.8.4.4" >> head
+echo -e "nameserver $DNS_IP \nnameserver 8.8.8.8 \nnameserver 8.8.4.4" > head
 DNS_clearwater=/etc/resolv.conf
 DNS_clearwater1=/etc/resolvconf/resolv.conf.d/head
 
@@ -91,15 +90,15 @@ echo "Archivo Parar Procesos Clearwater"
 parar_proc=/etc/parar_proc.sh
 echo "Creando script para parar los servicios del núcleo IMS de clearwater. Ruta:/etc/parar_proc.sh"
 echo "#!/bin/bash 
-\n# -*- ENCODING: UTF-8 -*- 
-\n\nsudo monit stop -g etcd 
-\nsudo monit stop -g clearwater_cluster_manager 
-\nsudo monit stop -g clearwater_config_manager
-\nsudo monit stop -g clearwater_queue_manager
-\nsudo touch /etc/clearwater/no_cluster_manager
-\nsudo rm -rf  /var/lib/clearwater-etcd/*
-\nsleep 3s
-\necho 'Los servicios se pararon correctamente'" > $parar_proc
+# -*- ENCODING: UTF-8 -*- 
+sudo monit stop -g etcd 
+sudo monit stop -g clearwater_cluster_manager 
+sudo monit stop -g clearwater_config_manager
+sudo monit stop -g clearwater_queue_manager
+sudo touch /etc/clearwater/no_cluster_manager
+sudo rm -rf  /var/lib/clearwater-etcd/*
+sleep 3s
+echo 'Los servicios se pararon correctamente'" > $parar_proc
 # cat parar_proc_IMS >> $parar_proc 
 chmod 775 $parar_proc
 chmod 777 $parar_proc
@@ -108,37 +107,53 @@ activar_proc=/etc/activar_nucleo.sh
 echo "Creando script para activar los servicios del núcleo IMS de clearwater en /etc/activar_nucleo.sh"
 # cat activar_nucleo_IMS >> $activar_proc 
 echo "#!/bin/bash
-\n# -*- ENCODING: UTF-8 -*-
-\n#Nodo Vellum
-\n#sudo /usr/share/clearwater/bin/run-in-signaling-namespace nodetool status
+# -*- ENCODING: UTF-8 -*-
+#Nodo Vellum
+#sudo /usr/share/clearwater/bin/run-in-signaling-namespace nodetool status
 
-\n#Nodo Sprout
-\n#sudo cw-validate_{shared|fallback}_ifcs_xml
-\necho 'Restableciendo núcleo'
-\nsleep 1s
-\nsudo clearwater-etcdctl cluster-health
-\nsleep 2s
-\nsudo clearwater-etcdctl member list
-\nsleep 2s
-\nsudo /usr/share/clearwater/clearwater-config-manager/scripts/check_config_sync
-\nsleep 2s
-\nsudo monit monitor -g etcd
-\nsudo monit monitor -g clearwater_config_manager
-\nsudo monit monitor -g clearwater_queue_manager
-\nsleep 2s
-\nsudo monit summary
-\n#sudo /usr/share/clearwater/clearwater-cluster-manager/scripts/load_from_chronos_cluster vellum
-\n#sudo /usr/share/clearwater/clearwater-cluster-manager/scripts/load_from_memcached_cluster vellum
-\n#sudo /usr/share/clearwater/clearwater-cluster-manager/scripts/load_from_cassandra_cluster vellum
-\nsleep 2s
-\nsudo /usr/share/clearwater/clearwater-cluster-manager/scripts/check_cluster_state
-\nsleep 2s
-\nsudo rm /etc/clearwater/no_cluster_manager
-\nsudo monit monitor -g clearwater_cluster_manager
-\nsleep 2s
-\nsudo monit summary" > $activar_proc
+#Nodo Sprout
+#sudo cw-validate_{shared|fallback}_ifcs_xml
+echo 'Restableciendo núcleo'
+sleep 1s
+sudo clearwater-etcdctl cluster-health
+sleep 2s
+sudo clearwater-etcdctl member list
+sleep 2s
+sudo /usr/share/clearwater/clearwater-config-manager/scripts/check_config_sync
+sleep 2s
+sudo monit monitor -g etcd
+sudo monit monitor -g clearwater_config_manager
+sudo monit monitor -g clearwater_queue_manager
+sleep 2s
+sudo monit summary
+#sudo /usr/share/clearwater/clearwater-cluster-manager/scripts/load_from_chronos_cluster vellum
+#sudo /usr/share/clearwater/clearwater-cluster-manager/scripts/load_from_memcached_cluster vellum
+#sudo /usr/share/clearwater/clearwater-cluster-manager/scripts/load_from_cassandra_cluster vellum
+sleep 2s
+sudo /usr/share/clearwater/clearwater-cluster-manager/scripts/check_cluster_state
+sleep 2s
+sudo rm /etc/clearwater/no_cluster_manager
+sudo monit monitor -g clearwater_cluster_manager
+sleep 2s
+sudo monit summary" > $activar_proc
 chmod 775 $activar_proc
 chmod 777 $parar_proc
+
+# Instalar shellinbox
+
+if [ ! -f "/etc/default/shellinabox" ]; then
+    sudo apt-get update;
+    sudo apt-get -y install openssl shellinabox;
+    sudo useradd usuario
+    echo usuario:usuario | chpasswd 
+    sudo sed -i '$a usuario    ALL=(ALL:ALL) ALL' /etc/sudoers
+fi
+echo "Should shellinaboxd start automatically" > /etc/default/shellinabox;
+echo "SHELLINABOX_DAEMON_START=1" >> /etc/default/shellinabox;
+echo "SHELLINABOX_PORT=7676" >> /etc/default/shellinabox;
+echo "SHELLINABOX_ARGS='--no-beep --disable-ssl'" >> /etc/default/shellinabox;
+sudo killall shellinaboxd
+sudo service shellinabox start
 
 echo "                                                       "
 echo "************************************************************************************************************"
