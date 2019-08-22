@@ -5387,13 +5387,16 @@ function create_vm($name_server, $id_image, $flavor_ref, $id_net){
 	$vm = json_decode($vm_created, true);
 	sleep(10);
 	$ipFloat=asingIpFloatServer($vm['server']['id']);
+	sleep(5);
 	//eliminar pub key ssh
 	shell_exec('ssh-keygen -f "/root/.ssh/known_hosts" -R "'.$ipFloat.'"');
 	//instalar shell in a box
-	$transFile=shell_exec('sudo chmod 775 ./scripts/terminal_testbed/key.pem');
-	$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ./scripts/terminal_testbed/install_conf_shellinabox.sh ubuntu@'.$ipFloat.':/home/ubuntu');
-	$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "chmod 775 ./install_conf_shellinabox.sh"');
-	$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo ./install_conf_shellinabox.sh"');
+	$transFile=shell_exec('sudo chmod 775 /var/www/html/telco/scripts/terminal_testbed/key.pem');
+	$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem /var/www/html/telco/scripts/terminal_testbed/install_conf_shellinabox.sh ubuntu@'.$ipFloat.':/home/ubuntu');
+	// $installShell=shell_exec('sudo ssh -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "chmod 775 ./install_conf_shellinabox.sh"');
+	// $installShell=shell_exec('sudo ssh -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo ./install_conf_shellinabox.sh;"');
+	// $exeInstallShell=shell_exec('timeout 1 ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo invoke-rc.d shellinabox stop"');
+	// $exeInstallShell=shell_exec('timeout 1 ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo invoke-rc.d shellinabox start"');
 	return $vm_created;
 }
 function rezise_vm($id_server, $idFlavor){
@@ -5786,6 +5789,12 @@ function show_server($idServer){
 
 }
 
+function delete_floatIp($idFloatIp){
+	$action="delete_floatIp";
+	$answer=shell_exec("./scripts/request_openstack.sh $action $idFloatIp");
+	return($answer);
+}
+
 function delete_snapshot($idServer){
 	$idImage= db_fetch_cell_prepared("SELECT id_instant FROM instant_images_openstack where id_server='".$idServer."'");
 	$action="delete_image";
@@ -5893,14 +5902,15 @@ function deleteRouterPort($idrouter, $idport){
 //return ipFloat of vm
 //in variable idServer
 function ipFloat($idServer){
-	// consult_servers_openstack();
-	// consult_flotantIp_openstack();
+	consult_servers_openstack();
+	consult_flotantIp_openstack();
 	$ipfloat=ipFloatServer($idServer);
-	// echo $ipfloatTelco;
+	// echo $ipfloat;
 	if( $ipfloat == ''){
 		$ipfloat=asingIpFloatServer($idServer);
 	}
 	return $ipfloat;
+
 }
 
 
@@ -6039,7 +6049,7 @@ function create_core_ims($names,$id_net,$domain,$typeDomain,$options_test_sprout
 		if( $nameVm == 'dns'){
 			$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipsVm['float'].' "sudo ./'.$nameVm.'.sh"');
 		}else{
-			$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipsVm['float'].' "sudo ./'.$nameVm.'.sh testbed.edu '.$coreIp['dns']['local'].' '.$coreIp['bono']['local'].' '.$coreIp['sprout']['local'].' '.$coreIp['ellis']['local'].' '.$coreIp['homer']['local'].' '.$coreIp['vellum']['local'].' '.$coreIp['dime']['local'].' '.$coreIp['ibcf']['local'].' "');
+			$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipsVm['float'].' "sudo ./'.$nameVm.'.sh testbed.unicauca.edu.co '.$coreIp['dns']['local'].' '.$coreIp['bono']['local'].' '.$coreIp['sprout']['local'].' '.$coreIp['ellis']['local'].' '.$coreIp['homer']['local'].' '.$coreIp['vellum']['local'].' '.$coreIp['dime']['local'].' '.$coreIp['ibcf']['local'].' "');
 		}
 	}
 }

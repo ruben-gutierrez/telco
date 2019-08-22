@@ -1027,7 +1027,7 @@ function showInfoDomain(IdDomain, core) {
 }
 
 function terminal(idServer) {
-
+    
     var parametros = new FormData();
     parametros.append('action', '17');
     parametros.append('id_server', idServer);
@@ -1037,7 +1037,7 @@ function terminal(idServer) {
         contentType: false,
         processData: false,
         data: parametros,
-        timeout: 10000,
+        // timeout: 10000,
         beforeSend: function() {
             notifications("terminal", "Creando interfaz para terminal");
         },
@@ -1053,7 +1053,7 @@ function terminal(idServer) {
             deleteNotification("terminal");
         },
         error: function(){
-            alert("Intelo Nuevamente");
+            // alert("Intelo Nuevamente");
         }
     });
 }
@@ -1221,17 +1221,21 @@ function addVmtoDomain(idDomain) {
         processData: false,
         data: parametros,
         beforeSend: function() {
-
+            
         },
         success: function(data) {
+            $(".btnaddVM")[0].disabled=true
             // console.log(data)
             data = JSON.parse(data);
-            // console.log(data);
+            //console.log(data);
             if (data.options == '0') {
-                alert("No puede agregar máquinas virtuales");
+                var content = '<div class="row m-4"> <p>El usuario ha alcanzado el numero máximo de maquinas virtuales</p></div>';
+                var btns = '<button type="button" class="btn btn-info" data-dismiss="modal">Aceptar</button>';
+                $('.modal-body').html(content);
+                $('.modal-footer').html(btns);
             } else {
                 var content = '<form id="add_vm_domain"> <input type="hidden" class="form-control" id="idDomain" name="idDomain" placeholder="action" value="' + idDomain + '"> <div class="form-row">    <div class="form-group col-md-6">     <div class="form-group col">      <label>Nombre</label>      <input type="text" class="form-control " name="nameNewVm" id="nameNewVm" placeholder="Nombre" title="Nombre de la maquina virtual" required autofocus> </div> <div class="form-group col">      <label>Sistema Operativo</label>      <select name="imageNewVm" id="imageNewVm" class="form-control" title="Imagen del sistema operativo que tendra la Máquina virtual" placeholder="Sistema Operativo" required>        ' + data.options + ' </select>    </div>  </div>    <div class="form-group ">    <label for="ramNewVm">Memoria RAM</label>   <input type="number" class="form-control col-sm-7" id="ramNewVm" name="ramNewVm" min="1" max="'+data.ram+'" placeholder="Max '+data.ram+' Mb"  title="Memoria Ram de la nueva máquina virtual, Màximo '+data.ram+' Mb" required>  <label for="vcpuNewVm">Número de procesadores</lavel><input type="number" class="form-control col-sm-7" id="vcpuNewVm" name="vcpuNewVm" min="1" max="'+data.vcpu+'" placeholder="Max '+data.vcpu+'" title="Número de procesadores de la Nueva máquina virtual, Màximo '+data.vcpu+' unidades" required> <label for="diskNewVm">Espacio de almacenamiento</label> <input type="number" class="form-control col-sm-7" id="diskNewVm" name="diskNewVm" min="1" max="'+data.disk+'" placeholder="Max '+data.disk+' GB" title="Tamaño de disco duro en Gb, màximo '+data.disk+' Gb" required></div>       </div>   </div></form>';
-                var btns = '<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button><button type="button" class="btn btn-primary" onclick="addVM()">Crear</button>';
+                var btns = '<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button><button type="button" id="createMaquine" class="btn btn-primary" onclick="addVM()">Crear</button>';
                 $('.modal-body').html(content);
                 $('.modal-footer').html(btns);
             }
@@ -1251,10 +1255,11 @@ function addVM() {
                 processData: false,
                 data: parametros,
                 beforeSend: function() {
+                    // $("#createMaquine")[0].disabled=true
                     notifications("addvm", "Agregando maquina virtual");
                 },
                 success: function(data) {
-                    console.log(data);
+                    // console.log(data);
                     if (data == '0') {
                         alertify.error('Error, Verifique los recursos máximos');
                     } else {
@@ -1263,6 +1268,8 @@ function addVM() {
                     }
                 },
                 complete: function() {
+                    $("#createMaquine")[0].disabled=false
+                    $(".btnaddVM")[0].disabled=false
                     deleteNotification("addvm");
                 }
             });

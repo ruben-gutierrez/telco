@@ -2360,7 +2360,7 @@ function draw_table_domainsOfUser($emailUser){
 						<button class='btn' id='".$elements['dominio']."' onclick='showInfoDomain(".$elements['id'].", `true`)' > <i class='fas fa-project-diagram bg-primary text-white p-2 rounded'> | Core IMS</i> </button>
 						<button class='btn' id='".$elements['dominio']."' onclick='showInfoDomain(".$elements['id'].", `false`)' > <i class='fa fa-laptop-medical bg-primary text-white p-2 rounded'> | VM Adicionales</i> </button>
 						<button class='btn' id='".$elements['dominio']."' onclick='freeDomain(".$elements['id'].")' ><i class='fa fa-unlink bg-danger text-white p-2 rounded'> | Liberar</i> </button>
-						<button class='btn' id='".$elements['dominio']."' onclick='addVmtoDomain(".$elements['id'].")' data-toggle='modal' data-target='#exampleModal'><i class='fa fa-plus bg-warning text-white p-2 rounded'> | Agregar VM</i></button>
+						<button class='btn btnaddVM' id='".$elements['dominio']."' onclick='addVmtoDomain(".$elements['id'].")' data-toggle='modal' data-target='#exampleModal'><i class='fa fa-plus bg-warning text-white p-2 rounded'> | Agregar VM</i></button>
 				</td>
 			</tr>"
 		);
@@ -3028,10 +3028,8 @@ function content_graph($user){
 						<div class="row center" >
 							<label class="my-1 mr-2" for="id_Server">Seleccione la VM</label>
 							<select class="custom-select my-1 mr-sm-2" name="id_server" id="vm_new_graph" onchange="listOptionsNewGraph(this.value)">
-								<option value="127.0.0.1">1</option>
-								<option value="127.0.0.1">2</option>
-								<option value="127.0.0.3">3</option>
-								<option value="127.0.0.4">4</option>
+								<option value="">Elegir ...</option>
+								
 							</select>
 						</div>
 

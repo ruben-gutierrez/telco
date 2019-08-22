@@ -1,7 +1,15 @@
 #!/bin/bash
 echo "Instalación DNS comando: apt-get install bind9"
 apt-get install bind9 --yes
-
+dominio=$1
+DNS_IP=$2
+bono=$3
+sprout=$4
+ellis=$5
+homer=$6
+vellum=$7
+dime=$8
+ibcf=$9
 echo "Crear Zona DNS"
 cd /etc/bind/
 touch telco2.dnszones
@@ -10,7 +18,7 @@ echo "Configurando DNS ZONES"
 echo '$TTL 5m ; Default TTL
 
 ; SOA, NS and A record for DNS server itself
-@                 3600 IN SOA  testbed1.unicauca.edu.co. root.testbed1.unicauca.edu.co. ( 2014010800 ; Ser$
+@                 3600 IN SOA  testbed.unicauca.edu.co. root.testbed.unicauca.edu.co. ( 2014010800 ; Ser$
                                           3600       ; Refresh
                                           3600       ; Retry
                                           3600       ; Expire
@@ -19,17 +27,17 @@ echo '$TTL 5m ; Default TTL
 ;@                 3600 IN A     10.55.5.52; IPv4 address of BIND server
 
 
-bono                    IN A  192.168.1.11
-nodo-bono               IN A  192.168.1.11
-@                       IN A  192.168.1.11
+bono                    IN A  '$bono'
+nodo-bono               IN A  '$bono'
+@                       IN A  '$bono'
 
 @                      IN NAPTR 1 1 "S" "SIP+D2T" "" _sip._tcp
 _sip._tcp              IN SRV   0 0 5060 bono
 
 
-sprout                 IN A  192.168.1.12
-sprout-1               IN A  192.168.1.12
-scscf.sprout           IN A  192.168.1.12
+sprout                 IN A  '$sprout'
+sprout-1               IN A  '$sprout'
+scscf.sprout           IN A  '$sprout'
 
 
 sprout                 IN NAPTR 1 1 "S" "SIP+D2T" "" _sip._tcp.sprout
@@ -38,24 +46,24 @@ scscf.sprout           IN NAPTR 1 1 "S" "SIP+D2T" "" _sip._tcp.scscf.sprout
 _sip._tcp.scscf.sprout IN SRV   0 0 5054 sprout
 
 
-icscf.sprout            IN A    192.168.1.12
+icscf.sprout            IN A    '$sprout'
 _sip._tcp.icscf.sprout IN SRV   0 0 5052 sprout
 
 
-dime                   IN A   192.168.1.16
-dime-1                 IN A   192.168.1.16
+dime                   IN A   '$dime'
+dime-1                 IN A   '$dime'
 
-hs                     IN A   192.168.1.16
-ralf                   IN A   192.168.1.16
+hs                     IN A   '$dime'
+ralf                   IN A   '$dime'
 
 
-homer                  IN A     192.168.1.14
-homer-1                IN A     192.168.1.14
-vellum                 IN A     192.168.1.15
-vellum-1               IN A     192.168.1.15
-ellis                  IN A     192.168.1.13
-ellis-1                IN A     192.168.1.13
-ibcf                   IN A     192.168.1.17 ' > $DNS_ZONES
+homer                  IN A     '$homer'
+homer-1                IN A     '$homer'
+vellum                 IN A     '$vellum'
+vellum-1               IN A     '$vellum'
+ellis                  IN A     '$ellis'
+ellis-1                IN A     '$ellis'
+ibcf                   IN A     '$ibcf' ' > $DNS_ZONES
 #cat $DNS_ZONES
 
 echo "Configurar archivo name.conf.local"
@@ -77,18 +85,4 @@ cat $DNS_ZONES
 echo "Reiniciar servicios DNS comando: /etc/init.d/bind9 restart"
 /etc/init.d/bind9 restart
 
-# Instalar shellinbox
 
-if [ ! -f "/etc/default/shellinabox" ]; then
-    sudo apt-get update;
-    sudo apt-get -y install openssl shellinabox;
-    sudo useradd usuario
-    echo usuario:usuario | chpasswd 
-    sudo sed -i '$a usuario    ALL=(ALL:ALL) ALL' /etc/sudoers
-fi
-echo "Should shellinaboxd start automatically" > /etc/default/shellinabox;
-echo "SHELLINABOX_DAEMON_START=1" >> /etc/default/shellinabox;
-echo "SHELLINABOX_PORT=7676" >> /etc/default/shellinabox;
-echo "SHELLINABOX_ARGS='--no-beep --disable-ssl'" >> /etc/default/shellinabox;
-sudo killall shellinaboxd
-sudo service shellinabox start

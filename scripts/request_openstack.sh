@@ -136,6 +136,9 @@ case $1 in
             # openstack --debug router remove port 039ce27c-bfa7-465f-9dfa-a33fbdeac9f1 187fc695-788c-4ee8-9fb6-11c1a5ef364e
             curl -g -X PUT http://$OS_IP_OPENSTACK:9696/v2.0/routers/$2/remove_router_interface -H "Content-Type: application/json" -H "User-Agent: openstacksdk/0.32.0 keystoneauth1/3.15.0 python-requests/2.22.0 CPython/2.7.15+" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -d '{"port_id": "'$3'"}'
           ;;
+    delete_floatIp)
+            curl -g -i -X DELETE http://$OS_IP_OPENSTACK:9696/v2.0/floatingips/$2 -H "Accept: " -H "User-Agent: openstacksdk/0.32.0 keystoneauth1/3.15.0 python-requests/2.22.0 CPython/2.7.15+" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')"
+          ;;
      *)
           echo "error"
           ;;

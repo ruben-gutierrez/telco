@@ -12,3 +12,4 @@ echo "Should shellinaboxd start automatically" > /etc/default/shellinabox
 echo "SHELLINABOX_DAEMON_START=1" >> /etc/default/shellinabox
 echo "SHELLINABOX_PORT=7676" >> /etc/default/shellinabox
 echo "SHELLINABOX_ARGS='--no-beep --disable-ssl'" >> /etc/default/shellinabox
+

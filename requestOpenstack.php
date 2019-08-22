@@ -14,6 +14,8 @@ if (!empty($_POST)) {
     switch ($action) {
         case '1':
             // echo $_POST['idServer'];
+            $idFloatIp=db_fetch_cell_prepared("SELECT f.id_floatingip from server_openstack s inner join flotantIp_openstack f on f.ip_float = s.ip_public  where s.id_server='".$_POST['idServer']."'");
+			delete_floatIp($idFloatIp);
             $ans=deleteVm($_POST['idServer']);
             // if ($ans == "1") {
 

@@ -3,15 +3,15 @@
 #EDITAR ARCHIVOS_RESOLV.CONF 
 
 #VARIABLES IP
-DNS_IP=192.168.1.52
-bono=192.168.1.11
-sprout=192.168.1.12
-ellis=192.168.1.13
-homer=192.168.1.14
-vellum=192.168.1.15
-dime=192.168.1.16
-ibcf=192.168.1.17
-
+dominio=$1
+DNS_IP=$2
+bono=$3
+sprout=$4
+ellis=$5
+homer=$6
+vellum=$7
+dime=$8
+ibcf=$9
 echo "Configurar DNS"
 cd /etc/
 echo -e "nameserver $DNS_IP \nnameserver 8.8.8.8 \nnameserver 8.8.4.4" > resolv.conf
@@ -138,43 +138,3 @@ sleep 2s
 sudo monit summary" > $activar_proc
 chmod 775 $activar_proc
 chmod 777 $parar_proc
-
-# Instalar shellinbox
-
-if [ ! -f "/etc/default/shellinabox" ]; then
-    sudo apt-get update;
-    sudo apt-get -y install openssl shellinabox;
-    sudo useradd usuario
-    echo usuario:usuario | chpasswd 
-    sudo sed -i '$a usuario    ALL=(ALL:ALL) ALL' /etc/sudoers
-fi
-echo "Should shellinaboxd start automatically" > /etc/default/shellinabox;
-echo "SHELLINABOX_DAEMON_START=1" >> /etc/default/shellinabox;
-echo "SHELLINABOX_PORT=7676" >> /etc/default/shellinabox;
-echo "SHELLINABOX_ARGS='--no-beep --disable-ssl'" >> /etc/default/shellinabox;
-sudo killall shellinaboxd
-sudo service shellinabox start
-
-echo "                                                       "
-echo "************************************************************************************************************"
-echo "************************************************************************************************************"
-echo "                                  * * * * * * * * * * * * * * *                                             "
-echo "                       Para ejecutar script de recuperación del núcleo IMS se debe:                         "
-echo "************************************************************************************************************"
-echo "************************************************************************************************************"
-echo "1. Ingresar a la carpeta /etc/ y parar los servicios con el siguiente comando:"
-echo "                                                       "
-echo "    ./parar_proc.sh                  "
-echo "                                                       "
-echo "2. En la carpeta /etc/ activar los servicios con el siguiente comando:"
-echo "                                                       "
-echo "    ./activar_nucleo.sh               "
-echo "                                                       "
-echo "************************************************************************************************************"
-echo "************************************************************************************************************"
-echo "Una vez instalado el núcleo IMS de Clearwater, observar los servicios si estan OK con el siguiente comando:"
-echo "                                                                                                             "
-echo "                                   monit summary                                                             "
-echo "                                                                                                             "
-echo "************************************************************************************************************"
-echo "************************************************************************************************************"   

@@ -18,7 +18,7 @@ $from_email=$current_user['email_address'];
 
 <div class="container" id="status-loading"></div>
 <!-- Modal -->
-<div class="modal fade " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade " id="exampleModal"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -146,8 +146,11 @@ $from_email=$current_user['email_address'];
 			});
 			//    window.location = "pruebas.php?arq="+arquitectura;
 		}
-					
-				
+
+
+		
+		
+
 		</script>
 
 	</div>

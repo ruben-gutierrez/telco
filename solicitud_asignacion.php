@@ -151,11 +151,15 @@ if (!empty($_POST)) {
 					
 				$ips_domain=db_fetch_assoc("SELECT s.id_server from server_openstack s inner join core_domain c on c.id_server = s.id_server inner join  flavor_openstack f on f.id_flavor=s.id_flavor where c.domain='".$dom['dominio']."'");
 				foreach( $ips_domain as $serverId){
+					$idFloatIp=db_fetch_cell_prepared("SELECT f.id_floatingip from server_openstack s inner join flotantIp_openstack f on f.ip_float = s.ip_public  where s.id_server='".$serverId['id_server']."'");
+					delete_floatIp($idFloatIp);
 					deleteVm($serverId['id_server']);
 				}
 				$ips_aditionals=db_fetch_assoc("SELECT v.id_server from vm_aditional_testbedims v inner join server_openstack s on v.id_server=s.id_server inner join flavor_openstack f on f.id_flavor=s.id_flavor where v.dominio='".$dom['dominio']."'");
 				
 				foreach( $ips_aditionals as $serverId){
+					$idFloatIp=db_fetch_cell_prepared("SELECT f.id_floatingip from server_openstack s inner join flotantIp_openstack f on f.ip_float = s.ip_public  where s.id_server='".$serverId['id_server']."'");
+					delete_floatIp($idFloatIp);
 					deleteVm($serverId['id_server']);
 				}
 				$idRouter= db_fetch_row_prepared("SELECT r.id_router from arqs_testbedims a INNER JOIN router_openstack r ON a.dominio = r.domain WHERE a.id ='" . $id . "'");
@@ -289,7 +293,6 @@ if (!empty($_POST)) {
 									}
 							}
 							break;
-						
 						default:
 							// # code...
 							break;
@@ -297,8 +300,6 @@ if (!empty($_POST)) {
 				}else{
 					echo "el dominio ya tiene el nucleo";
 				}
-
-
 			break;
 		case '7'://numero de arquitecturas por usuario
 			// echo "entro a la funcion";
@@ -451,35 +452,18 @@ if (!empty($_POST)) {
 		case '16'://retornar a punto de control
 			$idInstant=db_fetch_cell_prepared("SELECT id_instant from instant_images_openstack WHERE id_server='".$_POST['id_server']."'");
 			print_r(rebuildServerImage($_POST['id_server'], $idInstant));
-
 			break;
 		case '17'://ssh de las maquinas	
-			$ipfloatTelco=ipFloatServer($_POST['id_server']);
-			// echo $ipfloatTelco;
-			if( $ipfloatTelco == ''){
-				// echo "no tiene ip publica";
-				$ipfloat=asingIpFloatServer($_POST['id_server']);
-				if( $ipfloat == '0'){
-					echo "0";
-					// echo "fallo al agregar ip flotante";
-				}else{
-					shell_exec('ssh-keygen -f "/root/.ssh/known_hosts" -R "'.$ipfloat.'"');
-					// $transFile=shell_exec('sudo chmod 775 ./scripts/terminal_testbed/Testbed_vIMS.pem');
-					$transFile=shell_exec('sudo chmod 775 ./scripts/terminal_testbed/key.pem');
-					$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ./scripts/terminal_testbed/install_conf_shellinabox.sh ubuntu@'.$ipfloat.':/home/ubuntu');
-					$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipfloat.' "sudo ./install_conf_shellinabox.sh"');
-					$exeInstallShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipfloat.' "sudo service shellinabox restart"');
-					echo $ipfloat;
-				}
-			}else{
+			$ipfloatTelco=ipFloat($_POST['id_server']);
+			// print_r($ipfloatTelco);
 				shell_exec('sudo ssh-keygen -f "/root/.ssh/known_hosts" -R "'.$ipfloatTelco.'"');
-				// $transFile=shell_exec('sudo chmod 775 ./scripts/terminal_testbed/key.pem');
 				$transFile=shell_exec('sudo chmod 775 ./scripts/terminal_testbed/key.pem');
 				$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ./scripts/terminal_testbed/install_conf_shellinabox.sh ubuntu@'.$ipfloatTelco.':/home/ubuntu');
-				$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipfloatTelco.' "sudo ./install_conf_shellinabox.sh;"');
-				$exeInstallShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipfloatTelco.' "sudo service shellinabox start"');
+				$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipfloatTelco.' "sudo ./install_conf_shellinabox.sh"');
+				$exeInstallShell=shell_exec('timeout 1 ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipfloatTelco.' "sudo invoke-rc.d shellinabox stop"');
+				$exeInstallShell=shell_exec('timeout 1 ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipfloatTelco.' "sudo invoke-rc.d shellinabox start"');
 				echo $ipfloatTelco;
-				}
+				
 			break;
 		case '18'://Agregar grafica por usuario
 				// print_r($_POST);
@@ -500,7 +484,7 @@ if (!empty($_POST)) {
 					echo $id_tree;
 					//agrega del host al tree
 					shell_exec("php -q cli/add_tree.php --type=node --node-type=host --tree-id='".$id_tree."' --host-id='".$host_id."'");
-					//agrega la grafica al arbol
+					//agrega la grafica al arblsol
 					shell_exec("php -q cli/add_tree.php --type=node --node-type=graph --tree-id='".$id_tree."' --graph-id='".$id_graph."'");
 					//report
 					addActionToReport($_POST['idUser'], "Agregó la gráfica ".$id_graph." al dominio : ".$dom." ");

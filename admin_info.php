@@ -198,6 +198,7 @@ $now = date_create()->format('Y-m-d H:i:s');
 			break;
 		case '13'://buscar las maquinas virtuales de un dominio
 			// echo "ok";
+			echo '<option value="">Elegir...</option>';
 			$vms=vmOfDomain($_POST['domain']);
 			foreach( $vms as $key=>$arrayKey){
 				foreach( $arrayKey as $element){

@@ -10,12 +10,34 @@ if (!empty($_POST)) {
 	$accion= $_POST['action'];	
 	$now = date_create()->format('Y-m-d H:i:s');
 	
-	switch ($accion) { 
+	switch ( $accion ) { 
 		case '1'://desplegar tabla de las pruebas de un dominio
 			$test=db_fetch_row_prepared("select * from test_testbedims where id_test='".$_POST['id_test2']."'");
 			$options_test=db_fetch_assoc("SELECT options, value, description_option from option_test_testbedims where id_test='".$_POST['id_test2']."'");
-			
 			$idServer=db_fetch_cell("SELECT s.id_server FROM server_openstack s INNER JOIN core_domain c ON s.id_server = c.id_server WHERE c.domain = '".$test['dominio']."' AND s.name_server='sipp'");
+			if ( count($options_test) == 0) {
+				?>
+				<div class="row animated fadeIn">
+				<div class="col center">
+				<div>
+					<h4>Prueba: <?php echo $name_test['name_test'] ;?>  </h4>
+				</div>
+
+				<div id="optionsTestFrom" class="row" >
+					<form method="post" id="form_execute_test" class="center" enctype="multipart/form-data">
+						<input type="hidden" name="action" value="2">
+						<div class="row">
+							<p> Esta Prueba no tiene opciones disponilbes, al ejecutarla se generar el tráfico definido en el Archivo XML.</p>
+						</div>
+						<div class="colmd-4">
+							<input type="button" class="btn btn-primary pull-right m-2" id="btn_exe_test" value="Ejecutar" onclick="exe_test('<?php echo $idServer?>','<?php echo $test['file_test']?>')">
+							<input type="button" class="btn btn-outline-secondary pull-right m-2" id="btn_exe_test" value="Atras" onclick="$('#cardsTest').show();$('#table_options_test').empty()">
+						</div>
+					</form>
+				</div>
+
+				<?php
+			}else{
 				?>
 				<div class="row animated fadeIn">
 				<div class="col center">
@@ -79,6 +101,7 @@ if (!empty($_POST)) {
 				</div>
 				
 				<?php
+			}
 			break;
 		case '2': //crear archivo, eviarlo por scp y ejecutarlo
 			// print_r($_POST);
