@@ -1037,7 +1037,7 @@ function terminal(idServer) {
         contentType: false,
         processData: false,
         data: parametros,
-        // timeout: 10000,
+        timeout: 10000,
         beforeSend: function() {
             notifications("terminal", "Creando interfaz para terminal");
         },
@@ -1053,7 +1053,7 @@ function terminal(idServer) {
             deleteNotification("terminal");
         },
         error: function(){
-            // alert("Intelo Nuevamente");
+            alertify.error("Intelo Nuevamente");
         }
     });
 }
