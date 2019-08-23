@@ -139,6 +139,9 @@ case $1 in
     delete_floatIp)
             curl -g -i -X DELETE http://$OS_IP_OPENSTACK:9696/v2.0/floatingips/$2 -H "Accept: " -H "User-Agent: openstacksdk/0.32.0 keystoneauth1/3.15.0 python-requests/2.22.0 CPython/2.7.15+" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')"
           ;;
+    terminalWeb)
+            curl -s -H POST http://$OS_IP_OPENSTACK/compute/v2.1/servers/$2/action -H "Accept: application/json" -H "Content-Type: application/json" -H "User-Agent: python-novaclient" -H "X-Auth-Token: $(echo $token | tr -d '[[:space:]]')" -H "X-OpenStack-Nova-API-Version: 2.1" -d '{"os-getVNCConsole": {"type": "novnc"}}'
+          ;;
      *)
           echo "error"
           ;;

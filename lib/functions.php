@@ -5391,33 +5391,9 @@ function create_vm($name_server, $id_image, $flavor_ref, $id_net){
 	if( $ipFloat == ''){
 		echo "error-ipfloat";
 	}else{
-		//eliminar pub key ssh
 		shell_exec('ssh-keygen -f "/root/.ssh/known_hosts" -R "'.$ipFloat.'"');
-		//instalar shell in a box
-		$transFile=shell_exec('sudo chmod 775 /var/www/html/telco/scripts/terminal_testbed/key.pem');
-		$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem /var/www/html/telco/scripts/terminal_testbed/install_conf_shellinabox.sh ubuntu@'.$ipFloat.':/home/ubuntu');
-		$ls=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "ls"');
-		
-		if (strpos($ls, 'shellinabox') !== false) {
-			// echo "a la primera";
-			$installShell=shell_exec('sudo ssh -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo ./install_conf_shellinabox.sh"');
-			// $exeInstallShell=shell_exec('timeout 1 ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo invoke-rc.d shellinabox stop"');
-			// $exeInstallShell=shell_exec('timeout 1 ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo invoke-rc.d shellinabox start"');
-		}else{
-			$transFile=shell_exec('sudo chmod 700 /var/www/html/telco/scripts/terminal_testbed/key.pem');
-			$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem /var/www/html/telco/scripts/terminal_testbed/install_conf_shellinabox.sh ubuntu@'.$ipFloat.':/home/ubuntu');
-			$ls=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "ls"');
-			if (strpos($ls, 'shellinabox') !== false) {
-				// echo "a la segunda";
-				$installShell=shell_exec('sudo ssh -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo ./install_conf_shellinabox.sh"');
-				// $exeInstallShell=shell_exec('timeout 1 ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo invoke-rc.d shellinabox stop"');
-				// $exeInstallShell=shell_exec('timeout 1 ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo invoke-rc.d shellinabox start"');
-			}else{
-				echo "error-scp";
-			}
-		}
-		
-
+		shell_exec('sudo chmod 775 /var/www/html/telco/scripts/initialization_vm.sh');
+		shell_exec('/var/www/html/telco/scripts/initialization_vm.sh '.$ipFloat.'');
 	}
 	return $vm_created;
 }
@@ -5552,6 +5528,7 @@ function deleteVm($idServer){
 		return "0";
 	}else{
 		return "1";
+		
 	}
 }
 
@@ -5578,6 +5555,12 @@ function reziseServer($idServer, $idFlavor){
 	// }else{
 	// 	return "1";
 	// }
+}
+function terminalWeb($idServer){
+	$action='terminalWeb';
+	$answer=shell_exec("./scripts/request_openstack.sh $action $idServer");
+	$ans = json_decode($answer, true);
+	print_r($ans['console']['url']);
 }
 
 function offServer($idServer){

@@ -54,7 +54,7 @@ if (!empty($_POST)) {
         case '1':
             # code...
             break;
-        case '1':
+        case '':
             # code...
             break;
         

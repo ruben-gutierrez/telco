@@ -581,7 +581,7 @@ function exe_test(idServer,nameScript) {
         processData: false,
         data: parametros,
         beforeSend: function() {
-            console.log(parametros)
+            
             notifications('executing_test', 'Ejecutando prueba');
         },
         success: function(data) {
@@ -1012,7 +1012,7 @@ function showInfoDomain(IdDomain, core) {
                     data += '<input class="btn btn-outline-secondary btn-sm m-1" type="button" id="' + answer[x]['id_server'] + '" value="Reestablecer" onclick="returnSnaptVM(`' + answer[x]['id_server'] + '`)">';
                     data += '<button class="btn btn-outline-danger btn-sm m-1" type="button" onclick="eliminarVM(`' + answer[x]['id_server'] + '`)">Eliminar</button></div>';
                     data += '</td>';
-                    data += '<td><button class="btn btn-outline-success" onclick="terminal(`' + answer[x]['id_server'] + '`)">Terminal</button></td></tr>';
+                    data += '<td><button class="btn btn-outline-success" onclick="terminal(`' + answer[x]['id_server'] + '`,`' + answer[x]['name_server'] + '`)">Terminal</button></td></tr>';
                     // num +=1;
                 }
                 data += '</div></div>';
@@ -1026,7 +1026,7 @@ function showInfoDomain(IdDomain, core) {
         });
 }
 
-function terminal(idServer) {
+function terminal(idServer,name) {
     
     var parametros = new FormData();
     parametros.append('action', '17');
@@ -1037,17 +1037,15 @@ function terminal(idServer) {
         contentType: false,
         processData: false,
         data: parametros,
-        timeout: 10000,
+        //timeout: 10000,
         beforeSend: function() {
             notifications("terminal", "Creando interfaz para terminal");
         },
         success: function(data) {
-            // console.log(data);
-            if (data == '0') {
-                console.log("error al desplegar Terminal");
-            } else {
-                window.open('http://' + data + ':7676', '_blank');
-            }
+            console.log(data);
+            
+               window.open(data+'&title='+name+'('+idServer+')');
+            
         },
         complete: function() {
             deleteNotification("terminal");
