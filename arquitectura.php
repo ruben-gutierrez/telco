@@ -37,7 +37,10 @@ $from_email=$current_user['email_address'];
   </div>
 </div>
 <!-- Fin modal -->
-<div class="container" id="status-loading"></div>
+
+
+	<div class="container" id="status-loading" style="position: fixed"></div>
+
 
 
 

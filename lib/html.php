@@ -2614,7 +2614,7 @@ function draw_table_testbed_pruebas($user){
 			<div class="row m-2">
 				<!-- <div class="col"> -->
 					<?php 
-					$test_info=db_fetch_assoc("SELECT id_test, name_test, description_test, restriction from test_testbedims where dominio ='".$value['dominio']."'");
+					$test_info=db_fetch_assoc("SELECT id_test, name_test, description_test, restriction , executing from test_testbedims where dominio ='".$value['dominio']."'");
 					// print_r($test_info);
 					if ( empty($test_info) ) {
 						?>
@@ -2639,11 +2639,23 @@ function draw_table_testbed_pruebas($user){
 						<?php
 					}else{
 						foreach ($test_info as $key2 => $value2) {
+							if ( $value2['executing'] == '1') {
+								?>
+								<div class="card m-2">
+									<div class="card-header bg-danger">
+										<h5> <?php echo (ucwords ($value2['name_test']))?></h5> Ejecutando
+									</div>
+								<?php
+							}else{
+								?>
+								<div class="card m-2">
+									<div class="card-header">
+										<h5> <?php echo (ucwords ($value2['name_test']))?></h5>
+									</div>
+								<?php
+							}
 							?>
-							<div class="card m-2">
-								<div class="card-header">
-									<h5> <?php echo (ucwords ($value2['name_test']))?></h5>
-								</div>
+							
 								<div class="card-body">
 									Arquitectura: <?php echo $value['arquitectura']?> <br>
 									" <?php echo $value['dominio']?>"

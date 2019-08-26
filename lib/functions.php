@@ -5391,8 +5391,7 @@ function create_vm($name_server, $id_image, $flavor_ref, $id_net){
 	if( $ipFloat == ''){
 		echo "error-ipfloat";
 	}else{
-		shell_exec('ssh-keygen -f "/root/.ssh/known_hosts" -R "'.$ipFloat.'"');
-		shell_exec('sudo chmod 775 /var/www/html/telco/scripts/initialization_vm.sh');
+
 		shell_exec('/var/www/html/telco/scripts/initialization_vm.sh '.$ipFloat.'');
 	}
 	return $vm_created;
@@ -5943,6 +5942,17 @@ function create_core_ims($names,$id_net,$domain,$typeDomain,$options_test_sprout
 		$agregar=db_execute("INSERT INTO core_domain (id_server, domain, type_domain, ram, vcpus, disk) values ( '".$vmJson['server']['id']."','".$domain."','".$typeDomain."','".$ram."','".$vcpus."','".$disk."')");
 		$ipFloat=ipFloatServer($id_server);
 		$ipLocal=ipLocalServer($id_server);
+		
+		
+		//verificar el permiso
+		shell_exec('chmod 700 ./scripts/terminal_testbed/key.pem');
+		$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ./scripts/test.sh ubuntu@'.$ipFloat.':/home/ubuntu');
+		$ls=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "ls"');
+		shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "rm test.sh"');
+		if( strpos($ls,'test') == false){
+			shell_exec('chmod 775 ./scripts/terminal_testbed/key.pem');
+		}
+		
 		//si es un sipp instalar el sipp
 		if( $typeDomain == "aio" ){
 			$ipBono=db_fetch_cell_prepared("SELECT s.ip_local FROM server_openstack s INNER JOIN core_domain c ON c.id_server=s.id_server WHERE s.name_server='allInOne' AND c.domain='".$domain."'");
@@ -6043,7 +6053,7 @@ function create_core_ims($names,$id_net,$domain,$typeDomain,$options_test_sprout
 		//agregar prueba bono
 		db_execute("INSERT INTO test_testbedims ( dominio, name_test, comand, description_test, file_test) VALUES ('".$domain."','Prueba Bono','comando','En esta prueba se emulan usuarios conectados al nùcleo IMS Todo en Uno.','sip-stress.xml')");
 		//agregar prueba Sprout
-		db_execute("INSERT INTO test_testbedims ( dominio, name_test, comand, description_test, file_test) VALUES ('".$domain."','Prueba Sprout','comando','En esta prueba se un emula un nodo BONO con el fin de generar flujo de informaciòn desde el nodo BONO al nodo SPROUT y verificar el rendimiento del nucleo ante diferentes requierimientos de usuarios','sip-stress.xml')");
+		db_execute("INSERT INTO test_testbedims ( dominio, name_test, comand, description_test, file_test) VALUES ('".$domain."','Prueba Sprout','comando','En esta prueba se un emula un nodo BONO con el fin de generar flujo de informaciòn desde el nodo BONO al nodo SPROUT y verificar el rendimiento del nucleo ante diferentes requierimientos de usuarios','')");
 		$idTest=db_fetch_cell_prepared("SELECT id_test FROM test_testbedims WHERE dominio='".$domain."' AND name_test='Prueba Sprout'");
 		//agregar opciones de prueba sprout
 		foreach( $options_test_sprout as $option){

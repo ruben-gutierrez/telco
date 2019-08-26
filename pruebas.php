@@ -13,7 +13,7 @@ if (isset($_GET['arq'])) {
 
 ?>
 
-<div class="container" id="status-loading"></div>
+<div class="container" id="status-loading" ></div>
 <div class="margin_page ancla" id="tests">
   <nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('tests', 'indicate_requestArquitecture')">
       <a class="navbar-brand text-white"><b>Pruebas Disponibles para ejecutar</b></a><div class="float-right indicate_requestArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
@@ -111,7 +111,7 @@ if (isset($_GET['arq'])) {
                   <input type="file" name="file_test" required>
                   
                   <div>
-                    <input type="button" class="btn_form" id="btn_save_info" value="Definir Opciones" onclick="add_test()">
+                    <input type="button" class="btn_form" id="btn_save_info" value="Guardar" onclick="add_test()">
                     <input type="button" class="btn_form" value="Cancelar" onclick="$('#content_add_test').hide();$('#btn_see_table5').show();$('#btn_notsee_table5').hide();$('#form_add_test')[0].reset();">
                   </div>
               </form>

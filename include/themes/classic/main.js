@@ -514,8 +514,8 @@ function add_test() {
                 // console.log(date);
                 $('#form_info_test')[0][2].value = date;
                 $('#form_add_test')[0].reset();
-                $('#form_1').hide();
-                $('#form_2').show();
+                //$('#form_1').hide();
+                //$('#form_2').show();
             },
             complete: function(){
                 deleteNotification("addTestt");
@@ -573,6 +573,7 @@ function exe_test(idServer,nameScript) {
     // console.log($('#form_execute_test').serialize());
     var parametros = new FormData($('#form_execute_test')[0]);
     parametros.append('idServer', idServer);
+    parametros.append('action', '2');
     parametros.append('nameScript', nameScript);
     $.ajax({
         url: 'ejecucion_pruebas.php',//action 2
@@ -587,6 +588,7 @@ function exe_test(idServer,nameScript) {
         success: function(data) {
             // alert("Comando a ejecutar en servidor SIPP \n" + data);
             console.log(data);
+            $('#resutl_test').append(data);
         },
         complete: function (){
             deleteNotification("executing_test");
@@ -1222,8 +1224,9 @@ function addVmtoDomain(idDomain) {
             
         },
         success: function(data) {
+
             $(".btnaddVM")[0].disabled=true
-            // console.log(data)
+            console.log(data)
             data = JSON.parse(data);
             //console.log(data);
             if (data.options == '0') {
@@ -1257,7 +1260,7 @@ function addVM() {
                     notifications("addvm", "Agregando maquina virtual");
                 },
                 success: function(data) {
-                    // console.log(data);
+                    console.log(data);
                     if (data == '0') {
                         alertify.error('Error, Verifique los recursos máximos');
                     } else {

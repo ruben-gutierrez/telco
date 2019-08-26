@@ -349,14 +349,18 @@ if (!empty($_POST)) {
 					echo $id_test;
 					//enviar archivo por scp a la maquina virtual sipp del dominio
 					$ipfloat=ipFloat($idServer);
-					$transFile=shell_exec('sudo chmod 775 ./scripts/terminal_testbed/key.pem');
+					//permiso de la llave ssh
+					shell_exec('chmod 700 ./scripts/terminal_testbed/key.pem');
+					$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ./scripts/test.sh ubuntu@'.$ipFloat.':/home/ubuntu');
+					$ls=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "ls"');
+					shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "rm test.sh"');
+					if( strpos($ls,'test') == false){
+						shell_exec('chmod 775 ./scripts/terminal_testbed/key.pem');
+						$ls1=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "ls"');
+					}
 					//copia la prueba
-					shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem /var/www/html/telco/files_XML/"'.$new_name.'" ubuntu@'.$ipfloat.':/usr/share/clearwater/bin/');
-					//copia el ejecutador
-					shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem /var/www/html/telco/scripts/sipp/ejecute_test.sh ubuntu@'.$ipfloat.':/home/ubuntu');
-					//ejecuta el intalador
-					$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipfloat.' "chmod 775 ./ejecute_test.sh');
-					$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipfloat.' "sudo ./ejecute_test.sh');
+					shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem /var/www/html/telco/files_XML/"'.$new_name.'" ubuntu@'.$ipfloat.':/etc/clearwater/test/');
+					
 					//report
 					addActionToReport($_POST['idUser'], "Agregó la prueba ".$id_test." a la arqutiectura ".$_POST['dominio']."");
 				}else{
