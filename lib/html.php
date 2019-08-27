@@ -2663,12 +2663,27 @@ function draw_table_testbed_pruebas($user){
 									<p class="card-text"><?php echo $value2['description_test']?></p>
 									
 								</div>
+
+							<?php
+								if ( $value2['executing'] == '1') {
+									?>
+								<div class="card-footer">
+									<button class="btn btn-outline-warning" id="<?php echo $value2['id_test']?>" onClick="stop_test(this.id)">Detener</button>
+									<button class="btn btn-outline-danger" id="<?php echo $value2['id_test']?>" onClick="delete_test(this.id)">Eliminar</button>
+									<!-- <button class="btn btn-primary m-2" id="<?php echo $value2['id_test']?>" onClick="$('#cardsTest').hide();display_table_test(this.id)">Opciones</button> -->
+								</div>
+							</div>
+								<?php
+								}else{
+								?>
 								<div class="card-footer">
 									<button class="btn btn-outline-danger" id="<?php echo $value2['id_test']?>" onClick="">Eliminar</button>
 									<button class="btn btn-primary m-2" id="<?php echo $value2['id_test']?>" onClick="$('#cardsTest').hide();display_table_test(this.id)">Opciones</button>
 								</div>
 							</div>
-							<?php
+								<?php
+
+								}
 							}
 						
 					}

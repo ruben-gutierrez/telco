@@ -26,9 +26,8 @@ if (isset($_GET['arq'])) {
       		</div>
           <div id="container table_desciption_test" class="animated fadeIn">
             <?php 
-            draw_table_testbed_pruebas($user_email);
+              draw_table_testbed_pruebas($user_email);
             ?>
-            
           </div>
           <div id="table_options_test" class="animated fadeIn">
           </div>
@@ -111,8 +110,8 @@ if (isset($_GET['arq'])) {
                   <input type="file" name="file_test" required>
                   
                   <div>
-                    <input type="button" class="btn_form" id="btn_save_info" value="Guardar" onclick="add_test()">
-                    <input type="button" class="btn_form" value="Cancelar" onclick="$('#content_add_test').hide();$('#btn_see_table5').show();$('#btn_notsee_table5').hide();$('#form_add_test')[0].reset();">
+                    <input type="button" class="btn_form btn btn-primary " id="btn_save_info" value="Guardar" onclick="add_test()">
+                    <input type="button" class="btn_form btn btn-outline-secondary" value="Cancelar" onclick="$('#content_add_test').hide();$('#btn_see_table5').show();$('#btn_notsee_table5').hide();$('#form_add_test')[0].reset();">
                   </div>
               </form>
                 

@@ -13,6 +13,8 @@ if (!empty($_POST)) {
 	switch ( $accion ) { 
 		case '1'://desplegar tabla de las pruebas de un dominio
 			$test=db_fetch_row_prepared("select * from test_testbedims where id_test='".$_POST['id_test2']."'");
+			$domain=db_fetch_cell("select dominio from test_testbedims where id_test='".$_POST['id_test2']."'");
+			$user_email=db_fetch_cell("SELECT usuario FROM arqs_testbedims WHERE dominio = '".$domain."'");
 			$options_test=db_fetch_assoc("SELECT options, value, description_option, argument from option_test_testbedims where id_test='".$_POST['id_test2']."'");
 			$idServer=db_fetch_cell("SELECT s.id_server FROM server_openstack s INNER JOIN core_domain c ON s.id_server = c.id_server WHERE c.domain = '".$test['dominio']."' AND s.name_server='sipp'");
 			if ( count($options_test) == 0) {
@@ -30,7 +32,7 @@ if (!empty($_POST)) {
 								</div>
 								<div class="colmd-4">
 									<input type="button" class="btn btn-primary pull-right m-2" id="btn_exe_test" value="Ejecutar" onclick="exe_test('<?php echo $idServer?>','<?php echo $test['file_test']?>')">
-									<input type="button" class="btn btn-outline-secondary pull-right m-2" id="btn_exe_test" value="Atras" onclick="$('#cardsTest').show();$('#table_options_test').empty()">
+									<input type="button" class="btn btn-outline-secondary pull-right m-2" id="btn_exe_test" value="Atras" onclick="update_tests('<?php echo $user_email?>');$('#cardsTest').show();$('#table_options_test').empty()">
 								</div>
 							</form>
 						</div>
@@ -65,7 +67,7 @@ if (!empty($_POST)) {
 								</div>
 								<div class="colmd-4">
 									<input type="button" class="btn btn-primary pull-right m-2" id="btn_exe_test" value="Ejecutar" onclick="exe_test('<?php echo $idServer?>','<?php echo $test['file_test']?>')">
-									<input type="button" class="btn btn-outline-secondary pull-right m-2" id="btn_exe_test" value="Atras" onclick="$('#cardsTest').show();$('#table_options_test').empty()">
+									<input type="button" class="btn btn-outline-secondary pull-right m-2" id="btn_exe_test" value="Atras" onclick="update_tests('<?php echo $user_email?>');$('#cardsTest').show();$('#table_options_test').empty()">
 								</div>
 							</form>
 						</div>
@@ -113,8 +115,10 @@ if (!empty($_POST)) {
 		case '2': //crear archivo, eviarlo por scp y ejecutarlo
 			//print_r($_POST);
 			// opciones de la pruebas
+			
 			$ipFloat=ipFloat($_POST['idServer']);
 			$domain=db_fetch_cell_prepared("SELECT domain FROM core_domain WHERE id_server='".$_POST['idServer']."'");
+			$user_email=db_fetch_cell("SELECT usuario FROM arqs_testbedims WHERE dominio = '".$domain."'");
 			//permiso del archivo
 			shell_exec('chmod 700 ./scripts/terminal_testbed/key.pem');
 			$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ./scripts/test.sh ubuntu@'.$ipFloat.':/home/ubuntu');
@@ -148,8 +152,24 @@ if (!empty($_POST)) {
 				$onTest=db_execute("UPDATE test_testbedims SET executing ='0' WHERE dominio='" . $domain . "'");
 				$onTest=db_execute("UPDATE test_testbedims SET executing ='1' WHERE file_test='" . $_POST['nameScript'] . "' AND dominio='" . $domain . "'");
 				$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo /etc/clearwater/test/execute.sh '.$_POST['nameScript'].'"');
-
 			}
+			break;
+		case '3':
+			//permiso del archivo
+			$domain=db_fetch_cell("select dominio from test_testbedims where id_test='".$_POST['idTest']."'");
+			$idServer=db_fetch_cell("SELECT s.id_server FROM server_openstack s INNER JOIN core_domain c ON s.id_server = c.id_server WHERE c.domain = '".$domain."' AND s.name_server='sipp'");
+			$user_email=db_fetch_cell("SELECT usuario FROM arqs_testbedims WHERE dominio = '".$domain."'");
+			$ipFloat=ipFloat($idServer);
+			shell_exec('chmod 700 ./scripts/terminal_testbed/key.pem');
+			$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ./scripts/test.sh ubuntu@'.$ipFloat.':/home/ubuntu');
+			$ls=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "ls"');
+			shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "rm test.sh"');
+            if (strpos($ls, 'test') == false) {
+				shell_exec('chmod 775 ./scripts/terminal_testbed/key.pem');
+			}
+			$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo /etc/clearwater/test/stop_execute.sh"');
+			$offTest=db_execute("UPDATE test_testbedims SET executing ='0' WHERE id_test='".$_POST['idTest']."'");
+			print_r(draw_table_testbed_pruebas( $user_email ));
 			break;
 		default:
 			echo ("sin funcion");

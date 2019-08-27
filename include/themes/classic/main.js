@@ -562,7 +562,6 @@ function display_table_test(id_test) {
             // console.log(msg);  
             $('#table_options_test').empty();
             $('#table_options_test').append(msg);
-
         });
 
 }
@@ -588,7 +587,9 @@ function exe_test(idServer,nameScript) {
         success: function(data) {
             // alert("Comando a ejecutar en servidor SIPP \n" + data);
             console.log(data);
-            $('#resutl_test').append(data);
+            if (nameScript == '') {
+                $('#resutl_test').append(data);
+            }
         },
         complete: function (){
             deleteNotification("executing_test");
@@ -1611,6 +1612,7 @@ function update_vm_arq(domain){
         },
         complete: function(){
             deleteNotification("deleteGraph");
+            
         }
     }), "json";
  }
@@ -1713,4 +1715,69 @@ function test(){
     //         console.log("error");
     //     }
     // }), "json";
+}
+
+
+function stop_test(idTest){
+    // console.log(idTest)
+    var formData = new FormData();
+    formData.append('action', '3');
+    formData.append('idTest', idTest);
+    
+    $.ajax({
+        url: 'ejecucion_pruebas.php',
+        type: 'POST',
+        contentType: false,
+        processData: false,
+        timeout: 10000,
+        data: formData,
+        beforeSend: function() {
+            notifications("stop_test", "Deteniendo Prueba");
+        },
+        success: function(data) {
+            $('#cardsTest').empty();
+            $('#cardsTest').html(data);
+        },
+        complete: function(){
+            deleteNotification("stop_test");
+        },
+        error: function(){
+            console.log("error");
+        }
+    }), "json";
+}
+
+function delete_test(idTest){
+
+}
+
+function update_tests(user){
+    var formData = new FormData();
+    formData.append('action', '22');
+    formData.append('user', user);
+    
+    $.ajax({
+        url: 'admin_info.php',
+        type: 'POST',
+        contentType: false,
+        processData: false,
+        timeout: 10000,
+        data: formData,
+        beforeSend: function() {
+            notifications("update_tests", "Actualizando Pruebas");
+        },
+        success: function(data) {
+            // console.log(data);
+            $('#cardsTest').empty();
+            $('#cardsTest').html(data);
+            $('#cardsTest').show();
+            $('#table_options_test').empty()
+        },
+        complete: function(){
+            deleteNotification("update_tests");
+        },
+        error: function(){
+            console.log("error");
+        }
+    }), "json";
 }

@@ -255,6 +255,10 @@ $now = date_create()->format('Y-m-d H:i:s');
 			consult_flotantIp_openstack();
 			print_r(draw_table_flotantIp_openstack());
 			break;
+		case '22':
+			
+			print_r(draw_table_testbed_pruebas($_POST['user']));
+			break;
 
 
 		default:
