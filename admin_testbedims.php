@@ -93,19 +93,15 @@ global $config, $current_user;
 							</div>
 						</div>
 						<div class="row center mt-3">
-
 							<input id="btn_new_arq" name="btn_save" class="btn_form btn btn-primary" type="button" value="Guardar" onclick="add_arquitec()">
 							<input  id="btn_cancelar" class="btn_form btn btn-outline-danger" type="button" value="Cancelar" onclick="$('#table_arquitectura').show(500);$('#add_arq').hide(600);$('#btn_notsee_table').show();$('#btn_see_table').hide();">
 						</div>
-					
-						
 					</form>
 				</div>
 			</section>
 			<section id="mod_arq" class="section_admin_arquitectura" style="display: none;">
 				<div class="name_section">Editar arquitectura</div>
 				<div class="content_section container">
-
 						<form method="post" id="form_edit_arq" class="form_arq" enctype="multipart/form-data">
 						<div class="row">
 						<div class="col-8">

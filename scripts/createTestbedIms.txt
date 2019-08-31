@@ -1,0 +1,7 @@
+1- Crear proyecto con los datos en el archivo /var/www/html/telco/scripts/createToken.sh
+    se necesita el nombre del proyecto en este caso "Testbed_vIMS"
+2- Asignar las cuotas al proyecto
+3- Crear la key.pem descargarla y ponerla en la carpeta /scripts/ 
+4- agregar las reglas de grupo de seguridad
+5- subir imagen de ubuntu14server cloud obtener el id de la imagen y ponerla en la funcion create_core_ims()
+6- Obtener el id de red publica y ponerlo en la funcion de crear arquitectura de solicitud_asignacion.php

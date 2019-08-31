@@ -2411,6 +2411,7 @@ function draw_table_flavors_openstack(){
 function consult_flavors_openstack(){
 	$flavors=shell_exec("./scripts/request_openstack.sh consult flavor");
 	$flavorsJson = json_decode($flavors, true);
+	db_execute("delete from flavor_openstack");
 	foreach( $flavorsJson['flavors'] as $index=>$data){
 		$id_flavor=$data['id'];
 		$name_flavor=$data['name'];
@@ -2440,6 +2441,7 @@ function consult_images_openstack(){
 	$images=shell_exec("./scripts/request_openstack.sh consult images");
 	$imagesJson = json_decode($images, true);
 	// print_r($imagesJson);
+	db_execute("delete from image_openstack");
 	foreach( $imagesJson['images'] as $index=>$data){
 		$id_image=$data['id'];
 		$name_image=$data['name'];
@@ -2467,10 +2469,10 @@ function draw_table_servers_openstack(){
 }
 
 function consult_servers_openstack(){
-	db_execute("delete from server_openstack");
 	$servers=shell_exec("./scripts/request_openstack.sh consult servers");
 	$serversJson = json_decode($servers, true);
 	// print_r($serversJson['servers']['0']);
+	db_execute("delete from server_openstack");
 	foreach( $serversJson['servers'] as $index=>$data){
 		$id_server=$data['id'];
 		$name_server=$data['name'];
@@ -2506,6 +2508,7 @@ function consult_subnets_openstack(){
 	$subnets=shell_exec("./scripts/request_openstack.sh consult subnets");
 	$subnetsJson = json_decode($subnets, true);
 	//print_r($subnetsJson);
+	db_execute("delete from subnet_openstack");
 	foreach( $subnetsJson['subnets'] as $index=>$data){
 		$id_subnet=$data['id'];
 		$name_subnet=$data['name'];
@@ -2531,16 +2534,19 @@ function draw_table_ports_openstack(){
 	}
 }
 function consult_ports_openstack(){
+	
 	$ports=shell_exec("./scripts/request_openstack.sh consult ports");
 	$portsJson = json_decode($ports, true);
 	//print_r($portsJson);
+	db_execute("delete from ports_openstack");
 	foreach( $portsJson['ports'] as $index=>$data){
 		$id_port=$data['id'];
 		$id_subnet=$data['fixed_ips'][0]['subnet_id'];
 		$ips=$data['fixed_ips'][0]['ip_address'];
 
-	  	$status_port=$data['status'];
-		db_execute("INSERT INTO ports_openstack (id_port, id_subnet, fixed_ip, status_port) values ('$id_port','$id_subnet','$ips', '$status_port')");
+		  $status_port=$data['status'];
+		  
+			db_execute("INSERT INTO ports_openstack (id_port, id_subnet, fixed_ip, status_port) values ('$id_port','$id_subnet','$ips', '$status_port')");
 	}
 }
 function draw_table_flotantIp_openstack(){
@@ -2558,9 +2564,11 @@ function draw_table_flotantIp_openstack(){
 	}
 }
 function consult_flotantIp_openstack(){
+	
 	$ports=shell_exec("./scripts/request_openstack.sh consult flotantIp");
 	$flotantIpJson = json_decode($ports, true);
 	//print_r($portsJson);
+	db_execute("delete from flotantIp_openstack");
 	foreach( $flotantIpJson['floatingips'] as $index=>$data){
 		$id_floatingip=$data['id'];
 		$float_net=$data['floating_network_id'];
@@ -2568,7 +2576,6 @@ function consult_flotantIp_openstack(){
 		$ip_float=$data['floating_ip_address'];
 		$id_port=$data['port_id'];
 		$float_status=$data['status'];
-
 		db_execute("INSERT INTO flotantIp_openstack (id_floatingip, ip_float, float_net, ip_local, id_port, float_status) values ('$id_floatingip', '$ip_float', '$float_net', '$ip_local', '$id_port', '$float_status')");
 	}
 }
@@ -3030,7 +3037,7 @@ function content_graph($user){
 	<section class="section_add_monitoring">
  	
 	 <nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('section_monitoring_vm', 'indicate_solicitedArquitecture')">
-		 <a class="navbar-brand text-white"><b> Monitorear Vm</b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
+		 <a class="navbar-brand text-white"><b> Crear Gráfica </b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
 	 </nav>
 	 
 	  <div class="content_section"><p>En esta sección puedes agregar una gráfica de una VM</p></div> 

@@ -58,17 +58,12 @@ $using_guest_account = false;
 			</form>
 			<div class="container bg-light mt-2" style="position: absolute">
 				<ul class="nav flex-column-lg container" id="listAllowed">
-					
 				</ul>
 			</div>
 		</div>
 		<div class="mr-2 ml-3"><i class="fa fa-search fa-2x rounded-circle text-white" id="iconSearch" onclick="show_hide_content_byClass('search','none');document.getElementById('iconSearch').classList.toggle('fa-search');document.getElementById('iconSearch').classList.toggle('fa-times');"></i></div>
 		<!-- menu de login -->
-		<div><?php echo draw_login_status($using_guest_account);?> </div>
-		
-		
-		
-
+		<div><?php echo draw_login_status($using_guest_account);?></div>
 	</nav>
 	<div class='cactiConsolePageHeadBackdrop'></div>
 	<div class='scrollBar'></div>

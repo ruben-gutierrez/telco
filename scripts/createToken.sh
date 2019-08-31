@@ -1,6 +1,5 @@
 #!/bin/sh
 
-
 export OS_USERNAME=admin
 export OS_PROJECT_NAME=Testbed_vIMS
 export OS_PROJECT_DOMAIN_NAME=default

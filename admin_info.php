@@ -266,23 +266,14 @@ $now = date_create()->format('Y-m-d H:i:s');
 			break;
 	}
 }else{
-	db_execute("delete from flavor_openstack");
+	
 	consult_flavors_openstack();
-	echo "terminado";
-	db_execute("delete from server_openstack");
 	consult_servers_openstack();
-	echo "terminado1";
-	db_execute("delete from subnet_openstack");
 	consult_subnets_openstack();
-	echo "terminado2";
-	db_execute("delete from image_openstack");
 	consult_images_openstack();
-	echo "terminado3";
-	db_execute("delete from ports_openstack");
 	consult_ports_openstack();
-	echo "terminado4";
-	db_execute("delete from flotantIp_openstack");
 	consult_flotantIp_openstack();
-	echo "terminado6";
+	echo "actualizado";
+
 }
 

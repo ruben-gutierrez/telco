@@ -1957,17 +1957,17 @@ function draw_login_status($using_guest_account = false) {
 
 	if (isset($_SESSION['sess_user_id']) && $_SESSION['sess_user_id'] == $guest_account) {
 		api_plugin_hook('nav_login_before');
-		print " <span id='user' class='user usermenuup'>"."<i class='fa fa-user fa-2x'></i>" .  "</span></div><div><ul class='menuoptions' style='display:none;'><li><a href='" . $config['url_path'] . "index.php'>" . __('Login as Regular User') . "</a></li></ul>\n";
+		print " <span id='user' class='user usermenuup'>"."<i class='fa fa-user fa-2x'></i><span class='text-white ml-2'> Invitado </span>"."</span> </div><div><ul class='menuoptions' style='display:none;'><li><a href='" . $config['url_path'] . "index.php'>" . __('Login as Regular User') . "</a></li></ul>\n";
 		api_plugin_hook('nav_login_after');
 	} elseif (isset($_SESSION['sess_user_id']) && $using_guest_account == false) {
 		$user = db_fetch_row_prepared('SELECT username, password_change, realm FROM user_auth WHERE id = ?', array($_SESSION['sess_user_id']));
 		api_plugin_hook('nav_login_before');
-		print " <span id='user' class='user usermenuup'>" ."<i class='fa fa-user fa-2x'></i>" ."</span>".
+		print " <span id='user' class='user usermenuup'>" ."<i class='fa fa-user fa-2x'></i><span class='text-white ml-2'>".html_escape(ucfirst ($user['username']))."</span>" ."</span>".
 			"</div><div><ul class='menuoptions' style='display:none;'>" .
 				(is_realm_allowed(20) ? "<li><a href='" . $config['url_path'] . "auth_profile.php?action=edit'>" . __('Edit Profile') . "</a></li>":"") .
 				($user['password_change'] == 'on' && $user['realm'] == 0 ? "<li><a href='" . $config['url_path'] . "auth_changepassword.php'>" . __('Change Password') . "</a></li>":'') .
 				($auth_method > 0 ? "<li><a href='" . $config['url_path'] . "logout.php'>" . __('Logout') . "</a></li>":'') .
-				($auth_method > 0 ? "<li id='user_display'>" . html_escape($user['username']) .
+				($auth_method > 0 ? "<li id='user_display'>" . html_escape(ucfirst ($user['username'])) .
 			"</li>":"") .
 			"</ul>\n";
 
@@ -5291,7 +5291,7 @@ function agregar_arquitectura($nom, $dom, $desc, $img){
 function dominios_asignados(){
 	//verificar si se termino el tiempo de las asignaciones
 	$doms=db_fetch_assoc("SELECT dominio , usuario from arqs_testbedims WHERE usuario != 'libre'");
-	$dominios=array();
+	// $dominios=array();
 	// print_r($doms)
 	// foreach ($doms as $key => $value) {
 	// 	$dominios[] = $value['dominio'];
@@ -5959,7 +5959,7 @@ function create_core_ims($names,$id_net,$domain,$typeDomain,$options_test_sprout
 			$ipBono=db_fetch_cell_prepared("SELECT s.ip_local FROM server_openstack s INNER JOIN core_domain c ON c.id_server=s.id_server WHERE s.name_server='allInOne' AND c.domain='".$domain."'");
 			// crear core AIO
 			// shell_exec('sudo ssh-keygen -f "/root/.ssh/known_hosts" -R "'.$ipFloat.'"');
-			shell_exec('sudo chmod 700 /var/www/html/telco/scripts/terminal_testbed/key.pem');
+			// shell_exec('sudo chmod 700 /var/www/html/telco/scripts/terminal_testbed/key.pem');
 			$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem /var/www/html/telco/scripts/coreIMS/aio.sh ubuntu@'.$ipFloat.':/home/ubuntu');
 			$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "chmod 775 ./aio.sh"');
 			$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo ./aio.sh '.$ipBono.'"');
@@ -5970,7 +5970,7 @@ function create_core_ims($names,$id_net,$domain,$typeDomain,$options_test_sprout
 				$coreIp.= array("bono" => array("float"=>$ipLocal,
 												"local"=>$ipFloat ));
 				// shell_exec('sudo ssh-keygen -f "/root/.ssh/known_hosts" -R "'.$ipFloat.'"');
-				shell_exec('sudo chmod 700 /var/www/html/telco/scripts/terminal_testbed/key.pem');
+				// shell_exec('sudo chmod 700 /var/www/html/telco/scripts/terminal_testbed/key.pem');
 				$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem /var/www/html/telco/scripts/coreIMS/bono.sh ubuntu@'.$ipFloat.':/home/ubuntu');
 				$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "chmod 775 ./bono.sh"');
 				// $installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo ./install_sipp.sh '.$ipBono.'"');
@@ -5979,7 +5979,7 @@ function create_core_ims($names,$id_net,$domain,$typeDomain,$options_test_sprout
 				$coreIp.= array("sprout" => array("float"=>$ipLocal,
 													"local"=>$ipFloat ));
 				// shell_exec('sudo ssh-keygen -f "/root/.ssh/known_hosts" -R "'.$ipFloat.'"');
-				shell_exec('sudo chmod 700 /var/www/html/telco/scripts/terminal_testbed/key.pem');
+				// shell_exec('sudo chmod 700 /var/www/html/telco/scripts/terminal_testbed/key.pem');
 				$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem /var/www/html/telco/scripts/coreIMS/sprout.sh ubuntu@'.$ipFloat.':/home/ubuntu');
 				$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "chmod 775 ./sprout.sh"');
 				// $installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo ./install_sipp.sh '.$ipBono.'"');
@@ -5988,7 +5988,7 @@ function create_core_ims($names,$id_net,$domain,$typeDomain,$options_test_sprout
 				$coreIp.= array("ellis" => array("float"=>$ipLocal,
 													"local"=>$ipFloat ));
 				// shell_exec('sudo ssh-keygen -f "/root/.ssh/known_hosts" -R "'.$ipFloat.'"');
-				shell_exec('sudo chmod 700 /var/www/html/telco/scripts/terminal_testbed/key.pem');
+				// shell_exec('sudo chmod 700 /var/www/html/telco/scripts/terminal_testbed/key.pem');
 				$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem /var/www/html/telco/scripts/coreIMS/ellis.sh ubuntu@'.$ipFloat.':/home/ubuntu');
 				$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "chmod 775 ./ellis.sh"');
 				// $installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo ./install_sipp.sh '.$ipBono.'"');
@@ -5997,7 +5997,7 @@ function create_core_ims($names,$id_net,$domain,$typeDomain,$options_test_sprout
 				$coreIp.= array("homer" => array("float"=>$ipLocal,
 												"local"=>$ipFloat ));
 				// shell_exec('sudo ssh-keygen -f "/root/.ssh/known_hosts" -R "'.$ipFloat.'"');
-				shell_exec('sudo chmod 700 /var/www/html/telco/scripts/terminal_testbed/key.pem');
+				// shell_exec('sudo chmod 700 /var/www/html/telco/scripts/terminal_testbed/key.pem');
 				$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem /var/www/html/telco/scripts/coreIMS/homer.sh ubuntu@'.$ipFloat.':/home/ubuntu');
 				$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "chmod 775 ./homer.sh"');
 				// $installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo ./install_sipp.sh '.$ipBono.'"');
@@ -6006,7 +6006,7 @@ function create_core_ims($names,$id_net,$domain,$typeDomain,$options_test_sprout
 				$coreIp.= array("vellum" => array("float"=>$ipLocal,
 													"local"=>$ipFloat ));
 				// shell_exec('sudo ssh-keygen -f "/root/.ssh/known_hosts" -R "'.$ipFloat.'"');
-				shell_exec('sudo chmod 700 /var/www/html/telco/scripts/terminal_testbed/key.pem');
+				// shell_exec('sudo chmod 700 /var/www/html/telco/scripts/terminal_testbed/key.pem');
 				$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem /var/www/html/telco/scripts/coreIMS/vellum.sh ubuntu@'.$ipFloat.':/home/ubuntu');
 				$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "chmod 775 ./vellum.sh"');
 				// $installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo ./install_sipp.sh '.$ipBono.'"');
@@ -6015,7 +6015,7 @@ function create_core_ims($names,$id_net,$domain,$typeDomain,$options_test_sprout
 				$coreIp.= array("dime" => array("float"=>$ipLocal,
 												"local"=>$ipFloat ));
 				// shell_exec('sudo ssh-keygen -f "/root/.ssh/known_hosts" -R "'.$ipFloat.'"');
-				shell_exec('sudo chmod 700 /var/www/html/telco/scripts/terminal_testbed/key.pem');
+				// shell_exec('sudo chmod 700 /var/www/html/telco/scripts/terminal_testbed/key.pem');
 				$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem /var/www/html/telco/scripts/coreIMS/dime.sh ubuntu@'.$ipFloat.':/home/ubuntu');
 				$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "chmod 775 ./dime.sh"');
 				// $installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo ./install_sipp.sh '.$ipBono.'"');
@@ -6024,7 +6024,7 @@ function create_core_ims($names,$id_net,$domain,$typeDomain,$options_test_sprout
 				$coreIp.= array("dns"=> array("float"=>$ipLocal,
 												"local"=>$ipFloat ));
 				// shell_exec('sudo ssh-keygen -f "/root/.ssh/known_hosts" -R "'.$ipFloat.'"');
-				shell_exec('sudo chmod 700 /var/www/html/telco/scripts/terminal_testbed/key.pem');
+				// shell_exec('sudo chmod 700 /var/www/html/telco/scripts/terminal_testbed/key.pem');
 				$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem /var/www/html/telco/scripts/coreIMS/dns.sh ubuntu@'.$ipFloat.':/home/ubuntu');
 				$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "chmod 775 ./dns.sh"');
 				// $installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo ./install_sipp.sh '.$ipBono.'"');
@@ -6034,7 +6034,7 @@ function create_core_ims($names,$id_net,$domain,$typeDomain,$options_test_sprout
 					$coreIp.= array("ibcf" => array("float"=>$ipLocal,
 													"local"=>$ipFloat ));
 					// shell_exec('sudo ssh-keygen -f "/root/.ssh/known_hosts" -R "'.$ipFloat.'"');
-					shell_exec('sudo chmod 700 /var/www/html/telco/scripts/terminal_testbed/key.pem');
+					// shell_exec('sudo chmod 700 /var/www/html/telco/scripts/terminal_testbed/key.pem');
 					$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem /var/www/html/telco/scripts/coreIMS/ibcf.sh ubuntu@'.$ipFloat.':/home/ubuntu');
 					$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "chmod 775 ./ibcf.sh"');
 					// $installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo ./install_sipp.sh '.$ipBono.'"');
@@ -6042,7 +6042,7 @@ function create_core_ims($names,$id_net,$domain,$typeDomain,$options_test_sprout
 				if( $nameVm == 'asterisk'){
 					// $coreIp.= array("asterisk" => $ipLocal);
 					// shell_exec('sudo ssh-keygen -f "/root/.ssh/known_hosts" -R "'.$ipFloat.'"');
-					shell_exec('sudo chmod 700 /var/www/html/telco/scripts/terminal_testbed/key.pem');
+					// shell_exec('sudo chmod 700 /var/www/html/telco/scripts/terminal_testbed/key.pem');
 					$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem /var/www/html/telco/scripts/coreIMS/asterisk.sh ubuntu@'.$ipFloat.':/home/ubuntu');
 					$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "chmod 775 ./asterisk.sh"');
 					// $installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo ./install_sipp.sh '.$ipBono.'"');
@@ -6052,7 +6052,7 @@ function create_core_ims($names,$id_net,$domain,$typeDomain,$options_test_sprout
 		}
 		if( $nameVm == 'sipp'){
 			// shell_exec('sudo ssh-keygen -f "/root/.ssh/known_hosts" -R "'.$ipFloat.'"');
-			shell_exec('sudo chmod 700 /var/www/html/telco/scripts/terminal_testbed/key.pem');
+			// shell_exec('sudo chmod 700 /var/www/html/telco/scripts/terminal_testbed/key.pem');
 			$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem /var/www/html/telco/scripts/sipp/install_sipp.sh ubuntu@'.$ipFloat.':/home/ubuntu');
 			$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "chmod 775 ./install_sipp.sh"');
 			$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "sudo ./install_sipp.sh '.$ipBono.'"');
@@ -6074,10 +6074,10 @@ function create_core_ims($names,$id_net,$domain,$typeDomain,$options_test_sprout
 	}
 	foreach ($coreIp as $nameVm=>$ipsVm){
 		if( $nameVm == 'dns'){
-			shell_exec('sudo chmod 700 /var/www/html/telco/scripts/terminal_testbed/key.pem');
+			// shell_exec('sudo chmod 700 /var/www/html/telco/scripts/terminal_testbed/key.pem');
 			$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem ubuntu@'.$ipsVm['float'].' "sudo ./'.$nameVm.'.sh"');
 		}else{
-			shell_exec('sudo chmod 700 /var/www/html/telco/scripts/terminal_testbed/key.pem');
+			// shell_exec('sudo chmod 700 /var/www/html/telco/scripts/terminal_testbed/key.pem');
 			$installShell=shell_exec('ssh -o "StrictHostKeyChecking no" -i /var/www/html/telco/scripts/terminal_testbed/key.pem ubuntu@'.$ipsVm['float'].' "sudo ./'.$nameVm.'.sh testbed.unicauca.edu.co '.$coreIp['dns']['local'].' '.$coreIp['bono']['local'].' '.$coreIp['sprout']['local'].' '.$coreIp['ellis']['local'].' '.$coreIp['homer']['local'].' '.$coreIp['vellum']['local'].' '.$coreIp['dime']['local'].' '.$coreIp['ibcf']['local'].' "');
 		}
 	}

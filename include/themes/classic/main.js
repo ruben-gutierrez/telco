@@ -139,8 +139,8 @@ $(document).on("click", ".btn_arq_action", function()﻿ {
                         notifications("freeArqq", "Liberando arqutiectura");
                     },
                     success: function(data) {
-                        // console.log(data);
-                        if (data == '1') {
+                        console.log(data);
+                        if (data == 'Liberada') {
                             fila.cells[4].textContent = 'libre';
                             // log-reporting
                         } else {
@@ -1202,7 +1202,7 @@ function sendIdServerToServer(action, id_server) {
         beforesend: function() {
 
         },
-        success: function(data) {
+        success: function( data ) {
             return data;
         }
 
@@ -1312,17 +1312,16 @@ function freeDomain(id) {
             processData: false,
             data: formData,
             beforeSend: function() {
-                notifications("free_domainn", "Liberando Dominio");
+                notifications("free_domainn", "Liberando Arquitectura");
             },
             success: function(data) {
                 // console.log(data);
-                if (data == '1') {
+                if (data == 'Liberada') {
                     refreshTableArqByUser();
                 } else {
                     alert("Ha ocurrido un problema, intentelo mas tarde o contacte al administrador");
                     //log-reporting
                 }
-                
             },
             complete: function(){
                 deleteNotification("free_domainn");

@@ -1,8 +1,10 @@
 <?php 
-global $current_user,$options_test_sprout;
 
 include('./include/global.php');
 include_once('./lib/api_graph.php');
+global $current_user,$options_test_sprout;
+
+
 
 
 // saber si post tiene valor
@@ -11,10 +13,9 @@ include_once('./lib/api_graph.php');
 //
 
 if (!empty($_POST)) {
+	
 	// include('./include/auth.php'); //se pone aqui poque se se pone arriba da error cuando se ejecuta automaticamente
-
-
-	// obtener vablabes a usar
+	//  obtener vablabes a usar
 	$accion= $_POST['action'];	
 	$id= $_POST['id'];
 
@@ -64,18 +65,19 @@ if (!empty($_POST)) {
 			break;
 
 		case "2"://liberar arquitectura
+			// print_r($_POST);
 			$email_user = db_fetch_cell_prepared("SELECT usuario from arqs_testbedims  WHERE id ='" . $id . "'");
-			if ($email_user != "libre"){
+			// print_r($email_user);
+			if ( $email_user != "libre"){
 				$dom_asig = db_fetch_cell_prepared("SELECT dominio from arqs_testbedims  WHERE id ='" . $id . "'");
 				$arq_libre=db_execute("UPDATE arqs_testbedims SET  usuario='libre' WHERE id='" . $id . "'");
 				$mod_table_solicitud=db_execute("UPDATE solicitud_arq SET fecha_fin_asignacion =NOW() WHERE dominio='" . $dom_asig . "' ORDER BY id DESC LIMIT 1");
 				//delete perm to tree
 				remove_perms($email_user, $dom_asig);
-					echo($arq_libre);
+				echo"Liberada";
 
 				//report
 				addActionToReport($_POST['idUser'], "Liberar la arquitectura ".$dom_asig." del usuario ".$email_user."");
-			
 			}else{
 				echo "1";
 			}
@@ -407,6 +409,9 @@ if (!empty($_POST)) {
 				$flavor=id_flavor( $_POST['ramNewVm'],$_POST['vcpuNewVm'],$_POST['diskNewVm']);
 				
 				$vm=create_vm($_POST['nameNewVm'], $_POST['imageNewVm'],$flavor,$id_net);
+				
+				
+				
 				consult_servers_openstack();
 				$vmJson = json_decode($vm, true);
 					// print_r($vmJson);
@@ -488,31 +493,28 @@ if (!empty($_POST)) {
 					addActionToReport($_POST['idUser'], "Agregó la gráfica ".$id_graph." al dominio : ".$dom." ");
 				}
 				break;
-			case '19':
-				// db_execute_prepared('DELETE FROM graph_local WHERE id = ?', $_POST['idGraph']);
-				api_graph_remove($_POST['idGraph']);
-				//report
-				addActionToReport($_POST['idUser'], "Borró la gráfica ".$_POST['idGraph']." ");
-				break;
+		case '19':
+			// db_execute_prepared('DELETE FROM graph_local WHERE id = ?', $_POST['idGraph']);
+			api_graph_remove($_POST['idGraph']);
+			//report
+			addActionToReport($_POST['idUser'], "Borró la gráfica ".$_POST['idGraph']." ");
+			break;
 
-			case '20':
-				echo "test";
-				sleep(10);
-				break;
-
+		case '20':
+			echo "test";
+			sleep(10);
+			break;
 		default:
-
 			echo ("sin funcion");
 			break;
 	}
 }else{
-	$dominios_asignados= dominios_asignados();
-	// print_r($dominios_asignados);
+	$dominios_asignados=db_fetch_assoc("SELECT dominio , usuario from arqs_testbedims WHERE usuario != 'libre'");
+	// $dominios_asignados=dominios_asignados();
+	// print($dominios_asignados);
 	if (!empty($dominios_asignados)) {
 		foreach ($dominios_asignados as $key => $array) {
-			validar_asignacion($array['dominio'],$array['usuario']);
+			print_r(validar_asignacion($array['dominio'],$array['usuario']));
 		}
-	}	
+	}
 }
-
-
