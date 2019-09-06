@@ -54,15 +54,13 @@ $from_email=$current_user['email_address'];
 				<!-- <h1 class="titulo_arquitectura">Lista de Arquitecturas</h1> -->
 				<div class="description_page_testbed">El ambiente de prueba Telco2.0 IMS permite a los usuarios evaluar el rendiemiento del nucleo IMS clearwater con dos tipos de pruebas Una de ellas consiste en emular el nodo Bono (Proxy) para enviar peticiones y solicitudes al nodo Sprout (Nucleo IMS) para verificar el rendieminto de este. Otra de las pruebas consiste en emular los usuarios que se registran para utilizar algun servicio IMS.</div>
 				<!-- //tabla y boton de solicitud  -->
-				<div class="col-md">
+				<div class="col-md" id="content_arq_cards">
 					<!-- ponemos la tabla como menu -->
 					<?php
 
-						displayCardsArq($contenido_arquitectura, $current_user);
+						displayCardsArq( $from_email, $username );
 
 					?>
-
-
 					<!-- <table id="tabla" class="tabla_contenido">
 						<tr class='display' id="fila0">
 							<td id='subtitle'>Arquitectura</td> 
@@ -95,26 +93,9 @@ $from_email=$current_user['email_address'];
 				<!-- <h1 class="titulo_arquitectura">Lista de Arquitecturas</h1> -->
 				<div class="description_page_testbed">Arquitectuas asignadas, en esta sección puedes verificar las arquitecturas asignadas a tu cuenta de usuario para luego modificar la escalabilidad vertical de ellas teniendo la capacidad de moficicar la capacidad de la memoria RAM, disco duro y capacidad e procesador.</div>
 				<!-- //tabla y boton de solicitud  -->
-				<div class="col-md">
+				<div class="col-md arqAsingUser">
 					<!-- <button class="btn btn-primary" onclick="">test</button> -->
-					<table class="table table-striped table_arq_byUser">
-					
-					<thead>
-						<tr>
-						<th scope="col">#</th>
-						<th scope="col">Arquitectura</th>
-						<th scope="col">Dominio</th>
-						<th scope="col">Opciones</th>
-						</tr>
-					</thead>
-					<?php 
-					echo'<tbody class="arqAsingUser" id="'.$current_user['email_address'].'">';
-						?>
 						<?php draw_table_domainsOfUser($from_email); ?>
-						
-					</tbody>
-					</table>
-
 				</div>
 			</div>
 
@@ -123,32 +104,31 @@ $from_email=$current_user['email_address'];
 
 
 		<script type="text/javascript">
-		function solicituar_arquitectura(to_email,from_email, username, arquitectura_selec){ 
-			// Estas son variables a pasar por post
-			// console.log(arquitectura_selec);
-		if (arquitectura_selec =='old') {
-			var to_email=$("#to_email").val();
-			var from_email=$("#from_email").val();
-			// var cuerpo=$("#cuerpo").val();
-			var username=$("#username").val();
-			var arquitectura_selec=arquitectura;
-		}
-
-			var accion='1';
+		// function solicituar_arquitectura(to_email,from_email, username, arquitectura_selec){ 
+		// 	// Estas son variables a pasar por post
+		// 	// console.log(arquitectura_selec);
+		// if (arquitectura_selec =='old') {
+		// 	var to_email=$("#to_email").val();
+		// 	var from_email=$("#from_email").val();
+		// 	// var cuerpo=$("#cuerpo").val();
+		// 	var username=$("#username").val();
+		// 	var arquitectura_selec=arquitectura;
+		// }
+		// 	var accion='1';
 			
-			// confirmar solicitud de arquitectura
-			var consulta1 = confirm("A seleccionado arquitectura " + arquitectura_selec + " para realizar la solicitud de recursos,\n marque aceptar");
-			// Eventos testbed, agregar notificacion, evento solicitud de arquitectura---------------------------------
+		// 	// confirmar solicitud de arquitectura
+		// 	var consulta1 = confirm("A seleccionado arquitectura " + arquitectura_selec + " para realizar la solicitud de recursos,\n marque aceptar");
+		// 	// Eventos testbed, agregar notificacion, evento solicitud de arquitectura---------------------------------
 
-			// agregar solicitud de arquitectura a sql
-			$.post('solicitud_asignacion.php',{post_to_email:to_email,post_from_email:from_email,post_arquitectura:arquitectura_selec,post_username:username,action:accion},function(respuesta){
-				alert(respuesta);
-				refreshTableArqByUser();
-				<?php
-				// send_mail($from_email, "rubengutierrez@unicauca.edu.co",, "prueba correo3");?>
-			});
-			//    window.location = "pruebas.php?arq="+arquitectura;
-		}
+		// 	// agregar solicitud de arquitectura a sql
+		// 	$.post('solicitud_asignacion.php',{post_to_email:to_email,post_from_email:from_email,post_arquitectura:arquitectura_selec,post_username:username,action:accion},function(respuesta){
+		// 		alert(respuesta);
+		// 		refreshTableArqByUser(post_to_email);
+		// 		<?php
+		// 		// send_mail($from_email, "rubengutierrez@unicauca.edu.co",, "prueba correo3");?>
+		// 	});
+		// 	//    window.location = "pruebas.php?arq="+arquitectura;
+		// }
 
 
 		

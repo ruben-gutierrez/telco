@@ -259,6 +259,11 @@ $now = date_create()->format('Y-m-d H:i:s');
 			
 			print_r(draw_table_testbed_pruebas($_POST['user']));
 			break;
+		case '23':
+			
+			print_r(db_execute("delete from solicitud_arq where id='".$_POST['idQuery']."'"));
+			displayCardsArq( $_POST['userEmail'], $_POST['userName'] );
+			break;
 
 
 		default:

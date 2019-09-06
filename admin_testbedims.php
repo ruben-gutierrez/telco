@@ -51,7 +51,7 @@ global $config, $current_user;
 
 			<section id="add_arq" class="section_admin_arquitectura" tabindex='0' style="display: none;">
 				<div class="name_section bg-dark">Agregar arquitectura</div>
-				<div class="content_section container-6 ">
+				<div class="content_section container-6">
 					<form method="post" id="form_new_arq" class="form_arq" enctype="multipart/form-data">
 						<input type="hidden" name="action" value="3">
 							<div class="row">
@@ -180,6 +180,14 @@ global $config, $current_user;
 								<input type="hidden" name="action" value="8">
 								<input type="number" name="numero" value="1" required>
 								<input class="btn btn-outline-warning" type="button" name="btn_set" value="Cambiar" onclick="change_day_asig()">
+							</form>
+						</div>
+						<div id="content_day_asig" class="col solicitud_asig">
+							<label>Solicitudes por realizar:<label id="number_solicitud_actual"><?php echo(db_fetch_cell_prepared("select value_info from data_testbedims where id_data='3'")); ?></label></label>
+							<form class="form_arq" method="post" id="form_solicitud_asig">
+								<input type="hidden" name="action" value="21">
+								<input type="number" name="numero" value="1" required>
+								<input class="btn btn-outline-warning" type="button" name="btn_set" value="Cambiar" onclick="change_solicitud_asig()">
 							</form>
 						</div>
 					</div>

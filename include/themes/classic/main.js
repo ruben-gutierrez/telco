@@ -3,7 +3,7 @@ var pageName = basename($(location).attr('pathname'));
 var idUser=0;
 function identifiUser(userId){
     idUser = userId;
-    // console.log(userId);
+    console.log(userId);
 }
 function themeReady() {
     height = get_height();
@@ -400,6 +400,32 @@ function change_day_asig() {
         }
     });
 
+}
+function change_solicitud_asig() {
+    var parametros = new FormData($('#form_solicitud_asig')[0]);
+
+    $.ajax({
+        url: 'solicitud_asignacion.php',
+        type: 'POST',
+        contentType: false,
+        processData: false,
+        data: parametros,
+        beforeSend: function() {
+            notifications("changSol", "Modificando los solicitudes");
+        },
+        success: function(data) {
+            console.log(data);
+            if (data != '') {
+                $('#number_solicitud_actual')[0].innerHTML = data;
+            }
+            // $('#content_day_asig').hide();
+            // $('#btn_see_table3').show();
+            // $('#btn_notsee_table3').hide();
+        },
+        complete: function(){
+            deleteNotification("changSol");
+        }
+    });
 }
 
 
@@ -1000,7 +1026,7 @@ function showInfoDomain(IdDomain, core) {
                         status = "Encendida";
                     }
                     data += '<tr id="' + answer[x]['id_server'] + '"> <th scope="row">' + answer[x]['name_server'] + '<br> ' + status + '<div id="prop_vm">ram:' + answer[x]['ram'] + '<br>Disk: ' + answer[x]['disk'] + '<br> Vcpu: ' + answer[x]['vcpus'] + '</div></th><td>' + answer[x]['ip_local'] + '</td>';
-                    data += '<td><form class="form" id="vertical_scalability">';
+                    data += '<td><form class="form" id="' + answer[x]['id_server'] + '">';
                     data += '<div class="row"><input class="col-md-3" type="number" name="ram" placeholder="RAM">';
                     data += '<input class="col-md-3" type="number" name="vcpu" placeholder="CPU">';
                     data += '<input class="col-md-3" type="number" name="disk" placeholder="Disk">';
@@ -1011,8 +1037,13 @@ function showInfoDomain(IdDomain, core) {
                     } else {
                         data += '<button class="btn "  id="' + answer[x]['id_server'] + '" type="button" title="Apagar. Tarda 1 min" onclick="offVM(`' + answer[x]['id_server'] + '`)"><i class="fa fa-power-off text-success fa-2x"></i></button>';
                     }
-                    data += '<input class="btn btn-outline-secondary btn-sm m-1 " type="button" id="takesnap' + answer[x]['id_server'] + '" value="Punto de control" onclick="takeSnaptVM(`' + answer[x]['id_server'] + '`,`' + answer[x]['name_server'] + '`)">';
-                    data += '<input class="btn btn-outline-secondary btn-sm m-1" type="button" id="' + answer[x]['id_server'] + '" value="Reestablecer" onclick="returnSnaptVM(`' + answer[x]['id_server'] + '`)">';
+                    console.log(answer[x]['date'])
+                    if (answer[x]['date'] === null) {
+                        data += '<input class="btn btn-outline-secondary btn-sm m-1 " type="button" id="takesnap' + answer[x]['id_server'] + '" title="Tomar primer instantanea" value="Punto de control" onclick="takeSnaptVM(`' + answer[x]['id_server'] + '`,`' + answer[x]['name_server'] + '`)">';
+                    }else{
+                        data += '<input class="btn btn-outline-secondary btn-sm m-1 " type="button" id="takesnap' + answer[x]['id_server'] + '" title="Reemplazar instantanea tomada en ' + answer[x]['date'] + '" value="Punto de control" onclick="takeSnaptVM(`' + answer[x]['id_server'] + '`,`' + answer[x]['name_server'] + '`)">';
+                        data += '<input class="btn btn-outline-secondary btn-sm m-1" type="button" id="' + answer[x]['id_server'] + '" value="Reestablecer" title="Retornar a la instantanea tomanda en ' + answer[x]['date'] + '" onclick="returnSnaptVM(`' + answer[x]['id_server'] + '`)">';    
+                    }
                     data += '<button class="btn btn-outline-danger btn-sm m-1" type="button" onclick="eliminarVM(`' + answer[x]['id_server'] + '`)">Eliminar</button></div>';
                     data += '</td>';
                     data += '<td><button class="btn btn-outline-success" onclick="terminal(`' + answer[x]['id_server'] + '`,`' + answer[x]['name_server'] + '`)">Terminal</button></td></tr>';
@@ -1160,10 +1191,9 @@ function openstackSendIdServer(action, idServer) {
 }
 
 function reziseVM(idServer) {
-    var parametros = new FormData($('#vertical_scalability')[0]);
+    var parametros = new FormData($('form#'+idServer+'.form')[0]);
     parametros.append('action', '14');
     parametros.append('id_server', idServer);
-
     $.ajax({
         url: 'solicitud_asignacion.php',
         type: 'POST',
@@ -1296,14 +1326,13 @@ function verifiyFieldsBlank(idForm){
 }
 
 
-function freeDomain(id) {
+function freeDomain(id, userEmail){
     var elec = confirm("¿Desea liberar la arquitectura?");
     if (elec) {
         var formData = new FormData();
         formData.append('id', id);
         formData.append('idUser', idUser);
         //formData.append('emailUser', 'usuario');
-
         formData.append('action', '2');
         $.ajax({
             url: 'solicitud_asignacion.php',
@@ -1315,11 +1344,13 @@ function freeDomain(id) {
                 notifications("free_domainn", "Liberando Arquitectura");
             },
             success: function(data) {
-                // console.log(data);
-                if (data == 'Liberada') {
-                    refreshTableArqByUser();
-                } else {
+                console.log(data);
+                if (data == '1') {
                     alert("Ha ocurrido un problema, intentelo mas tarde o contacte al administrador");
+                } else {
+                    $('#content_arq_cards').empty();
+                    $('#content_arq_cards').html(data);
+                    refreshTableArqByUser(userEmail);
                     //log-reporting
                 }
             },
@@ -1330,15 +1361,11 @@ function freeDomain(id) {
         });
 
     }
-
-
-
-
 }
 
-function refreshTableArqByUser() {
+function refreshTableArqByUser(emailUser) {
     var formData = new FormData();
-    emailUser = $('.arqAsingUser')[0].id;
+    // emailUser = $('.arqAsingUser')[0].id;
     formData.append('emailUser', emailUser);
     formData.append('action', '9');
     $.ajax({
@@ -1348,17 +1375,14 @@ function refreshTableArqByUser() {
         processData: false,
         data: formData,
         beforesend: function() {
-
         },
         success: function(data) {
             // console.log(data);
             $('.arqAsingUser').empty();
             $('.arqAsingUser').html(data);
         }
-
     });
 }
-
 function test() {
     return 1;
 }
@@ -1779,4 +1803,86 @@ function update_tests(user){
             console.log("error");
         }
     }), "json";
+}
+
+
+function queryArq(dom, userEmail, user, typeArq ){
+    // console.log(dom);
+    var formData = new FormData();
+    formData.append('action', '1');
+    formData.append('dom', dom);
+    formData.append('userEmail', userEmail);
+    formData.append('user', user);
+    formData.append('typeArq', typeArq);
+    $.ajax({
+        url: 'solicitud_asignacion.php',
+        type: 'POST',
+        contentType: false,
+        processData: false,
+        timeout: 10000,
+        data: formData,
+        beforeSend: function() {
+            notifications("sol_arq", "Solicitando arquitectura");
+        },
+        success: function(data) {
+            console.log(data);
+            switch (data) {
+                case "000":
+                    alertify.error("Se ha encolado la solicitud, cuando su turno llegue se asignara la arquitectura.");
+                    break;
+                case "001":
+                    alertify.error("No puede agregar más solicitudes");
+                    break;
+                case "010":
+                    alertify.error("A alcanzado el número máximo arquitecturas reservadas");
+                    break;
+            
+                default:
+                    $('#content_arq_cards').empty();
+                    $('#content_arq_cards').append(data);
+                    refreshTableArqByUser(userEmail);
+                    break;
+            }
+
+        },
+        complete: function(){
+            deleteNotification("sol_arq");
+        },
+        error: function(){
+            console.log("error");
+        }
+    }), "html";
+}
+
+
+function cancel_query(idQuery,userName,userEmail){
+    var formData = new FormData();
+    formData.append('action', '23');
+    formData.append('idQuery', idQuery);
+    formData.append('userEmail', userEmail);
+    formData.append('userName', userName);
+    
+    $.ajax({
+        url: 'admin_info.php',
+        type: 'POST',
+        contentType: false,
+        processData: false,
+        timeout: 10000,
+        data: formData,
+        beforeSend: function() {
+            notifications("delete_query", "Eliminando solicitud de arquitectura");
+        },
+        success: function(data) {
+            console.log(data);
+            $('#content_arq_cards').empty();
+            $('#content_arq_cards').append(data);
+            refreshTableArqByUser(userEmail);
+        },
+        complete: function(){
+            deleteNotification("delete_query");
+        },
+        error: function(){
+            console.log("error");
+        }
+    }), "html";
 }

@@ -5175,16 +5175,16 @@ function pregunta_pagina_testbed ($array_paginas_testbed){
 
 //consultar si hay arquitectura disponible
 //parametro: $arq-> nombre de la arquitectura a consultar
-//RETURN-> dominio
+//RETURN-> id si esta libre de lo contrario retorna vacio.
 
 
-function arq_disponible($arq){
-	$dominio_id = db_fetch_row_prepared("SELECT id, dominio from arqs_testbedims WHERE activo = 'V' AND usuario='libre' AND arquitectura = '" . $arq . "'  limit 1" );
-	return $dominio_id;
+function arq_disponible($dom){
+	return db_fetch_cell_prepared("SELECT id from arqs_testbedims WHERE usuario='libre' AND dominio = '" . $dom . "'" );
+	
 }
 // agregar solicitud a la tabla solicitud_arq
-function agregar_solicitud($to_email,$from_email,$arquitectura,$username,$now){
-		$sql = "INSERT INTO solicitud_arq (fecha_solicitud, usuario, email, arquitectura) VALUES ('".$now."','".$username."','".$from_email."','".$arquitectura."')";
+function agregar_solicitud($user, $userEmail,$typeArq, $dom){
+		$sql = "INSERT INTO solicitud_arq ( usuario, email, arquitectura, dominio ) VALUES ('".$user."','".$userEmail."','".$typeArq."','".$dom."')";
 		$agregar=db_execute($sql);
 		//db_execute retorna 1 si es exitosa la peticion y cero si falla
 }
@@ -5201,26 +5201,39 @@ function remove_perms($user, $dominio_arq){
 
 
 //asigna la arquitectura 
-function asignar_arquitectura($id_solicitud, $dominio_arq, $user){
+function asignar_arquitectura($dominio_arq, $userEmail, $userName, $typeArq ){
 	//add perms to tree
-	$id_user= db_fetch_cell_prepared("SELECT id FROM user_auth WHERE email_address='" . $user . "'");
+	$id_user= db_fetch_cell_prepared("SELECT id FROM user_auth WHERE email_address='" . $userEmail . "'");
 	$id_tree= db_fetch_cell_prepared("SELECT id_tree FROM arqs_testbedims WHERE dominio='" . $dominio_arq . "'");
 
 		shell_exec('php -q /var/www/html/telco/cli/add_perms.php --user-id='.$id_user.' --item-type=tree --item-id='.$id_tree);
-	
-	
 
 	//asing arq
 	$days=db_fetch_cell_prepared("select value_info from data_testbedims where id_data='2'");
 	$actual_datetime=date_create()->format('Y-m-d H:i:s');
-	$final_datetime=date('Y-m-d H:i:s',strtotime($actual_datetime."+ ".$days." days")); 
-	
-	$asignar_arq=db_execute("UPDATE solicitud_arq SET fecha_asignacion='" . $actual_datetime . "', dominio='" .$dominio_arq . "', fecha_fin_asignacion='" . $final_datetime . "' WHERE id='" . $id_solicitud . "'");
+	$final_datetime=date('Y-m-d H:i:s',strtotime($actual_datetime."+ ".$days." days"));
+	db_execute("INSERT INTO solicitud_arq ( usuario, email, arquitectura, dominio, fecha_asignacion, fecha_fin_asignacion ) VALUES ('".$userName."','".$userEmail."','".$typeArq."','".$dominio_arq."','".$actual_datetime."','".$final_datetime."')");
 	// marcar la arqutiectura como inactiva
-	$sql3 = "UPDATE arqs_testbedims SET usuario ='".$user."' WHERE dominio='" . $dominio_arq . "'";
-	$update_arqs=db_execute($sql3);
-	// echo $update_arqs;
-	return ($asignar_arq . $update_arqs);
+	$update_arqs=db_execute("UPDATE arqs_testbedims SET usuario ='".$userEmail."' WHERE dominio='" . $dominio_arq . "'");
+
+	return ($update_arqs);
+}
+//asigna la arquitectura automaticamente 
+function asignar_arquitectura2($dominio_arq, $userEmail, $idQueryUpdate ){
+	//add perms to tree
+	$id_user= db_fetch_cell_prepared("SELECT id FROM user_auth WHERE email_address='" . $userEmail . "'");
+	$id_tree= db_fetch_cell_prepared("SELECT id_tree FROM arqs_testbedims WHERE dominio='" . $dominio_arq . "'");
+
+		shell_exec('php -q /var/www/html/telco/cli/add_perms.php --user-id='.$id_user.' --item-type=tree --item-id='.$id_tree);
+
+	//asing arq
+	$days=db_fetch_cell_prepared("select value_info from data_testbedims where id_data='2'");
+	$actual_datetime=date_create()->format('Y-m-d H:i:s');
+	$final_datetime=date('Y-m-d H:i:s',strtotime($actual_datetime."+ ".$days." days"));
+	// db_execute("INSERT INTO solicitud_arq ( usuario, email, arquitectura, dominio, fecha_asignacion, fecha_fin_asignacion ) VALUES ('".$userName."','".$userEmail."','".$typeArq."','".$dominio_arq."','".$actual_datetime."','".$final_datetime."')");
+	db_execute("UPDATE solicitud_arq SET fecha_asignacion ='".$actual_datetime."', fecha_fin_asignacion='".$final_datetime."' WHERE id='" . $idQueryUpdate . "'");
+	// marcar la arqutiectura como inactiva
+	$update_arqs=db_execute("UPDATE arqs_testbedims SET usuario ='".$userEmail."' WHERE dominio='" . $dominio_arq . "'");
 }
 
 function solicitud_pendiente($arq){
@@ -5255,6 +5268,34 @@ function validar_asignacion($dom,$user){
 		}
 	}else{
 		echo "la asignacion de la arquitectura ".$arquitectura_libre ." con dominio ".$dom." sigue activa\n";
+	}
+}
+function arquitectureUsed($dom){
+	
+	
+	// $asignacion_expiro = db_fetch_cell_prepared("SELECT arquitectura from solicitud_arq WHERE fecha_fin_asignacion <=NOW() WHERE dominio = '" . $dom . " AND email='".$user."' ORDER BY dominio DESC limit 1");
+	$user = db_fetch_cell_prepared("SELECT usuario from arqs_testbedims  WHERE dominio ='" . $dom . "'");
+	// echo $arquitectura_libre."\n";
+	
+	if ($user == 'libre'){
+		return 0;
+		
+	}else{
+		return 1;
+	}
+}
+function arqSolicited($dom, $userEmail){
+	
+	
+	// $asignacion_expiro = db_fetch_cell_prepared("SELECT arquitectura from solicitud_arq WHERE fecha_fin_asignacion <=NOW() WHERE dominio = '" . $dom . " AND email='".$user."' ORDER BY dominio DESC limit 1");
+	$user = db_fetch_cell_prepared("SELECT a.usuario,  from arqs_testbedims a LEFT JOIN solicitud_arq s ON a.usuario=s.usuario  WHERE dominio ='" . $dom . "'");
+	// echo $arquitectura_libre."\n";
+	
+	if ($user == 'libre'){
+		return 0;
+		
+	}else{
+		return 1;
 	}
 }
 
@@ -5307,18 +5348,40 @@ function info_arquitecturas(){
 }
 
 function db_arq_testbed(){
-	$arqs=db_fetch_assoc("select distinct arquitectura, Max(dominio), Max(descripcion), Max(imagen) from arqs_testbedims group by arquitectura");
-	
-	return $arqs;
-
+	//$arqs=db_fetch_assoc("select distinct arquitectura, Max(dominio), Max(descripcion), Max(imagen) from arqs_testbedims group by arquitectura");
+	return db_fetch_assoc("SELECT arquitectura, dominio, descripcion, imagen, type_arq FROM arqs_testbedims");
 }
 
 
 function db_arq_byUser($email_user){
 	// $arqs=db_fetch_assoc("SELECT arquitectura, dominio from arqs_testbedims WHERE usuario=".$email_user);
-	$arqs=db_fetch_assoc_prepared("SELECT id, arquitectura, dominio from arqs_testbedims where usuario='".$email_user."'");
+	$arqs=db_fetch_assoc_prepared("SELECT id, arquitectura, dominio, type_arq from arqs_testbedims where usuario='".$email_user."'");
 	return $arqs;
 }
+function asingArquitecture( $userEmail,$domain, $arqType, $daysAsing,$idQueryUpdate){
+	$idUser= db_fetch_cell_prepared("SELECT id from user_auth  WHERE email_address ='" . $userEmail . "'");
+	$num_arq_to_user=sizeof(arq_asignadas_to_user($userEmail));
+	$userName = db_fetch_cell_prepared("SELECT username from user_auth  WHERE email_address ='" . $userEmail . "'");
+	$arq_permit=db_fetch_cell_prepared("select value_info from data_testbedims where id_data='1'");
+	$id_dom=arq_disponible($domain);
+	if ( $id_dom != '' ) {
+		if ( $num_arq_to_user < $arq_permit ) {
+			asignar_arquitectura2( $domain, $userEmail,$idQueryUpdate);
+			// asignar la arqutiectura al usuario en la plataforma
+			//report
+			addActionToReport($idUser, "Asinacion automatica de la arquitectura  ".$domain." de tipo ".$arqType. " durante ".$daysAsing." dias");
+			//notificacion al usuario por correo
+			// send_mail($userEmail,"rubengutierrez@unicauca.edu.co","Telco IMS:Asignacion de arquitectura", "En la actual fecha se ha asignado la arquitectura  '".$domain."' de tipo '".$arqType. "' durante '".$daysAsing."' dias.");
+			return 1;
+		}else{
+			addActionToReport($idUser, "Se rechazò la asignacion de la arquitectura  ".$domain." de tipo ".$arqType. " durante ".$daysAsing." dias por limite de arquitecturas asignadas al usuario");
+			return 0;
+		}
+	}else{
+		return 0;
+	}
+}
+
 
 // realizar ping a un host 
 // $dominio : direccion ip o URL
@@ -5338,7 +5401,6 @@ function verifi_arq_ping($dominio){
 	} else {
 	  return false;
 	}
-
 }
 // Funciones openstack
 // se crea la red, la subred y se agrega a la base de datos de telco
@@ -5526,6 +5588,12 @@ function deleteVm($idServer){
 	if(key($delVm) == "error"){
 		return "0";
 	}else{
+		$idInstant=db_fetch_cell_prepared("SELECT id_instant from instant_images_openstack WHERE id_server='".$idServer."'");
+		if( $idInstant != ''){
+			$action='delete_instant';
+			$answer=shell_exec("./scripts/request_openstack.sh $action $idInstant");
+			db_execute("DELETE FROM instant_images_openstack where id_server='".$idServer."'");	
+		}
 		return "1";
 		
 	}

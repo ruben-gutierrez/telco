@@ -254,7 +254,7 @@ switch (get_nfilter_request_var('action')) {
 		break;
 	case 'tree_content':
 		html_validate_tree_vars();
-
+		content_graph($current_user);
 		if (!is_view_allowed('show_tree')) {
 			print "<font class='txtErrorTextBox'>" . __('YOU DO NOT HAVE RIGHTS FOR TREE VIEW') . '</font>';
 			exit;
@@ -331,7 +331,7 @@ switch (get_nfilter_request_var('action')) {
 			grow_right_pane_tree($tree_id, $node_id, $hgdata);
 		}
 
-		content_graph($current_user);
+//		content_graph($current_user);
 		bottom_footer();
 
 		break;

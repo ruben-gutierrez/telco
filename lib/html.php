@@ -2291,36 +2291,138 @@ function graficar_menu_vertical_testbed($pagina, $content_vertical){
     </nav>
     <?php 
 }
-function displayCardsArq($array_content, $user ){
+function displayCardsArq( $userEmail, $userName ){
 	$arq_testbed=db_arq_testbed();
 	// print_r($arq_testbed);
+	// print_r($user);
 	?>
 	<div class="card-columns">
 	<?php 
 	foreach ($arq_testbed as $item => $elements) {
-		?>
+		$restrictions=consult_restrictions($elements['dominio']);
 		
-		  <div class="card center container">
-			  <!-- <div class="row center"> -->
-			 	 <img src="images/images_testbed/images_ims/<?php echo($elements['Max(imagen)']) ?>" class="col-sm-6 mt-5" alt="...">
-			  <!-- </div> -->
-		    
-		    <div class="card-body">
-		      <h5 class="card-title">Arquitectura <br><?php echo($elements['arquitectura']); ?></h5>
-		      <p class="card-text"><?php echo($elements['Max(descripcion)']); ?></p>
-		    </div>
-		    <div class="card-footer">
-		    	<div class="center">
-		    	<?php 
-		    	print('<button class="btn btn-success" onclick=solicituar_arquitectura("rubengutierrez@unicauca.edu.co","'.$user["email_address"].'","'.$user["username"].'","'.$elements["arquitectura"].'")> <i class="fa fa-link text-white p-2 rounded"> | Solicitar</i> </button>'); 
-		    	?>
-		    	<!-- <input class="btn btn-success" type="button" value="Reservar" onclick=""> -->
+		if( arquitectureUsed($elements['dominio']) == 1){
+			//ocupada
+			$days=db_fetch_cell_prepared("select value_info from data_testbedims where id_data='2'");
+			$final_asign=db_fetch_cell_prepared("select fecha_fin_asignacion from solicitud_arq where dominio='".$elements['dominio']."' AND fecha_asignacion is not null ORDER BY id DESC LIMIT 1");
+			$numberQueries=db_fetch_cell_prepared("select count(id) from solicitud_arq where dominio='".$elements['dominio']."' AND fecha_asignacion IS NULL ");
+			
+			$queryPendUser=db_fetch_cell("select id from solicitud_arq where dominio='".$elements['dominio']."' AND fecha_asignacion IS NULL AND email='".$userEmail."'");
+			
+			?>
+			<div class="card center container">
+					<div class="card-header bg-warning">
+						<h5 class="card-title">Arquitectura <br><?php echo($elements['arquitectura']); ?> (<?php echo($elements['dominio']); ?>)</h5>
+						<div class="row bg-light">
+							<div class="col">
+								<?php
+												
+								if( $queryPendUser == ''){
+									$final_datetime=date('Y-m-d H:i:s',strtotime( $final_asign ." + " . $days * $numberQueries . " days"));
+									print("Reservada hasta".$final_datetime);				
+								}else{
+									$numberQueries=db_fetch_cell_prepared("select count(id) from solicitud_arq where dominio='".$elements['dominio']."' AND fecha_asignacion IS NULL AND id<'".$queryPendUser."'");
+									// $numberQueries=db_fetch_cell_prepared("select count(id) from solicitud_arq where dominio='".$elements['dominio']."' AND fecha_asignacion IS NULL AND email='".$userEmail."' AND id<'".$queryPendUser."'");
+									// print_r($queryPendUser);
+									$final_datetime=date('Y-m-d H:i:s',strtotime( $final_asign ." + " . $days * $numberQueries . " days"));
+									print('Te será asignada el '.$final_datetime .' <a class="iconLink mrgt" href="#" role="link" title="Cancelar solicitud de reserva" onclick="cancel_query(`'.$queryPendUser.'`,`'.$userName.'`,`'.$userEmail.'`)"><i class="fa fa-trash " style="color: red"></i></a>');			
+								}
+								?>
+			
+				
+							
+								
+							</div>
+						</div>
+					</div>
+					<!-- <div class="row center"> -->
+						<img src="images/images_testbed/images_ims/<?php echo($elements['imagen']) ?>" class="col-sm-6 mt-5" alt="Imagen arquitectura IMS">
+					<!-- </div> -->
+					
+					<div class="card-body">
+					
+					<p class="card-text"><?php echo($elements['descripcion']); ?></p>
+					</div>
+					<div class="row text-left m-3" style="font-size: small">
+					<?php 
+						if($restrictions['vm'] == 1){
+							echo "Se puede agregar una máquina virtual con";
+						}else{
+							echo "Se pueden agregar ".$restrictions['vm']." máquinas virtuales, cada una con máximo: ";
+						}
+						?>
+						
+						<?php echo($restrictions['ram']); ?> Mb de RAM, <?php echo($restrictions['disk']); ?> Gb de Almacenamiento y 
+						<?php 
+						if($restrictions['vcpu'] == 1){
+							echo $restrictions['vcpu']." Núcleo de Procesamiento.<br>";
+						}else{
+							echo $restrictions['vcpu']." Núcleos de Procesamiento.<br>";
+						}
+						?>
+						
+					</div>
+					<div class="card-footer">
+						<div class="center">
+						<?php 
+						print('<button class="btn btn-success" onclick="queryArq(`'.$elements['dominio'].'`,`'.$userEmail.'`,`'.$userName.'`, `'.$elements["type_arq"].'`)"> <i class="fa fa-link text-white p-2 rounded"> | Agregar solicitud</i> </button>'); 
+						// print('<button class="btn btn-success" onclick=solicituar_arquitectura("rubengutierrez@unicauca.edu.co","'.$user["email_address"].'","'.$user["username"].'","'.$elements["arquitectura"].'")> <i class="fa fa-link text-white p-2 rounded"> | Agregar solicitud</i> </button>'); 
+						?>
+						<!-- <input class="btn btn-success" type="button" value="Reservar" onclick=""> -->
+						</div>
+					</div>
 				</div>
-		    </div>
-		  </div>
-	  	
+				
 
-		<?php 
+				<?php 
+		}else{
+				//libre
+				?>
+		
+				<div class="card center container">
+					<div class="card-header">
+					<h5 class="card-title">Arquitectura <br><?php echo($elements['arquitectura']); ?>(<?php echo($elements['dominio']); ?>)</h5>
+					</div>
+					<!-- <div class="row center"> -->
+						<img src="images/images_testbed/images_ims/<?php echo($elements['imagen']) ?>" class="col-sm-6 mt-5" alt="Imagen arquitectura IMS">
+					<!-- </div> -->
+					
+					<div class="card-body">
+					
+					<p class="card-text"><?php echo($elements['descripcion']); ?></p>
+					</div>
+					<div class="row text-left m-3" style="font-size: small">
+					<?php 
+						if($restrictions['vm'] == 1){
+							echo "Se puede agregar una máquina virtual con";
+						}else{
+							echo "Se pueden agregar ".$restrictions['vm']." máquinas virtuales, cada una con máximo: ";
+						}
+						?>
+						
+						<?php echo($restrictions['ram']); ?> Mb de RAM, <?php echo($restrictions['disk']); ?> Gb de Almacenamiento y 
+						<?php 
+						if($restrictions['vcpu'] == 1){
+							echo $restrictions['vcpu']." Núcleo de Procesamiento.<br>";
+						}else{
+							echo $restrictions['vcpu']." Núcleos de Procesamiento.<br>";
+						}
+						?>
+						
+					</div>
+					<div class="card-footer">
+						<div class="center">
+						<?php 
+						print('<button class="btn btn-success" onclick="queryArq(`'.$elements['dominio'].'`,`'.$userEmail.'`,`'.$userName.'`, `'.$elements["type_arq"].'`)"> <i class="fa fa-link text-white p-2 rounded"> | Reservar </i> </button>'); 
+						?>
+						<!-- <input class="btn btn-success" type="button" value="Reservar" onclick=""> -->
+						</div>
+					</div>
+				</div>
+				
+
+				<?php 
+		}
 	}
 	?>
 	</div>
@@ -2346,26 +2448,40 @@ function draw_table_testbed_arquitectura($array_content){
 function draw_table_domainsOfUser($emailUser){
 	$cont =0;
 	$arq_testbed=db_arq_byUser($emailUser);
-	// print_r($arq_testbed);
+	// print_r($emailUser);
 	$images=images_openstack();
-	foreach ($arq_testbed as $item => $elements) {
-		$cont = $cont +1;
-		
-		print("
+	if ( count($arq_testbed) > 0){
+		print('<table class="table table-striped table_arq_byUser">
+		<thead>
 			<tr>
-			    <th scope='row'>".$cont."</th>
-			    <td>".$elements['arquitectura']."</td>
-			    <td>".$elements['dominio']."</td>
-			    <td> 
-						<button class='btn' id='".$elements['dominio']."' onclick='showInfoDomain(".$elements['id'].", `true`)' > <i class='fas fa-project-diagram bg-primary text-white p-2 rounded'> | Core IMS</i> </button>
-						<button class='btn' id='".$elements['dominio']."' onclick='showInfoDomain(".$elements['id'].", `false`)' > <i class='fa fa-laptop-medical bg-primary text-white p-2 rounded'> | VM Adicionales</i> </button>
-						<button class='btn' id='".$elements['dominio']."' onclick='freeDomain(".$elements['id'].")' ><i class='fa fa-unlink bg-danger text-white p-2 rounded'> | Liberar</i> </button>
-						<button class='btn btnaddVM' id='".$elements['dominio']."' onclick='addVmtoDomain(".$elements['id'].")' data-toggle='modal' data-target='#exampleModal'><i class='fa fa-plus bg-warning text-white p-2 rounded'> | Agregar VM</i></button>
-				</td>
-			</tr>"
-		);
-		
-	}	
+			<th scope="col">#</th>
+			<th scope="col">Arquitectura</th>
+			<th scope="col">Dominio</th>
+			<th scope="col">Opciones</th>
+			</tr>
+		</thead>
+		<tbody id="'.$emailUser.'">');
+		foreach ($arq_testbed as $item => $elements) {
+			$cont = $cont +1;
+			print("
+				<tr>
+					<th scope='row'>".$cont."</th>
+					<td>".$elements['arquitectura']."</td>
+					<td>".$elements['dominio']."</td>
+					<td> 
+							<button class='btn' id='".$elements['dominio']."' onclick='showInfoDomain(".$elements['id'].", `true`)' > <i class='fas fa-project-diagram bg-primary text-white p-2 rounded'> | Core IMS</i> </button>
+							<button class='btn' id='".$elements['dominio']."' onclick='showInfoDomain(".$elements['id'].", `false`)' > <i class='fa fa-laptop-medical bg-primary text-white p-2 rounded'> | VM Adicionales</i> </button>
+							<button class='btn' id='".$elements['dominio']."' onclick='freeDomain(`".$elements['id']."`,`".$emailUser."`)' ><i class='fa fa-unlink bg-danger text-white p-2 rounded'> | Liberar</i> </button>
+							<button class='btn btnaddVM' id='".$elements['dominio']."' onclick='addVmtoDomain(".$elements['id'].")' data-toggle='modal' data-target='#exampleModal'><i class='fa fa-plus bg-warning text-white p-2 rounded'> | Agregar VM</i></button>
+					</td>
+				</tr>"
+			);
+			
+		}	
+		print("</tbody></table>");
+	}else{
+		print("<div class='row m-4'>No tiene arquitecturas reservadas</div>");
+	}
 	
 }
 

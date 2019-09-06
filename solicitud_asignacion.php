@@ -30,52 +30,69 @@ if (!empty($_POST)) {
 			// echo "ingreso a la funcion2";
 			// print_r($_POST);
 			$idUser= db_fetch_cell_prepared("SELECT id from user_auth  WHERE email_address ='" . $_POST['post_from_email'] . "'");
-			$num_arq_to_user=sizeof(arq_asignadas_to_user($_POST['post_from_email']));
+			$num_arq_to_user=sizeof(arq_asignadas_to_user($_POST['userEmail']));
 			$arq_permit=db_fetch_cell_prepared("select value_info from data_testbedims where id_data='1'");
-			
-			agregar_solicitud($_POST['post_to_email'],$_POST['post_from_email'],$_POST['post_arquitectura'],$_POST['post_username'],$now);
-			// dominio de arquitectura disponible
-			//consulta si hay arquitecturas disponibles
-			$dominio_libre=arq_disponible($_POST['post_arquitectura']);
-			
+			//consulta la arquitectura esta disponinible
+			$id_dom=arq_disponible($_POST['dom']);
+			if ( $id_dom == '' ) {
+				
 
-			if ($dominio_libre['id']=='') {
-				echo "Lo sentimos, en este momento no hay arquitecturas disponibles. Se ha almacenado su solicitud pronto nos contataremos via e-mail.\n Gracias";
-				//report
-				addActionToReport($idUser, "Se agrego una solicitud de espera de la arquitectura ".$_POST['post_arquitectura']."");
+				//consultar numero de solicitudes por usuario
+				$numSolByUser=db_fetch_cell_prepared("select value_info from data_testbedims where id_data='3'");
+				//consultar numero de solicitudes hechas
+				$numSolRealizated=db_fetch_cell_prepared("select count(id) from solicitud_arq where email='".$_POST['userEmail']."' AND fecha_asignacion IS NULL");
+				if( $numSolByUser > $numSolRealizated){
+					agregar_solicitud($_POST['user'], $_POST['userEmail'],$_POST['typeArq'],$_POST['dom']);
+					echo "000";
+					addActionToReport($idUser, "Se agrego una solicitud de espera de la arquitectura ".$_POST['dom']." de tipo ".$_POST['typeArq']."");
+				}else{
+					echo "001";
+					addActionToReport($idUser, "Se nego la solicitud de arquitectura  ".$_POST['dom']." de tipo ".$_POST['typeArq']."");
+				}
 			}else{
 				// Consulta si hay solicitud pendiente
 				// echo "hay arquitectecturas disponibles";
-				$id_solicitud_pendiente = solicitud_pendiente($_POST['post_arquitectura']);
-				if ($id_solicitud_pendiente['id'] == '') {
-					echo "no hay solicitudes pendientes para la arquitectura " . $_POST['post_arquitectura'];
-				}else{
-					if ($num_arq_to_user < $arq_permit) {
-						asignar_arquitectura($id_solicitud_pendiente['id'] , $dominio_libre['dominio'], $_POST['post_from_email']);
+				// $id_solicitud_pendiente = solicitud_pendiente($_POST['post_arquitectura']);
+
+					if ( $num_arq_to_user < $arq_permit ) {
+						asignar_arquitectura( $_POST['dom'], $_POST['userEmail'], $_POST['user'] ,$_POST['typeArq']);
 						// asignar la arqutiectura al usuario en la plataforma
-						echo "Se ha asignado la arquitectura ". $_POST['post_arquitectura'] . "durante ".$days." dias.";
 						//report
-						addActionToReport($idUser, "Reservó la arquitectura  ".$_POST['post_arquitectura']." durante ".$days." dias");
+						addActionToReport($idUser, "Reservó la arquitectura  ".$_POST['dom']." de tipo ".$_POST['typeArq']." durante ".$days." dias");
+						displayCardsArq( $_POST['userEmail'], $_POST['user'] );
 					}else{
-						echo ("Puede reservar maximo ". $arq_permit ."arquitecturas en el testbed IMS");
+						echo "010";
 					}
-					
-				}
 			}
 			break;
 
 		case "2"://liberar arquitectura
 			// print_r($_POST);
+
 			$email_user = db_fetch_cell_prepared("SELECT usuario from arqs_testbedims  WHERE id ='" . $id . "'");
+			$userName = db_fetch_cell_prepared("SELECT username from user_auth  WHERE email_address ='" . $email_user . "'");
 			// print_r($email_user);
-			if ( $email_user != "libre"){
+			if ( $email_user != "libre" ){
 				$dom_asig = db_fetch_cell_prepared("SELECT dominio from arqs_testbedims  WHERE id ='" . $id . "'");
 				$arq_libre=db_execute("UPDATE arqs_testbedims SET  usuario='libre' WHERE id='" . $id . "'");
-				$mod_table_solicitud=db_execute("UPDATE solicitud_arq SET fecha_fin_asignacion =NOW() WHERE dominio='" . $dom_asig . "' ORDER BY id DESC LIMIT 1");
+				// $mod_table_solicitud=db_execute("UPDATE solicitud_arq SET fecha_fin_asignacion =NOW() WHERE dominio='" . $dom_asig . "' ORDER BY id DESC LIMIT 1");
+				$mod_table_solicitud=db_execute("UPDATE solicitud_arq SET terminado='1',fecha_fin_asignacion =NOW() WHERE fecha_asignacion is not null and dominio='" . $dom_asig . "'  ORDER BY id DESC LIMIT 1");
+
+
+				//Asignar arquitectura liberada
+				$queriesArquitecture = db_fetch_assoc("SELECT id, email, dominio, arquitectura  FROM solicitud_arq  WHERE dominio='".$dom_asig."' and fecha_asignacion is null");
+				if(count($queriesArquitecture > 0 ) ){
+					foreach ($queriesArquitecture as $query) {
+						if(asingArquitecture($query['email'],$query['dominio'],$query['arquitectura'],$days,$query['id']) == 1){
+							break;
+						}
+					}
+				}
+				// asignar_arquitectura( $_POST['dom'], $_POST['userEmail'], $_POST['user'] ,$_POST['typeArq']);
+
 				//delete perm to tree
 				remove_perms($email_user, $dom_asig);
-				echo"Liberada";
-
+				displayCardsArq( $email_user, $userName );
 				//report
 				addActionToReport($_POST['idUser'], "Liberar la arquitectura ".$dom_asig." del usuario ".$email_user."");
 			}else{
@@ -100,7 +117,7 @@ if (!empty($_POST)) {
 				$array_tree=explode ( ' ' , $resp_tree );
 				$id_tree = preg_replace('/\([^)]\)|[()]/', '', $array_tree[4]);
 				// inserta la informacion en la base de dataos
-				$sql = "INSERT INTO arqs_testbedims (arquitectura, dominio, activo, usuario, descripcion, imagen, id_tree) VALUES ('".$_POST['name_arq']."','".$_POST['dominio_arq']."','V','libre', '".$_POST['desc_arq']."','".$routeImage."','".$id_tree."')";
+				$sql = "INSERT INTO arqs_testbedims (arquitectura, dominio, activo, usuario, descripcion, imagen, id_tree, type_arq) VALUES ('".$_POST['name_arq']."','".$_POST['dominio_arq']."','V','libre', '".$_POST['desc_arq']."','".$routeImage."','".$id_tree."','".$_POST['type']."')";
 				$agregar=db_execute($sql);
 				if ( $agregar == '1') {
 					// agrega las restricciones
@@ -156,6 +173,7 @@ if (!empty($_POST)) {
 					$idFloatIp=db_fetch_cell_prepared("SELECT f.id_floatingip from server_openstack s inner join flotantIp_openstack f on f.ip_float = s.ip_public  where s.id_server='".$serverId['id_server']."'");
 					delete_floatIp($idFloatIp);
 					deleteVm($serverId['id_server']);
+					
 				}
 				$ips_aditionals=db_fetch_assoc("SELECT v.id_server from vm_aditional_testbedims v inner join server_openstack s on v.id_server=s.id_server inner join flavor_openstack f on f.id_flavor=s.id_flavor where v.dominio='".$dom['dominio']."'");
 				
@@ -388,7 +406,8 @@ if (!empty($_POST)) {
 		case '12'://consultar maquinas virtuales por usuario
 			// consult_servers_openstack();
 			$domain=db_fetch_cell_prepared("SELECT dominio from arqs_testbedims where id=".$_POST['domain']);
-			$ips_domain=db_fetch_assoc("SELECT s.id_server, s.name_server, s.ip_local, s.status, c.ram, c.vcpus, c.disk from server_openstack s inner join core_domain c on c.id_server = s.id_server inner join  flavor_openstack f on f.id_flavor=s.id_flavor where c.domain='".$domain."'");
+			//$ips_domain=db_fetch_assoc("SELECT s.id_server, s.name_server, s.ip_local, s.status, f.ram, f.vcpus, f.disk from server_openstack s inner join core_domain c on c.id_server = s.id_server inner join  flavor_openstack f on f.id_flavor=s.id_flavor  where c.domain='".$domain."'");
+			$ips_domain=db_fetch_assoc("SELECT s.id_server, s.name_server, s.ip_local, s.status, f.ram, f.vcpus, f.disk, i.date from server_openstack s inner join core_domain c on c.id_server = s.id_server inner join  flavor_openstack f on f.id_flavor=s.id_flavor left join instant_images_openstack i ON s.id_server=i.id_server where c.domain='".$domain."'");
 			$ips_aditionals=db_fetch_assoc("SELECT v.id_server,v.name_server, v.ip_local, s.status, f.ram, f.vcpus, f.disk from vm_aditional_testbedims v inner join server_openstack s on v.id_server=s.id_server inner join flavor_openstack f on f.id_flavor=s.id_flavor where v.dominio='".$domain."'");
 			if ($_POST['core']== "true") {
 				echo json_encode($ips_domain);
@@ -437,9 +456,9 @@ if (!empty($_POST)) {
 			}
 			break;
 		case '14'://consultar maquinas virtuales por usuario
-			// print_r($_POST);
+			print_r($_POST);
 			$idflavor=id_flavor( $_POST['ram'],$_POST['vcpu'],$_POST['disk']);
-			echo $idflavor;
+			//echo $idflavor;
 			print_r(reziseServer($_POST['id_server'], $idflavor));
 
 			break;
@@ -503,6 +522,16 @@ if (!empty($_POST)) {
 		case '20':
 			echo "test";
 			sleep(10);
+			break;
+		
+		case '21':
+			$sql=db_execute("UPDATE data_testbedims set value_info='".$_POST['numero']."' where id_data='3'");
+				
+			if ($sql == '1') {
+				//report
+				addActionToReport($_POST['idUser'], "Modificó el número de dias de asignacion de las arquitecturas a   ".$_POST['numero']."");
+				echo ($_POST['numero']);
+			}
 			break;
 		default:
 			echo ("sin funcion");
