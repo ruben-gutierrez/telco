@@ -287,29 +287,17 @@ global $config, $current_user;
 					
 						
 
-						<div class="row action_users">
-							<div class="col-md">
-									<!-- <button class="btn btn-primary" onclick="">test</button> -->
-								<table class="table table-striped table_arq_byUser">
-								
-								<thead>
-									<tr>
-									<th scope="col">Usuario</th>
-									<th scope="col">Acción</th>
-									<th scope="col">Fecha</th>
-									</tr>
-								</thead>
-								<tbody>
+						<div class="row action_users" id="tableReportActions">
+							
 									<?php 
-										draw_table_reports();
+										draw_table_reports(1);
 									?>
-								</tbody>
-								</table>
-
+							
 							</div>
+							
 						</div>
 
-				
+						
 				</div>
 			</div>
 		 </section>

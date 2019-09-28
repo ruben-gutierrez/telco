@@ -5355,7 +5355,7 @@ function db_arq_testbed(){
 
 function db_arq_byUser($email_user){
 	// $arqs=db_fetch_assoc("SELECT arquitectura, dominio from arqs_testbedims WHERE usuario=".$email_user);
-	$arqs=db_fetch_assoc_prepared("SELECT id, arquitectura, dominio, type_arq from arqs_testbedims where usuario='".$email_user."'");
+	$arqs=db_fetch_assoc_prepared("SELECT id, arquitectura, dominio, type_arq, descripcion from arqs_testbedims where usuario='".$email_user."'");
 	return $arqs;
 }
 function asingArquitecture( $userEmail,$domain, $arqType, $daysAsing,$idQueryUpdate){
@@ -5552,7 +5552,7 @@ function images_openstack(){
 function id_flavor($ram,$vcpu,$disk){
 	$idFlavor=db_fetch_cell_prepared("SELECT id_flavor FROM flavor_openstack where ram='".$ram."' AND disk='".$disk."' AND vcpus='".$vcpu."'");
 	if( $idFlavor == ''){
-		// echo "crear flavor";
+		 //echo "crear flavor";
 		$name=$ram.$disk.$vcpu;
 		$flavor_create=create_flavor( $name, $disk, $ram, $vcpu);
 		// print_r($flavor_create);
@@ -5566,7 +5566,7 @@ function id_flavor($ram,$vcpu,$disk){
 		db_execute("INSERT INTO flavor_openstack(id_flavor, name_flavor, ram, disk, vcpus, public, id_instance) values ('$id_flavor','$name_flavor', '$ram_flavor', '$disk_flavor','$vcpus_flavor', '$public_flavor', '33')");
 		return $flavorJson['flavor']['id'];
 	}else{
-		// echo "flavor credo";
+		//echo "flavor credo";
 		return $idFlavor;
 	}
 }
@@ -5605,11 +5605,6 @@ function onVm($idServer){
 	$answer=shell_exec("./scripts/request_openstack.sh $action $idServer");
 	$stopVm = json_decode($answer, true);
 	print_r($stopVm);
-	//if(key($stopVm) == "error"){
-	//	return "0";
-	//}else{
-	//	return "1";
-	//}
 	}
 
 function reziseServer($idServer, $idFlavor){
@@ -5617,11 +5612,7 @@ function reziseServer($idServer, $idFlavor){
 	$answer=shell_exec("./scripts/request_openstack.sh $action $idServer $idFlavor");
 	$ans = json_decode($answer, true);
 	print_r($ans);
-	// if(key($delVm) == "error"){
-	// 	return "0";
-	// }else{
-	// 	return "1";
-	// }
+	
 }
 function terminalWeb($idServer){
 	$action='terminalWeb';
@@ -5635,11 +5626,6 @@ function offServer($idServer){
 	$answer=shell_exec("./scripts/request_openstack.sh $action $idServer");
 	$ans = json_decode($answer, true);
 	print_r($ans);
-	// if(key($delVm) == "error"){
-	// 	return "0";
-	// }else{
-	// 	return "1";
-	// }
 }
 
 // function startServer($idServer){

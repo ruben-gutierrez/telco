@@ -2192,7 +2192,7 @@ function html_common_header($title, $selectedTheme = '') {
 	<script src='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/alertifyJS/alertify.min.js'></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	
-
+	
 	<link href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/images/telco_icon.ico' rel='shortcut icon'>
 	<link href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/images/telco_logo2.png' rel='icon' sizes='96x96'>
 	<link rel="stylesheet" href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/alertifyJS/css/alertify.min.css'/>
@@ -2203,10 +2203,6 @@ function html_common_header($title, $selectedTheme = '') {
 	<link rel="stylesheet" href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/bootstrap/dist/js/bootstrap.js'/>
 	<link rel="stylesheet" href='<?php echo $config['url_path']; ?>include/themes/<?php print $selectedTheme;?>/bootstrap/dist/css/bootstrap.css'/>
 
-
-	<link href="/your-path-to-fontawesome/css/fontawesome.css" rel="stylesheet">
-	<link href="/your-path-to-fontawesome/css/brands.css" rel="stylesheet">
-	<link href="/your-path-to-fontawesome/css/solid.css" rel="stylesheet">
 
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 	
@@ -2255,7 +2251,6 @@ function html_common_header($title, $selectedTheme = '') {
 	print get_md5_include_js('include/layout.js');
 	print get_md5_include_js('include/themes/' . $selectedTheme .'/main.js');
 	api_plugin_hook('page_head');
-	
 }
 
 // contenido testbed ims
@@ -2386,7 +2381,6 @@ function displayCardsArq( $userEmail, $userName ){
 					<!-- <div class="row center"> -->
 						<img src="images/images_testbed/images_ims/<?php echo($elements['imagen']) ?>" class="col-sm-6 mt-5" alt="Imagen arquitectura IMS">
 					<!-- </div> -->
-					
 					<div class="card-body">
 					
 					<p class="card-text"><?php echo($elements['descripcion']); ?></p>
@@ -2472,7 +2466,7 @@ function draw_table_domainsOfUser($emailUser){
 							<button class='btn' id='".$elements['dominio']."' onclick='showInfoDomain(".$elements['id'].", `true`)' > <i class='fas fa-project-diagram bg-primary text-white p-2 rounded'> | Core IMS</i> </button>
 							<button class='btn' id='".$elements['dominio']."' onclick='showInfoDomain(".$elements['id'].", `false`)' > <i class='fa fa-laptop-medical bg-primary text-white p-2 rounded'> | VM Adicionales</i> </button>
 							<button class='btn' id='".$elements['dominio']."' onclick='freeDomain(`".$elements['id']."`,`".$emailUser."`)' ><i class='fa fa-unlink bg-danger text-white p-2 rounded'> | Liberar</i> </button>
-							<button class='btn btnaddVM' id='".$elements['dominio']."' onclick='addVmtoDomain(".$elements['id'].")' data-toggle='modal' data-target='#exampleModal'><i class='fa fa-plus bg-warning text-white p-2 rounded'> | Agregar VM</i></button>
+							<button class='btn test' id='".$elements['dominio']."' onclick=''><i class='fa fa-plus bg-warning text-white p-2 rounded'> Pruebas</i></button>
 					</td>
 				</tr>"
 			);
@@ -2481,6 +2475,42 @@ function draw_table_domainsOfUser($emailUser){
 		print("</tbody></table>");
 	}else{
 		print("<div class='row m-4'>No tiene arquitecturas reservadas</div>");
+	}
+}
+
+function draw_table_domainsOfUser2($emailUser){
+	$cont =0;
+	$arq_testbed=db_arq_byUser($emailUser);
+	// print_r($emailUser);
+	$images=images_openstack();
+	print('<div class="card-group">');
+	if ( count($arq_testbed) > 0){
+		foreach ($arq_testbed as $item => $elements) {
+			$cont = $cont +1;
+			print('
+			
+				<div class="card-group" >
+					<div class="card text-white bg-dark m-3" style="max-width: 18rem;">
+						<a href="arquitectura.php?arq='.$elements['id'].'" class="text-white">
+							<div class="card-header">'.$elements['arquitectura'].'</div>
+							<div class="card-body">
+								<h5 class="card-title">'.$elements['dominio'].'</h5>
+								<p class="card-text">'.$elements['descripcion'].'</p>
+								
+							</div>
+						</a>
+						<div class="card card-footer">
+							<button clas="btn btn-warning" onclick="freeDomain(`'.$elements['id'].'`, `'.$emailUser.'`)">Liberar</button>
+						</div>
+					</div>
+				</div>
+			
+			');
+		}
+		print('</div>');
+	}else{
+		header('Location: /telco/arquitectura.php?reserve=true');
+		// print("<div class='row m-4'>No tiene arquitecturas reservadas</div>");
 	}
 	
 }
@@ -2499,12 +2529,75 @@ function draw_table_nets_openstack(){
 	}
 	
 }
-function draw_table_reports(){
-	$actions=db_fetch_assoc("SELECT * from user_action");
-	// print_r($actions);
-	foreach ($actions as $key => $line) {
-		$user=db_fetch_cell_prepared("SELECT email_address FROM user_auth WHERE id='".$line['id_user']."'");
-		echo "<tr><td>".$user."</td><td>".$line['action']."</td><td>".$line['date']."</td></tr>";
+function draw_table_reports($countPage){
+	echo '<div class="col-md">
+	<!-- <button class="btn btn-primary" onclick="">test</button> -->
+<table class="table table-striped table_arq_byUser">
+
+<thead>
+	<tr>
+	<th scope="col">Usuario</th>
+	<th scope="col">Acción</th>
+	<th scope="col">Fecha</th>
+	</tr>
+</thead>
+<tbody>';
+	if ($countPage <= 1) {
+		
+		$actions=db_fetch_assoc("SELECT * from user_action limit 19");
+		// print_r($actions);
+		foreach ($actions as $key => $line) {
+			$user=db_fetch_cell_prepared("SELECT email_address FROM user_auth WHERE id='".$line['id_user']."'");
+			echo "<tr><td>".$user."</td><td>".$line['action']."</td><td>".$line['date']."</td></tr>";
+	
+		}
+		$net=2;
+		echo '	</tbody>
+				</table>
+			<div class="row" id="btnActionsPage">
+				<button class="btn btn-primary" disabled>Anterior</button>
+				<button class="btn btn-primary" onclick="pageActions(`'.$net.'`)">Siguiente</button>
+			</div>';
+	}else{
+		$numActions=db_fetch_cell("SELECT count(id_action) from user_action");
+		$pageMax=ceil($numActions/20);
+		$idFirst=db_fetch_cell("SELECT id_action from user_action limit 1");
+		if ($pageMax>=$countPage) {
+			$limInf=$idFirst+(10*$countPage);
+			$limSup=$idFirst+(10*$countPage)+(19);
+			$actions=db_fetch_assoc("SELECT * from user_action where id_action between ".$limInf." AND ".$limSup."");
+			// print_r($actions);
+			foreach ($actions as $key => $line) {
+				$user=db_fetch_cell_prepared("SELECT email_address FROM user_auth WHERE id='".$line['id_user']."'");
+				echo "<tr><td>".$user."</td><td>".$line['action']."</td><td>".$line['date']."</td></tr>";
+			}
+			$proxPage=$countPage+1;
+			$prevpage=$countPage-1;
+			echo '	</tbody>
+				</table>
+			<div class="row" id="btnActionsPage">
+				<button class="btn btn-primary" onclick="pageActions(`'.$prevpage.'`)">Anterior</button>
+				<button class="btn btn-primary" onclick="pageActions(`'.$proxPage.'`)">Siguiente</button>
+			</div>';
+		}else{
+			$limInf=$idFirst+(10 * $pageMax);
+			$limSup=$idFirst+(10 * $pageMax)+(19);
+			$actions=db_fetch_assoc("SELECT * from user_action where id_action between ".$limInf." AND ".$limSup."");
+			// print_r($actions);
+			foreach ($actions as $key => $line) {
+				$user=db_fetch_cell_prepared("SELECT email_address FROM user_auth WHERE id='".$line['id_user']."'");
+				echo "<tr><td>".$user."</td><td>".$line['action']."</td><td>".$line['date']."</td></tr>";
+			}
+			
+			echo '	</tbody>
+				</table>
+			<div class="row" id="btnActionsPage">
+				<button class="btn btn-primary" onclick="pageActions(`'.$pageMax.'`)">Anterior</button>
+				<button class="btn btn-primary"  disabled>Siguiente</button>
+			</div>';
+		}
+		
+		
 		
 	}
 	
@@ -2538,8 +2631,6 @@ function consult_flavors_openstack(){
 		
 		db_execute("INSERT INTO flavor_openstack(id_flavor, name_flavor, ram, disk, vcpus, public, id_instance) values ('$id_flavor','$name_flavor', '$ram_flavor', '$disk_flavor','$vcpus_flavor', '$public_flavor', '33')");
 	}
-	
-	 
 }
 
 function draw_table_images_openstack(){
@@ -2715,10 +2806,17 @@ function draw_table_estate_arq(){
 }
 
 
-function draw_table_testbed_pruebas($user){
-	$dom_user=db_fetch_assoc("SELECT arquitectura, dominio, descripcion  from arqs_testbedims where usuario ='".$user."'");
+function draw_table_testbed_pruebas($user,$idArq=0){
+	if($idArq == 0){
+
+		$dom_user=db_fetch_assoc("SELECT arquitectura, dominio, descripcion  from arqs_testbedims where usuario ='".$user."'");
+	}else{
+		$dom_user=db_fetch_assoc("SELECT arquitectura, dominio, descripcion  from arqs_testbedims where usuario ='".$user."' AND id='".$idArq."'");
+
+	}
 	// print_r($dom_user);
 	if( empty($dom_user)){
+		
 		?>
 							<div class="card m-2">
 								<div class="card-header">
@@ -3149,9 +3247,9 @@ function type_coreIMS(){
 function content_graph($user){
 	
 	?>
+
 	<div class="container" id="status-loading"></div>
 	<section class="section_add_monitoring">
- 	
 	 <nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('section_monitoring_vm', 'indicate_solicitedArquitecture')">
 		 <a class="navbar-brand text-white"><b> Crear Gráfica </b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
 	 </nav>

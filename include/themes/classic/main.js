@@ -139,14 +139,15 @@ $(document).on("click", ".btn_arq_action", function()﻿ {
                         notifications("freeArqq", "Liberando arqutiectura");
                     },
                     success: function(data) {
-                        console.log(data);
-                        if (data == 'Liberada') {
-                            fila.cells[4].textContent = 'libre';
-                            // log-reporting
-                        } else {
-                            alert("Ha ocurrido un problema, intentelo mas tarde o contacte al administrador");
-                            // log-reporting
-                        }
+                        window.location="http://10.55.5.100/telco/admin_testbedims.php";
+                        // console.log(data);
+                        // if (data == 'Liberada') {
+                        //     fila.cells[4].textContent = 'libre';
+                        //     // log-reporting
+                        // } else {
+                        //     alert("Ha ocurrido un problema, intentelo mas tarde o contacte al administrador");
+                        //     // log-reporting
+                        // }
                         
                     },
                     complete: function(){
@@ -993,9 +994,6 @@ function show_hide_content_byClass(content, incator) {
 }
 
 function showInfoDomain(IdDomain, core) {
-
-
-
     $.ajax({
             method: "POST",
             url: "solicitud_asignacion.php",
@@ -1008,6 +1006,7 @@ function showInfoDomain(IdDomain, core) {
                 // console.log(answer);
                 //    console.log(core);
                 data = "<div class='container' id='status-loading'></div>";
+                data += "<button class='btn btnaddVM' onclick='$(`.alertify`).remove();addVmtoDomain("+IdDomain+");' data-toggle='modal' data-target='#addVmFrom'><i class='fa fa-plus bg-warning text-white p-2 rounded'> | Agregar VM</i></button>";
                 data += "<div class='container'>";
 
                 data += "<div class='row'>";
@@ -1032,9 +1031,11 @@ function showInfoDomain(IdDomain, core) {
                     data += '<input class="col-md-3" type="number" name="disk" placeholder="Disk">';
                     data += '<input class="btn btn-outline-info btn-sm m-1" type="button" id="' + answer[x]['id_server'] + '" value="Editar" onclick="reziseVM(`' + answer[x]['id_server'] + '`)">  <div class="logo ml-2"><i class="fa fa-spinner fa-3x" id="' + answer[x]['id_server'] + '" style="display:none"></i></div></form>';
                     data += '<div class="row">';
-                    if (status == "Apagada") {
+                    if (status == "Apagada"){
+                        data += '<div class="custom-control custom-switch"><input type="checkbox" class="custom-control-input" id="customSwitches" checked><label class="custom-control-label" for="customSwitches">Encendida</label></div>';
                         data += '<button class="btn " id="' + answer[x]['id_server'] + '" type="button" title="Encender" onclick="onVM(`' + answer[x]['id_server'] + '`)"><i class="fa fa-power-off text-danger fa-2x"></i></button>';
-                    } else {
+                    }else{
+                        data += '<div class="custom-control custom-switch"><input type="checkbox" class="custom-control-input" id="customSwitches"><label class="custom-control-label" for="customSwitches">Apagada</label></div>                   ';
                         data += '<button class="btn "  id="' + answer[x]['id_server'] + '" type="button" title="Apagar. Tarda 1 min" onclick="offVM(`' + answer[x]['id_server'] + '`)"><i class="fa fa-power-off text-success fa-2x"></i></button>';
                     }
                     console.log(answer[x]['date'])
@@ -1051,6 +1052,8 @@ function showInfoDomain(IdDomain, core) {
                 }
                 data += '</div></div>';
 
+                
+                
                 mensaje("Maquinas VM de la Arquitectura", data);
                 // mensaje("Maquinas VM de la Arquitectura", answer);
             } else {
@@ -1108,27 +1111,54 @@ function eliminarVM(idServer) {
             } else {
                 alertify.error('Error al borrar VM, intentelo más tarde o contacta al administrador');
             }
+            location.reload();
 
 
         });
 }
 
 function onVM(idServer) {
-    $('.alertify').remove();
-    var answer = openstackSendIdServer("2", idServer);
-    return answer;
+    var formData = new FormData();
+    formData.append('action', '20');
+    formData.append('idServer', idServer);
+    $.ajax({
+        url: 'solicitud_asignacion.php',
+        type: 'POST',
+        contentType: false,
+        processData: false,
+        timeout: 10000,
+        data: formData,
+        success: function(data) {
+            console.log(data);
+            location.reload();
+        }
+    });
+
+    // var answer = openstackSendIdServer("2", idServer);
+    // return answer;
 }
 
-function offVM(idServer) {
-    $('.alertify').remove();
-    var answer = openstackSendIdServer("3", idServer);
-    return answer;
+function offVM(idServer){
+    var formData = new FormData();
+    formData.append('action', '22');
+    formData.append('idServer', idServer);
+    $.ajax({
+        url: 'solicitud_asignacion.php',
+        type: 'POST',
+        contentType: false,
+        processData: false,
+        timeout: 10000,
+        data: formData,
+        success: function(data) {
+            console.log(data);
+            location.reload();
+        }
+    });
 }
 
 function takeSnaptVM(idServer, nameServer) {
-    var action = '15';
     var parametros = new FormData();
-    parametros.append('action', action);
+    parametros.append('action', '15');
     parametros.append('id_server', idServer);
     parametros.append('name_server', nameServer);
 
@@ -1143,11 +1173,13 @@ function takeSnaptVM(idServer, nameServer) {
             notifications("Instantanea", "Estableciendo Punto de control");
         },
         success: function(data) {
-            console.log(data);
+            // location.reload();
+            
 
         },
         complete: function() {
             deleteNotification("Instantanea");
+            location.reload();
         },
 
         dataType: 'html'
@@ -1182,7 +1214,7 @@ function returnSnaptVM(idServer) {
 function openstackSendIdServer(action, idServer) {
     $.ajax({
             method: "POST",
-            url: "requestOpenstack.php",
+            url: "request_openstack.php",
             data: { action: action, idServer: idServer }
         })
         .done(function(data) {
@@ -1201,18 +1233,19 @@ function reziseVM(idServer) {
         processData: false,
         data: parametros,
         beforeSend: function() {
-            $('i#' + idServer + '.fa').show();
-            notifications("recise_vmm", "Redimencionando Máquina virtual");
+            $('#indicatorEdit' + idServer ).show();
+            $('input#btnEdit' + idServer ).hide();
+            notifications("recise_vmm"+idServer, "Redimencionando Máquina virtual");
         },
         success: function(data) {
-            // $('i#' + idServer + '.fa').hide();
-            // $('.alertify').remove();
             console.log(data);
             alertify.success('VM Modificada');
         },
         complete: function() {
-            deleteNotification("recise_vmm");
-            $('i#' + idServer + '.fa').hide();
+            //location.reload();
+            deleteNotification("recise_vmm"+idServer);
+            $('#indicatorEdit' + idServer ).hide();
+            $('input#btnEdit' + idServer ).show();
         }
 
     });
@@ -1241,6 +1274,7 @@ function sendIdServerToServer(action, id_server) {
 }
 
 function addVmtoDomain(idDomain) {
+    
     // var content='<form>  <div class="form-row">    <div class="form-group col-sm-7">     <div class="form-group col-md-6">      <label>Nombre</label>      <input type="text" class="form-control" name="nameNewVm" placeholder="Nombre">    </div>  </div>  <div class="form-group"> <input type="hidden" class="form-control" id="networkNewMv" value="">  </div>  <div class="form-group">    <label>Flavor</label>    <input type="text" class="form-control col-md-2" id="flavorNewVm" placeholder="RAM "> <input type="text" class="form-control col-md-2" id="flavorNewVm" placeholder="VCPU "> <input type="text" class="form-control col-md-2" id="flavorNewVm" placeholder="DISK "></div>    <div class="form-group col-md-4">      <label>Sistema Operativo</label>      <select id="imageNewVm" class="form-control">        <option selected>Choose...</option>        <option>Ubuntu14</option><option>Ubuntu16</option> <option>centos19</option><option>Lubuntu</option>     </select>    </div>    </div>  <div class="form-group">    <div class="form-check">      <input class="form-check-input" type="checkbox" id="gridCheck">      <label class="form-check-label" for="gridCheck">        Check me out      </label>    </div>  </div>  <button type="submit" class="btn btn-primary">Sign in</button></form>';
     var parametros = new FormData();
     parametros.append('action', '10');
@@ -1255,21 +1289,15 @@ function addVmtoDomain(idDomain) {
             
         },
         success: function(data) {
-
-            $(".btnaddVM")[0].disabled=true
             console.log(data)
             data = JSON.parse(data);
-            //console.log(data);
             if (data.options == '0') {
                 var content = '<div class="row m-4"> <p>El usuario ha alcanzado el numero máximo de maquinas virtuales</p></div>';
-                var btns = '<button type="button" class="btn btn-info" data-dismiss="modal">Aceptar</button>';
                 $('.modal-body').html(content);
-                $('.modal-footer').html(btns);
             } else {
                 var content = '<form id="add_vm_domain"> <input type="hidden" class="form-control" id="idDomain" name="idDomain" placeholder="action" value="' + idDomain + '"> <div class="form-row">    <div class="form-group col-md-6">     <div class="form-group col">      <label>Nombre</label>      <input type="text" class="form-control " name="nameNewVm" id="nameNewVm" placeholder="Nombre" title="Nombre de la maquina virtual" required autofocus> </div> <div class="form-group col">      <label>Sistema Operativo</label>      <select name="imageNewVm" id="imageNewVm" class="form-control" title="Imagen del sistema operativo que tendra la Máquina virtual" placeholder="Sistema Operativo" required>        ' + data.options + ' </select>    </div>  </div>    <div class="form-group ">    <label for="ramNewVm">Memoria RAM</label>   <input type="number" class="form-control col-sm-7" id="ramNewVm" name="ramNewVm" min="1" max="'+data.ram+'" placeholder="Max '+data.ram+' Mb"  title="Memoria Ram de la nueva máquina virtual, Màximo '+data.ram+' Mb" required>  <label for="vcpuNewVm">Número de procesadores</lavel><input type="number" class="form-control col-sm-7" id="vcpuNewVm" name="vcpuNewVm" min="1" max="'+data.vcpu+'" placeholder="Max '+data.vcpu+'" title="Número de procesadores de la Nueva máquina virtual, Màximo '+data.vcpu+' unidades" required> <label for="diskNewVm">Espacio de almacenamiento</label> <input type="number" class="form-control col-sm-7" id="diskNewVm" name="diskNewVm" min="1" max="'+data.disk+'" placeholder="Max '+data.disk+' GB" title="Tamaño de disco duro en Gb, màximo '+data.disk+' Gb" required></div>       </div>   </div></form>';
-                var btns = '<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button><button type="button" id="createMaquine" class="btn btn-primary" onclick="addVM()">Crear</button>';
                 $('.modal-body').html(content);
-                $('.modal-footer').html(btns);
+
             }
         }
     });
@@ -1287,11 +1315,15 @@ function addVM() {
                 processData: false,
                 data: parametros,
                 beforeSend: function() {
-                    // $("#createMaquine")[0].disabled=true
+                    
                     notifications("addvm", "Agregando maquina virtual");
+                    $('#addVmFrom').hide();
+                    $('.modal-backdrop').hide();
+                    $('#btnAddVm').hide();
+
                 },
                 success: function(data) {
-                    console.log(data);
+                    console.log(data)
                     if (data == '0') {
                         alertify.error('Error, Verifique los recursos máximos');
                     } else {
@@ -1300,9 +1332,8 @@ function addVM() {
                     }
                 },
                 complete: function() {
-                    $("#createMaquine")[0].disabled=false
-                    $(".btnaddVM")[0].disabled=false
                     deleteNotification("addvm");
+                    location.reload();
                 }
             });
 
@@ -1326,7 +1357,7 @@ function verifiyFieldsBlank(idForm){
 }
 
 
-function freeDomain(id, userEmail){
+function freeDomain(id, userEmail,page="user"){
     var elec = confirm("¿Desea liberar la arquitectura?");
     if (elec) {
         var formData = new FormData();
@@ -1344,15 +1375,25 @@ function freeDomain(id, userEmail){
                 notifications("free_domainn", "Liberando Arquitectura");
             },
             success: function(data) {
-                console.log(data);
-                if (data == '1') {
-                    alert("Ha ocurrido un problema, intentelo mas tarde o contacte al administrador");
-                } else {
-                    $('#content_arq_cards').empty();
-                    $('#content_arq_cards').html(data);
-                    refreshTableArqByUser(userEmail);
-                    //log-reporting
-                }
+                    console.log(data);
+                    if (page == 'user') {
+                        if (data == '1') {
+                            alert("Ha ocurrido un problema, intentelo mas tarde o contacte al administrador");
+                        } else {
+                            // ir a arquitecturas
+                            window.location="http://10.55.5.100/telco/arquitectura.php";
+                            // actualizar
+                            // $('#content_arq_cards').empty();
+                            // $('#content_arq_cards').html(data);
+                            // refreshTableArqByUser(userEmail);
+                            //log-reporting
+                        }
+                        
+                    }else{
+                            //ir a pagina admin
+                            window.location="http://10.55.5.100/telco/admin_testbedims.php";
+                    }
+                
             },
             complete: function(){
                 deleteNotification("free_domainn");
@@ -1838,9 +1879,12 @@ function queryArq(dom, userEmail, user, typeArq ){
                     break;
             
                 default:
-                    $('#content_arq_cards').empty();
-                    $('#content_arq_cards').append(data);
-                    refreshTableArqByUser(userEmail);
+                    // ir a otra pagina
+                    window.location="http://10.55.5.100/telco/arquitectura.php";
+                    // refrescar
+                    // $('#content_arq_cards').empty();
+                    // $('#content_arq_cards').append(data);
+                    // refreshTableArqByUser(userEmail);
                     break;
             }
 
@@ -1885,4 +1929,24 @@ function cancel_query(idQuery,userName,userEmail){
             console.log("error");
         }
     }), "html";
+}
+
+
+function pageActions(page){
+    console.log(page)
+    var formData = new FormData();
+    formData.append('action', '24');
+    formData.append('page', page);
+    $.ajax({
+        url: 'admin_info.php',
+        type: 'POST',
+        contentType: false,
+        processData: false,
+        timeout: 10000,
+        data: formData,
+        success: function(data) {
+            $('#tableReportActions').empty();
+            $('#tableReportActions').append(data);
+        }
+    });
 }

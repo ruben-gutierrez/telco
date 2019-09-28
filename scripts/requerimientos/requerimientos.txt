@@ -16,6 +16,15 @@ agregar funciones al crontab
     2- solicitud_asignacion.php
     3- admin_info.php
 
+-----------------------------
+crear el usuario: telco 
+usename:telco > email:telco@hotmail.com > full name: telco > pass : Telco2019
+habilitarlo
+en los tree perms 
+la politica de arbol
+desabilitarlos y actualizar
+y en los permisos habilitar , testbedims, graphs y ver grafica en tiempo real. El idioma pasarlo a español
+dejar tema clasico
 
 
 ----------------------------------------------

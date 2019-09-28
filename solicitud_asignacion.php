@@ -404,6 +404,7 @@ if (!empty($_POST)) {
 			break;
 			
 		case '12'://consultar maquinas virtuales por usuario
+			
 			// consult_servers_openstack();
 			$domain=db_fetch_cell_prepared("SELECT dominio from arqs_testbedims where id=".$_POST['domain']);
 			//$ips_domain=db_fetch_assoc("SELECT s.id_server, s.name_server, s.ip_local, s.status, f.ram, f.vcpus, f.disk from server_openstack s inner join core_domain c on c.id_server = s.id_server inner join  flavor_openstack f on f.id_flavor=s.id_flavor  where c.domain='".$domain."'");
@@ -456,13 +457,14 @@ if (!empty($_POST)) {
 			}
 			break;
 		case '14'://consultar maquinas virtuales por usuario
-			print_r($_POST);
-			$idflavor=id_flavor( $_POST['ram'],$_POST['vcpu'],$_POST['disk']);
-			//echo $idflavor;
+			//print_r($_POST);
+			$idflavor=id_flavor($_POST['ram'],$_POST['vcpus'],$_POST['disk']);
+			//print_r($idflavor);
 			print_r(reziseServer($_POST['id_server'], $idflavor));
 
 			break;
 		case '15'://tomar snapshot o punto de control de una vm
+			// print_r($_POST);
 			$idInstant=db_fetch_cell_prepared("SELECT id_instant from instant_images_openstack WHERE id_server='".$_POST['id_server']."'");
 			// print_r($idInstant);
 			if( empty($idInstant) ){
@@ -520,8 +522,9 @@ if (!empty($_POST)) {
 			break;
 
 		case '20':
-			echo "test";
-			sleep(10);
+				// echo $_POST['idServer'];
+				$sql=db_execute("UPDATE server_openstack set status='ACTIVE' where id_server='".$_POST['idServer']."'");
+			print_r(onVm($_POST['idServer']));
 			break;
 		
 		case '21':
@@ -532,6 +535,11 @@ if (!empty($_POST)) {
 				addActionToReport($_POST['idUser'], "Modificó el número de dias de asignacion de las arquitecturas a   ".$_POST['numero']."");
 				echo ($_POST['numero']);
 			}
+			break;
+		case '22':
+			// echo $_POST['idServer'];
+			$sql=db_execute("UPDATE server_openstack set status='SHUTOFF' where id_server='".$_POST['idServer']."'");
+			print_r( offServer($_POST['idServer']) );
 			break;
 		default:
 			echo ("sin funcion");

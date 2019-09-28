@@ -164,7 +164,7 @@ $now = date_create()->format('Y-m-d H:i:s');
 			echo($func());
 			break;
 		case '9':
-			echo (draw_table_domainsOfUser($_POST['emailUser']));
+				echo (draw_table_domainsOfUser2($_POST['emailUser']));
 			break;
 		case '10':
 			$domain=domainOfid($_POST['id_domain']);
@@ -178,7 +178,9 @@ $now = date_create()->format('Y-m-d H:i:s');
 				//echo('<option value="">Elegir...</option>');
 				foreach($images as $image ){
 					//echo ('<option value="'.$image['id_image'].'">'.$image['name_image'].'</option>');
-					$options .= '<option value="'.$image['id_image'].'">'.$image['name_image'].'</option>';
+					if( $image['name_image'] != ''){
+						$options .= '<option value="'.$image['id_image'].'">'.$image['name_image'].'</option>';
+					}
 				}
 				$op=array("options" => $options);
 				$limits += $op;
@@ -264,21 +266,19 @@ $now = date_create()->format('Y-m-d H:i:s');
 			print_r(db_execute("delete from solicitud_arq where id='".$_POST['idQuery']."'"));
 			displayCardsArq( $_POST['userEmail'], $_POST['userName'] );
 			break;
-
-
+		case '24':
+			print_r(draw_table_reports($_POST['page']));
+			break;
 		default:
 			echo ("sin funcion");
 			break;
 	}
 }else{
-	
 	consult_flavors_openstack();
 	consult_servers_openstack();
 	consult_subnets_openstack();
 	consult_images_openstack();
 	consult_ports_openstack();
 	consult_flotantIp_openstack();
-	echo "actualizado";
-
 }
 

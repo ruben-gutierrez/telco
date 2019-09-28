@@ -268,6 +268,149 @@ function user_copy($template_user, $new_user, $template_realm = 0, $new_realm = 
 	return true;
 }
 
+function user_add( $new_user, $new_user_email, $pass, $template_realm = 0, $new_realm = 0, $overwrite = false, $data_override = array()) {
+	// /* ================= input validation ================= */
+	// input_validate_input_number($template_realm);
+	// input_validate_input_number($new_realm);
+	// /* ==================================================== */
+	
+
+	/* Check get template users array */
+	$user_auth = db_fetch_row_prepared('SELECT *
+		FROM user_auth
+		WHERE username = ?
+		AND realm = ?',
+		array("telco", $template_realm));
+		
+	if (!isset($user_auth)) {
+		return false;
+	}
+	
+	
+
+	$template_id = $user_auth['id'];
+
+	/* Create update/insert for new/existing user */
+	$user_exist = db_fetch_row_prepared('SELECT *
+		FROM user_auth
+		WHERE username = ?
+		OR email_address = ?
+		AND realm = ?',
+		array($new_user, $new_user_email, $new_realm));
+	
+	if (sizeof($user_exist)) {
+		if ($overwrite) {
+			/* Overwrite existing user */
+			$user_auth['id']        	= $user_exist['id'];
+			$user_auth['username']  	= $user_exist['username'];
+			$user_auth['password']  	= $user_exist['password'];
+			$user_auth['email_address'] = $user_exist['email_address'];
+			$user_auth['realm']    		= $user_exist['realm'];
+			$user_auth['full_name'] 	= $user_exist['full_name'];
+			$user_auth['must_change_password'] = $user_exist['must_change_password'];
+			$user_auth['enabled']   	= $user_exist['enabled'];
+		} else {
+			/* User already exists, duplicate users are bad */
+			raise_message(19);
+
+			return false;
+		}
+	} else {
+		/* new user */
+		$user_auth['id'] = 0;
+		$user_auth['username'] = $new_user;
+		$user_auth['password'] = $pass;
+		$user_auth['realm'] = $new_realm;
+		$user_auth['email_address'] = $new_user_email;
+	}
+
+	/* Update data_override fields */
+	if (is_array($data_override)) {
+		foreach ($data_override as $field => $value) {
+			if (isset($user_auth[$field]) && $field != 'id' && $field != 'username') {
+				$user_auth[$field] = $value;
+			}
+		}
+	}
+
+	/* Save the user */
+	$new_id = sql_save($user_auth, 'user_auth');
+
+	/* Create/Update permissions and settings */
+	if (sizeof($user_exist) && $overwrite) {
+		db_execute_prepared('DELETE FROM user_auth_perms WHERE user_id = ?', array($user_exist['id']));
+		db_execute_prepared('DELETE FROM user_auth_realm WHERE user_id = ?', array($user_exist['id']));
+		db_execute_prepared('DELETE FROM settings_user WHERE user_id = ?', array($user_exist['id']));
+		db_execute_prepared('DELETE FROM settings_tree WHERE user_id = ?', array($user_exist['id']));
+	}
+
+	$user_auth_perms = db_fetch_assoc_prepared('SELECT *
+		FROM user_auth_perms
+		WHERE user_id = ?',
+		array($template_id));
+
+	if (sizeof($user_auth_perms)) {
+		foreach ($user_auth_perms as $row) {
+			$row['user_id'] = $new_id;
+			sql_save($row, 'user_auth_perms', array('user_id', 'item_id', 'type'), false);
+		}
+	}
+
+	$user_auth_realm = db_fetch_assoc_prepared('SELECT *
+		FROM user_auth_realm
+		WHERE user_id = ?',
+		array($template_id));
+
+	if (sizeof($user_auth_realm)) {
+		foreach ($user_auth_realm as $row) {
+			$row['user_id'] = $new_id;
+			sql_save($row, 'user_auth_realm', array('realm_id', 'user_id'), false);
+		}
+	}
+
+	$settings_user = db_fetch_assoc_prepared('SELECT *
+		FROM settings_user
+		WHERE user_id = ?',
+		array($template_id));
+
+	if (sizeof($settings_user)) {
+		foreach ($settings_user as $row) {
+			$row['user_id'] = $new_id;
+			sql_save($row, 'settings_user', array('user_id', 'name'), false);
+		}
+	}
+
+	$settings_tree = db_fetch_assoc_prepared('SELECT *
+		FROM settings_tree
+		WHERE user_id = ?',
+		array($template_id));
+
+	if (sizeof($settings_tree)) {
+		foreach ($settings_tree as $row) {
+			$row['user_id'] = $new_id;
+			sql_save($row, 'settings_tree', array('user_id', 'graph_tree_item_id'), false);
+		}
+	}
+
+	/* apply group permissions for the user */
+	$groups = db_fetch_assoc_prepared('SELECT group_id
+		FROM user_auth_group_members
+		WHERE user_id = ?',
+		array($template_id));
+
+	if (sizeof($groups)) {
+		foreach($groups as $g) {
+			$sql[] = '(' . $new_id . ', ' . $g['group_id'] . ')';
+		}
+
+		db_execute('INSERT IGNORE INTO user_auth_group_members
+			(user_id, group_id) VALUES ' . implode(',', $sql));
+	}
+
+	api_plugin_hook_function('copy_user', array('template_id' => $template_id, 'new_id' => $new_id));
+
+	return true;
+}
 
 /* user_remove - remove a user account
    @arg $user_id - Id os the user account to remove */
