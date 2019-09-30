@@ -108,184 +108,230 @@ if($_GET['arq']){
 		</div>
 		<!-- Fin modal -->
 		<section class="section_arquitecture ancla">
-						<nav class="navbar navbar-light bg-dark row" >
-							<a class="navbar-brand text-white"><b>Arquitectura</b></a><div class="float-right indicate_solicitedArquitecture"></div>
-						</nav>
 						<div>
-								<h2><?php echo($arq['arquitectura'])?></h2><br>
+								<div class="d-flex justify-content-center mb-3">
+
+									<h2>Arquitectura <?php echo($arq['arquitectura'])?></h2><br>
+								</div>
 								<div class="row">
-									<div class="col">
+									<div class="col p-3" >
+										<h4>Descripcion</h4>
 										<p>La arquitectura tiene el dominio <?php echo($arq['dominio'])?> el cual concuerda con la direccion de red por ende todas sus maquinas virtuales estan en el mismo rando de direccionamiento</p>
 										<p><?php echo($arq['descripcion'])?></p>
 									</div>
-									<div class="col">
-										<button class="btn btn-primary" id="btnAddVm" data-toggle='modal' data-target='#addVmFrom' onclick="addVmtoDomain(<?php echo $_GET['arq']?>)"><i class="fa fa-plus">Agregar Máquina virtual</i></button>
-										<a href="pruebas.php?idarq=<?php echo $_GET['arq']?>">Pruebas</a>
-										<a href=".php?idarq=<?php echo $_GET['arq']?>">Pruebas</a>
+									<div class="col ">
+										<h4>Ir...</h4>
+										<div class="row ">
+										
+											<div class="col">
+	
+												<a class="btn btn-success" href="http://10.55.5.100/telco/arquitectura.php"><i class="fa fa-arrow-left fa-2x"> </i> <br>  Regresar</a>
+											</div>
+											<div class="col">
+												<button class="btn btn-success" id="btnAddVm" data-toggle='modal' data-target='#addVmFrom' onclick="addVmtoDomain(<?php echo $_GET['arq']?>)"><i class="fa fa-laptop-medical fa-2x"> </i><br> Agregar VM</button>
+											</div>
+											<div class="col">
+	
+												<a class="btn btn-success" href="pruebas.php?idarq=<?php echo $_GET['arq']?>"><i class="fa fa-list-alt fa-2x"></i><br>Pruebas</a>
+											</div>
+											<div class="col">
+	
+												<a class="btn btn-success" href="http://10.55.5.100/telco/graph_view.php?action=tree&node=tree_anchor-52&hyper=true"><i class="fa fa-chart-bar fa-2x"> </i> <br> Gráficas</a>
+											</div>
+										</div>
 										
 									</div>
 								</div>
-								
-								<h4>Maquinas virtuales</h4>
-								<ul class="nav nav-pills nav-fill">
+								<div class="row d-flex justify-content-center mt-3">
 									
-									<?php
-                                    if ($_GET['tablevm']) {
-									?>
-										
-										<?php
-										if(count($vmsAditional)>0){
-										?>
-											<li class="nav-item">
-												<a class="nav-link" href="arquitectura.php?arq=<?php echo $_GET['arq']?>">Núcleo IMS</a>
-											</li>
-											<li class="nav-item">
-												<a class="nav-link active" href="arquitectura.php?arq=<?php echo $_GET['arq']?>&tablevm=True">Máquinas adicionales</a>
-											</li>
-										<?php
-										}else{
-											$vms=$vmsCore;
+									<div class="col-6 d-flex justify-content-center">
+	
+										<ul class="nav nav-pills nav-fill text-dark">
+											
+											<?php
+											if ($_GET['tablevm']) {
 											?>
-											<li class="nav-item">
-												<a class="nav-link active" href="arquitectura.php?arq=<?php echo $_GET['arq']?>">Núcleo IMS</a>
-											</li>
-										<?php
-                                        }
-										?>
-										
-									<?php
-                                    }else{
-									?>
-										<li class="nav-item">
-											<a class="nav-link active" href="arquitectura.php?arq=<?php echo $_GET['arq']?>">Núcleo IMS</a>
-										</li>
-										<?php
-										if(count($vmsAditional)>0){
-										?>
-											<li class="nav-item">
-												<a class="nav-link" href="arquitectura.php?arq=<?php echo $_GET['arq']?>&tablevm=True">Máquinas adicionales</a>
-											</li>
-										<?php
-										}
-										?>
-									<?php
-									}
-									?>
-									
-									
-								</ul>
-								<div class="row">
-									<form class="form">
-
-
-									</form>
+												
+												<?php
+												if(count($vmsAditional)>0){
+												?>
+													<li class="nav-item mr-3">
+														<a class="nav-link" href="arquitectura.php?arq=<?php echo $_GET['arq']?>">Núcleo IMS</a>
+													</li>
+													<li class="nav-item">
+														<a class="nav-link active" href="arquitectura.php?arq=<?php echo $_GET['arq']?>&tablevm=True">Máquinas agregadas</a>
+													</li>
+												<?php
+												}else{
+													$vms=$vmsCore;
+													?>
+													<li class="nav-item mr-3">
+														<a class="nav-link active" href="arquitectura.php?arq=<?php echo $_GET['arq']?>">Núcleo IMS</a>
+													</li>
+												<?php
+												}
+												?>
+												
+											<?php
+											}else{
+											?>
+												<li class="nav-item mr-3">
+													<a class="nav-link active" href="arquitectura.php?arq=<?php echo $_GET['arq']?>">Núcleo IMS</a>
+												</li>
+												<?php
+												if(count($vmsAditional)>0){
+												?>
+													<li class="nav-item">
+														<a class="nav-link" href="arquitectura.php?arq=<?php echo $_GET['arq']?>&tablevm=True">Máquinas agregadas</a>
+													</li>
+												<?php
+												}
+												?>
+											<?php
+											}
+											?>
+											
+											
+										</ul>
+									</div>
 								</div>
-								<table class="table m-5">
-									<thead class="thead-dark">
-										<tr>
-											<th scope="col">Nombre</th>
-											<th scope="col">Direccion IP</th>
-											<th scope="col">Acciones</th>
-											<th scope="col">Terminal</th>
-										</tr>
-									</thead>
-									<tbody>
-										<?php
-										foreach($vms as $vm){
-											?>
+
+								<?php
+								if (count($vms)>0) {
+									?>
+									<table class="table m-5">
+										<thead class="thead-dark">
 											<tr>
-												<th scope="row">
-													<h4><?php echo(ucfirst($vm['name_server']))?></h4><br>
-													
-													<div class="custom-control custom-switch">
-													<?php
-													if($vm['status']=='SHUTOFF'){
-													?>
-														<input type="checkbox" class="custom-control-input" id="customSwitches" onclick="onVM('<?php echo($vm['id_server'])?>')">
-														<label class="custom-control-label" title="Apagar. Tarda 1 minuto" for="customSwitches">Apagada</label>
-														<?php
-													}else{
-														?>
-														<input type="checkbox" class="custom-control-input" id="customSwitches" onclick="offVM('<?php echo($vm['id_server'])?>')" checked>
-														<label class="custom-control-label" title="Encender máquina virtual" for="customSwitches">Encendida</label>
-														<?php
-													}
-													?>
-													</div>
-												</th>
-												<td>
-													<div>
-														<?php echo($vm['ip_local'])?><br>
+												<th scope="col">Nombre</th>
+												<th scope="col">Direccion IP</th>
+												<th scope="col">Acciones</th>
+												<th scope="col">Terminal</th>
+											</tr>
+										</thead>
+										<tbody>
+											<?php
+											foreach($vms as $vm){
+												?>
+												<tr>
+													<th scope="row">
+														<h4><?php echo(ucfirst($vm['name_server']))?></h4><br>
 														
-													</div>
-												</td>
-												<td>
-													<div class="row">
-														<div class="row" id="btnEdit<?php echo($vm['id_server'])?>">
-															<button class="btn btn-primary m-2" onclick="$('#editMachine<?php echo($vm['id_server'])?>').show();$('#btnEdit<?php echo($vm['id_server'])?>').hide();">Recostruir</button>
+														<div class="custom-control custom-switch">
+														<?php
+														if($vm['status']=='SHUTOFF'){
+														?>
+															<input type="checkbox" class="custom-control-input" id="customSwitches" onclick="onVM('<?php echo($vm['id_server'])?>')">
+															<label class="custom-control-label" title="Apagar. Tarda 1 minuto" for="customSwitches">Apagada</label>
 															<?php
-															
-															if($vm['date'] === null){
+														}else{
 															?>
-																<button class="btn btn-info m-2" onclick="takeSnaptVM('<?php echo($vm['id_server'])?>','<?php echo($vm['name_server'])?>')">Intantanea</button>
-															<?php	
-															}else{
-															?>
-																<button class="btn btn-info m-2" onclick="takeSnaptVM('<?php echo($vm['id_server'])?>','<?php echo($vm['name_server'])?>')">Intantanea</button>
-																<button class="btn btn-warning m-2" onclick="returnSnaptVM('<?php echo($vm['id_server'])?>')">Restablecer</button>
+															<input type="checkbox" class="custom-control-input" id="customSwitches" onclick="offVM('<?php echo($vm['id_server'])?>')" checked>
+															<label class="custom-control-label" title="Encender máquina virtual" for="customSwitches">Encendida</label>
 															<?php
-															}
-															?>
-															
-															<button class="btn btn-danger m-2" onclick="eliminarVM('<?php echo($vm['id_server'])?>')">Eliminar</button>
+														}
+														?>
 														</div>
-														<div class="row" id="editMachine<?php echo($vm['id_server'])?>" style="display:none;">
-															<form class="form" id="<?php echo($vm['id_server'])?>">
-																<div class="container">
-																	<div class="row">
-																		<div class="col">
-																			<label for="ram">RAM (Mb)</label><br>
-																			<input type="number" name="ram" value="<?php echo($vm['ram'])?>">
-																		</div>
-																		<div class="col">
-																			<label for="disk">Almacenamiento (Gb)</label><br>
-																			<input type="number" name="disk" value="<?php echo($vm['disk'])?>">
-																		</div>
-																		<div class="col">
-																			<label for="vcpus">Procesadores</label><br>
-																			<input type="number" name="vcpus" value="<?php echo($vm['vcpus'])?>">
-																		</div>
-																		<div class="col">
-																			
-																					<input class="btn btn-outline-info btn-sm m-1" data-toggle="modal" data-target="#reciseVm" type="button" id="btnEdit<?php echo($vm['id_server'])?>" value="Cambiar" onclick="reziseVM('<?php echo($vm['id_server'])?>')">  
-																					<input class="btn btn-outline-danger btn-sm m-1" type="button" id="" value="Cancelar" onclick="$('#editMachine<?php echo($vm['id_server'])?>').hide();$('#btnEdit<?php echo($vm['id_server'])?>').show();">
-																					<div class="spinner-border text-primary" role="status" id="indicatorEdit<?php echo($vm['id_server'])?>" style="display:none;">
-																						<span class="sr-only">Loading...</span>
-																					</div>
-																			
+													</th>
+													<td>
+														<div>
+															<?php echo($vm['ip_local'])?><br>
+															
+														</div>
+													</td>
+													<td>
+														<div class="row">
+															<div class="row" id="btnEdit<?php echo($vm['id_server'])?>">
+																<button class="btn btn-primary m-2" onclick="$('#editMachine<?php echo($vm['id_server'])?>').show();$('#btnEdit<?php echo($vm['id_server'])?>').hide();">Recostruir</button>
+																<?php
+																
+																if($vm['date'] === null){
+																?>
+																	<button class="btn btn-info m-2" onclick="takeSnaptVM('<?php echo($vm['id_server'])?>','<?php echo($vm['name_server'])?>')">Intantanea</button>
+																<?php	
+																}else{
+																?>
+																	<button class="btn btn-info m-2" onclick="takeSnaptVM('<?php echo($vm['id_server'])?>','<?php echo($vm['name_server'])?>')">Intantanea</button>
+																	<button class="btn btn-warning m-2" onclick="returnSnaptVM('<?php echo($vm['id_server'])?>')">Restablecer</button>
+																<?php
+																}
+																?>
+																
+																<button class="btn btn-danger m-2" onclick="eliminarVM('<?php echo($vm['id_server'])?>')">Eliminar</button>
+															</div>
+															<div class="row" id="editMachine<?php echo($vm['id_server'])?>" style="display:none;">
+																<form class="form" id="<?php echo($vm['id_server'])?>">
+																	<div class="container">
+																		<div class="row">
+																			<div class="col">
+																				<label for="ram">RAM (Mb)</label><br>
+																				<input type="number" name="ram" value="<?php echo($vm['ram'])?>">
+																			</div>
+																			<div class="col">
+																				<label for="disk">Almacenamiento (Gb)</label><br>
+																				<input type="number" name="disk" value="<?php echo($vm['disk'])?>">
+																			</div>
+																			<div class="col">
+																				<label for="vcpus">Procesadores</label><br>
+																				<input type="number" name="vcpus" value="<?php echo($vm['vcpus'])?>">
+																			</div>
+																			<div class="col">
+																				
+																						<input class="btn btn-outline-info btn-sm m-1" data-toggle="modal" data-target="#reciseVm" type="button" id="btnEdit<?php echo($vm['id_server'])?>" value="Cambiar" onclick="reziseVM('<?php echo($vm['id_server'])?>')">  
+																						<input class="btn btn-outline-danger btn-sm m-1" type="button" id="" value="Cancelar" onclick="$('#editMachine<?php echo($vm['id_server'])?>').hide();$('#btnEdit<?php echo($vm['id_server'])?>').show();">
+																						<div class="spinner-border text-primary" role="status" id="indicatorEdit<?php echo($vm['id_server'])?>" style="display:none;">
+																							<span class="sr-only">Loading...</span>
+																						</div>
+																				
+																			</div>
 																		</div>
 																	</div>
-																</div>
-																
-															</form>
+																	
+																</form>
+															</div>
 														</div>
-													</div>
-												</td>
-												<td><button class="btn btn-success m-2" onclick="terminal('<?php echo($vm['id_server'])?>')">Consola</button></td>
+													</td>
+													<td><button class="btn btn-success m-2" onclick="terminal('<?php echo($vm['id_server'])?>')">Consola</button></td>
+													
+												</tr>
+											<?php
+											}
+											?>
+											
+											
+											
+										</tbody>
+									</table>
+									<?php
+								}else{
+									?>
+									<div class="container  mt-4">
+										<div class="col">
+
+											<div class="row d-flex justify-content-center">
+	
+												<i name="iconSad" class="fas fa-sad-cry fa-2x"></i>
+											</div>
+											<div class="row d-flex justify-content-center" >
 												
-											</tr>
-										<?php
-										}
-										?>
+												<label>No hay máquinas virtuales</label>
+												
+											</div>
+											<div class="row d-flex justify-content-center" >
+												<button  class="btn btn-outline-success" id="btnAddVm" data-toggle='modal' data-target='#addVmFrom' onclick="addVmtoDomain(<?php echo $_GET['arq']?>)"><i class="fa fa-plus">Agregar Máquina virtual</i></button>
+											</div>
+												
+										</div>
+											
 										
-										
-										
-									</tbody>
-								</table>
+									
+									</div>
+									<?php
+								}
+								?>
 
 								
 						</div>
-		</section>	
+		</section>
 
 
 	<?php
@@ -325,18 +371,47 @@ if($_GET['arq']){
 
 
 			<div class="margin_page">
-				<div class="content"></div>
+				<div class="content "></div>
 					
-					<section class="section_arquitecture ancla" id="request_arquitecture">
-						<!-- <nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('request_arquitecture', 'indicate_requestArquitecture')"> -->
-							<div class="d-flex justify-content-center">
+					<section class="section_arquitecture ancla mt-4" id="request_arquitecture">
+						<div class="col">
+							<div class="row">
+								<h3><b>Reservar Arquitectura</b></h3>
 
-								<h3>Reservar Arquitectura</h3>
 							</div>
+							<div class="row">
+								<div class="col">
+									
+
+									<div class="description_page_testbed">
+										El ambiente de prueba Telco2.0 IMS permite a los usuarios evaluar el rendiemiento del nucleo IMS clearwater con dos tipos de pruebas Una de ellas consiste en emular el nodo Bono (Proxy) para enviar peticiones y solicitudes al nodo Sprout (Nucleo IMS) para verificar el rendieminto de este. Otra de las pruebas consiste en emular los usuarios que se registran para utilizar algun servicio IMS.
+									</div>
+								</div>
+								<div class="col ">
+									<h4>Ir...</h4>
+									<div class="row ">
+									
+										
+										<div class="col">
+
+											<a class="btn btn-success"  href="arquitectura.php"><i class="fa fa-sitemap fa-2x"> </i> <br>  <b>Arquitecturas Reservadas</b></a>
+										</div>
+
+									</div>
+									
+								</div>
+								
+
+							</div>
+						</div>	
+					
+					
+					<!-- <nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('request_arquitecture', 'indicate_requestArquitecture')"> -->
+						
 						<!-- </nav> -->
 						<div class="row request_arquitecture">
 							<!-- <h1 class="titulo_arquitectura">Lista de Arquitecturas</h1> -->
-							<div class="description_page_testbed">El ambiente de prueba Telco2.0 IMS permite a los usuarios evaluar el rendiemiento del nucleo IMS clearwater con dos tipos de pruebas Una de ellas consiste en emular el nodo Bono (Proxy) para enviar peticiones y solicitudes al nodo Sprout (Nucleo IMS) para verificar el rendieminto de este. Otra de las pruebas consiste en emular los usuarios que se registran para utilizar algun servicio IMS.</div>
+							
 							<!-- //tabla y boton de solicitud  -->
 							<div class="col-md" id="content_arq_cards">
 								<!-- ponemos la tabla como menu -->
@@ -378,55 +453,81 @@ if($_GET['arq']){
 			<div class="modal fade " id="exampleModal"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content" >
-					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">Agregar Máquina virtual</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body" id="modalContent">
-						...
-					</div>
-					<div class="modal-footer">
-						
-					</div>
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">Agregar Máquina virtual</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body" id="modalContent">
+							...
+						</div>
+						<div class="modal-footer">
+							
+						</div>
 					</div>
 				</div>
 			</div>
 			<!-- Fin modal -->
-
-
 			<div class="container" id="status-loading" style="position: fixed"></div>
-
-
-
-
 			<div class="margin_page">
 				<div class="content"></div>
-					<section class="section_arquitecture ancla" id="solicited_arquitecture">
-						<nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('solicited_arquitecture', 'indicate_solicitedArquitecture')">
-							<a class="navbar-brand text-white"><b>Arquitecturas Reservadas</b></a><div class="float-right indicate_solicitedArquitecture"><a href="arquitectura.php?reserve=true">Reservar Arquitectura</a></div>
-							
-						</nav>
+				<section class="section_arquitecture ancla mt-4" id="solicited_arquitecture">
+					<div class="col">
+						<div class="row">
+							<h3><b>Arquitecturas Reservadas</b></h3>
 
-						<div class="row solicited_arquitecture" >
-							<!-- <h1 class="titulo_arquitectura">Lista de Arquitecturas</h1> -->
-							<div class="description_page_testbed">Arquitectuas asignadas, en esta sección puedes verificar las arquitecturas asignadas a tu cuenta de usuario para luego modificar la escalabilidad vertical de ellas teniendo la capacidad de moficicar la capacidad de la memoria RAM, disco duro y capacidad e procesador.</div>
-							<!-- //tabla y boton de solicitud  -->
-							<div class="col-md arqAsingUser">
-								<!-- <button class="btn btn-primary" onclick="">test</button> -->
-									<?php draw_table_domainsOfUser2($from_email); ?>
-							</div>
 						</div>
-					</section>
+						<div class="row">
+							<div class="col">
+								
+
+								<div class="description_page_testbed">
+									Arquitectuas asignadas, en esta sección puedes verificar las arquitecturas asignadas a tu cuenta de usuario para luego modificar la escalabilidad vertical de ellas teniendo la capacidad de moficicar la capacidad de la memoria RAM, disco duro y capacidad e procesador.
+								</div>
+							</div>
+							<div class="col ">
+								<h4>Ir...</h4>
+								<div class="row ">
+								
+									
+									<div class="col">
+
+										<a class="btn btn-success"  href="arquitectura.php?reserve=true"><i class="fa fa-sitemap fa-2x"> </i> <br>  <b>Reservar Arquitectura</b></a>
+									</div>
+
+								</div>
+								
+							</div>
+							
+
+						</div>
+					</div>
 					
-				
+					
+
+					<div class="row solicited_arquitecture" >
+						<!-- <h1 class="titulo_arquitectura">Lista de Arquitecturas</h1> -->
+						
+						<!-- //tabla y boton de solicitud  -->
+						<div class="col-md arqAsingUser mt-4">
+							<!-- <button class="btn btn-primary" onclick="">test</button> -->
+								<?php draw_table_domainsOfUser2($from_email); ?>
+						</div>
+					</div>
+				</section>
 			</div>
 		</div>
 		<?php
 	}
 }
+?>
+</div>
+</div>
+</div>
 
+<?php
+include('./include/footer.php');
 ?>
 
 

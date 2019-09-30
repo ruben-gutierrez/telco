@@ -2306,10 +2306,10 @@ function displayCardsArq( $userEmail, $userName ){
 			
 			?>
 			<div class="card center container">
-					<div class="card-header bg-warning">
+					<div class="card-header bg-secondary text-white">
 						<h5 class="card-title">Arquitectura <br><?php echo($elements['arquitectura']); ?> (<?php echo($elements['dominio']); ?>)</h5>
-						<div class="row bg-light">
-							<div class="col">
+						<div class="row bg-light text-dark">
+							<div class="col text-dark">
 								<?php
 												
 								if( $queryPendUser == ''){
@@ -2492,7 +2492,7 @@ function draw_table_domainsOfUser2($emailUser){
 				<div class="card-group" >
 					<div class="card text-white bg-dark m-3" style="max-width: 18rem;">
 						<a href="arquitectura.php?arq='.$elements['id'].'" class="text-white">
-							<div class="card-header">'.$elements['arquitectura'].'</div>
+							<div class="card-header"><h4>'.$elements['arquitectura'].'</h4></div>
 							<div class="card-body">
 								<h5 class="card-title">'.$elements['dominio'].'</h5>
 								<p class="card-text">'.$elements['descripcion'].'</p>
@@ -2500,14 +2500,14 @@ function draw_table_domainsOfUser2($emailUser){
 							</div>
 						</a>
 						<div class="card card-footer">
-							<button clas="btn btn-warning" onclick="freeDomain(`'.$elements['id'].'`, `'.$emailUser.'`)">Liberar</button>
+							<button class="btn btn-warning" onclick="freeDomain(`'.$elements['id'].'`, `'.$emailUser.'`)">Liberar</button>
 						</div>
 					</div>
 				</div>
 			
 			');
 		}
-		print('</div>');
+	print('</div>');
 	}else{
 		header('Location: /telco/arquitectura.php?reserve=true');
 		// print("<div class='row m-4'>No tiene arquitecturas reservadas</div>");

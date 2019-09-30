@@ -719,7 +719,7 @@ ul#breadcrumbs {
     /*min-width: 4%;*/
     /*max-width: 40%;*/
     margin-right: 10px;
-    float: right;
+    /* float: right; */
     /*text-align: right;*/
     padding: 10px;
     /*background: white;*/
@@ -744,18 +744,20 @@ ul#breadcrumbs {
 
 .cactiContent {
     clear: both;
-    width: 100%;
+    width: 90%;
     height: 100%;
     vertical-align: top;
-    display: inline-table;
-    margin-top: 60px;
+    /* display: inline-table; */
+    margin-top: 75px;
+    margin-left: 5%;
+    margin-right: 5%;
 }
 
 .cactiTreeNavigationArea {
     display: table-cell;
     /* background: #EFEFEF url('./../../../images/shadow_gray.gif') repeat-x center top; */
     background: #EEE;
-    border-right: #AAAAAA 1px solid;
+    /* border-right: #AAAAAA 1px solid; */
     padding-left: 5px;
     padding-right: 5px;
     padding-top: 10px;
@@ -919,7 +921,7 @@ legend {
 }
 
 .cactiGraphContentArea {
-    background: #FFFFFF url('./../../../images/shadow.gif') repeat-x center top;
+    /* background: #FFFFFF url('./../../../images/shadow.gif') repeat-x center top; */
     display: table-cell;
     padding-top: 10px;
     padding-right: 5px;
@@ -965,14 +967,14 @@ legend {
     padding-top: 10px;
     padding-right: 5px;
     padding-left: 5px;
-    margin-left: 162px;
+    /* margin-left: 162 px; */
     height: 100%;
     width: 100%;
     vertical-align: top;
-    display: table-cell;
+    /* display: table-cell; */
     overflow-y: auto !important;
     overflow-x: hidden !important;
-    border-left: 1px solid black;
+    /* border-left: 1px solid black; */
 }
 
 .hyperLink,

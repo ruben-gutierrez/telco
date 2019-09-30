@@ -43,9 +43,11 @@ $using_guest_account = false;
 	<?php
 	// print_r($current_user);
 	?>
+	
 <div id='cactiPageHead' class='cactiPageHead' role='banner' style="position: fixed">
 	<?php if ($oper_mode == OPER_MODE_NATIVE) { ;?>
 	<!-- <nav id='tabs' class="navbar navbar-expand-lg navbar-dark bg-dark"> -->
+	<div class='d-flex justify-content-end bg-white px-4'> <a href="http://www.unicauca.edu.co/versionP/">unicauca.edu.co</a> </div>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark"  >
 		
 		<!-- pestañas de navegacióonn -->
@@ -77,32 +79,36 @@ $using_guest_account = false;
 </div>
 <div class='cactiShadow'></div>
 <div id='cactiContent' class='cactiContent'>
-	<div class='cactiConsoleNavigationArea' style='overflow:hidden'>
+	<!-- <div class='cactiConsoleNavigationArea' style='overflow:hidden'>
 		<div style='display:none;' id='navigation'>
-			<div id='navigation' class='navigation'>
+			<div id='navigation' class='navigation'> -->
 
 				<?php
 								
-	            $pagina = pregunta_pagina_testbed($paginas_testbed);
-	            if ( $pagina == "cacti" ) { ?>
+	            //$pagina = pregunta_pagina_testbed($paginas_testbed);
+	            //if ( $pagina == "cacti" ) { 
+					?>
 	                <!-- contenido del servidor cacti -->
-	                <table style='width:100%;'>
-        				<?php draw_menu();?>
+	                <!-- <table style='width:100%;'>
+						<?php 
+						// draw_menu();
+						?>
         				<tr>
     						<td style='text-align:center;'>
 							<div class='cactiLogo' onclick='loadPage("<?php print $config['url_path'];?>about.php")'></div>
         					</td>
         				</tr>
-	                </table>	
+	                </table>	 -->
 				            <?php 
-		        }else{
+		        //}else{
                 	//se grafica contenido del testbed
-	                graficar_menu_vertical_testbed( $pagina, $content_menu_vertical);                
-	            } ?>
-			</div>
+	               // graficar_menu_vertical_testbed( $pagina, $content_menu_vertical);                
+	            //} ?>
+			<!-- </div>
 			
 		</div>
-	</div>
+	</div> -->
+
 	<div id='navigation_right' class='cactiConsoleContentArea'>
 		<div style='position:relative;display:none;' id='main' role='main'>
 <?php } else { ?>
