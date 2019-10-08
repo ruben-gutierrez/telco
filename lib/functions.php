@@ -5453,7 +5453,6 @@ function create_vm($name_server, $id_image, $flavor_ref, $id_net){
 	if( $ipFloat == ''){
 		echo "error-ipfloat";
 	}else{
-
 		shell_exec('/var/www/html/telco/scripts/initialization_vm.sh '.$ipFloat.'');
 	}
 	return $vm_created;
@@ -5792,7 +5791,7 @@ function asingIpFloatServer($idServer){
 	$idFloatIpFree=db_fetch_cell_prepared("SELECT id_floatingip FROM flotantIp_openstack where ip_local=''");
 	if($idFloatIpFree == ''){
 		$action="create_ipfloat_liked";
-		$id_network_float='08cac388-5c54-4718-8403-57334d5ec8bd';
+		$id_network_float='c969d12a-da48-43ea-8adc-8c4620d8a8b1';
 		$answer=shell_exec("./scripts/request_openstack.sh $action $id_network_float $port");
 	}else{
 		$action="add_ipFloat_server";
@@ -5976,15 +5975,16 @@ function create_core_ims($names,$id_net,$domain,$typeDomain,$options_test_sprout
 	$coreIp=array();
 	foreach ($names as $nameVm=>$ipVm){
 		// create_vm( $nameVm, $id_image, "d2", $id_net);
-		if( $nameVm == 'sipp'){
-			$vm_create=create_vm( "sipp", "ffd93b55-858c-4ca2-9f0b-0e7890966392", "d2", $id_net);
-		}else{
-			if( $nameVm == 'bono'){
-				$vm_create=create_vm( "bono", "ffd93b55-858c-4ca2-9f0b-0e7890966392", "d2", $id_net);
-			}else{
-				$vm_create=create_vm( $nameVm, "ffd93b55-858c-4ca2-9f0b-0e7890966392", "d2", $id_net);
-			}
-		}
+		$vm_create=create_vm( $nameVm, "1190aff1-46d6-4088-82d1-ea4d9dc37274", "d2", $id_net);
+		// if( $nameVm == 'sipp'){
+		// 	$vm_create=create_vm( "sipp", "1190aff1-46d6-4088-82d1-ea4d9dc37274", "d2", $id_net);
+		// }else{
+		// 	if( $nameVm == 'bono'){
+		// 		$vm_create=create_vm( "bono", "1190aff1-46d6-4088-82d1-ea4d9dc37274", "d2", $id_net);
+		// 	}else{
+		// 		$vm_create=create_vm( $nameVm, "1190aff1-46d6-4088-82d1-ea4d9dc37274", "d2", $id_net);
+		// 	}
+		// }
 		$vmJson = json_decode($vm_create, true);
 		consult_flavors_openstack();
 		consult_servers_openstack();

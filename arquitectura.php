@@ -125,7 +125,7 @@ if($_GET['arq']){
 										
 											<div class="col">
 	
-												<a class="btn btn-success" href="http://10.55.5.100/telco/arquitectura.php"><i class="fa fa-arrow-left fa-2x"> </i> <br>  Regresar</a>
+												<a class="btn btn-success" href="http://10.55.5.100/telco/arquitectura.php"><i class="fa fa-arrow-left fa-2x"> </i> <br>  Atras</a>
 											</div>
 											<div class="col">
 												<button class="btn btn-success" id="btnAddVm" data-toggle='modal' data-target='#addVmFrom' onclick="addVmtoDomain(<?php echo $_GET['arq']?>)"><i class="fa fa-laptop-medical fa-2x"> </i><br> Agregar VM</button>
@@ -394,7 +394,7 @@ if($_GET['arq']){
 										
 										<div class="col">
 
-											<a class="btn btn-success"  href="arquitectura.php"><i class="fa fa-sitemap fa-2x"> </i> <br>  <b>Arquitecturas Reservadas</b></a>
+											<a class="btn btn-success"  href="arquitectura.php"><i class="fa fa-sitemap fa-2x"> </i>  <b><br> Mis arquitecturas</b></a>
 										</div>
 
 									</div>
@@ -475,7 +475,7 @@ if($_GET['arq']){
 				<section class="section_arquitecture ancla mt-4" id="solicited_arquitecture">
 					<div class="col">
 						<div class="row">
-							<h3><b>Arquitecturas Reservadas</b></h3>
+							<h3><b>Mis Arquitecturas</b></h3>
 
 						</div>
 						<div class="row">
@@ -526,8 +526,10 @@ if($_GET['arq']){
 </div>
 </div>
 
+
 <?php
 include('./include/footer.php');
 ?>
+
 
 

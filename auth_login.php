@@ -682,7 +682,10 @@ $selectedTheme = get_selected_theme();
 					<?php } ?>
 						<tr>
 							<td cospan='2'>
-								<input type='submit' value='<?php print __esc('Login');?>'>
+								<!-- <div  class="btn btn-primary"> -->
+
+									<input  class="btn btn-primary btn-lg" type='submit' value='<?php print __esc('Login');?>'>
+								<!-- </div> -->
 							</td>
 						</tr>
 					</table>
@@ -704,7 +707,7 @@ $selectedTheme = get_selected_theme();
 				?>
 			</div>
 		</div>
-		<div class='versionInfo'><?php print __('Version %1$s | %2$s', $version, COPYRIGHT_YEARS_SHORT);?></div>
+		<!-- <div class='versionInfo'><?php print __('Version %1$s | %2$s', $version, COPYRIGHT_YEARS_SHORT);?></div> -->
 	</div>
 	<div class='loginRight'></div>
 	<script type='text/javascript'>

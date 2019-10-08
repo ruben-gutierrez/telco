@@ -134,6 +134,10 @@ switch (get_nfilter_request_var('action')) {
 		get_allowed_ajax_hosts();
 
 		break;
+	case 'newTest':
+		top_graph_header();
+		content_graphNewGraph($current_user);
+		break;
 	case 'ajax_search':
 		get_matching_nodes();
 		exit;
@@ -198,7 +202,7 @@ switch (get_nfilter_request_var('action')) {
 
 		content_graph($current_user);
 		bottom_footer();
-
+		include('./include/footer.php');
 		break;
 	case 'get_node':
 		$parent  = -1;
@@ -272,7 +276,7 @@ switch (get_nfilter_request_var('action')) {
 			set_request_var('node', $_SESSION['sess_graph_node']);
 			set_request_var('hgd', $_SESSION['sess_graph_hgd']);
 		}
-
+		
 		?>
 		<script type='text/javascript'>
 		var refreshIsLogout=false;
@@ -331,9 +335,9 @@ switch (get_nfilter_request_var('action')) {
 			grow_right_pane_tree($tree_id, $node_id, $hgdata);
 		}
 
-//		content_graph($current_user);
+		//	content_graph($current_user);
 		bottom_footer();
-
+		
 		break;
 	case 'preview':
 		top_graph_header();
@@ -342,6 +346,7 @@ switch (get_nfilter_request_var('action')) {
 			print "<font class='txtErrorTextBox'>" . __('YOU DO NOT HAVE RIGHTS FOR PREVIEW VIEW') . "</font>";
 			content_graph($current_user);
 			bottom_footer();
+			
 			exit;
 		}
 
@@ -441,6 +446,7 @@ switch (get_nfilter_request_var('action')) {
 		if (!isset_request_var('header') || get_nfilter_request_var('header') == 'false') {
 			content_graph($current_user);
 			bottom_footer();
+			
 		}
 
 		break;
@@ -451,6 +457,7 @@ switch (get_nfilter_request_var('action')) {
 			print "<font class='txtErrorTextBox'>" . __('YOU DO NOT HAVE RIGHTS FOR LIST VIEW') . '</font>';
 			content_graph($current_user);
 			bottom_footer();
+			include('./include/footer.php');
 			exit;
 		}
 
@@ -875,8 +882,9 @@ switch (get_nfilter_request_var('action')) {
 		</script>
 		<?php
 
-content_graph($current_user);		
-bottom_footer();
+		content_graph($current_user);		
+		bottom_footer();
+		include('./include/footer.php');
 
 		break;
 }

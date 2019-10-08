@@ -78,36 +78,42 @@ $using_guest_account = false;
 	<?php if (read_config_option('auth_method') != 0) {?><div class='infoBar'><?php echo draw_login_status($using_guest_account);?></div><?php }?>
 </div>
 <div class='cactiShadow'></div>
-<div id='cactiContent' class='cactiContent'>
-	<!-- <div class='cactiConsoleNavigationArea' style='overflow:hidden'>
-		<div style='display:none;' id='navigation'>
-			<div id='navigation' class='navigation'> -->
+<div id='cactiContent' class='cactiContent' >
+	
+		
+			
 
 				<?php
 								
-	            //$pagina = pregunta_pagina_testbed($paginas_testbed);
-	            //if ( $pagina == "cacti" ) { 
+	            $pagina = pregunta_pagina_testbed($paginas_testbed);
+	            if ( $pagina == "cacti" ) { 
 					?>
+					<div class='cactiConsoleNavigationArea' style='overflow:hidden' >
+					<div style='display:none;' id='navigation'>
 	                <!-- contenido del servidor cacti -->
-	                <!-- <table style='width:100%;'>
+					<div id='navigation' class='navigation' >
+					<table style='width:100%;'>
 						<?php 
-						// draw_menu();
+						draw_menu();
 						?>
         				<tr>
     						<td style='text-align:center;'>
 							<div class='cactiLogo' onclick='loadPage("<?php print $config['url_path'];?>about.php")'></div>
         					</td>
         				</tr>
-	                </table>	 -->
+					</table>	
+					</div>
+					</div>
+					</div>
 				            <?php 
-		        //}else{
-                	//se grafica contenido del testbed
-	               // graficar_menu_vertical_testbed( $pagina, $content_menu_vertical);                
-	            //} ?>
-			<!-- </div>
+		        }else{
+                	// se grafica contenido del testbed
+	            //    graficar_menu_vertical_testbed( $pagina, $content_menu_vertical);                
+	            } ?>
 			
-		</div>
-	</div> -->
+			
+		
+	
 
 	<div id='navigation_right' class='cactiConsoleContentArea'>
 		<div style='position:relative;display:none;' id='main' role='main'>

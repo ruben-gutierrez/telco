@@ -272,7 +272,6 @@ function add_arquitec() {
         if ($('#form_new_arq')[0][i].value == '') {
             l++;
         }
-
     }
     if (l == 0) {
         if (ValidateIPaddressNet($('#form_new_arq')[0][3].value)) {
@@ -507,11 +506,10 @@ function add_test() {
     // console.log("funcion js");
     var cont = 0;
     var elements = $('#form_add_test')[0];
-    for (var i = elements.length - 1; i >= 0; i--) {
+    for (var i = elements.length - 3; i >= 0; i--) {
         console.log($('#form_add_test')[0][i].value);
         if ($('#form_add_test')[0][i].value == '') {
             cont += 1;
-
         }
     }
     // console.log(cont);
@@ -525,24 +523,30 @@ function add_test() {
             processData: false,
             data: parametro,
             beforeSend: function() {
+                $("#btn_save_info").prop('disabled', true);
                 notifications("addTestt", "Agregando Prueba");
             },
             success: function(date) {
-                // console.log(date);
-                if (date == '') {
-                    alert("Error al subir el archivo, Verifique los datos o contacte al administrador");
+                if ( date.indexOf("error") > -1 ) {
+                    alertify.error('Error al crear la prueba');
                 }else{
-                    if(date == 'errorIdserver'){
-                        alert("Error al buscar la máquina virtual SIPP, verifique el estado de esta");
-                    }else{
-                        alert("se agrego la prueba correctamente, ahora ingrese las opciones de l aprueba");
-                    }
+                    alertify.success('Prueba creada con exito')
+                    window.location="pruebas.php?idarq="+date+""
                 }
-                // console.log(date);
-                $('#form_info_test')[0][2].value = date;
-                $('#form_add_test')[0].reset();
-                //$('#form_1').hide();
-                //$('#form_2').show();
+                // if (date == '') {
+                //     alert("Error al subir el archivo, Verifique los datos o contacte al administrador");
+                // }else{
+                //     if(date == 'errorIdserver'){
+                //         alert("Error al buscar la máquina virtual SIPP, verifique el estado de esta");
+                //     }else{
+                //         alert("se agrego la prueba correctamente, ahora ingrese las opciones de l aprueba");
+                //     }
+                // }
+                // // console.log(date);
+                // $('#form_info_test')[0][2].value = date;
+                // $('#form_add_test')[0].reset();
+                // //$('#form_1').hide();
+                // //$('#form_2').show();
             },
             complete: function(){
                 deleteNotification("addTestt");
@@ -1947,6 +1951,56 @@ function pageActions(page){
         success: function(data) {
             $('#tableReportActions').empty();
             $('#tableReportActions').append(data);
+        }
+    });
+}
+
+function editTest(){
+    
+    var formData = new FormData($('#edit_content_test')[0]);
+    formData.append('action', '23');
+    $.ajax({
+        url: 'solicitud_asignacion.php',
+        type: 'POST',
+        contentType: false,
+        processData: false,
+        timeout: 10000,
+        data: formData,
+        success: function(data) {
+            // console.log(data)
+           if (data.indexOf('error') > -1 ) {
+               
+               alertify.error('No se modifico la prueba')
+           }else{
+               alertify.success('Prueba modificada con exito')
+           }
+           $('#text_testFile').prop('disabled',true)
+        }
+    });
+}
+
+function deleteTest(fileName,idTest){
+    // console.log(idTest);
+    var formData = new FormData();
+    formData.append('action', '24');
+    formData.append('fileName', fileName);
+    formData.append('idTest', idTest);
+    $.ajax({
+        url: 'solicitud_asignacion.php',
+        type: 'POST',
+        contentType: false,
+        processData: false,
+        timeout: 10000,
+        data: formData,
+        success: function(data) {
+            // console.log(data)
+           if (data.indexOf('error') > -1 ) {
+               
+               alertify.error('Error al eliminar el archivo, contacte al administrador')
+           }else{
+               alertify.success('Prueba Eliminada')
+               window.location="pruebas.php?idarq="+data+""
+           }
         }
     });
 }

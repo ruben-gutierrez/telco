@@ -2500,7 +2500,10 @@ function draw_table_domainsOfUser2($emailUser){
 							</div>
 						</a>
 						<div class="card card-footer">
-							<button class="btn btn-warning" onclick="freeDomain(`'.$elements['id'].'`, `'.$emailUser.'`)">Liberar</button>
+						<div class="row p-2" >
+						<a class="btn btn-info mx-1" href="arquitectura.php?arq='.$elements['id'].'">Leer mas...</a>
+						<button class="btn btn-warning mx-1" onclick="freeDomain(`'.$elements['id'].'`, `'.$emailUser.'`)">Liberar</button>
+						</div>
 						</div>
 					</div>
 				</div>
@@ -2809,14 +2812,13 @@ function draw_table_estate_arq(){
 function draw_table_testbed_pruebas($user,$idArq=0){
 	if($idArq == 0){
 
-		$dom_user=db_fetch_assoc("SELECT arquitectura, dominio, descripcion  from arqs_testbedims where usuario ='".$user."'");
+		$dom_user=db_fetch_assoc("SELECT id, arquitectura, dominio, descripcion  from arqs_testbedims where usuario ='".$user."'");
 	}else{
-		$dom_user=db_fetch_assoc("SELECT arquitectura, dominio, descripcion  from arqs_testbedims where usuario ='".$user."' AND id='".$idArq."'");
+		$dom_user=db_fetch_assoc("SELECT id, arquitectura, dominio, descripcion  from arqs_testbedims where usuario ='".$user."' AND id='".$idArq."'");
 
 	}
 	// print_r($dom_user);
-	if( empty($dom_user)){
-		
+	if( empty($dom_user) ){
 		?>
 							<div class="card m-2">
 								<div class="card-header">
@@ -2829,34 +2831,33 @@ function draw_table_testbed_pruebas($user,$idArq=0){
 						<?php
 	}else{
 	?>
-				<div id="cardsTest"> <?php
+				<div class="row" id="cardsTest"> <?php
 		foreach ($dom_user as $key => $value) {
 			?>
-			<div class="row m-2">
+			<div class="container m-2">
+				<div class="row mb-2">
+					<h4 class="border-bottom"> Arquitectura <?php echo $value['arquitectura'] ?> ' <?php echo $value['dominio'] ?>'</h4>
+				</div>
+				<div class="row">
+
+				
 				<!-- <div class="col"> -->
 					<?php 
-					$test_info=db_fetch_assoc("SELECT id_test, name_test, description_test, restriction , executing from test_testbedims where dominio ='".$value['dominio']."'");
+					$test_info=db_fetch_assoc("SELECT id_test, name_test, description_test, file_test, restriction , executing from test_testbedims where dominio ='".$value['dominio']."'");
 					// print_r($test_info);
 					if ( empty($test_info) ) {
 						?>
 							<div class="card m-2">
 							<div class="card-header">
-							Arquitectura: <?php echo $value['arquitectura']?>
+							
 							</div>
 								<div class="card-body">
 								<p class="card-text">No hay pruebas en esta arquitectura <br>
-								con el dominio " <?php echo $value['dominio']?>"</p>
-									
-									
-
-									
-									
 								</div>
 								<div class="card-footer">
-									<a href = "#form_1">Agregar pruebas por favor !</a>
+									<a href = "pruebas.php?newTest=true&idarquitecture=<?php echo $value['id'] ?>">Agregar pruebas por favor !</a>
 								</div>
 							</div>
-							
 						<?php
 					}else{
 						foreach ($test_info as $key2 => $value2) {
@@ -2878,10 +2879,7 @@ function draw_table_testbed_pruebas($user,$idArq=0){
 							?>
 							
 								<div class="card-body">
-									Arquitectura: <?php echo $value['arquitectura']?> <br>
-									" <?php echo $value['dominio']?>"
-									
-									<p class="card-text"><?php echo $value2['description_test']?></p>
+									 <p class="card-text"><?php echo $value2['description_test']?></p>
 									
 								</div>
 
@@ -2891,6 +2889,7 @@ function draw_table_testbed_pruebas($user,$idArq=0){
 								<div class="card-footer">
 									<button class="btn btn-outline-warning" id="<?php echo $value2['id_test']?>" onClick="stop_test(this.id)">Detener</button>
 									<button class="btn btn-outline-danger" id="<?php echo $value2['id_test']?>" onClick="delete_test(this.id)">Eliminar</button>
+									<button class="btn btn-outline-danger" id="<?php echo $value2['id_test']?>" onClick="">Leer mas...</button>
 									<!-- <button class="btn btn-primary m-2" id="<?php echo $value2['id_test']?>" onClick="$('#cardsTest').hide();display_table_test(this.id)">Opciones</button> -->
 								</div>
 							</div>
@@ -2898,18 +2897,18 @@ function draw_table_testbed_pruebas($user,$idArq=0){
 								}else{
 								?>
 								<div class="card-footer">
-									<button class="btn btn-outline-danger" id="<?php echo $value2['id_test']?>" onClick="">Eliminar</button>
-									<button class="btn btn-primary m-2" id="<?php echo $value2['id_test']?>" onClick="$('#cardsTest').hide();display_table_test(this.id)">Opciones</button>
+									<button class="btn btn-outline-danger" id="<?php echo $value2['id_test']?>" onclick="deleteTest('<?php echo $value2['file_test']?>','<?php echo $value2['id_test']?>')">Eliminar</button>
+									<button class="btn btn-primary m-2 text-white" id="<?php echo $value2['id_test']?>" onclick="window.location.href='/telco/pruebas.php?idtest=<?php echo $value2['id_test'] ?>&idarq=<?php echo $value['id'] ?>'">Ver más...</button>
+									<!-- <button class="btn btn-primary m-2 text-white" id="<?php echo $value2['id_test']?>" onClick="$('#cardsTest').hide();display_table_test(this.id)">Ver más...</button> -->
 								</div>
 							</div>
 								<?php
-
 								}
 							}
 						
 					}
 						?>
-				<!-- </div> -->
+				</div>
 				
 			</div>
 		<?php
@@ -3249,14 +3248,40 @@ function content_graph($user){
 	?>
 
 	<div class="container" id="status-loading"></div>
-	<section class="section_add_monitoring">
-	 <nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('section_monitoring_vm', 'indicate_solicitedArquitecture')">
-		 <a class="navbar-brand text-white"><b> Crear Gráfica </b></a><div class="float-right indicate_solicitedArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
-	 </nav>
-	 
-	  <div class="content_section"><p>En esta sección puedes agregar una gráfica de una VM</p></div> 
+	<section class="section_add_monitoring my-3">
+		<div class="col">
+					<div class="row">
+					<h3><b>Gráficas</b> </h3>
 
-		<section id="table_arquitectura" class="section_monitoring_vm" >
+					</div>
+					<div class="row">
+					<div class="col">
+						
+
+						<div class="description_page_testbed">
+						El ambiente de prueba Telco2.0 IMS muestra a los usuarios el rendimiento del nucleo IMS y sus máquinas virtuales mediante gráficas la cuales se crean facilmente y se pueden descargar en formato CSV.
+						</div>
+					</div>
+					<div class="col ">
+						<h4>Ir...</h4>
+						<div class="row ">
+						<div class="col">
+							<a class="btn btn-success"  href="http://10.55.5.100/telco/graph_view.php?action=newTest"><i class="fa fa-chart-bar fa-2x"> </i> <br>  Crear Gráfica</a>
+						</div>
+						<div class="col">
+							<a class="btn btn-success"  href="http://10.55.5.100/telco/arquitectura.php"><i class="fa fa-sitemap fa-2x"> </i> <br>  Arquitectura</a>
+						</div>
+						<div class="col">
+							<a class="btn btn-success"  href="http://10.55.5.100/telco/pruebas.php"><i class="fa fa-list-alt fa-2x"> </i> <br>  Pruebas</a>
+						</div>
+						</div>
+					</div>
+					</div>
+		</div>
+	 
+	  
+
+		<!-- <section id="table_arquitectura" class="section_monitoring_vm" >
 			<div class="container">
 				<form class="form-inline" id="new_graph">
 					<div class="container text-center">
@@ -3297,6 +3322,92 @@ function content_graph($user){
 					</div>
 				</form>
 			
+			</div> 
+		</section> -->
+
+
+  </section>
+
+	<?php
+}
+function content_graphNewGraph($user){
+	
+	?>
+
+	<div class="container" id="status-loading"></div>
+	<section class="section_add_monitoring">
+		<div class="col">
+					<div class="row">
+					<h3><b>Nueva Gráfica</b> </h3>
+
+					</div>
+					<div class="row">
+					<div class="col">
+						
+
+						<div class="description_page_testbed">
+						Telco provee un espacio para que cada usuario pueda monitorear el rendimiento del núcleo IMS mediante gráficas de cada máquina virtual que se pueden crear en el siguiente formulario.
+						</div>
+					</div>
+					<div class="col ">
+						<h4>Ir...</h4>
+						<div class="row ">
+						<div class="col">
+							<a class="btn btn-success"  href="http://10.55.5.100/telco/graph_view.php"><i class="fa fa-arrow-left fa-2x"> </i> <br>  Atras</a>
+						</div>
+						<div class="col">
+							<a class="btn btn-success"  href="http://10.55.5.100/telco/arquitectura.php"><i class="fa fa-sitemap fa-2x"> </i> <br>  Arquitectura</a>
+						</div>
+						<div class="col">
+							<a class="btn btn-success"  href="http://10.55.5.100/telco/pruebas.php"><i class="fa fa-list-alt fa-2x"> </i> <br>  Pruebas</a>
+						</div>
+						</div>
+					</div>
+					</div>
+		</div>
+	 
+	  <div class="content_section"><p>En esta sección puedes agregar una gráfica de una VM</p></div> 
+
+		<section id="table_arquitectura" class="section_monitoring_vm" >
+			<div class="container">
+				<form  id="new_graph">
+					
+					<div class="form-group">
+							<label for="domain_test">Seleccione la arquitectura que contiene la VM</label>
+								
+							<select  class="form-control" name="dominio_test" id="domain_test" onchange="update_vm_arq(this.value)"> 
+							<option value="">Seleccionar</option>
+							<?php
+								$dominios=db_fetch_assoc("select dominio from arqs_testbedims where usuario= '".$user['email_address']."'");
+								foreach ($dominios as $key => $value) {
+								print("<option value='".$value['dominio']."'>".$value['dominio']."</option>");
+								}
+							?>  
+							</select> 
+					</div>
+					<div class="row center" >
+							<label class="my-1 mr-2" for="id_Server">Seleccione la máquina virtual</label>
+							<select class="custom-select my-1 mr-sm-2" name="id_server" id="vm_new_graph" onchange="listOptionsNewGraph(this.value)">
+								<option value="">Elegir ...</option>
+								
+							</select>
+						</div>
+						<div class="row center" >
+							<label class="my-1 mr-2" for="kindElement">Seleccione la métrica a graficar</label>
+							<select multiple class="custom-select my-1 mr-sm-2" name="templateGraph" id="templateGraph" size="10">
+								<option value="">Elegir Opcion</option>
+							</select>
+						</div>
+
+						
+						<div id="buttons_add d-flex justify-content-center">
+							<div class="col d-flex justify-content-center mt-4">
+
+								<!-- <input type="button" class="btn_form btn btn-outl	ine-danger mb-3" value="Cancelar" onclick="$('#content_infor_arq').hide();$('#btn_see_table4').show();$('#btn_notsee_table4').hide();$('.ajs-button.ajs-ok').trigger('click');">  -->
+								<input type="button" class="btn_form btn btn-primary mb-3 " id="btn_save_info" value="Crear" onclick="create_grafic()">
+							</div>
+						</div>
+				</form>			
 			</div> 
 		</section>
 

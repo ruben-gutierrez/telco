@@ -112,39 +112,45 @@ if (!empty($_POST)) {
 				}else{
 					$routeImage="dist_pstn.png";
 				}
+
 				//create tree for cacti
-				$resp_tree=shell_exec('php -q cli/add_tree.php --type=tree --name="'.$_POST['dominio_arq'].'" --sort-method=manual');
+				$resp_tree=shell_exec('php -q cli/add_tree.php --type=tree --name="'.$name_net.'_'.$_POST['dominio_arq'].'" --sort-method=manual');
 				$array_tree=explode ( ' ' , $resp_tree );
-				$id_tree = preg_replace('/\([^)]\)|[()]/', '', $array_tree[4]);
-				// inserta la informacion en la base de dataos
+				$id_tree = preg_replace('/\([^)]\)|[()]/', '', $array_tree[4] );
+
+				// inserta la informacion en la base de datos
 				$sql = "INSERT INTO arqs_testbedims (arquitectura, dominio, activo, usuario, descripcion, imagen, id_tree, type_arq) VALUES ('".$_POST['name_arq']."','".$_POST['dominio_arq']."','V','libre', '".$_POST['desc_arq']."','".$routeImage."','".$id_tree."','".$_POST['type']."')";
-				$agregar=db_execute($sql);
+				$agregar=db_execute( $sql );
 				if ( $agregar == '1') {
+
 					// agrega las restricciones
 					add_restrictions($_POST['dominio_arq'],$_POST['max_vm_aditional'],$_POST['max_ram'],$_POST['max_disk'],$_POST['max_vcpu']);
+
 					// crea la red en openstack
 					$result_create_net=create_net($name_net, $description, $domain);
 					
 					if( $result_create_net['net_openstack'] != '0' && $result_create_net['net_telco'] == '1'){
 						// crea el router
-						
 						$idRouter=createRouter($name_net);
 						if( $idRouter == '0'){
 							echo("Error al crear Router");
 						}else{
-							conectRouterNetPublic($idRouter, '08cac388-5c54-4718-8403-57334d5ec8bd');
+							conectRouterNetPublic($idRouter, 'c969d12a-da48-43ea-8adc-8c4620d8a8b1');
 							conectRouterNetPrivate($idRouter, $result_create_net['subnet_openstack']);
 							db_execute("INSERT INTO router_openstack (id_router, name_router, domain) values ( '".$idRouter."','".$name_net."','".$domain."')");
 							// echo "Arquitectura Creada con exito";
 							//report
 							addActionToReport($_POST['idUser'], "Agregó la arquitectura ".$domain."");
+
 							//crear maquinas
-							$createDomain=create_vm_to_core($_POST['dominio_arq'], $_POST['type'],$options_test_sprout);
+							$createDomain=create_vm_to_core( $_POST['dominio_arq'] , $_POST['type'], $options_test_sprout );
+
 							// print_r($createDomain);
 							// retorna la actualizacion de la tabla
 							$id_arq=db_fetch_cell_prepared("SELECT id from arqs_testbedims order by id desc limit 1");
-							echo(return_file_arq($id_arq, $_POST['name_arq'], $_POST['dominio_arq'], $_POST['desc_arq'], $routeImage));
 							
+							echo(return_file_arq($id_arq, $_POST['name_arq'], $_POST['dominio_arq'], $_POST['desc_arq'], $routeImage));
+
 						}
 					}else{
 						if( $netArrayJson['net_openstack'] != '0' ){
@@ -351,44 +357,68 @@ if (!empty($_POST)) {
 			}
 			break;
 		case '10'://agregar test
+			// print_r($_POST);
 			// subir archivo 
-			
-			if (move_uploaded_file($_FILES['file_test']['tmp_name'], 'files_XML/temp/'.$_FILES['file_test']['name'])) {
-				$now = date_create()->format('H-i-s');
-				$new_name = trim($now).trim($_FILES['file_test']['name']);
-				// echo $new_name;
-				rename('files_XML/temp/'.$_FILES['file_test']['name'], 'files_XML/'.$new_name );
-			}
-			$agregar=db_execute("INSERT INTO test_testbedims (dominio, name_test, comand, description_test, restriction,file_test) VALUES ('".$_POST['dominio']."','".$_POST['name_test']."','".$_POST['comand_test']."','".$_POST['description_test']."','".$_POST['restriction_test']."','".$new_name."')");
-			if ( $agregar == 1 ) {
-				$idServer=db_fetch_cell_prepared("SELECT s.id_server FROM server_openstack s INNER JOIN core_domain c ON c.id_server=s.id_server WHERE s.name_server='sipp' AND c.domain='".$_POST['dominio']."'");
-				// echo $idServer;
-				if ( $idServer != '') {
-				
-					$id_test=db_fetch_cell_prepared("select id_test from test_testbedims ORDER BY id_test DESC");
-					echo $id_test;
-					//enviar archivo por scp a la maquina virtual sipp del dominio
-					$ipfloat=ipFloat($idServer);
-					//permiso de la llave ssh
-					shell_exec('chmod 700 ./scripts/terminal_testbed/key.pem');
-					$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ./scripts/test.sh ubuntu@'.$ipFloat.':/home/ubuntu');
-					$ls=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "ls"');
-					shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "rm test.sh"');
-					if( strpos($ls,'test') == false){
-						shell_exec('chmod 775 ./scripts/terminal_testbed/key.pem');
-						$ls1=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "ls"');
-					}
-					//copia la prueba
-					shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem /var/www/html/telco/files_XML/"'.$new_name.'" ubuntu@'.$ipfloat.':/etc/clearwater/test/');
-					
-					//report
-					addActionToReport($_POST['idUser'], "Agregó la prueba ".$id_test." a la arqutiectura ".$_POST['dominio']."");
-				}else{
-					echo "errorIdserver";
-				}
+			$idarq=db_fetch_cell_prepared("SELECT id FROM arqs_testbedims WHERE dominio='".$_POST['dominio']."'");
+			$idServer=db_fetch_cell_prepared("SELECT s.id_server FROM server_openstack s INNER JOIN core_domain c ON c.id_server=s.id_server WHERE s.name_server='sipp' AND c.domain='".$_POST['dominio']."'");
+			if ( $idServer != '') {
+				echo "error 200";//no esta la maquina sipp
+
 			}else{
-				echo ("");
+				$now = date_create()->format('H-i-s');
+				$new_name = trim($now).trim($_POST['name_test']).".xml";
+				shell_exec("'d'>files_XML/".$new_name."");
+				$archivo = fopen( 'files_XML/'.$new_name.'', "a");
+				
+					// if(fwrite($archivo, date("d m Y H:m:s"). " ". $mensaje. "\n"))
+					if(fwrite($archivo, $_POST['fileXML']))
+					{
+						$agregar=db_execute("INSERT INTO test_testbedims (dominio, name_test, description_test, restriction,file_test,executing) VALUES ('".$_POST['dominio']."','".$_POST['name_test']."','".$_POST['description_test']."','".$_POST['restriction_test']."','".$new_name."','0')");
+						echo $idarq;
+					}
+					else
+					{
+						echo "error 100";//no se creo el archivo
+					}
+			
+					fclose($archivo);
 			}
+
+				
+				
+
+
+			
+			
+			// if ( $agregar == 1 ) {
+			// 	$idServer=db_fetch_cell_prepared("SELECT s.id_server FROM server_openstack s INNER JOIN core_domain c ON c.id_server=s.id_server WHERE s.name_server='sipp' AND c.domain='".$_POST['dominio']."'");
+			// 	// echo $idServer;
+			// 	if ( $idServer != '') {
+				
+			// 		$id_test=db_fetch_cell_prepared("select id_test from test_testbedims ORDER BY id_test DESC");
+			// 		echo $id_test;
+			// 		//enviar archivo por scp a la maquina virtual sipp del dominio
+			// 		$ipfloat=ipFloat($idServer);
+			// 		//permiso de la llave ssh
+			// 		shell_exec('chmod 700 ./scripts/terminal_testbed/key.pem');
+			// 		$transFile=shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ./scripts/test.sh ubuntu@'.$ipFloat.':/home/ubuntu');
+			// 		$ls=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "ls"');
+			// 		shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "rm test.sh"');
+			// 		if( strpos($ls,'test') == false){
+			// 			shell_exec('chmod 775 ./scripts/terminal_testbed/key.pem');
+			// 			$ls1=shell_exec('ssh -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem ubuntu@'.$ipFloat.' "ls"');
+			// 		}
+			// 		//copia la prueba
+			// 		shell_exec('scp -o "StrictHostKeyChecking no" -i ./scripts/terminal_testbed/key.pem /var/www/html/telco/files_XML/"'.$new_name.'" ubuntu@'.$ipfloat.':/etc/clearwater/test/');
+					
+			// 		//report
+			// 		addActionToReport($_POST['idUser'], "Agregó la prueba ".$id_test." a la arqutiectura ".$_POST['dominio']."");
+			// 	}else{
+			// 		echo "errorIdserver";
+			// 	}
+			// }else{
+			// 	echo ("");
+			// }
 			break;
 		case '11'://agregar opciones de test
 
@@ -540,6 +570,21 @@ if (!empty($_POST)) {
 			// echo $_POST['idServer'];
 			$sql=db_execute("UPDATE server_openstack set status='SHUTOFF' where id_server='".$_POST['idServer']."'");
 			print_r( offServer($_POST['idServer']) );
+			break;
+		case '23'://editar archivo de prueba
+			$archivo   = fopen('files_XML/'.$_POST['fileName'].'', 'r+') or die("error 100");
+			echo $archivo;
+			echo fwrite($archivo, $_POST['text_testFile']) or die("error 101");
+			break;
+		case '24'://eliminar prueba
+			
+			if(unlink('files_XML/'.$_POST['fileName'].'')){
+				$idArq=db_fetch_cell("SELECT a.id from test_testbedims t INNER JOIN arqs_testbedims a ON t.dominio=a.dominio WHERE id_test='".$_POST['idTest']."'");
+				$eliminar=db_execute("DELETE FROM test_testbedims WHERE id_test='".$_POST['idTest']."'");
+				echo $idArq;
+			}else{
+				echo "error 100";//no se pudo elimienar el archivo
+			}
 			break;
 		default:
 			echo ("sin funcion");

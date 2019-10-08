@@ -39,14 +39,20 @@ en caso de modificar o reinstalar openstack
     export OS_AUTH_URL=http://10.55.2.24/identity
 
 2- Editar la direccion ip openstack   scripts/request_openstack.sh
-
     OS_IP_OPENSTACK=10.55.2.24
+    Copiar la clave key.pem en la ruta Scripts/
+    en el archivo initialization_vm.sh verificar la ruta del archivo que contiene la key.pem (Testbed_vIMS.pem) 
+
+    
     verificar el case 
-        create_vm el valor de key_name que conincida con el nombre de clave ssh.
+        //create_vm el valor de key_name que conincida con el nombre de clave ssh.
 3- functions.php 
     linea 
     function asingIpFloatServer($idServer)
         editar la variable id_network_float
+
+    linea 
+    
 
 4- copiar la clave ssh (.pem) a la ruta scripts/terminal_testbed
 

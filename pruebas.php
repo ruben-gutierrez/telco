@@ -10,113 +10,292 @@ if (isset($_GET['arq'])) {
 	send_mail("rubengutierrez@unicauca.edu.co", "rubengutierrez@unicauca.edu.co" , "Solicitud arquitectura IMS" , "Se realiza la solicitud para la asignacion de la arquitectura ". $_GET['arq']. " para realizar, ya que tengo en conocimiento el reglamento ...., Solicitante ".$from_email);
 	header("location:pruebas.php");
 }
+
+
+
+
 if($_GET['idarq']){
-
-    ?>
-  <div class="container" id="status-loading" ></div>
-  <div class="margin_page ancla" id="tests">
-        <nav class="navbar navbar-light bg-dark row" onclick="show_hide_content_byClass('tests', 'indicate_requestArquitecture')">
-          <a class="navbar-brand text-white"><b>Pruebas Disponibles para ejecutar</b></a><div class="float-right indicate_requestArquitecture"><i class="fa fa-eye-slash fa-2x bg-light rounded-circle"></i></div>
-        </nav>
-        <div class="tests">
-            <!-- <h1 class="titulo_arquitectura">Servicios Ambiente de Prueba IMS</h1> -->
-            
-              <!-- descripcion de las pruebas-->
-              <div class="description_page_testbed">El ambiente de prueba Telco2.0 IMS permite a los usuarios evaluar el rendiemiento del nucleo IMS clearwater con dos tipos de pruebas Una de ellas consiste en emular el nodo Bono (Proxy) para enviar peticiones y solicitudes al nodo Sprout (Nucleo IMS) para verificar el rendieminto de este. Otra de las pruebas consiste en emular los usuarios que se registran para utilizar algun servicio IMS.
-              </div>
-              <div id="container table_desciption_test" class="animated fadeIn">
-                <?php
-                  draw_table_testbed_pruebas($user_email,$_GET['idarq']); ?>
-              </div>
-              <div id="table_options_test" class="animated fadeIn">
-              </div>
-        </div>
-  </div>
-  <?php
-}else{
-  if($_GET['newTest']){
-              $dom_user=db_fetch_assoc("SELECT arquitectura, dominio, descripcion  from arqs_testbedims where usuario ='".$user_email."'");
-      if (!empty($dom_user)) {
+  if($_GET['idtest']){
+          $arq=db_fetch_row("SELECT arquitectura, dominio, type_arq, descripcion from arqs_testbedims where id='".$_GET['idarq']."'");
+          $test=db_fetch_row("SELECT id_test, dominio, name_test, comand, description_test,file_test,executing from test_testbedims where id_test='".$_GET['idtest']."'");
           ?>
-                <section id="test_dom ancla" class="section_admin_arquitecuta" style="margin-top: 20px;">
+        <div class="container" id="status-loading" ></div>
+        <div class="margin_page ancla" id="tests">
             <div class="col">
-              <div class="row">
-                <h3><b>Crear Prueba</b></h3>
-              </div>
-              <div class="row">
-                <div class="col">
-                  
-                  <div class="description_page_testbed">
-                    En esta seccion puede agregar una prueba personalizada al ambiente de prueba mediante un archivo XML el cual describe el flujo de mensajes que realizará cada usuario simulado durante la prueba. <br>
-                    El contenido agregado a continuación contiene el flujo de mensajes que realiza un usuario para registrarse iniciar una llamada, emular flujo de datos durante la llamada y finalizarla donde como usuario podra modificar el contenido y adaptarlo a una prueba especifica.
-                  </div>
-                </div>
-                <div class="col ">
-                  <h4>Ir...</h4>
-                  <div class="row ">
-                  
-                    
-                    <div class="col">
+                      <div class="row">
+                        <h3><b>Prueba <?php echo $test['name_test']?> de arquitectura <?php echo $arq['arquitectura']?></b> </h3>
 
-                      <a class="btn btn-success"  href="http://10.55.5.100/telco/pruebas.php"><i class="fa fa-list-alt fa-2x"> </i> <br>  Regresar</a>
-                    </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                          
 
-                  </div>
-                  
-                </div>
-                
-
-              </div>
-            </div>
-          
-                      <div class="content_section">
-                          <label>Seleccione la arquitectura y agregue la información de la prueba</label>
-                          <div id="content_add_test" style="display: block;">
-                            <div id='form_1'>
-                              <form method="post" id="form_add_test" class="form_arq" enctype="multipart/form-data">
-                                <input type="hidden" name="action" value="10">
-                                <select name="dominio">
-                                  <option value="">Seleccionar</option>
-                                  <?php
-                                    $dominios=db_fetch_assoc("select dominio from arqs_testbedims where usuario= '".$user_email."'");
-                                      foreach ($dominios as $key => $value) {
-                                          print("<option value='".$value['dominio']."'>".$value['dominio']."</option>");
-                                      } ?> 
-                                </select>
-                                  <input type="text" name="name_test" placeholder="Nombre de prueba" required>
-                                  
-                                  
-                                  <input type="hidden" name="comand_test" placeholder="Comando de prueba" value="no">
-                                  <!-- <input type="text" name="description_test" placeholder="Descripcion"> -->
-                                  <textarea name="description_test" placeholder="Descripcion" required></textarea>
-                                  <input type="hidden" name="restriction_test" placeholder="Restriccciones" value="no">
-                                  <label><h3>Archivo XML</h3></label>
-                                  <input type="file" name="file_test" required>
-                                  
-                                  <div>
-                                    <input type="button" class="btn_form btn btn-primary " id="btn_save_info" value="Guardar" onclick="add_test()">
-                                    <input type="button" class="btn_form btn btn-outline-secondary" value="Cancelar" onclick="$('#content_add_test').hide();$('#btn_see_table5').show();$('#btn_notsee_table5').hide();$('#form_add_test')[0].reset();">
-                                  </div>
-                              </form>
-                                
+                          <div class="description_page_testbed">
+                              <?php echo $test['description_test']?>
+                          </div>
+                        </div>
+                        <div class="col">
+                          <h4>Ir...</h4>
+                          <div class="row ">
+                            <div class="col">
+                              <a class="btn btn-success"  href="pruebas.php?idarq=<?php echo $_GET['idarq']?>"><i class="fa fa-arrow-left fa-2x"> </i> <br>  Atras</a>
                             </div>
-                            <div id='form_2'  style="display: none;">
-                              <form method="post" id="form_info_test" class="form_arq">
-                                <input type="hidden" name="action" value='11' required>
-                                <input type="hidden" name="id_test" value=''>
-                                <input type="text" name="options" placeholder="Opción de la prueba" required>
-                                <input type="text" name="value" placeholder="Dato que se debe agregar" required>
-                                <textarea name="description_option" placeholder="Descripcion" required></textarea>
-                                
-                                <div>
-                                <input type="button" class="btn_form" id="btn_save_info" value="Guardar" onclick="add_info_test();">
-                                <input type="button" class="btn_form" value="Cancelar" onclick="$('#btn_see_table5').show();$('#btn_notsee_table5').hide();$('#form_add_test')[0].reset();$('#form_info_test')[0].reset();$('#form_1').show();$('#form_2').hide();$('#content_add_test').hide();">
-                                </div>
-                              </form>
+                            <div class="col">
+                              <a class="btn btn-success"  href="pruebas.php?newTest=true&idarquitecture=<?php echo $_GET['idarq'] ?>"><i class="fa fa-list-alt fa-2x"> </i> <br>  Crear Prueba</a>
                             </div>
-                        
+                            <div class="col">
+                              <a class="btn btn-success"  href="arquitectura.php?arq=<?php echo $_GET['idarq']?>"><i class="fa fa-sitemap fa-2x"> </i> <br>  Arquitectura</a>
+                            </div>
+                            <div class="col">
+                              <a class="btn btn-success"  href="graph_view.php"><i class="fa fa-chart-bar fa-2x"> </i> <br>  Gráficas</a>
+                            </div>
+                          </div>
                         </div>
                       </div>
+            </div>
+            <div class="tests">
+                  <div class="description_page_testbed">
+                    <span>Al ejecutar esta prueba se ejecutaria el siguiente flujo de mensajes en el núcleo IMS de la arquitectura <?php echo $arq['arquitectura']?>.</span>
+                  </div>
+                  <div id="container table_desciption_test" class="animated fadeIn">
+                    <div class="row">
+                      <div class="col-8">
+                        <div class="form-group">
+                          <form id="edit_content_test">
+                            <input type="hidden" name="fileName" id="fileName" value="<?php echo $test['file_test']?>">
+                            <label for="exampleFormControlTextarea1">Flujo de mensajes</label>
+                            <textarea class="form-control" name="text_testFile" id="text_testFile" cols="20" rows="20" disabled>
+                                <?php
+                                  // echo $test['file_test'];
+                                  include("files_XML/".$test['file_test']);
+                                ?>
+                              </textarea>
+                          </form>
+                        </div>
+                          
+                      </div>
+                      <div class="col">
+                        <div class="container">
+
+                          <div class="row">
+                            <div class=" mx-auto">
+                              <h3>Realizar</h3>
+                            </div>
+                          </div>
+                          <div class="row mx-auto">
+                            <div style="display:none;" class="col" id="save_test_edit" >
+                              <button class="btn btn-primary m-2" onclick="editTest();$('div#functions_test').show();$('#save_test_edit').hide();">Guardar</button>
+                            </div>
+                            <div class="mx-auto" id="functions_test" >
+                                <?php
+                              if ($test['executing']=='1') {
+                                ?>
+                                  <button class="btn btn-info m-2">Detener</button>
+                                <?php
+                              }else{
+                                ?>
+                                  <button class="btn btn-primary m-2">Ejecutar</button>
+                                <?php
+                              }
+                                ?>
+                              
+                              <button class="btn btn-warning m-2" onclick="$('#text_testFile').prop('disabled',false);$('div#functions_test').hide();$('#save_test_edit').show();">Editar</button>
+                              
+                              <button class="btn btn-danger m-2" onclick="deleteTest('<?php echo $test['file_test']?>','<?php echo $test['id_test']?>')">Eliminar</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                  </div>
+                  <div id="table_options_test" class="animated fadeIn">
+                  </div>
+            </div>
+        </div>
+        <?php
+    }else{
+          $arq=db_fetch_row("SELECT arquitectura, dominio, type_arq, descripcion from arqs_testbedims where id='".$_GET['idarq']."'");
+          ?>
+        <div class="container" id="status-loading" ></div>
+        <div class="margin_page ancla" id="tests">
+            <div class="col">
+                      <div class="row">
+                        <h3><b>Pruebas de arquitectura <?php echo $arq['arquitectura']?></b> </h3>
+
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                          <div class="description_page_testbed">
+                            El ambiente de prueba Telco2.0 IMS permite a los usuarios evaluar el rendiemiento del nucleo IMS clearwater con dos tipos de pruebas Una de ellas consiste en emular el nodo Bono (Proxy) para enviar peticiones y solicitudes al nodo Sprout (Nucleo IMS) para verificar el rendieminto de este. Otra de las pruebas consiste en emular los usuarios que se registran para utilizar algun servicio IMS.
+                          </div>
+                        </div>
+                        <div class="col">
+                          <h4>Ir...</h4>
+                          <div class="row ">
+                            <div class="col">
+                              <a class="btn btn-success"  href="arquitectura.php?arq=<?php echo $_GET['idarq']?>"><i class="fa fa-arrow-left fa-2x"> </i> <br>  Atras</a>
+                            </div>
+                            <div class="col">
+                              <a class="btn btn-success"  href="pruebas.php?newTest=true&idarquitecture=<?php echo $_GET['idarq'] ?>"><i class="fa fa-list-alt fa-2x"> </i> <br>  Crear Prueba</a>
+                            </div>
+                            <div class="col">
+                              <a class="btn btn-success"  href="arquitectura.php?arq=<?php echo $_GET['idarq']?>"><i class="fa fa-sitemap fa-2x"> </i> <br>  Arquitectura</a>
+                            </div>
+                            <div class="col">
+                              <a class="btn btn-success"  href="graph_view.php"><i class="fa fa-chart-bar fa-2x"> </i> <br>  Gráficas</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+            </div>
+              <div class="tests">
+                  <!-- <h1 class="titulo_arquitectura">Servicios Ambiente de Prueba IMS</h1> -->
+                  
+                    <!-- descripcion de las pruebas-->
+                    <div class="description_page_testbed">El ambiente de prueba Telco2.0 IMS permite a los usuarios evaluar el rendiemiento del nucleo IMS clearwater con dos tipos de pruebas Una de ellas consiste en emular el nodo Bono (Proxy) para enviar peticiones y solicitudes al nodo Sprout (Nucleo IMS) para verificar el rendieminto de este. Otra de las pruebas consiste en emular los usuarios que se registran para utilizar algun servicio IMS.
+                    </div>
+                    <div id="container table_desciption_test" class="animated fadeIn">
+                      <?php
+                        draw_table_testbed_pruebas($user_email,$_GET['idarq']); ?>
+                    </div>
+                    <div id="table_options_test" class="animated fadeIn">
+                    </div>
+              </div>
+        </div>
+        <?php
+
+    }
+
+}else{
+  if($_GET['newTest']){
+    
+    
+      $dom_user=db_fetch_assoc("SELECT arquitectura, dominio, descripcion  from arqs_testbedims where usuario ='".$user_email."'");
+      if (!empty($dom_user)) {
+          ?>
+                <div class="container" id="status-loading" ></div>
+                <section id="test_dom ancla" class="section_admin_arquitecuta" style="margin-top: 20px;">
+                  <div class="col">
+                    <div class="row">
+                      <h3><b>Crear Prueba</b></h3>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        
+                        <div class="description_page_testbed">
+                          En esta seccion puede agregar una prueba personalizada al ambiente de prueba mediante un archivo XML el cual describe el flujo de mensajes que realizará cada usuario simulado durante la prueba. <br>
+                          El contenido agregado a continuación contiene el flujo de mensajes que realiza un usuario para registrarse iniciar una llamada, emular flujo de datos durante la llamada y finalizarla donde como usuario podra modificar el contenido y adaptarlo a una prueba especifica.
+                        </div>
+                      </div>
+                      <div class="col ">
+                        <h4>Ir...</h4>
+                        <div class="row ">
+                        
+                          
+                          <div class="col">
+                                 <?php
+                            if($_GET['idarquitecture']){
+                                ?>
+                                  <a class="btn btn-success"  href="pruebas.php?idarq=<?php echo get_nfilter_request_var('idarquitecture')?>"><i class="fa fa-arrow-left fa-2x"> </i> <br>  Atras</a>
+                                <?php
+                            }else{
+                              ?>
+                                <a class="btn btn-success"  href="pruebas.php"><i class="fa fa-arrow-left fa-2x"> </i> <br>  Atras</a>
+                              <?php
+                            }
+                              ?>
+                            
+                          </div>
+
+                        </div>
+                        
+                      </div>
+                      
+
+                    </div>
+                  </div>
+                        
+                  <div class="container">
+                      <label><b>Seleccione la arquitectura y agregue la información de la prueba</b></label>
+                      <div id="content_add_test">
+                        <div>
+                        <form id="form_add_test" >
+                          <input type="hidden" name="action" value="10">
+                          <div class="row">
+                            <div class="col">
+                              <div class="form-group">
+                                <label for="name_test" >Nombre</label>
+                                <input type="text" class="form-control" name="name_test" placeholder="Nombre de prueba" required>
+                              </div>
+                              
+                              </div>
+                              <div class="col">
+                                  <div class="form-group">
+                                    <?php
+                                     if(get_nfilter_request_var('idarquitecture')){
+                                        ?>
+                                          <label for="dominio">Arquitectura</label>
+                                          <select name="dominio" class="form-control">
+                                            
+                                            <?php
+                                              $dominios=db_fetch_assoc("select arquitectura, dominio from arqs_testbedims where usuario= '".$user_email."' AND id='".get_nfilter_request_var('idarquitecture')."'");
+                                                foreach ($dominios as $key => $value) {
+                                                    print("<option value='".$value['dominio']."'>".$value['arquitectura']." ".$value['dominio']."</option>");
+                                                } 
+                                            ?> 
+                                          </select>
+                                       <?php
+                                     }else{
+                                       ?>
+                                        <label for="dominio">Arquitectura</label>
+                                        <select name="dominio" class="form-control">
+                                          <option value="">Seleccionar Arquitectura</option>
+                                          <?php
+                                            $dominios=db_fetch_assoc("select arquitectura, dominio from arqs_testbedims where usuario= '".$user_email."'");
+                                              foreach ($dominios as $key => $value) {
+                                                  print("<option value='".$value['dominio']."'>".$value['arquitectura']." ".$value['dominio']."</option>");
+                                              }
+                                          ?> 
+                                        </select>
+                                       <?php
+                                     }
+                                    ?>
+                                      
+                                      
+                                  </div>
+
+                            </div>
+                          </div>
+                          <div class="form-group">
+                          <label for="description_test">Descripción</label>
+                              <textarea class="form-control" id="description_test" name="description_test"rows="3"></textarea>
+                              
+                          </div>
+                          
+                            <div class="form-group">
+                              <label for="fileXML">Escenario SIP</label>
+                              <textarea class="form-control" id="fileXML" name="fileXML" rows="20">
+                                <?php
+                                  include("scripts/TestEmulateUsers.txt");
+                                ?>
+                              </textarea>
+                            </div>
+                            <div class="row d-flex justify-content-center">
+                                <input type="button" class="btn_form btn btn-primary mr-2" id="btn_save_info" value="Crear" onclick="add_test()">
+                                <!-- <input type="button" class="btn_form btn btn-outline-secondary" value="Cancelar" onclick=""> -->
+                                <a class="btn btn-outline-secondary" href="pruebas.php">Cancelar</a>
+                              
+                              </div>
+                          </form>
+
+
+                            
+                        </div>
+                       
+                    
+                    </div>
+                  </div>
                 </section>
 
                 <?php
@@ -131,36 +310,35 @@ if($_GET['idarq']){
     <div class="margin_page ancla" id="tests">
 
 
-    <div class="col">
-              <div class="row">
-                <h3><b>Pruebas</b> </h3>
+      <div class="col">
+                <div class="row">
+                  <h3><b>Pruebas</b> </h3>
 
-              </div>
-              <div class="row">
-                <div class="col">
-                  
-
-                  <div class="description_page_testbed">
-                  El ambiente de prueba Telco2.0 IMS permite a los usuarios evaluar el rendiemiento del nucleo IMS clearwater con dos tipos de pruebas Una de ellas consiste en emular el nodo Bono (Proxy) para enviar peticiones y solicitudes al nodo Sprout (Nucleo IMS) para verificar el rendieminto de este. Otra de las pruebas consiste en emular los usuarios que se registran para utilizar algun servicio IMS.
-                  </div>
                 </div>
-                <div class="col ">
-                  <h4>Ir...</h4>
-                  <div class="row ">
-                  
+                <div class="row">
+                  <div class="col">
                     
-                    <div class="col">
 
-                      <a class="btn btn-success"  href="http://10.55.5.100/telco/pruebas.php?newTest=true"><i class="fa fa-list-alt fa-2x"> </i> <br>  Crear Prueba</a>
+                    <div class="description_page_testbed">
+                    El ambiente de prueba Telco2.0 IMS permite a los usuarios evaluar el rendiemiento del nucleo IMS clearwater con dos tipos de pruebas Una de ellas consiste en emular el nodo Bono (Proxy) para enviar peticiones y solicitudes al nodo Sprout (Nucleo IMS) para verificar el rendieminto de este. Otra de las pruebas consiste en emular los usuarios que se registran para utilizar algun servicio IMS.
                     </div>
-
                   </div>
-                  
+                  <div class="col ">
+                    <h4>Ir...</h4>
+                    <div class="row ">
+                      <div class="col">
+                        <a class="btn btn-success"  href="pruebas.php?newTest=true"><i class="fa fa-list-alt fa-2x"> </i> <br>  Crear Prueba</a>
+                      </div>
+                      <div class="col">
+                        <a class="btn btn-success"  href="arquitectura.php"><i class="fa fa-sitemap fa-2x"> </i> <br>  Arquitectura</a>
+                      </div>
+                      <div class="col">
+                        <a class="btn btn-success"  href="graph_view.php"><i class="fa fa-chart-bar fa-2x"> </i> <br>  Gráficas</a>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                
-
-              </div>
-    </div>
+      </div>
 
       <div class="tests">
           
@@ -171,13 +349,14 @@ if($_GET['idarq']){
             <div id="table_options_test" class="animated fadeIn">
             </div>
       </div>
-        
+  </div>
 
 
     <?php
   }
 }
   ?>
+
 
 
 <script type="text/javascript" >
@@ -242,6 +421,13 @@ if($_GET['idarq']){
 
 
 
+</div>
+</div>
+</div>
 
+
+<?php
+include('./include/footer.php');
+?>
 
 
