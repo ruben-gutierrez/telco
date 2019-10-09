@@ -135,7 +135,7 @@ if (!empty($_POST)) {
 						if( $idRouter == '0'){
 							echo("Error al crear Router");
 						}else{
-							conectRouterNetPublic($idRouter, 'c969d12a-da48-43ea-8adc-8c4620d8a8b1');
+							conectRouterNetPublic($idRouter, '7d43c8ea-bee9-49d0-a3d5-748c79a08445');
 							conectRouterNetPrivate($idRouter, $result_create_net['subnet_openstack']);
 							db_execute("INSERT INTO router_openstack (id_router, name_router, domain) values ( '".$idRouter."','".$name_net."','".$domain."')");
 							// echo "Arquitectura Creada con exito";
@@ -453,12 +453,16 @@ if (!empty($_POST)) {
 			$ram=$_POST['ramNewVm'];
 			$resp=validate_recourses($domain, $ram, $disk, $vcpu);
 			
-			echo($resp);
+			// echo($resp);
 			if ( $resp == '111' ) {
 				$id_net=db_fetch_cell_prepared("SELECT n.id_net from network_openstack n INNER JOIN arqs_testbedims a ON a.dominio=n.domain where a.id='".$_POST['idDomain']."'");
 				$flavor=id_flavor( $_POST['ramNewVm'],$_POST['vcpuNewVm'],$_POST['diskNewVm']);
 				
+				// print_r($_POST['nameNewVm']);
+				// print_r($_POST['imageNewVm']);
+				// print_r($flavor);
 				$vm=create_vm($_POST['nameNewVm'], $_POST['imageNewVm'],$flavor,$id_net);
+				// print_r($vm);
 				
 				
 				

@@ -52,6 +52,13 @@ en caso de modificar o reinstalar openstack
         editar la variable id_network_float
 
     linea 
+    conectRouterNetPublic($idRouter, 'c969d12a-da48-43ea-8adc-8c4620d8a8b1'); 
+    en solicitud asignacion cambiar el id de red public
+
+    linea
+    $vm_create=create_vm( $nameVm, "
+    reemplazar el id de la imagen de ubuntu 14
+
     
 
 4- copiar la clave ssh (.pem) a la ruta scripts/terminal_testbed

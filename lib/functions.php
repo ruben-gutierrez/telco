@@ -5447,6 +5447,7 @@ function create_vm($name_server, $id_image, $flavor_ref, $id_net){
 
 	$vm_created=shell_exec("./scripts/request_openstack.sh $action $name_server $id_image $flavor_ref $id_net");
 	$vm = json_decode($vm_created, true);
+	// return $vm;
 	sleep(13);
 	$ipFloat=ipFloat($vm['server']['id']);
 	// sleep(5);
@@ -5791,7 +5792,7 @@ function asingIpFloatServer($idServer){
 	$idFloatIpFree=db_fetch_cell_prepared("SELECT id_floatingip FROM flotantIp_openstack where ip_local=''");
 	if($idFloatIpFree == ''){
 		$action="create_ipfloat_liked";
-		$id_network_float='c969d12a-da48-43ea-8adc-8c4620d8a8b1';
+		$id_network_float='7d43c8ea-bee9-49d0-a3d5-748c79a08445';
 		$answer=shell_exec("./scripts/request_openstack.sh $action $id_network_float $port");
 	}else{
 		$action="add_ipFloat_server";
@@ -5975,14 +5976,14 @@ function create_core_ims($names,$id_net,$domain,$typeDomain,$options_test_sprout
 	$coreIp=array();
 	foreach ($names as $nameVm=>$ipVm){
 		// create_vm( $nameVm, $id_image, "d2", $id_net);
-		$vm_create=create_vm( $nameVm, "1190aff1-46d6-4088-82d1-ea4d9dc37274", "d2", $id_net);
+		$vm_create=create_vm( $nameVm, "872b2b98-cd04-4370-aaf5-ec89963878d4", "d2", $id_net);
 		// if( $nameVm == 'sipp'){
-		// 	$vm_create=create_vm( "sipp", "1190aff1-46d6-4088-82d1-ea4d9dc37274", "d2", $id_net);
+		// 	$vm_create=create_vm( "sipp", "872b2b98-cd04-4370-aaf5-ec89963878d4", "d2", $id_net);
 		// }else{
 		// 	if( $nameVm == 'bono'){
-		// 		$vm_create=create_vm( "bono", "1190aff1-46d6-4088-82d1-ea4d9dc37274", "d2", $id_net);
+		// 		$vm_create=create_vm( "bono", "872b2b98-cd04-4370-aaf5-ec89963878d4", "d2", $id_net);
 		// 	}else{
-		// 		$vm_create=create_vm( $nameVm, "1190aff1-46d6-4088-82d1-ea4d9dc37274", "d2", $id_net);
+		// 		$vm_create=create_vm( $nameVm, "872b2b98-cd04-4370-aaf5-ec89963878d4", "d2", $id_net);
 		// 	}
 		// }
 		$vmJson = json_decode($vm_create, true);

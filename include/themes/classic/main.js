@@ -1331,7 +1331,7 @@ function addVM() {
                     if (data == '0') {
                         alertify.error('Error, Verifique los recursos máximos');
                     } else {
-                        // console.log(data);
+                        console.log(data);
                         alertify.success('VM agregada');
                     }
                 },
